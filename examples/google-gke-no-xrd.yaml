@@ -1,0 +1,33 @@
+apiVersion: container.gcp.crossplane.io/v1beta2
+kind: Cluster
+metadata:
+  name: a-team-gke-no-xrd
+spec:
+  forProvider:
+    location: us-east1
+    initialClusterVersion: latest
+
+---
+
+apiVersion: container.gcp.crossplane.io/v1beta1
+kind: NodePool
+metadata:
+  name: a-team-gke-no-xrd
+spec:
+  forProvider:
+    locations:
+    - us-east1-b
+    clusterRef:
+      name: a-team-gke-no-xrd
+    initialNodeCount: 1
+    config:
+      preemptible: true
+      machineType: e2-standard-2
+      oauthScopes:
+      - https://www.googleapis.com/auth/cloud-platform
+    autoscaling:
+      enabled: true
+      minNodeCount: 1
+      maxNodeCount: 2
+    management:
+      autoUpgrade: false

@@ -1,0 +1,15 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-gke
+spec:
+  id: a-team-gke
+  compositionSelector:
+    matchLabels:
+      provider: google
+      cluster: gke
+  parameters:
+    nodeSize: medium
+    minNodeCount: 1
+  writeConnectionSecretToRef:
+    name: a-team-gke

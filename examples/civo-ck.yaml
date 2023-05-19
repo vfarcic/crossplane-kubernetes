@@ -1,0 +1,15 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-ck
+spec:
+  id: a-team-ck
+  compositionSelector:
+    matchLabels:
+      provider: civo
+      cluster: ck
+  parameters:
+    nodeSize: medium
+    minNodeCount: 3
+  writeConnectionSecretToRef:
+    name: a-team-civo
