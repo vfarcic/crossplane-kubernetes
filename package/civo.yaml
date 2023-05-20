@@ -49,6 +49,12 @@ spec:
     - type: ToCompositeFieldPath
       fromFieldPath: metadata.name
       toFieldPath: status.clusterName
+    - type: ToCompositeFieldPath
+      fromFieldPath: status.conditions[0].reason
+      toFieldPath: status.controlPlaneStatus
+    - type: ToCompositeFieldPath
+      fromFieldPath: status.conditions[0].reason
+      toFieldPath: status.nodePoolStatus
     connectionDetails:
     - fromConnectionSecretKey: kubeconfig
     - fromConnectionSecretKey: kubeconfig
