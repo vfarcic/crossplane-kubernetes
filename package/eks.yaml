@@ -99,7 +99,7 @@ spec:
       - type: string
         string:
           fmt: '%s-nodegroup'
-    - fromFieldPath: spec.parameters.minNodeCount
+    - fromFieldPath: 1.parameters.minNodeCount
       toFieldPath: spec.forProvider.scalingConfig.minSize
     - fromFieldPath: spec.parameters.minNodeCount
       toFieldPath: spec.forProvider.scalingConfig.desiredSize
