@@ -24,6 +24,8 @@ spec:
         - id: 8382e422-dcdd-461f-afb4-2ab67f171c3e
           count: 1
           size: g3.k3s.small
+        applications:
+          - civo-cluster-autoscaler
         connectionDetails:
           connectionSecretNamePrefix: cluster-civo
           connectionSecretNamespace: crossplane-system
