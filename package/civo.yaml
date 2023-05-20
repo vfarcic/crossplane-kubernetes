@@ -38,6 +38,12 @@ spec:
       toFieldPath: spec.name
     - fromFieldPath: spec.claimRef.namespace
       toFieldPath: spec.writeConnectionSecretToRef.namespace
+    - fromFieldPath: spec.id
+      toFieldPath: spec.credentials.secretRef.name
+      transforms:
+      - type: string
+        string:
+          fmt: '%s-cluster'
     - fromFieldPath: spec.parameters.minNodeCount
       toFieldPath: spec.pools[0].count
     - fromFieldPath: spec.parameters.nodeSize
