@@ -127,7 +127,7 @@ spec:
       - type: string
         string:
           fmt: '%s-cluster'
-  - name: ingress
+  - name: schemahero
     base:
       apiVersion: helm.crossplane.io/v1beta1
       kind: Release
@@ -139,6 +139,7 @@ spec:
             name: schemahero
             repository: oci://ghcr.io/schemahero/helm/schemahero
             version: 1.1.2
+          insecureSkipTLSVerify: true
     patches:
     - fromFieldPath: spec.id
       toFieldPath: metadata.name
