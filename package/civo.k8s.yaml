@@ -67,25 +67,4 @@ spec:
         - fromFieldPath: status.message
           toFieldPath: status.nodePoolStatus
           type: ToCompositeFieldPath
-    - base:
-        apiVersion: kubernetes.crossplane.io/v1alpha1
-        kind: ProviderConfig
-        spec:
-          credentials:
-            secretRef:
-              key: kubeconfig
-              name: civo-kubeconfig
-              namespace: crossplane-system
-            source: Secret
-      name: kubernetes
-      patches:
-        - fromFieldPath: spec.id
-          toFieldPath: metadata.name
-        - fromFieldPath: spec.claimRef.namespace
-          toFieldPath: spec.credentials.secretRef.namespace
-        - fromFieldPath: spec.id
-          toFieldPath: spec.credentials.secretRef.name
-          transforms:
-            - string:
-                fmt: "%s-cluster"
-              type: string
+  writeConnectionSecretsToNamespace: crossplane-system
