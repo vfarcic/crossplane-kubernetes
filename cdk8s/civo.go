@@ -39,10 +39,10 @@ func NewCivoCkAll(scope constructs.Construct, id string, props *MyChartProps) cd
 
 	composition.NewComposition(chart, jsii.String("composition"), &composition.CompositionProps{
 		Metadata: &cdk8s.ApiObjectMetadata{
-			Name: jsii.String("cluster-civo"),
+			Name: jsii.String("cluster-civo-all"),
 			Labels: &map[string]*string{
 				"provider": jsii.String("civo"),
-				"cluster":  jsii.String("ck"),
+				"cluster":  jsii.String("ck-all"),
 			},
 		},
 		Spec: getCompositionSpec(&[]*composition.CompositionSpecResources{
