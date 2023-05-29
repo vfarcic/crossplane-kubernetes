@@ -50,5 +50,5 @@ spec:
       toFieldPath: spec.parameters.nodeSize
     - fromFieldPath: spec.parameters.minNodeCount
       toFieldPath: spec.parameters.minNodeCount
-
-
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
