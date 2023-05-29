@@ -15,43 +15,136 @@ spec:
     patches:
     - fromFieldPath: metadata.labels
   resources:
+  - name: civocluster
+    base:
+      apiVersion: cluster.civo.crossplane.io/v1alpha1
+      kind: CivoKubernetes
+      spec:
+        pools:
+        - id: 8382e422-dcdd-461f-afb4-2ab67f171c3e
+          count: 1
+          size: g3.k3s.small
+        applications:
+          - civo-cluster-autoscaler
+        connectionDetails:
+          connectionSecretNamePrefix: cluster-civo
+          connectionSecretNamespace: crossplane-system
+        providerConfigRef:
+          name: crossplane-provider-civo
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+    - fromFieldPath: spec.id
+      toFieldPath: spec.name
+    - fromFieldPath: spec.id
+      toFieldPath: spec.writeConnectionSecretToRef.name
+      transforms:
+      - type: string
+        string:
+          fmt: '%s-cluster'
+    - fromFieldPath: spec.claimRef.namespace
+      toFieldPath: spec.writeConnectionSecretToRef.namespace
+    - fromFieldPath: spec.parameters.minNodeCount
+      toFieldPath: spec.pools[0].count
+    - fromFieldPath: spec.parameters.nodeSize
+      toFieldPath: spec.pools[0].size
+      transforms:
+      - type: map
+        map:
+          small: g3.k3s.small
+          medium: g3.k3s.medium
+          large: g3.k3s.xlarge
+    - type: ToCompositeFieldPath
+      fromFieldPath: metadata.name
+      toFieldPath: status.clusterName
+    - type: ToCompositeFieldPath
+      fromFieldPath: status.message
+      toFieldPath: status.controlPlaneStatus
+    - type: ToCompositeFieldPath
+      fromFieldPath: status.message
+      toFieldPath: status.nodePoolStatus
+    connectionDetails:
+    - fromConnectionSecretKey: kubeconfig
+    - fromConnectionSecretKey: kubeconfig
+      name: value
   - name: kubernetes
     base:
       apiVersion: kubernetes.crossplane.io/v1alpha1
       kind: ProviderConfig
       spec:
         credentials:
-          source: InjectedIdentity
+          source: Secret
+          secretRef:
+            key: kubeconfig
     patches:
     - fromFieldPath: spec.id
       toFieldPath: metadata.name
-    readinessChecks:
-    - type: None
-  - name: civo
+    - fromFieldPath: spec.claimRef.namespace
+      toFieldPath: spec.credentials.secretRef.namespace
+    - fromFieldPath: spec.id
+      toFieldPath: spec.credentials.secretRef.name
+      transforms:
+      - type: string
+        string:
+          fmt: '%s-cluster'
+  - name: ns-prod
     base:
       apiVersion: kubernetes.crossplane.io/v1alpha1
       kind: Object
       spec:
         forProvider:
           manifest:
-            apiVersion: devopstoolkitseries.com/v1alpha1
-            kind: CompositeCluster
-            spec:
-              compositionSelector:
-                matchLabels:
-                  provider: civo
-                  cluster: ck
-              id: ck
-              parameters:
-                nodeSize: small
+            apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: schemahero
     patches:
     - fromFieldPath: spec.id
-      toFieldPath: spec.id
-    - fromFieldPath: spec.parameters.version
-      toFieldPath: spec.parameters.version
-    - fromFieldPath: spec.parameters.nodeSize
-      toFieldPath: spec.parameters.nodeSize
-    - fromFieldPath: spec.parameters.minNodeCount
-      toFieldPath: spec.parameters.minNodeCount
+      toFieldPath: metadata.name
+      transforms:
+      - type: string
+        string:
+          fmt: '%s-ns-schemahero'
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+  - name: helm
+    base:
+      apiVersion: helm.crossplane.io/v1beta1
+      kind: ProviderConfig
+      spec:
+        credentials:
+          source: Secret
+          secretRef:
+            key: kubeconfig
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+    - fromFieldPath: spec.claimRef.namespace
+      toFieldPath: spec.credentials.secretRef.namespace
+    - fromFieldPath: spec.id
+      toFieldPath: spec.credentials.secretRef.name
+      transforms:
+      - type: string
+        string:
+          fmt: '%s-cluster'
+  - name: ingress
+    base:
+      apiVersion: helm.crossplane.io/v1beta1
+      kind: Release
+      spec:
+        rollbackLimit: 3
+        forProvider:
+          namespace: schemahero
+          chart:
+            name: schemahero
+            repository: oci://ghcr.io/schemahero/helm/schemahero
+            version: 1.1.2
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+      - type: string
+        string:
+          fmt: '%s-schemahero'
     - fromFieldPath: spec.id
       toFieldPath: spec.providerConfigRef.name
