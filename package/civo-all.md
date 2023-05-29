@@ -53,7 +53,7 @@ kubectl create namespace a-team
 
 ```bash
 kubectl --namespace a-team apply \
-    --filename ../examples/civo-ck-all.yaml
+  --filename ../examples/civo-ck-all.yaml
 
 kubectl get managed
 

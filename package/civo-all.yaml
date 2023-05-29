@@ -15,6 +15,18 @@ spec:
     patches:
     - fromFieldPath: metadata.labels
   resources:
+  - name: kubernetes
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: ProviderConfig
+      spec:
+        credentials:
+          source: InjectedIdentity
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+    readinessChecks:
+    - type: None
   - name: civo
     base:
       apiVersion: kubernetes.crossplane.io/v1alpha1
@@ -36,5 +48,7 @@ spec:
       - type: string
         string:
           fmt: '%s-cluster-all'
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
 
 
