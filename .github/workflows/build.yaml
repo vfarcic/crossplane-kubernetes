@@ -11,6 +11,13 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - name: Generate YAML
+        run: |
+          npm install -g cdk8s-cli
+          cd cdk8s
+          cdk8s synth
+          cp dist/*.yaml ../package
+          ls -la ../package
       - name: Build the package
         run: |
           cd package

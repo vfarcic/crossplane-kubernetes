@@ -1,0 +1,242 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.3.0
+  creationTimestamp: "2023-05-29T13:41:28Z"
+  generation: 1
+  name: civoinstances.instance.civo.crossplane.io
+  ownerReferences:
+  - apiVersion: pkg.crossplane.io/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ProviderRevision
+    name: provider-civo-9dbccd3c9470
+    uid: e402c908-6ed7-43f5-80cf-8df624c6a633
+  - apiVersion: pkg.crossplane.io/v1
+    blockOwnerDeletion: true
+    controller: false
+    kind: Provider
+    name: provider-civo
+    uid: b8e7f275-38d5-4aea-80c7-f1f887859485
+  resourceVersion: "1171"
+  uid: 96284970-5d96-4c60-964d-2977c40bcd0c
+spec:
+  conversion:
+    strategy: None
+  group: instance.civo.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - civo
+    kind: CivoInstance
+    listKind: CivoInstanceList
+    plural: civoinstances
+    singular: civoinstance
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.atProvider.state
+      name: MESSAGE
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: A CivoInstance is an example API type. Please replace `PROVIDER-NAME`
+          with your actual provider name, like `aws`, `azure`, `gcp`, `alibaba`
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CivoInstanceSpec holds the instanceConfig
+            properties:
+              deletionPolicy:
+                description: DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource. The "Delete" policy is the default
+                  when no policy is specified.
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              instanceConfig:
+                description: CivoInstanceConfig specs for the CivoInstance
+                properties:
+                  diskImage:
+                    type: string
+                  hostname:
+                    type: string
+                  initialUser:
+                    type: string
+                  notes:
+                    type: string
+                  publicIPRequired:
+                    type: string
+                  region:
+                    type: string
+                  script:
+                    type: string
+                  size:
+                    type: string
+                  sshPubKeyRef:
+                    description: SecretReference location of the SSH Public Key Secret
+                    properties:
+                      key:
+                        description: Key whose value will be used.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  tags:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              providerConfigRef:
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - instanceConfig
+            type: object
+          status:
+            description: CivoInstanceStatus status of the resource
+            properties:
+              atProvider:
+                description: CivoInstanceObservation observation fields
+                properties:
+                  createdAt:
+                    format: date-time
+                    type: string
+                  id:
+                    type: string
+                  ipv4:
+                    type: string
+                  observableField:
+                    type: string
+                  state:
+                    type: string
+                required:
+                - id
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    categories:
+    - crossplane
+    - managed
+    - civo
+    kind: CivoInstance
+    listKind: CivoInstanceList
+    plural: civoinstances
+    singular: civoinstance
+  conditions:
+  - lastTransitionTime: "2023-05-29T13:41:28Z"
+    message: no conflicts found
+    reason: NoConflicts
+    status: "True"
+    type: NamesAccepted
+  - lastTransitionTime: "2023-05-29T13:41:28Z"
+    message: the initial names have been accepted
+    reason: InitialNamesAccepted
+    status: "True"
+    type: Established
+  storedVersions:
+  - v1alpha1
