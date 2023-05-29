@@ -18,7 +18,6 @@ jobs:
           cdk8s synth
           ./hacks/schemahero.sh
           cp dist/*.yaml ../package
-          ls -la ../package
       - name: Build the package
         run: |
           cd package
