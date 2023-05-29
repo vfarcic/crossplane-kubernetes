@@ -43,12 +43,12 @@ spec:
                   cluster: ck
     patches:
     - fromFieldPath: spec.id
-      toFieldPath: metadata.name
-      transforms:
-      - type: string
-        string:
-          fmt: '%s-cluster-all'
-    - fromFieldPath: spec.id
-      toFieldPath: spec.providerConfigRef.name
+      toFieldPath: spec.id
+    - fromFieldPath: spec.parameters.version
+      toFieldPath: spec.parameters.version
+    - fromFieldPath: spec.parameters.nodeSize
+      toFieldPath: spec.parameters.nodeSize
+    - fromFieldPath: spec.parameters.minNodeCount
+      toFieldPath: spec.parameters.minNodeCount
 
 
