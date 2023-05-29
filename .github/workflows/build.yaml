@@ -16,6 +16,7 @@ jobs:
           npm install -g cdk8s-cli
           cd cdk8s
           cdk8s synth
+          ./hacks/schemahero.sh
           cp dist/*.yaml ../package
           ls -la ../package
       - name: Build the package
