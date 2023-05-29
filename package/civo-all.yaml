@@ -41,6 +41,7 @@ spec:
                 matchLabels:
                   provider: civo
                   cluster: ck
+              id: ck
               parameters:
                 nodeSize: small
     patches:
