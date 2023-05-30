@@ -48,6 +48,8 @@ func NewCivoCkAll(scope constructs.Construct, id string, props *MyChartProps) cd
 		Spec: getCompositionSpec(&[]*composition.CompositionSpecResources{
 			getCivoCluster(),
 			getProviderConfigKubernetes(),
+			getProviderConfigHelm(),
+			getAppCrossplane(),
 		}, false),
 	})
 	return chart
