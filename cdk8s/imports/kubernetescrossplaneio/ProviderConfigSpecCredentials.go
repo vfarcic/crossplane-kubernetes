@@ -1,5 +1,6 @@
 package kubernetescrossplaneio
 
+
 // Credentials used to connect to the Kubernetes API.
 //
 // Typically a kubeconfig file. Use InjectedIdentity for in-cluster config.
@@ -13,3 +14,4 @@ type ProviderConfigSpecCredentials struct {
 	// A SecretRef is a reference to a secret key that contains the credentials that must be used to connect to the provider.
 	SecretRef *ProviderConfigSpecCredentialsSecretRef `field:"optional" json:"secretRef" yaml:"secretRef"`
 }
+

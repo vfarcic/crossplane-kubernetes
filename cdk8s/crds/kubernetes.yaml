@@ -1,0 +1,684 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.1
+  creationTimestamp: "2023-05-29T22:39:34Z"
+  generation: 1
+  name: providerconfigs.kubernetes.crossplane.io
+  ownerReferences:
+  - apiVersion: pkg.crossplane.io/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ProviderRevision
+    name: crossplane-provider-kubernetes-1f1e32c1957d
+    uid: eb510aa6-4494-4985-a09c-d9f1e2f63530
+  - apiVersion: pkg.crossplane.io/v1
+    blockOwnerDeletion: true
+    controller: false
+    kind: Provider
+    name: crossplane-provider-kubernetes
+    uid: 30727898-a47f-44f2-b791-63f42b30edfa
+  resourceVersion: "2491"
+  uid: 37c60209-c65b-44d4-a674-c56c0d29eee9
+spec:
+  conversion:
+    strategy: None
+  group: kubernetes.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - provider
+    - kubernetes
+    kind: ProviderConfig
+    listKind: ProviderConfigList
+    plural: providerconfigs
+    singular: providerconfig
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    - jsonPath: .spec.credentials.secretRef.name
+      name: SECRET-NAME
+      priority: 1
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: A ProviderConfig configures a Template provider.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: A ProviderConfigSpec defines the desired state of a ProviderConfig.
+            properties:
+              credentials:
+                description: Credentials used to connect to the Kubernetes API. Typically
+                  a kubeconfig file. Use InjectedIdentity for in-cluster config.
+                properties:
+                  env:
+                    description: Env is a reference to an environment variable that
+                      contains credentials that must be used to connect to the provider.
+                    properties:
+                      name:
+                        description: Name is the name of an environment variable.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  fs:
+                    description: Fs is a reference to a filesystem location that contains
+                      credentials that must be used to connect to the provider.
+                    properties:
+                      path:
+                        description: Path is a filesystem path.
+                        type: string
+                    required:
+                    - path
+                    type: object
+                  secretRef:
+                    description: A SecretRef is a reference to a secret key that contains
+                      the credentials that must be used to connect to the provider.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  source:
+                    description: Source of the provider credentials.
+                    enum:
+                    - None
+                    - Secret
+                    - InjectedIdentity
+                    - Environment
+                    - Filesystem
+                    type: string
+                required:
+                - source
+                type: object
+              identity:
+                description: Identity used to authenticate to the Kubernetes API.
+                  The identity credentials can be used to supplement kubeconfig 'credentials',
+                  for example by configuring a bearer token source such as OAuth.
+                properties:
+                  env:
+                    description: Env is a reference to an environment variable that
+                      contains credentials that must be used to connect to the provider.
+                    properties:
+                      name:
+                        description: Name is the name of an environment variable.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  fs:
+                    description: Fs is a reference to a filesystem location that contains
+                      credentials that must be used to connect to the provider.
+                    properties:
+                      path:
+                        description: Path is a filesystem path.
+                        type: string
+                    required:
+                    - path
+                    type: object
+                  secretRef:
+                    description: A SecretRef is a reference to a secret key that contains
+                      the credentials that must be used to connect to the provider.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  source:
+                    description: Source of the provider credentials.
+                    enum:
+                    - None
+                    - Secret
+                    - InjectedIdentity
+                    - Environment
+                    - Filesystem
+                    type: string
+                  type:
+                    description: Type of identity.
+                    enum:
+                    - GoogleApplicationCredentials
+                    type: string
+                required:
+                - source
+                - type
+                type: object
+            required:
+            - credentials
+            type: object
+          status:
+            description: A ProviderConfigStatus reflects the observed state of a ProviderConfig.
+            properties:
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              users:
+                description: Users of this provider configuration.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    categories:
+    - crossplane
+    - provider
+    - kubernetes
+    kind: ProviderConfig
+    listKind: ProviderConfigList
+    plural: providerconfigs
+    singular: providerconfig
+  conditions:
+  - lastTransitionTime: "2023-05-29T22:39:34Z"
+    message: no conflicts found
+    reason: NoConflicts
+    status: "True"
+    type: NamesAccepted
+  - lastTransitionTime: "2023-05-29T22:39:34Z"
+    message: the initial names have been accepted
+    reason: InitialNamesAccepted
+    status: "True"
+    type: Established
+  storedVersions:
+  - v1alpha1
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.1
+  creationTimestamp: "2023-05-30T14:29:10Z"
+  generation: 1
+  name: objects.kubernetes.crossplane.io
+  ownerReferences:
+  - apiVersion: pkg.crossplane.io/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ProviderRevision
+    name: crossplane-provider-kubernetes-1f1e32c1957d
+    uid: c8879db3-6800-4416-8583-9b4de13de068
+  - apiVersion: pkg.crossplane.io/v1
+    blockOwnerDeletion: true
+    controller: false
+    kind: Provider
+    name: crossplane-provider-kubernetes
+    uid: 98525b05-8050-4716-beea-e05fffd5dfdb
+  resourceVersion: "1085"
+  uid: 37e9534e-3fa8-488f-8c0d-c63d50aafe32
+spec:
+  conversion:
+    strategy: None
+  group: kubernetes.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - kubernetes
+    kind: Object
+    listKind: ObjectList
+    plural: objects
+    singular: object
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.forProvider.manifest.kind
+      name: KIND
+      type: string
+    - jsonPath: .spec.forProvider.manifest.apiVersion
+      name: APIVERSION
+      priority: 1
+      type: string
+    - jsonPath: .spec.forProvider.manifest.metadata.name
+      name: METANAME
+      priority: 1
+      type: string
+    - jsonPath: .spec.forProvider.manifest.metadata.namespace
+      name: METANAMESPACE
+      priority: 1
+      type: string
+    - jsonPath: .spec.providerConfigRef.name
+      name: PROVIDERCONFIG
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: A Object is an provider Kubernetes API type
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: A ObjectSpec defines the desired state of a Object.
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource.
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                description: ObjectParameters are the configurable fields of a Object.
+                properties:
+                  manifest:
+                    description: Raw JSON representation of the kubernetes object
+                      to be created.
+                    type: object
+                    x-kubernetes-embedded-resource: true
+                    x-kubernetes-preserve-unknown-fields: true
+                required:
+                - manifest
+                type: object
+              managementPolicy:
+                default: Default
+                description: A ManagementPolicy determines what should happen to the
+                  underlying external resource when a managed resource is created,
+                  updated, deleted, or observed.
+                enum:
+                - Default
+                - ObserveCreateUpdate
+                - ObserveDelete
+                - Observe
+                type: string
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              references:
+                items:
+                  description: Reference refers to an Object or arbitrary Kubernetes
+                    resource and optionally patch values from that resource to the
+                    current Object.
+                  properties:
+                    dependsOn:
+                      description: DependsOn is used to declare dependency on other
+                        Object or arbitrary Kubernetes resource.
+                      properties:
+                        apiVersion:
+                          default: kubernetes.crossplane.io/v1alpha1
+                          description: APIVersion of the referenced object.
+                          type: string
+                        kind:
+                          default: Object
+                          description: Kind of the referenced object.
+                          type: string
+                        name:
+                          description: Name of the referenced object.
+                          type: string
+                        namespace:
+                          description: Namespace of the referenced object.
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    patchesFrom:
+                      description: PatchesFrom is used to declare dependency on other
+                        Object or arbitrary Kubernetes resource, and also patch fields
+                        from this object.
+                      properties:
+                        apiVersion:
+                          default: kubernetes.crossplane.io/v1alpha1
+                          description: APIVersion of the referenced object.
+                          type: string
+                        fieldPath:
+                          description: FieldPath is the path of the field on the resource
+                            whose value is to be used as input.
+                          type: string
+                        kind:
+                          default: Object
+                          description: Kind of the referenced object.
+                          type: string
+                        name:
+                          description: Name of the referenced object.
+                          type: string
+                        namespace:
+                          description: Namespace of the referenced object.
+                          type: string
+                      required:
+                      - fieldPath
+                      - name
+                      type: object
+                    toFieldPath:
+                      description: ToFieldPath is the path of the field on the resource
+                        whose value will be changed with the result of transforms.
+                        Leave empty if you'd like to propagate to the same path as
+                        patchesFrom.fieldPath.
+                      type: string
+                  type: object
+                type: array
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+          status:
+            description: A ObjectStatus represents the observed state of a Object.
+            properties:
+              atProvider:
+                description: ObjectObservation are the observable fields of a Object.
+                properties:
+                  manifest:
+                    description: Raw JSON representation of the remote object.
+                    type: object
+                    x-kubernetes-embedded-resource: true
+                    x-kubernetes-preserve-unknown-fields: true
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    categories:
+    - crossplane
+    - managed
+    - kubernetes
+    kind: Object
+    listKind: ObjectList
+    plural: objects
+    singular: object
+  conditions:
+  - lastTransitionTime: "2023-05-30T14:29:10Z"
+    message: no conflicts found
+    reason: NoConflicts
+    status: "True"
+    type: NamesAccepted
+  - lastTransitionTime: "2023-05-30T14:29:10Z"
+    message: the initial names have been accepted
+    reason: InitialNamesAccepted
+    status: "True"
+    type: Established
+  storedVersions:
+  - v1alpha1
