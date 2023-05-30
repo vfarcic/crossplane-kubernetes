@@ -309,7 +309,7 @@ spec:
               metadata:
                 name: crossplane-app
               spec:
-                package: xpkg.upbound.io/devops-toolkit/dot-application:v0.5.28
+                package: xpkg.upbound.io/devops-toolkit/dot-application:v0.5.29
                 controllerConfigRef:
                   name: provider-kubernetes
       patches:
