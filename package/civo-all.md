@@ -68,22 +68,19 @@ kubectl --namespace a-team get clusterclaims
 kubectl --namespace crossplane-system \
     get secret cluster-civo-a-team-ck \
     --output jsonpath="{.data.kubeconfig}" \
-    | base64 -d \
-    | tee kubeconfig.yaml
+    | base64 -d | tee kubeconfig.yaml
 
 # The credentials in `kubeconfig.yaml` are temporary for security reasons
 
-kubectl --kubeconfig kubeconfig.yaml \
-    get nodes
+kubectl --kubeconfig kubeconfig.yaml get nodes
 ```
 
 ## Destroy 
 
 ```bash
-kubectl --namespace a-team \
-    delete clusterclaim a-team-ck
+kubectl --namespace a-team delete clusterclaim a-team-ck
 
-kubectl get managed
+kubectl get civo
 
-# Wait until all managed AWS resources are removed
+# Wait until all managed CIVO resources are removed
 ```
