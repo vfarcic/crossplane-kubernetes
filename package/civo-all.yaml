@@ -298,6 +298,31 @@ spec:
             fmt: '%s-helm-provider'
       - fromFieldPath: spec.id
         toFieldPath: spec.providerConfigRef.name
+    - name: app-config
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: pkg.crossplane.io/v1
+              kind: Configuration
+              metadata:
+                name: crossplane-app
+              spec:
+                package: xpkg.upbound.io/devops-toolkit/dot-application:v0.5.28
+                controllerConfigRef:
+                  name: provider-kubernetes
+      patches:
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.name
+        transforms:
+        - type: string
+          string:
+            fmt: '%s-app-config'
+      - fromFieldPath: spec.id
+        toFieldPath: spec.providerConfigRef.name
+        
 
 ##############
 # SchemaHero #
