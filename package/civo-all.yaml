@@ -201,8 +201,7 @@ spec:
             fmt: '%s-k8s-provider-cc'
       - fromFieldPath: spec.id
         toFieldPath: spec.providerConfigRef.name
-
-    - name: k8s-provider-cc
+    - name: helm-provider-cc
       base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
         kind: Object
