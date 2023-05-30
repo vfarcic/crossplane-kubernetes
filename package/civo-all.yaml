@@ -202,6 +202,29 @@ spec:
       - fromFieldPath: spec.id
         toFieldPath: spec.providerConfigRef.name
 
+    - name: k8s-provider-cc
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: pkg.crossplane.io/v1alpha1
+              kind: ControllerConfig
+              metadata:
+                name: provider-kubernetes
+              spec:
+                serviceAccountName: provider-kubernetes
+      patches:
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.name
+        transforms:
+        - type: string
+          string:
+            fmt: '%s-k8s-provider-cc'
+      - fromFieldPath: spec.id
+        toFieldPath: spec.providerConfigRef.name
+
 ##############
 # Crossplane #
 ##############
@@ -249,6 +272,30 @@ spec:
         - type: string
           string:
             fmt: '%s-kubernetes-provider'
+      - fromFieldPath: spec.id
+        toFieldPath: spec.providerConfigRef.name
+    - name: helm-provider
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: pkg.crossplane.io/v1
+              kind: Provider
+              metadata:
+                name: crossplane-provider-helm
+              spec:
+                package: xpkg.upbound.io/crossplane-contrib/provider-helm:v0.14.0
+                controllerConfigRef:
+                  name: provider-kubernetes
+      patches:
+      - fromFieldPath: spec.id
+        toFieldPath: metadata.name
+        transforms:
+        - type: string
+          string:
+            fmt: '%s-helm-provider'
       - fromFieldPath: spec.id
         toFieldPath: spec.providerConfigRef.name
 
