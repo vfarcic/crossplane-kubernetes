@@ -224,6 +224,32 @@ spec:
       - fromFieldPath: spec.id
         toFieldPath: spec.providerConfigRef.name
 
+###########
+# Traefik #
+###########
+
+    - base:
+        apiVersion: helm.crossplane.io/v1alpha1
+        kind: Release
+        spec:
+          forProvider:
+            chart:
+              name: traefik
+              repository: https://helm.traefik.io/traefik
+              version: 23.0.1
+            namespace: traefik
+          rollbackLimit: 3
+      name: traefik
+      patches:
+        - fromFieldPath: spec.id
+          toFieldPath: metadata.name
+          transforms:
+            - string:
+                fmt: "%s-traefik"
+              type: string
+        - fromFieldPath: spec.id
+          toFieldPath: spec.providerConfigRef.name
+
 ##############
 # Crossplane #
 ##############
