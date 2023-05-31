@@ -28,3 +28,20 @@ func getAppCrossplane() *composition.CompositionSpecResources {
 		},
 	}
 }
+
+// func getAppCrossplanKubernetesProviderSA() *composition.CompositionSpecResources {
+// 	return &composition.CompositionSpecResources{
+// 		Name: jsii.String("crossplane"),
+// 		Base: kc.Object_Manifest(&kc.ObjectProps{
+// 			Spec: &kc.ObjectSpec{
+// 				ForProvider: &kc.ObjectSpecForProvider{
+// 					Manifest: "TODO:",
+// 				},
+// 			},
+// 		}),
+// 		Patches: &[]*composition.CompositionSpecResourcesPatches{
+// 			getPatchFromToTransformString("spec.id", "metadata.name", "%s-crossplane"),
+// 			getPatchFromTo("spec.id", "spec.providerConfigRef.name"),
+// 		},
+// 	}
+// }

@@ -50,6 +50,7 @@ func NewCivoCkAll(scope constructs.Construct, id string, props *MyChartProps) cd
 			getProviderConfigKubernetes(),
 			getProviderConfigHelm(),
 			getAppCrossplane(),
+			// getAppCrossplanKubernetesProviderSA(),
 		}, false),
 	})
 	return chart
