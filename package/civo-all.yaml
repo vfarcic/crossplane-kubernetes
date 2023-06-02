@@ -249,6 +249,8 @@ spec:
               type: string
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
+      readinessChecks:
+        - type: None
 
 ##############
 # Crossplane #
@@ -275,6 +277,8 @@ spec:
               type: string
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
+      readinessChecks:
+        - type: None
     - name: kubernetes-provider
       base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
