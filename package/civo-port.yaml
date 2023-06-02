@@ -2,9 +2,9 @@ apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
   labels:
-    cluster: ck-all
+    cluster: ck-port
     provider: civo
-  name: cluster-civo-all
+  name: cluster-civo-port
 spec:
   compositeTypeRef:
     apiVersion: devopstoolkitseries.com/v1alpha1

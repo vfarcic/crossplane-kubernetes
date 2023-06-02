@@ -7,7 +7,7 @@ spec:
   compositionSelector:
     matchLabels:
       provider: civo
-      cluster: ck-all
+      cluster: ck-port
   parameters:
     nodeSize: medium
     minNodeCount: 3
