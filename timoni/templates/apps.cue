@@ -53,7 +53,7 @@ import (
     base: spec: forProvider: {
         chart: {
             repository: "https://helm.traefik.io/traefik"
-            version: "23.0.1"
+            version: #Config.versions.traefik
         }
         namespace: "traefik"
     }
@@ -64,7 +64,7 @@ import (
     base: spec: forProvider: {
         chart: {
             repository: "https://charts.crossplane.io/stable"
-            version: "1.12.1"
+            version: #Config.versions.crossplane
         }
         namespace: "crossplane-system"
     }

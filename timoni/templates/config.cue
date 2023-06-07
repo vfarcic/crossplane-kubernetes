@@ -17,12 +17,16 @@ import (
 			fromFieldPath: "metadata.labels"
 		}]
 	}]
+	versions: {
+		traefik: *"23.0.1" | string
+		crossplane: *"1.12.1" | string
+	}
 }
 
 #Instance: {
 	config: #Config
 	objects: {
-		"civo": #Civo
-		"civo-port": #CivoPort
+		civo: #Civo
+		civoPort: #CivoPort
 	}
 }

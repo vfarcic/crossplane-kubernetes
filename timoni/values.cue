@@ -4,5 +4,4 @@
 package main
 
 values: {
-	// Placeholder for user-supplied values
 }
