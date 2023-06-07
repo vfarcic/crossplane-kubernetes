@@ -6,6 +6,7 @@ package main
 
 import (
 	templates "timoni.sh/timoni/templates"
+	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
 )
 
 // Define the schema for the user-supplied values.
@@ -31,6 +32,17 @@ timoni: {
 			name:      string @tag(name)
 			namespace: string @tag(namespace)
 		}
+		config: compositeTypeRef: {
+			apiVersion: string @tag(apiVersion)
+			kind:       string @tag(kind)
+		}
+		config: patchSets: [{
+			name: string
+			patches: [{
+				fromFieldPath: string
+			}]
+		}]
+		config: resources?: [...crossplane.#ComposedTemplate]
 	}
 
 	// Pass Kubernetes resources outputted by the instance

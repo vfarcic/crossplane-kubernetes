@@ -6,6 +6,7 @@ import (
 
 #Config: {
 	metadata: metav1.#ObjectMeta
+	apiVersion: "apiextensions.crossplane.io/v1"
 	compositeTypeRef: {
 		apiVersion: "devopstoolkitseries.com/v1alpha1"
 		kind:       "CompositeCluster"

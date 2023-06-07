@@ -4,19 +4,31 @@ import (
 	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
 )
 
-#AppTraefik: crossplane.#ComposedTemplate & {
-    name: "traefik"
+#AppReleaseConfig: {
+    name: string
+    base: spec: forProvider: {
+        chart: {
+            repository: string
+            version: string
+        }
+        namespace: string
+    }
+}
+
+#AppHelm: crossplane.#ComposedTemplate & {
+    _config:    #AppReleaseConfig
+    name: _config.name
     base: {
         apiVersion: "helm.crossplane.io/v1alpha1"
         kind: "Release"
         spec: {
             forProvider: {
                 chart: {
-                    name: "traefik"
-                    repository: "https://helm.traefik.io/traefik"
-                    version: "23.0.1"
+                    name: _config.name
+                    repository: _config.base.spec.forProvider.chart.repository
+                    version: _config.base.spec.forProvider.chart.version
                 }
-                namespace: "traefik"
+                namespace: _config.base.spec.forProvider.namespace
             }
             rollbackLimit: 3
         }
@@ -27,7 +39,7 @@ import (
         transforms: [{
             type: "string"
             string: {
-                fmt: "%s-traefik"
+                fmt: "%s-" + _config.name
             }
         }]
     }, {
@@ -36,36 +48,26 @@ import (
     }]
 }
 
-#AppCrossplane: crossplane.#ComposedTemplate & {
-    name: "crossplane"
-    base: {
-        apiVersion: "helm.crossplane.io/v1alpha1"
-        kind: "Release"
-        spec: {
-            forProvider: {
-                chart: {
-                    name: "crossplane"
-                    repository: "https://charts.crossplane.io/stable"
-                    version: "1.12.1"
-                }
-                namespace: "crossplane-system"
-            }
-            rollbackLimit: 3
+#AppTraefik: #AppHelm & { _config:
+    name: "traefik"
+    base: spec: forProvider: {
+        chart: {
+            repository: "https://helm.traefik.io/traefik"
+            version: "23.0.1"
         }
+        namespace: "traefik"
     }
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-        transforms: [{
-            type: "string"
-            string: {
-                fmt: "%s-crossplane"
-            }
-        }]
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath: "spec.providerConfigRef.name"
-    }]
+}
+
+#AppCrossplane: #AppHelm & { _config:
+    name: "crossplane"
+    base: spec: forProvider: {
+        chart: {
+            repository: "https://charts.crossplane.io/stable"
+            version: "1.12.1"
+        }
+        namespace: "crossplane-system"
+    }
 }
 
 #AppCrossplaneProviderKubernetes: crossplane.#ComposedTemplate & {

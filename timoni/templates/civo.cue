@@ -6,7 +6,7 @@ import (
 
 #Civo: crossplane.#Composition & {
     _config:    #Config
-    apiVersion: "apiextensions.crossplane.io/v1"
+    apiVersion: #Config.apiVersion
 	kind:       "Composition"
 	metadata: {
 		name: "cluster-civo"
@@ -27,7 +27,7 @@ import (
 
 #CivoPort: crossplane.#Composition & {
     _config:    #Config
-    apiVersion: "apiextensions.crossplane.io/v1"
+    apiVersion: #Config.apiVersion
 	kind:       "Composition"
 	metadata: {
 		name: "cluster-civo-port"
