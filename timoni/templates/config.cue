@@ -18,8 +18,14 @@ import (
 		}]
 	}]
 	versions: {
-		traefik: *"23.0.1" | string
-		crossplane: *"1.12.1" | string
+		traefik: string
+		crossplane: string
+	}
+	packages: {
+		providerKubernetes: string
+		providerHelm: string
+		configApp: string
+		configSql: string
 	}
 }
 
@@ -27,6 +33,6 @@ import (
 	config: #Config
 	objects: {
 		civo: #Civo
-		civoPort: #CivoPort
+		civoPort: #CivoPort & {_config: config}
 	}
 }

@@ -47,12 +47,20 @@ import (
 			#ProviderKubernetesCRB,
 			#ProviderKubernetesCC,
 			#ProviderHelmCC,
-			#AppTraefik,
-			#AppCrossplane,
-			#AppCrossplaneProviderKubernetes,
-			#AppCrossplaneProviderHelm,
-			#AppCrossplaneConfigApp,
-			#AppCrossplaneConfigSql,
+			#AppTraefik & {base: spec: forProvider: chart: version: _config.versions.traefik},
+			#AppCrossplane & {base: spec: forProvider: chart: version: _config.versions.crossplane},
+			#AppCrossplaneProviderKubernetes & {
+				base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
+			},
+			#AppCrossplaneProviderHelm & {
+				base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
+			},
+			#AppCrossplaneConfigApp & {
+				base: spec: forProvider: manifest: spec: package: _config.packages.configApp
+			},
+			#AppCrossplaneConfigSql & {
+				base: spec: forProvider: manifest: spec: package: _config.packages.configSql
+			},
 			#AppSchemaHeroNs,
 			#AppSchemaHeroCr,
 			#AppSchemaHeroCrb,
