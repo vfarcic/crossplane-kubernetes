@@ -28,31 +28,35 @@ kubectl --namespace crossplane-system \
     create secret generic aws-creds \
     --from-file creds=./aws-creds.conf
 
-# kubectl apply \
-#     --filename ../providers/provider-kubernetes-incluster.yaml
+kubectl apply \
+    --filename ../providers/provider-kubernetes-incluster.yaml
 
-# kubectl apply \
-#     --filename ../providers/provider-helm-incluster.yaml
+kubectl apply \
+    --filename ../providers/provider-helm-incluster.yaml
 
-# kubectl apply --filename ../providers/provider-aws-official.yaml
+kubectl wait --for=condition=healthy provider.pkg.crossplane.io \
+    --all
 
 kubectl apply --filename ../config.yaml
 
-kubectl create namespace infra
+sleep 5
 
-kubectl get pkgrev
+kubectl wait --for=condition=healthy provider.pkg.crossplane.io \
+    --all --timeout=300s
 
 # Wait until all the packages are healthy
 
 kubectl apply \
     --filename ../providers/provider-config-aws-official.yaml
+
+kubectl create namespace infra
 ```
 
 ## Create an EKS Cluster
 
 ```bash
 kubectl --namespace infra apply \
-    --filename ../../examples/k8s/aws-eks-official.yaml
+    --filename ../examples/aws-eks-official.yaml
     
 kubectl --namespace infra get clusterclaims
 
@@ -63,7 +67,7 @@ kubectl get managed
 
 ```bash
 kubectl --namespace infra delete \
-    --filename ../../examples/k8s/aws-eks-official.yaml
+    --filename ../examples/aws-eks-official.yaml
 
 kubectl get managed
 
