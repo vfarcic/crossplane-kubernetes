@@ -28,14 +28,15 @@ kubectl --namespace crossplane-system \
     create secret generic aws-creds \
     --from-file creds=./aws-creds.conf
 
-kubectl apply \
-    --filename ../../crossplane-config/provider-kubernetes-incluster.yaml
+# kubectl apply \
+#     --filename ../providers/provider-kubernetes-incluster.yaml
 
-kubectl apply \
-    --filename ../../crossplane-config/provider-aws-official.yaml
+# kubectl apply \
+#     --filename ../providers/provider-helm-incluster.yaml
 
-kubectl apply \
-    --filename ../../crossplane-config/config-k8s.yaml
+# kubectl apply --filename ../providers/provider-aws-official.yaml
+
+kubectl apply --filename ../config.yaml
 
 kubectl create namespace infra
 
@@ -44,7 +45,7 @@ kubectl get pkgrev
 # Wait until all the packages are healthy
 
 kubectl apply \
-    --filename ../../crossplane-config/provider-config-aws-official.yaml
+    --filename ../providers/provider-config-aws-official.yaml
 ```
 
 ## Create an EKS Cluster
