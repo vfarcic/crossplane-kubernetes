@@ -535,7 +535,7 @@ spec:
           fmt: '%s-1c'
   - name: addonEbs
     base:
-      apiVersion: ec2.aws.upbound.io/v1beta1
+      apiVersion: eks.aws.upbound.io/v1beta1
       kind: Addon
       metadata:
         name: aws-ebs-csi-driver
