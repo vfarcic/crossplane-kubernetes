@@ -29,29 +29,34 @@ kubectl --namespace crossplane-system \
     --from-file creds=./aws-creds.conf
 
 kubectl apply \
-    --filename ../../crossplane-config/provider-kubernetes-incluster.yaml
+    --filename ../providers/provider-kubernetes-incluster.yaml
 
 kubectl apply \
-    --filename ../../crossplane-config/provider-aws-official.yaml
+    --filename ../providers/provider-helm-incluster.yaml
 
-kubectl apply \
-    --filename ../../crossplane-config/config-k8s.yaml
+kubectl wait --for=condition=healthy provider.pkg.crossplane.io \
+    --all
 
-kubectl create namespace infra
+kubectl apply --filename ../config.yaml
 
-kubectl get pkgrev
+sleep 5
+
+kubectl wait --for=condition=healthy provider.pkg.crossplane.io \
+    --all --timeout=300s
 
 # Wait until all the packages are healthy
 
 kubectl apply \
-    --filename ../../crossplane-config/provider-config-aws-official.yaml
+    --filename ../providers/provider-config-aws-official.yaml
+
+kubectl create namespace infra
 ```
 
 ## Create an EKS Cluster
 
 ```bash
 kubectl --namespace infra apply \
-    --filename ../../examples/k8s/aws-eks-official.yaml
+    --filename ../examples/aws-eks-official.yaml
     
 kubectl --namespace infra get clusterclaims
 
@@ -62,11 +67,10 @@ kubectl get managed
 
 ```bash
 kubectl --namespace infra delete \
-    --filename ../../examples/k8s/aws-eks-official.yaml
+    --filename ../examples/aws-eks-official.yaml
 
 kubectl get managed
 
-# Wait until all the resources are deleted (ignore `database`)
-
-gcloud projects delete $PROJECT_ID
+# Wait until all the resources are deleted (ignore `object` and
+#   `release` resources)
 ```
