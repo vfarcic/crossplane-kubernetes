@@ -769,28 +769,6 @@ spec:
           fmt: '%s-helm-provider'
     - fromFieldPath: spec.id
       toFieldPath: spec.providerConfigRef.name
-  - name: sql-provider
-    base:
-      apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Object
-      spec:
-        forProvider:
-          manifest:
-            apiVersion: pkg.crossplane.io/v1
-            kind: Provider
-            metadata:
-              name: crossplane-provider-sql
-            spec:
-              package: crossplane/provider-sql:v0.5.0
-    patches:
-    - fromFieldPath: spec.id
-      toFieldPath: metadata.name
-      transforms:
-      - type: string
-        string:
-          fmt: '%s-sql-provider'
-    - fromFieldPath: spec.id
-      toFieldPath: spec.providerConfigRef.name
   - name: config-app
     base:
       apiVersion: kubernetes.crossplane.io/v1alpha1
@@ -847,7 +825,7 @@ spec:
             metadata:
               name: crossplane-sql
             spec:
-              package: xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.1
+              package: xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.2
     patches:
     - fromFieldPath: spec.id
       toFieldPath: metadata.name
@@ -855,28 +833,6 @@ spec:
       - type: string
         string:
           fmt: '%s-config-sql'
-    - fromFieldPath: spec.id
-      toFieldPath: spec.providerConfigRef.name
-  - name: aws-p
-    base:
-      apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Object
-      spec:
-        forProvider:
-          manifest:
-            apiVersion: pkg.crossplane.io/v1
-            kind: Provider
-            metadata:
-              name: crossplane-provider-aws
-            spec:
-              package: xpkg.upbound.io/upbound/provider-aws:v0.24.0
-    patches:
-    - fromFieldPath: spec.id
-      toFieldPath: metadata.name
-      transforms:
-      - type: string
-        string:
-          fmt: '%s-aws-p'
     - fromFieldPath: spec.id
       toFieldPath: spec.providerConfigRef.name
   - name: aws-pc
