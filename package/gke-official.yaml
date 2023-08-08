@@ -134,7 +134,7 @@ spec:
           chart:
             name: crossplane
             repository: https://charts.crossplane.io/stable
-            version: 1.12.2
+            version: 1.13.1
     patches:
     - fromFieldPath: spec.id
       toFieldPath: metadata.name
@@ -344,7 +344,7 @@ spec:
             metadata:
               name: crossplane-app
             spec:
-              package: xpkg.upbound.io/devops-toolkit/dot-application:v0.3.9
+              package: xpkg.upbound.io/devops-toolkit/dot-application:v0.5.39
     patches:
     - fromFieldPath: spec.id
       toFieldPath: metadata.name
@@ -352,28 +352,6 @@ spec:
       - type: string
         string:
           fmt: '%s-config-app'
-    - fromFieldPath: spec.id
-      toFieldPath: spec.providerConfigRef.name
-  - name: config-monitoring
-    base:
-      apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Object
-      spec:
-        forProvider:
-          manifest:
-            apiVersion: pkg.crossplane.io/v1
-            kind: Configuration
-            metadata:
-              name: crossplane-monitoring
-            spec:
-              package: xpkg.upbound.io/devops-toolkit/dot-monitoring:v0.0.41
-    patches:
-    - fromFieldPath: spec.id
-      toFieldPath: metadata.name
-      transforms:
-      - type: string
-        string:
-          fmt: '%s-config-monitoring'
     - fromFieldPath: spec.id
       toFieldPath: spec.providerConfigRef.name
   - name: config-sql
@@ -388,7 +366,7 @@ spec:
             metadata:
               name: crossplane-sql
             spec:
-              package: xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.2
+              package: xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.5
     patches:
     - fromFieldPath: spec.id
       toFieldPath: metadata.name

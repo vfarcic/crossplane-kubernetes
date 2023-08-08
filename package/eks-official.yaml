@@ -578,7 +578,7 @@ spec:
           chart:
             name: crossplane
             repository: https://charts.crossplane.io/stable
-            version: 1.12.2
+            version: 1.13.1
     patches:
     - fromFieldPath: spec.id
       toFieldPath: metadata.name
