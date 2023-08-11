@@ -366,7 +366,7 @@ spec:
             metadata:
               name: crossplane-sql
             spec:
-              package: xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.5
+              package: xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.8
     patches:
     - fromFieldPath: spec.id
       toFieldPath: metadata.name
