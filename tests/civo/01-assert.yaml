@@ -1,0 +1,24 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: a-team-ck
+spec:
+  claimRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: ClusterClaim
+    name: a-team-ck
+  compositionRef:
+    name: cluster-civo
+  compositionSelector:
+    matchLabels:
+      cluster: ck
+      provider: civo
+  id: a-team-ck
+  parameters:
+    minNodeCount: 3
+    nodeSize: medium
+  resourceRefs:
+  - apiVersion: cluster.civo.crossplane.io/v1alpha1
+    kind: CivoKubernetes
+    name: a-team-ck

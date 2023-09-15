@@ -33,6 +33,6 @@ import (
 	config: #Config
 	objects: {
 		civo: #Civo
-		civoPort: #CivoPort & {_config: config}
+		aws: #Aws & {_config:     config}
 	}
 }

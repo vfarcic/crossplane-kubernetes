@@ -1,0 +1,134 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: a-team-eks
+spec:
+  claimRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: ClusterClaim
+    name: a-team-eks
+  compositionRef:
+    name: cluster-aws-official
+  compositionSelector:
+    matchLabels:
+      cluster: eks
+      provider: aws-official
+  id: a-team-eks
+  parameters:
+    minNodeCount: 3
+    nodeSize: medium
+  resourceRefs:
+  - apiVersion: eks.aws.upbound.io/v1beta1
+    kind: Cluster
+    name: a-team-eks
+  - apiVersion: eks.aws.upbound.io/v1beta1
+    kind: ClusterAuth
+    name: a-team-eks
+  - apiVersion: eks.aws.upbound.io/v1beta1
+    kind: NodeGroup
+    name: a-team-eks
+  - apiVersion: iam.aws.upbound.io/v1beta1
+    kind: Role
+    name: a-team-eks-controlplane
+  - apiVersion: iam.aws.upbound.io/v1beta1
+    kind: Role
+    name: a-team-eks-nodegroup
+  - apiVersion: iam.aws.upbound.io/v1beta1
+    kind: RolePolicyAttachment
+    name: a-team-eks-controlplane
+  - apiVersion: iam.aws.upbound.io/v1beta1
+    kind: RolePolicyAttachment
+    name: a-team-eks-service
+  - apiVersion: iam.aws.upbound.io/v1beta1
+    kind: RolePolicyAttachment
+    name: a-team-eks-worker
+  - apiVersion: iam.aws.upbound.io/v1beta1
+    kind: RolePolicyAttachment
+    name: a-team-eks-cni
+  - apiVersion: iam.aws.upbound.io/v1beta1
+    kind: RolePolicyAttachment
+    name: a-team-eks-registry
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: VPC
+    name: a-team-eks
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: SecurityGroup
+    name: a-team-eks
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: SecurityGroupRule
+    name: a-team-eks
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: Subnet
+    name: a-team-eks-1a
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: Subnet
+    name: a-team-eks-1b
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: Subnet
+    name: a-team-eks-1c
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: InternetGateway
+    name: a-team-eks
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: RouteTable
+    name: a-team-eks
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: Route
+    name: a-team-eks
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: MainRouteTableAssociation
+    name: a-team-eks
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: RouteTableAssociation
+    name: a-team-eks-1a
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: RouteTableAssociation
+    name: a-team-eks-1b
+  - apiVersion: ec2.aws.upbound.io/v1beta1
+    kind: RouteTableAssociation
+    name: a-team-eks-1c
+  - apiVersion: eks.aws.upbound.io/v1beta1
+    kind: Addon
+    name: a-team-eks-ebs
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: ProviderConfig
+    name: a-team-eks
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name: a-team-eks-crossplane
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: ProviderConfig
+    name: a-team-eks
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-ns-production
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-ns-dev
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-k8s-provider-sa
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-k8s-provider-crb
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-k8s-provider-cc
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-kubernetes-provider
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-helm-provider
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-config-app
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-config-sql
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-eks-aws-pc
+  writeConnectionSecretToRef:
+    namespace: crossplane-system

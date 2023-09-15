@@ -10,8 +10,8 @@ values: {
 	}
 	packages: {
 		providerKubernetes: "xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.9.0"
-		providerHelm: "xpkg.upbound.io/crossplane-contrib/provider-helm:v0.14.0"
-		configApp: "xpkg.upbound.io/devops-toolkit/dot-application:v0.5.29"
-		configSql: "xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.8"
+		providerHelm: "xpkg.upbound.io/crossplane-contrib/provider-helm:v0.15.0"
+		configApp: "xpkg.upbound.io/devops-toolkit/dot-application:v0.5.39"
+		configSql: "xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.11"
 	}
 }

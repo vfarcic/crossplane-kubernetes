@@ -42,7 +42,7 @@ import (
 
 #ProviderConfigHelmLocal: crossplane.#ComposedTemplate & {
     base: {
-        apiVersion: "helm.crossplane.io/v1alpha1"
+        apiVersion: "helm.crossplane.io/v1beta1"
         kind: "ProviderConfig"
         spec: {
             credentials: {
@@ -76,7 +76,7 @@ import (
     }]
 }
 
-#ProviderKubernetesSA: crossplane.#ComposedTemplate & {
+#ProviderKubernetesSa: crossplane.#ComposedTemplate & {
     name: "k8s-provider-sa"
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -109,7 +109,7 @@ import (
     }]
 }
 
-#ProviderKubernetesCRB: crossplane.#ComposedTemplate & {
+#ProviderKubernetesCrb: crossplane.#ComposedTemplate & {
     name: "k8s-provider-crb"
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -121,7 +121,6 @@ import (
                     kind: "ClusterRoleBinding"
                     metadata: {
                         name: "provider-kubernetes"
-                        namespace: "crossplane-system"
                     }
                     subjects: [{
                         kind: "ServiceAccount"
@@ -152,7 +151,7 @@ import (
     }]
 }
 
-#ProviderKubernetesCC: crossplane.#ComposedTemplate & {
+#ProviderKubernetesCc: crossplane.#ComposedTemplate & {
     name: "k8s-provider-cc"
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -195,7 +194,7 @@ import (
         spec: {
             forProvider: {
                 manifest: {
-                    apiVersion: "pkg.crossplane.io/v1alpha1"
+                    apiVersion: "pkg.crossplane.io/v1beta1"
                     kind: "ControllerConfig"
                     metadata: {
                         name: "provider-kubernetes"

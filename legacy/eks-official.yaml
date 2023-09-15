@@ -545,6 +545,13 @@ spec:
           region: us-east-1
           clusterNameSelector:
             matchControllerRef: true
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+      - type: string
+        string:
+          fmt: '%s-ebs'
   - name: helm
     base:
       apiVersion: helm.crossplane.io/v1beta1

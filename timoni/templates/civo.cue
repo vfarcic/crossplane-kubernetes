@@ -25,48 +25,6 @@ import (
     }
 }
 
-// TODO: Remove
-// #CivoPort: crossplane.#Composition & {
-//     _config:    #Config
-//     apiVersion: #Config.apiVersion
-// 	kind:       "Composition"
-// 	metadata: {
-// 		name: "cluster-civo-port"
-// 		labels: {
-// 			"cluster": "ck-port"
-// 			"provider": "civo"
-// 		}
-// 	}
-//     spec: {
-// 		compositeTypeRef: _config.compositeTypeRef
-// 		patchSets: _config.patchSets
-// 		resources: [
-// 			#CivoClusterResource,
-// 			#ProviderConfigKubernetesLocal,
-// 			#ProviderConfigHelmLocal,
-// 			#ProviderKubernetesSA,
-// 			#ProviderKubernetesCRB,
-// 			#ProviderKubernetesCC,
-// 			#ProviderHelmCC,
-// 			#AppTraefik & {base: spec: forProvider: chart: version: _config.versions.traefik},
-// 			#AppCrossplane & {base: spec: forProvider: chart: version: _config.versions.crossplane},
-// 			#AppCrossplaneProviderKubernetes & {
-// 				base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
-// 			},
-// 			#AppCrossplaneProviderHelm & {
-// 				base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
-// 			},
-// 			#AppCrossplaneConfigApp & {
-// 				base: spec: forProvider: manifest: spec: package: _config.packages.configApp
-// 			},
-// 			#AppCrossplaneConfigSql & {
-// 				base: spec: forProvider: manifest: spec: package: _config.packages.configSql
-// 			},
-// 		]
-// 		writeConnectionSecretsToNamespace: "crossplane-system"
-//     }
-// }
-
 #CivoClusterResource: {
 	name: "civocluster"
 	base: {

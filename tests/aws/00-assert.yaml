@@ -1,0 +1,18 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-eks
+spec:
+  compositionRef:
+    name: cluster-aws-official
+  compositionSelector:
+    matchLabels:
+      cluster: eks
+      provider: aws-official
+  id: a-team-eks
+  parameters:
+    minNodeCount: 3
+    nodeSize: medium
+  resourceRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: CompositeCluster

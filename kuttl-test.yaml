@@ -1,0 +1,21 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestSuite
+testDirs:
+  - ./tests/
+commands:
+  - command: helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --wait
+  - command: kubectl apply --filename providers/aws.yaml
+  - command: kubectl apply --filename providers/civo.yaml
+  - command: kubectl apply --filename providers/provider-kubernetes-incluster.yaml
+  - command: kubectl apply --filename providers/provider-helm-incluster.yaml
+  - command: kubectl apply --filename package/definition.yaml
+  - command: kubectl apply --filename package/all.yaml
+  - command: kubectl wait --for condition=Healthy provider/provider-civo --timeout=300s
+  - command: kubectl wait --for condition=Healthy provider/provider-aws-iam --timeout=300s
+  - command: kubectl wait --for condition=Healthy provider/provider-aws-eks --timeout=300s
+  - command: kubectl wait --for condition=Healthy provider/provider-aws-ec2 --timeout=300s
+  - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-aws --timeout=300s
+# startKIND: true
+# kindNodeCache: true
+# skipDelete: true
+# skipClusterDelete: true

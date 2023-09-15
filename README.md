@@ -20,3 +20,19 @@ up xpkg push \
     --package k8s.xpkg \
     xpkg.upbound.io/$UP_ACCOUNT/dot-kubernetes:$VERSION
 ```
+
+## Test
+
+```bash
+# Create a Kubernetes cluster (a local cluster should do)
+
+# TODO: Move to GitHub Actions
+
+kubectl krew install kuttl
+
+# TODO: Run from Okteto
+
+kubectl kuttl test tests/
+
+# Destroy or reset the Kubernetes cluster
+```
