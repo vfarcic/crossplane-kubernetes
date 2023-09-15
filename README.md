@@ -26,7 +26,7 @@ up xpkg push \
 ```bash
 # Create a Kubernetes cluster (a local cluster should do)
 
-# TODO: Move to GitHub Actions
+# TODO: Move Timoni and testing to GitHub Actions
 
 kubectl krew install kuttl
 
