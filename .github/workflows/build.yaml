@@ -13,7 +13,7 @@ jobs:
           fetch-depth: 0
       - name: Generate manifests
         run: |
-          brew install stefanprodan/tap/timoni
+          nix-env -i timoni
       # - name: Run tests
       #   run: |
       #     kubectl krew install kuttl
