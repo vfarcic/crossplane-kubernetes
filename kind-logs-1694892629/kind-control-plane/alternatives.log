@@ -1,0 +1,4 @@
+update-alternatives 2023-09-16 19:28:00: run with --set iptables /usr/sbin/iptables-nft
+update-alternatives 2023-09-16 19:28:00: status of link group /usr/sbin/iptables set to manual
+update-alternatives 2023-09-16 19:28:00: run with --set ip6tables /usr/sbin/ip6tables-nft
+update-alternatives 2023-09-16 19:28:00: status of link group /usr/sbin/ip6tables set to manual

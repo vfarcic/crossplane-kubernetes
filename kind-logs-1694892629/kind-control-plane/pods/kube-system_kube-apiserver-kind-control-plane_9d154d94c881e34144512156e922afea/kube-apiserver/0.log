@@ -1,0 +1,276 @@
+2023-09-16T19:28:07.986402523Z stderr F I0916 19:28:07.986278       1 server.go:563] external host was not specified, using 172.18.0.2
+2023-09-16T19:28:07.994177906Z stderr F I0916 19:28:07.993245       1 server.go:161] Version: v1.25.3
+2023-09-16T19:28:07.994190307Z stderr F I0916 19:28:07.993287       1 server.go:163] "Golang settings" GOGC="" GOMAXPROCS="" GOTRACEBACK=""
+2023-09-16T19:28:09.328652282Z stderr F I0916 19:28:09.326681       1 plugins.go:158] Loaded 12 mutating admission controller(s) successfully in the following order: NamespaceLifecycle,LimitRanger,ServiceAccount,NodeRestriction,TaintNodesByCondition,Priority,DefaultTolerationSeconds,DefaultStorageClass,StorageObjectInUseProtection,RuntimeClass,DefaultIngressClass,MutatingAdmissionWebhook.
+2023-09-16T19:28:09.328666584Z stderr F I0916 19:28:09.326699       1 plugins.go:161] Loaded 11 validating admission controller(s) successfully in the following order: LimitRanger,ServiceAccount,PodSecurity,Priority,PersistentVolumeClaimResize,RuntimeClass,CertificateApproval,CertificateSigning,CertificateSubjectRestriction,ValidatingAdmissionWebhook,ResourceQuota.
+2023-09-16T19:28:09.328670184Z stderr F I0916 19:28:09.327598       1 shared_informer.go:255] Waiting for caches to sync for node_authorizer
+2023-09-16T19:28:09.332657883Z stderr F I0916 19:28:09.332552       1 plugins.go:158] Loaded 12 mutating admission controller(s) successfully in the following order: NamespaceLifecycle,LimitRanger,ServiceAccount,NodeRestriction,TaintNodesByCondition,Priority,DefaultTolerationSeconds,DefaultStorageClass,StorageObjectInUseProtection,RuntimeClass,DefaultIngressClass,MutatingAdmissionWebhook.
+2023-09-16T19:28:09.332665383Z stderr F I0916 19:28:09.332609       1 plugins.go:161] Loaded 11 validating admission controller(s) successfully in the following order: LimitRanger,ServiceAccount,PodSecurity,Priority,PersistentVolumeClaimResize,RuntimeClass,CertificateApproval,CertificateSigning,CertificateSubjectRestriction,ValidatingAdmissionWebhook,ResourceQuota.
+2023-09-16T19:28:09.340020834Z stderr F W0916 19:28:09.339951       1 logging.go:59] [core] [Channel #1 SubChannel #2] grpc: addrConn.createTransport failed to connect to {
+2023-09-16T19:28:09.340049436Z stderr F   "Addr": "127.0.0.1:2379",
+2023-09-16T19:28:09.340052837Z stderr F   "ServerName": "127.0.0.1",
+2023-09-16T19:28:09.340056037Z stderr F   "Attributes": null,
+2023-09-16T19:28:09.340058837Z stderr F   "BalancerAttributes": null,
+2023-09-16T19:28:09.340062337Z stderr F   "Type": 0,
+2023-09-16T19:28:09.340065238Z stderr F   "Metadata": null
+2023-09-16T19:28:09.340068338Z stderr F }. Err: connection error: desc = "transport: Error while dialing dial tcp 127.0.0.1:2379: connect: connection refused"
+2023-09-16T19:28:10.329816288Z stderr F W0916 19:28:10.329588       1 logging.go:59] [core] [Channel #5 SubChannel #6] grpc: addrConn.createTransport failed to connect to {
+2023-09-16T19:28:10.329830089Z stderr F   "Addr": "127.0.0.1:2379",
+2023-09-16T19:28:10.329833789Z stderr F   "ServerName": "127.0.0.1",
+2023-09-16T19:28:10.32983749Z stderr F   "Attributes": null,
+2023-09-16T19:28:10.32984059Z stderr F   "BalancerAttributes": null,
+2023-09-16T19:28:10.32984359Z stderr F   "Type": 0,
+2023-09-16T19:28:10.32984679Z stderr F   "Metadata": null
+2023-09-16T19:28:10.329850191Z stderr F }. Err: connection error: desc = "transport: Error while dialing dial tcp 127.0.0.1:2379: connect: connection refused"
+2023-09-16T19:28:10.329853391Z stderr F W0916 19:28:10.329695       1 logging.go:59] [core] [Channel #3 SubChannel #4] grpc: addrConn.createTransport failed to connect to {
+2023-09-16T19:28:10.329856391Z stderr F   "Addr": "127.0.0.1:2379",
+2023-09-16T19:28:10.329859391Z stderr F   "ServerName": "127.0.0.1",
+2023-09-16T19:28:10.329862492Z stderr F   "Attributes": null,
+2023-09-16T19:28:10.329865392Z stderr F   "BalancerAttributes": null,
+2023-09-16T19:28:10.329868192Z stderr F   "Type": 0,
+2023-09-16T19:28:10.329905495Z stderr F   "Metadata": null
+2023-09-16T19:28:10.329909295Z stderr F }. Err: connection error: desc = "transport: Error while dialing dial tcp 127.0.0.1:2379: connect: connection refused"
+2023-09-16T19:28:10.341255745Z stderr F W0916 19:28:10.341182       1 logging.go:59] [core] [Channel #1 SubChannel #2] grpc: addrConn.createTransport failed to connect to {
+2023-09-16T19:28:10.341266346Z stderr F   "Addr": "127.0.0.1:2379",
+2023-09-16T19:28:10.341269646Z stderr F   "ServerName": "127.0.0.1",
+2023-09-16T19:28:10.341272946Z stderr F   "Attributes": null,
+2023-09-16T19:28:10.341276247Z stderr F   "BalancerAttributes": null,
+2023-09-16T19:28:10.341279347Z stderr F   "Type": 0,
+2023-09-16T19:28:10.341282247Z stderr F   "Metadata": null
+2023-09-16T19:28:10.341285747Z stderr F }. Err: connection error: desc = "transport: Error while dialing dial tcp 127.0.0.1:2379: connect: connection refused"
+2023-09-16T19:28:12.25367302Z stderr F W0916 19:28:12.253560       1 genericapiserver.go:656] Skipping API apiextensions.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.254354572Z stderr F I0916 19:28:12.254283       1 instance.go:261] Using reconciler: lease
+2023-09-16T19:28:12.447975077Z stderr F I0916 19:28:12.447828       1 instance.go:574] API group "internal.apiserver.k8s.io" is not enabled, skipping.
+2023-09-16T19:28:12.800286572Z stderr F W0916 19:28:12.800101       1 genericapiserver.go:656] Skipping API authentication.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.802886667Z stderr F W0916 19:28:12.802800       1 genericapiserver.go:656] Skipping API authorization.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.808834612Z stderr F W0916 19:28:12.808736       1 genericapiserver.go:656] Skipping API autoscaling/v2beta1 because it has no resources.
+2023-09-16T19:28:12.821194638Z stderr F W0916 19:28:12.821127       1 genericapiserver.go:656] Skipping API batch/v1beta1 because it has no resources.
+2023-09-16T19:28:12.823404004Z stderr F W0916 19:28:12.823314       1 genericapiserver.go:656] Skipping API certificates.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.825946594Z stderr F W0916 19:28:12.825862       1 genericapiserver.go:656] Skipping API coordination.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.826629746Z stderr F W0916 19:28:12.825987       1 genericapiserver.go:656] Skipping API discovery.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.830366025Z stderr F W0916 19:28:12.830290       1 genericapiserver.go:656] Skipping API networking.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.830377426Z stderr F W0916 19:28:12.830308       1 genericapiserver.go:656] Skipping API networking.k8s.io/v1alpha1 because it has no resources.
+2023-09-16T19:28:12.831833835Z stderr F W0916 19:28:12.831782       1 genericapiserver.go:656] Skipping API node.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.831846036Z stderr F W0916 19:28:12.831796       1 genericapiserver.go:656] Skipping API node.k8s.io/v1alpha1 because it has no resources.
+2023-09-16T19:28:12.83190044Z stderr F W0916 19:28:12.831857       1 genericapiserver.go:656] Skipping API policy/v1beta1 because it has no resources.
+2023-09-16T19:28:12.835739628Z stderr F W0916 19:28:12.835683       1 genericapiserver.go:656] Skipping API rbac.authorization.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.835747329Z stderr F W0916 19:28:12.835700       1 genericapiserver.go:656] Skipping API rbac.authorization.k8s.io/v1alpha1 because it has no resources.
+2023-09-16T19:28:12.837217739Z stderr F W0916 19:28:12.837159       1 genericapiserver.go:656] Skipping API scheduling.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.83722834Z stderr F W0916 19:28:12.837173       1 genericapiserver.go:656] Skipping API scheduling.k8s.io/v1alpha1 because it has no resources.
+2023-09-16T19:28:12.841137432Z stderr F W0916 19:28:12.841071       1 genericapiserver.go:656] Skipping API storage.k8s.io/v1alpha1 because it has no resources.
+2023-09-16T19:28:12.845065327Z stderr F W0916 19:28:12.845018       1 genericapiserver.go:656] Skipping API flowcontrol.apiserver.k8s.io/v1alpha1 because it has no resources.
+2023-09-16T19:28:12.849150533Z stderr F W0916 19:28:12.849111       1 genericapiserver.go:656] Skipping API apps/v1beta2 because it has no resources.
+2023-09-16T19:28:12.849155533Z stderr F W0916 19:28:12.849125       1 genericapiserver.go:656] Skipping API apps/v1beta1 because it has no resources.
+2023-09-16T19:28:12.850872962Z stderr F W0916 19:28:12.850824       1 genericapiserver.go:656] Skipping API admissionregistration.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.852124256Z stderr F W0916 19:28:12.852086       1 genericapiserver.go:656] Skipping API events.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:12.852843109Z stderr F I0916 19:28:12.852797       1 plugins.go:158] Loaded 12 mutating admission controller(s) successfully in the following order: NamespaceLifecycle,LimitRanger,ServiceAccount,NodeRestriction,TaintNodesByCondition,Priority,DefaultTolerationSeconds,DefaultStorageClass,StorageObjectInUseProtection,RuntimeClass,DefaultIngressClass,MutatingAdmissionWebhook.
+2023-09-16T19:28:12.85284881Z stderr F I0916 19:28:12.852813       1 plugins.go:161] Loaded 11 validating admission controller(s) successfully in the following order: LimitRanger,ServiceAccount,PodSecurity,Priority,PersistentVolumeClaimResize,RuntimeClass,CertificateApproval,CertificateSigning,CertificateSubjectRestriction,ValidatingAdmissionWebhook,ResourceQuota.
+2023-09-16T19:28:12.870301617Z stderr F W0916 19:28:12.870237       1 genericapiserver.go:656] Skipping API apiregistration.k8s.io/v1beta1 because it has no resources.
+2023-09-16T19:28:14.123097845Z stderr F I0916 19:28:14.122960       1 dynamic_cafile_content.go:157] "Starting controller" name="request-header::/etc/kubernetes/pki/front-proxy-ca.crt"
+2023-09-16T19:28:14.123393467Z stderr F I0916 19:28:14.123317       1 secure_serving.go:210] Serving securely on [::]:6443
+2023-09-16T19:28:14.123481774Z stderr F I0916 19:28:14.123427       1 dynamic_serving_content.go:132] "Starting controller" name="serving-cert::/etc/kubernetes/pki/apiserver.crt::/etc/kubernetes/pki/apiserver.key"
+2023-09-16T19:28:14.13535167Z stderr F I0916 19:28:14.135182       1 tlsconfig.go:240] "Starting DynamicServingCertificateController"
+2023-09-16T19:28:14.135670294Z stderr F I0916 19:28:14.135518       1 dynamic_cafile_content.go:157] "Starting controller" name="client-ca-bundle::/etc/kubernetes/pki/ca.crt"
+2023-09-16T19:28:14.136668269Z stderr F I0916 19:28:14.136545       1 cluster_authentication_trust_controller.go:440] Starting cluster_authentication_trust_controller controller
+2023-09-16T19:28:14.136820581Z stderr F I0916 19:28:14.136744       1 shared_informer.go:255] Waiting for caches to sync for cluster_authentication_trust_controller
+2023-09-16T19:28:14.13720281Z stderr F I0916 19:28:14.137139       1 autoregister_controller.go:141] Starting autoregister controller
+2023-09-16T19:28:14.137285016Z stderr F I0916 19:28:14.137240       1 cache.go:32] Waiting for caches to sync for autoregister controller
+2023-09-16T19:28:14.137414226Z stderr F I0916 19:28:14.137361       1 controller.go:83] Starting OpenAPI AggregationController
+2023-09-16T19:28:14.137542335Z stderr F I0916 19:28:14.137482       1 controller.go:80] Starting OpenAPI V3 AggregationController
+2023-09-16T19:28:14.137666945Z stderr F I0916 19:28:14.137607       1 apiservice_controller.go:97] Starting APIServiceRegistrationController
+2023-09-16T19:28:14.13774155Z stderr F I0916 19:28:14.137699       1 cache.go:32] Waiting for caches to sync for APIServiceRegistrationController controller
+2023-09-16T19:28:14.138057874Z stderr F I0916 19:28:14.138004       1 customresource_discovery_controller.go:209] Starting DiscoveryController
+2023-09-16T19:28:14.13826949Z stderr F I0916 19:28:14.138212       1 dynamic_serving_content.go:132] "Starting controller" name="aggregator-proxy-cert::/etc/kubernetes/pki/front-proxy-client.crt::/etc/kubernetes/pki/front-proxy-client.key"
+2023-09-16T19:28:14.14210598Z stderr F I0916 19:28:14.142039       1 available_controller.go:491] Starting AvailableConditionController
+2023-09-16T19:28:14.142127481Z stderr F I0916 19:28:14.142066       1 cache.go:32] Waiting for caches to sync for AvailableConditionController controller
+2023-09-16T19:28:14.15284049Z stderr F I0916 19:28:14.152754       1 apf_controller.go:300] Starting API Priority and Fairness config controller
+2023-09-16T19:28:14.153004702Z stderr F I0916 19:28:14.152937       1 dynamic_cafile_content.go:157] "Starting controller" name="client-ca-bundle::/etc/kubernetes/pki/ca.crt"
+2023-09-16T19:28:14.167345385Z stderr F I0916 19:28:14.167252       1 dynamic_cafile_content.go:157] "Starting controller" name="request-header::/etc/kubernetes/pki/front-proxy-ca.crt"
+2023-09-16T19:28:14.170389215Z stderr F I0916 19:28:14.170324       1 crdregistration_controller.go:111] Starting crd-autoregister controller
+2023-09-16T19:28:14.170405316Z stderr F I0916 19:28:14.170389       1 shared_informer.go:255] Waiting for caches to sync for crd-autoregister
+2023-09-16T19:28:14.170537826Z stderr F I0916 19:28:14.170496       1 controller.go:85] Starting OpenAPI controller
+2023-09-16T19:28:14.170600831Z stderr F I0916 19:28:14.170562       1 controller.go:85] Starting OpenAPI V3 controller
+2023-09-16T19:28:14.170661635Z stderr F I0916 19:28:14.170624       1 naming_controller.go:291] Starting NamingConditionController
+2023-09-16T19:28:14.170715939Z stderr F I0916 19:28:14.170679       1 establishing_controller.go:76] Starting EstablishingController
+2023-09-16T19:28:14.170769343Z stderr F I0916 19:28:14.170739       1 nonstructuralschema_controller.go:192] Starting NonStructuralSchemaConditionController
+2023-09-16T19:28:14.171079567Z stderr F I0916 19:28:14.171031       1 apiapproval_controller.go:186] Starting KubernetesAPIApprovalPolicyConformantConditionController
+2023-09-16T19:28:14.171134871Z stderr F I0916 19:28:14.171096       1 crd_finalizer.go:266] Starting CRDFinalizer
+2023-09-16T19:28:14.235429024Z stderr F I0916 19:28:14.235342       1 shared_informer.go:262] Caches are synced for node_authorizer
+2023-09-16T19:28:14.241763102Z stderr F I0916 19:28:14.241676       1 cache.go:39] Caches are synced for autoregister controller
+2023-09-16T19:28:14.24200412Z stderr F I0916 19:28:14.241955       1 cache.go:39] Caches are synced for APIServiceRegistrationController controller
+2023-09-16T19:28:14.242419151Z stderr F I0916 19:28:14.242360       1 cache.go:39] Caches are synced for AvailableConditionController controller
+2023-09-16T19:28:14.242791679Z stderr F I0916 19:28:14.242740       1 shared_informer.go:262] Caches are synced for cluster_authentication_trust_controller
+2023-09-16T19:28:14.253488387Z stderr F I0916 19:28:14.253408       1 controller.go:616] quota admission added evaluator for: namespaces
+2023-09-16T19:28:14.25750169Z stderr F I0916 19:28:14.257425       1 apf_controller.go:305] Running API Priority and Fairness config worker
+2023-09-16T19:28:14.270526273Z stderr F I0916 19:28:14.270440       1 shared_informer.go:262] Caches are synced for crd-autoregister
+2023-09-16T19:28:14.868660718Z stderr F I0916 19:28:14.868326       1 controller.go:132] OpenAPI AggregationController: action for item k8s_internal_local_delegation_chain_0000000000: Nothing (removed from the queue).
+2023-09-16T19:28:15.142732304Z stderr F I0916 19:28:15.142542       1 storage_scheduling.go:95] created PriorityClass system-node-critical with value 2000001000
+2023-09-16T19:28:15.145916745Z stderr F I0916 19:28:15.145817       1 storage_scheduling.go:95] created PriorityClass system-cluster-critical with value 2000000000
+2023-09-16T19:28:15.145930946Z stderr F I0916 19:28:15.145837       1 storage_scheduling.go:111] all system priority classes are created successfully or already exist.
+2023-09-16T19:28:15.473160044Z stderr F I0916 19:28:15.473051       1 controller.go:616] quota admission added evaluator for: roles.rbac.authorization.k8s.io
+2023-09-16T19:28:15.4990732Z stderr F I0916 19:28:15.498975       1 controller.go:616] quota admission added evaluator for: rolebindings.rbac.authorization.k8s.io
+2023-09-16T19:28:15.56690342Z stderr F I0916 19:28:15.566814       1 alloc.go:327] "allocated clusterIPs" service="default/kubernetes" clusterIPs=map[IPv4:10.96.0.1]
+2023-09-16T19:28:15.571031631Z stderr F W0916 19:28:15.570967       1 lease.go:250] Resetting endpoints for master service "kubernetes" to [172.18.0.2]
+2023-09-16T19:28:15.57180779Z stderr F I0916 19:28:15.571739       1 controller.go:616] quota admission added evaluator for: endpoints
+2023-09-16T19:28:15.574617402Z stderr F I0916 19:28:15.574521       1 controller.go:616] quota admission added evaluator for: endpointslices.discovery.k8s.io
+2023-09-16T19:28:17.007198629Z stderr F I0916 19:28:17.007108       1 controller.go:616] quota admission added evaluator for: serviceaccounts
+2023-09-16T19:28:17.012698444Z stderr F I0916 19:28:17.012573       1 controller.go:616] quota admission added evaluator for: deployments.apps
+2023-09-16T19:28:17.019778079Z stderr F I0916 19:28:17.019701       1 alloc.go:327] "allocated clusterIPs" service="kube-system/kube-dns" clusterIPs=map[IPv4:10.96.0.10]
+2023-09-16T19:28:17.026801809Z stderr F I0916 19:28:17.026736       1 controller.go:616] quota admission added evaluator for: daemonsets.apps
+2023-09-16T19:28:17.104500273Z stderr F I0916 19:28:17.104392       1 controller.go:616] quota admission added evaluator for: leases.coordination.k8s.io
+2023-09-16T19:28:18.446855391Z stderr F I0916 19:28:18.446773       1 trace.go:205] Trace[427556920]: "Get" url:/apis/coordination.k8s.io/v1/namespaces/kube-system/leases/kube-controller-manager,user-agent:kube-controller-manager/v1.25.3 (linux/amd64) kubernetes/434bfd8/leader-election,audit-id:1f0150cc-389c-4f80-aa1c-27992dbb689a,client:172.18.0.2,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:28:17.636) (total time: 810ms):
+2023-09-16T19:28:18.446868892Z stderr F Trace[427556920]: [810.729292ms] [810.729292ms] END
+2023-09-16T19:28:18.447224218Z stderr F I0916 19:28:18.447125       1 trace.go:205] Trace[1148527062]: "Create etcd3" audit-id:2ac6eed4-3415-4d91-a5c7-494b0bc497ba,key:/minions/kind-control-plane,type:*core.Node (16-Sep-2023 19:28:17.204) (total time: 1242ms):
+2023-09-16T19:28:18.447235519Z stderr F Trace[1148527062]: ---"Txn call finished" err:<nil> 1242ms (19:28:18.447)
+2023-09-16T19:28:18.44723942Z stderr F Trace[1148527062]: [1.242606989s] [1.242606989s] END
+2023-09-16T19:28:18.447682553Z stderr F I0916 19:28:18.447592       1 trace.go:205] Trace[475028]: "Create etcd3" audit-id:f01cee67-c44b-4de2-8163-5616ea5afbd8,key:/events/default/kind-control-plane.178577bf0b772a22,type:*core.Event (16-Sep-2023 19:28:17.203) (total time: 1243ms):
+2023-09-16T19:28:18.447694354Z stderr F Trace[475028]: ---"Txn call finished" err:<nil> 1243ms (19:28:18.447)
+2023-09-16T19:28:18.447698154Z stderr F Trace[475028]: [1.243758676s] [1.243758676s] END
+2023-09-16T19:28:18.447933072Z stderr F I0916 19:28:18.447861       1 trace.go:205] Trace[2048270477]: "Create" url:/api/v1/namespaces/default/events,user-agent:kubelet/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:f01cee67-c44b-4de2-8163-5616ea5afbd8,client:fc00:f853:ccd:e793::2,accept:application/vnd.kubernetes.protobuf,application/json,protocol:HTTP/2.0 (16-Sep-2023 19:28:17.203) (total time: 1244ms):
+2023-09-16T19:28:18.447941373Z stderr F Trace[2048270477]: ---"Write to database call finished" len:294,err:<nil> 1244ms (19:28:18.447)
+2023-09-16T19:28:18.447945073Z stderr F Trace[2048270477]: [1.244359421s] [1.244359421s] END
+2023-09-16T19:28:18.448552519Z stderr F I0916 19:28:18.448480       1 trace.go:205] Trace[1018680348]: "Create etcd3" audit-id:22c8ea61-b3a8-417d-9e3e-2180b8f4f14a,key:/pods/kube-system/etcd-kind-control-plane,type:*core.Pod (16-Sep-2023 19:28:17.460) (total time: 988ms):
+2023-09-16T19:28:18.44856352Z stderr F Trace[1018680348]: ---"Txn call finished" err:<nil> 987ms (19:28:18.448)
+2023-09-16T19:28:18.44856682Z stderr F Trace[1018680348]: [988.045175ms] [988.045175ms] END
+2023-09-16T19:28:18.448918246Z stderr F I0916 19:28:18.448834       1 trace.go:205] Trace[997691836]: "Create etcd3" audit-id:c5265620-e64a-4077-a5d2-0cae75efbec9,key:/pods/kube-system/kube-apiserver-kind-control-plane,type:*core.Pod (16-Sep-2023 19:28:17.331) (total time: 1117ms):
+2023-09-16T19:28:18.448935648Z stderr F Trace[997691836]: ---"Txn call finished" err:<nil> 1117ms (19:28:18.448)
+2023-09-16T19:28:18.448938648Z stderr F Trace[997691836]: [1.117702561s] [1.117702561s] END
+2023-09-16T19:28:18.450400658Z stderr F I0916 19:28:18.450318       1 trace.go:205] Trace[1234890404]: "Create etcd3" audit-id:f6c9badd-ec1b-4546-9336-ff4f3d2c71a1,key:/pods/kube-system/kube-scheduler-kind-control-plane,type:*core.Pod (16-Sep-2023 19:28:17.336) (total time: 1113ms):
+2023-09-16T19:28:18.450411659Z stderr F Trace[1234890404]: ---"Txn call finished" err:<nil> 1113ms (19:28:18.450)
+2023-09-16T19:28:18.450414659Z stderr F Trace[1234890404]: [1.113694959s] [1.113694959s] END
+2023-09-16T19:28:18.450639776Z stderr F I0916 19:28:18.450577       1 trace.go:205] Trace[940681133]: "Create" url:/api/v1/namespaces/kube-system/pods,user-agent:kubelet/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:f6c9badd-ec1b-4546-9336-ff4f3d2c71a1,client:fc00:f853:ccd:e793::2,accept:application/vnd.kubernetes.protobuf,application/json,protocol:HTTP/2.0 (16-Sep-2023 19:28:17.335) (total time: 1115ms):
+2023-09-16T19:28:18.450648077Z stderr F Trace[940681133]: ---"Write to database call finished" len:1225,err:<nil> 1114ms (19:28:18.450)
+2023-09-16T19:28:18.450650977Z stderr F Trace[940681133]: [1.115367885s] [1.115367885s] END
+2023-09-16T19:28:18.451234221Z stderr F I0916 19:28:18.451154       1 trace.go:205] Trace[1196195511]: "Create etcd3" audit-id:a7e5f5c0-6555-45a7-87c0-66abe3b182c0,key:/pods/kube-system/kube-controller-manager-kind-control-plane,type:*core.Pod (16-Sep-2023 19:28:17.336) (total time: 1114ms):
+2023-09-16T19:28:18.451244522Z stderr F Trace[1196195511]: ---"Txn call finished" err:<nil> 1114ms (19:28:18.451)
+2023-09-16T19:28:18.451247322Z stderr F Trace[1196195511]: [1.114485018s] [1.114485018s] END
+2023-09-16T19:28:18.451301626Z stderr F I0916 19:28:18.451245       1 trace.go:205] Trace[513523572]: "Create" url:/api/v1/namespaces/kube-system/pods,user-agent:kubelet/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:22c8ea61-b3a8-417d-9e3e-2180b8f4f14a,client:fc00:f853:ccd:e793::2,accept:application/vnd.kubernetes.protobuf,application/json,protocol:HTTP/2.0 (16-Sep-2023 19:28:17.459) (total time: 992ms):
+2023-09-16T19:28:18.451305827Z stderr F Trace[513523572]: ---"Write to database call finished" len:2043,err:pods "etcd-kind-control-plane" already exists 991ms (19:28:18.451)
+2023-09-16T19:28:18.451308627Z stderr F Trace[513523572]: [992.019375ms] [992.019375ms] END
+2023-09-16T19:28:18.451718858Z stderr F I0916 19:28:18.451646       1 trace.go:205] Trace[899026169]: "Create" url:/api/v1/nodes,user-agent:kubelet/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:2ac6eed4-3415-4d91-a5c7-494b0bc497ba,client:fc00:f853:ccd:e793::2,accept:application/vnd.kubernetes.protobuf,application/json,protocol:HTTP/2.0 (16-Sep-2023 19:28:17.203) (total time: 1248ms):
+2023-09-16T19:28:18.451729058Z stderr F Trace[899026169]: ---"Write to database call finished" len:2438,err:nodes "kind-control-plane" already exists 1247ms (19:28:18.451)
+2023-09-16T19:28:18.451732059Z stderr F Trace[899026169]: [1.248379925s] [1.248379925s] END
+2023-09-16T19:28:18.454594075Z stderr F I0916 19:28:18.454514       1 trace.go:205] Trace[1518044193]: "Create" url:/api/v1/namespaces/kube-system/pods,user-agent:kubelet/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:a7e5f5c0-6555-45a7-87c0-66abe3b182c0,client:fc00:f853:ccd:e793::2,accept:application/vnd.kubernetes.protobuf,application/json,protocol:HTTP/2.0 (16-Sep-2023 19:28:17.334) (total time: 1120ms):
+2023-09-16T19:28:18.454607676Z stderr F Trace[1518044193]: ---"Write to database call finished" len:2672,err:<nil> 1116ms (19:28:18.451)
+2023-09-16T19:28:18.454611276Z stderr F Trace[1518044193]: [1.12007234s] [1.12007234s] END
+2023-09-16T19:28:18.454809391Z stderr F I0916 19:28:18.454726       1 trace.go:205] Trace[76996658]: "Get" url:/api/v1/namespaces/kube-system/pods/kube-apiserver-kind-control-plane,user-agent:kubelet/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:4355a7fb-f7cc-47f8-90d0-bedbafe45e44,client:fc00:f853:ccd:e793::2,accept:application/vnd.kubernetes.protobuf,application/json,protocol:HTTP/2.0 (16-Sep-2023 19:28:17.333) (total time: 1121ms):
+2023-09-16T19:28:18.454846694Z stderr F Trace[76996658]: ---"About to write a response" 1114ms (19:28:18.447)
+2023-09-16T19:28:18.454850894Z stderr F Trace[76996658]: [1.121540551s] [1.121540551s] END
+2023-09-16T19:28:18.455026707Z stderr F I0916 19:28:18.454973       1 trace.go:205] Trace[818295509]: "Create" url:/api/v1/namespaces/kube-system/pods,user-agent:kubelet/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:c5265620-e64a-4077-a5d2-0cae75efbec9,client:fc00:f853:ccd:e793::2,accept:application/vnd.kubernetes.protobuf,application/json,protocol:HTTP/2.0 (16-Sep-2023 19:28:17.329) (total time: 1125ms):
+2023-09-16T19:28:18.455034608Z stderr F Trace[818295509]: ---"Write to database call finished" len:3069,err:<nil> 1118ms (19:28:18.448)
+2023-09-16T19:28:18.455038008Z stderr F Trace[818295509]: [1.125200627s] [1.125200627s] END
+2023-09-16T19:28:32.184080163Z stderr F I0916 19:28:32.183959       1 controller.go:616] quota admission added evaluator for: controllerrevisions.apps
+2023-09-16T19:28:32.536486744Z stderr F I0916 19:28:32.536389       1 controller.go:616] quota admission added evaluator for: replicasets.apps
+2023-09-16T19:28:33.89932808Z stderr F I0916 19:28:33.896566       1 alloc.go:327] "allocated clusterIPs" service="crossplane-system/crossplane-webhooks" clusterIPs=map[IPv4:10.96.119.224]
+2023-09-16T19:28:50.450314099Z stderr F I0916 19:28:50.450223       1 trace.go:205] Trace[1357044590]: "List(recursive=true) etcd3" audit-id:,key:/pkg.crossplane.io/locks,resourceVersion:,resourceVersionMatch:,limit:10000,continue: (16-Sep-2023 19:28:49.913) (total time: 537ms):
+2023-09-16T19:28:50.4503315Z stderr F Trace[1357044590]: [537.042067ms] [537.042067ms] END
+2023-09-16T19:28:50.451721904Z stderr F I0916 19:28:50.451627       1 trace.go:205] Trace[1403935357]: "GuaranteedUpdate etcd3" audit-id:e1e94b57-9953-45b4-bde5-3ad4ea11615a,key:/apiextensions.k8s.io/customresourcedefinitions/storeconfigs.secrets.crossplane.io,type:*apiextensions.CustomResourceDefinition (16-Sep-2023 19:28:49.887) (total time: 563ms):
+2023-09-16T19:28:50.451734305Z stderr F Trace[1403935357]: ---"Txn call finished" err:<nil> 559ms (19:28:50.450)
+2023-09-16T19:28:50.451738405Z stderr F Trace[1403935357]: [563.703956ms] [563.703956ms] END
+2023-09-16T19:28:50.453440432Z stderr F I0916 19:28:50.453360       1 trace.go:205] Trace[740700518]: "Update" url:/apis/apiextensions.k8s.io/v1/customresourcedefinitions/storeconfigs.secrets.crossplane.io/status,user-agent:kube-apiserver/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:e1e94b57-9953-45b4-bde5-3ad4ea11615a,client:::1,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:28:49.887) (total time: 565ms):
+2023-09-16T19:28:50.453452933Z stderr F Trace[740700518]: ---"Write to database call finished" len:8293,err:<nil> 564ms (19:28:50.452)
+2023-09-16T19:28:50.453456533Z stderr F Trace[740700518]: [565.790611ms] [565.790611ms] END
+2023-09-16T19:28:50.534526382Z stderr F I0916 19:28:50.534410       1 trace.go:205] Trace[1935421953]: "Get" url:/api/v1/namespaces/crossplane-system/services/crossplane-webhooks,user-agent:Helm/3.12.3,audit-id:7401992b-b102-485e-944b-cd3d4ba43343,client:172.18.0.1,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:28:50.002) (total time: 531ms):
+2023-09-16T19:28:50.534544983Z stderr F Trace[1935421953]: ---"About to write a response" 531ms (19:28:50.534)
+2023-09-16T19:28:50.534551384Z stderr F Trace[1935421953]: [531.871381ms] [531.871381ms] END
+2023-09-16T19:28:50.545770921Z stderr F I0916 19:28:50.545178       1 trace.go:205] Trace[780271352]: "Get" url:/apis/pkg.crossplane.io/v1beta1/locks/lock,user-agent:Go-http-client/2.0,audit-id:706a8790-d870-4b91-bec4-3677864421a0,client:10.244.0.3,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:28:49.913) (total time: 631ms):
+2023-09-16T19:28:50.545794522Z stderr F Trace[780271352]: [631.601721ms] [631.601721ms] END
+2023-09-16T19:29:05.893628986Z stderr F I0916 19:29:05.893545       1 alloc.go:327] "allocated clusterIPs" service="crossplane-system/provider-civo-9dbccd3c9470" clusterIPs=map[IPv4:10.96.34.106]
+2023-09-16T19:29:05.90427758Z stderr F I0916 19:29:05.904057       1 alloc.go:327] "allocated clusterIPs" service="crossplane-system/crossplane-provider-helm-503c3591121b" clusterIPs=map[IPv4:10.96.162.122]
+2023-09-16T19:29:15.508844714Z stderr F I0916 19:29:15.508780       1 alloc.go:327] "allocated clusterIPs" service="crossplane-system/crossplane-provider-kubernetes-fd7ab5be249e" clusterIPs=map[IPv4:10.96.92.247]
+2023-09-16T19:29:16.531220651Z stderr F I0916 19:29:16.530873       1 alloc.go:327] "allocated clusterIPs" service="crossplane-system/upbound-provider-family-aws-710d8cfe9f53" clusterIPs=map[IPv4:10.96.95.176]
+2023-09-16T19:29:17.18028335Z stderr F I0916 19:29:17.180180       1 alloc.go:327] "allocated clusterIPs" service="crossplane-system/provider-aws-eks-511855a80bcd" clusterIPs=map[IPv4:10.96.5.234]
+2023-09-16T19:29:18.194839608Z stderr F I0916 19:29:18.190833       1 alloc.go:327] "allocated clusterIPs" service="crossplane-system/provider-aws-iam-09f2fb02dd6e" clusterIPs=map[IPv4:10.96.84.165]
+2023-09-16T19:29:25.548815382Z stderr F I0916 19:29:25.548752       1 trace.go:205] Trace[1298632969]: "GuaranteedUpdate etcd3" audit-id:8ccd6946-0d68-46eb-89d2-2f2c0207c3ab,key:/apiextensions.k8s.io/customresourcedefinitions/virtualmfadevices.iam.aws.upbound.io,type:*apiextensions.CustomResourceDefinition (16-Sep-2023 19:29:24.272) (total time: 1276ms):
+2023-09-16T19:29:25.548827283Z stderr F Trace[1298632969]: [1.276563909s] [1.276563909s] END
+2023-09-16T19:29:25.550708123Z stderr F I0916 19:29:25.550620       1 trace.go:205] Trace[1001954902]: "Get" url:/apis/coordination.k8s.io/v1/namespaces/kube-system/leases/kube-controller-manager,user-agent:kube-controller-manager/v1.25.3 (linux/amd64) kubernetes/434bfd8/leader-election,audit-id:d012f455-86c8-426b-b339-bb15b339ccfb,client:172.18.0.2,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.838) (total time: 712ms):
+2023-09-16T19:29:25.550720724Z stderr F Trace[1001954902]: ---"About to write a response" 712ms (19:29:25.550)
+2023-09-16T19:29:25.550724624Z stderr F Trace[1001954902]: [712.421434ms] [712.421434ms] END
+2023-09-16T19:29:25.551000845Z stderr F I0916 19:29:25.550933       1 trace.go:205] Trace[43853786]: "Get" url:/apis/coordination.k8s.io/v1/namespaces/crossplane-system/leases/crossplane-leader-election-rbac,user-agent:crossplane/v0.0.0 (linux/amd64) kubernetes/$Format/leader-election,audit-id:8ec32282-a74c-40b7-9c68-7accfbf4edf3,client:10.244.0.4,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.468) (total time: 1082ms):
+2023-09-16T19:29:25.551010946Z stderr F Trace[43853786]: ---"About to write a response" 1082ms (19:29:25.550)
+2023-09-16T19:29:25.551014746Z stderr F Trace[43853786]: [1.082779556s] [1.082779556s] END
+2023-09-16T19:29:25.551309568Z stderr F I0916 19:29:25.551241       1 trace.go:205] Trace[161376909]: "Get" url:/apis/coordination.k8s.io/v1/namespaces/kube-system/leases/kube-scheduler,user-agent:kube-scheduler/v1.25.3 (linux/amd64) kubernetes/434bfd8/leader-election,audit-id:05625930-47c3-4ef7-ad63-a70848bd7304,client:172.18.0.2,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.977) (total time: 573ms):
+2023-09-16T19:29:25.551319969Z stderr F Trace[161376909]: ---"About to write a response" 573ms (19:29:25.551)
+2023-09-16T19:29:25.551323369Z stderr F Trace[161376909]: [573.529275ms] [573.529275ms] END
+2023-09-16T19:29:25.551561787Z stderr F I0916 19:29:25.551497       1 trace.go:205] Trace[1788105906]: "Get" url:/apis/coordination.k8s.io/v1/namespaces/crossplane-system/leases/crossplane-leader-election-core,user-agent:crossplane/v0.0.0 (linux/amd64) kubernetes/$Format/leader-election,audit-id:cf05d3d5-599e-4a09-8603-ac23cf28f916,client:10.244.0.3,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.678) (total time: 873ms):
+2023-09-16T19:29:25.551579588Z stderr F Trace[1788105906]: ---"About to write a response" 873ms (19:29:25.551)
+2023-09-16T19:29:25.551582888Z stderr F Trace[1788105906]: [873.245029ms] [873.245029ms] END
+2023-09-16T19:29:25.55267917Z stderr F I0916 19:29:25.552574       1 trace.go:205] Trace[2031609226]: "GuaranteedUpdate etcd3" audit-id:af22c335-d2a3-43ac-8174-5bbbf6608ca4,key:/pkg.crossplane.io/providerrevisions/upbound-provider-family-aws-710d8cfe9f53,type:*unstructured.Unstructured (16-Sep-2023 19:29:24.870) (total time: 681ms):
+2023-09-16T19:29:25.552692071Z stderr F Trace[2031609226]: [681.752747ms] [681.752747ms] END
+2023-09-16T19:29:25.552954491Z stderr F I0916 19:29:25.552900       1 trace.go:205] Trace[374832916]: "Update" url:/apis/pkg.crossplane.io/v1/providerrevisions/upbound-provider-family-aws-710d8cfe9f53,user-agent:Go-http-client/2.0,audit-id:af22c335-d2a3-43ac-8174-5bbbf6608ca4,client:10.244.0.3,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.869) (total time: 683ms):
+2023-09-16T19:29:25.552962991Z stderr F Trace[374832916]: ---"Write to database call finished" len:3546,err:<nil> 681ms (19:29:25.552)
+2023-09-16T19:29:25.552966192Z stderr F Trace[374832916]: [683.032542ms] [683.032542ms] END
+2023-09-16T19:29:25.553402524Z stderr F I0916 19:29:25.553323       1 trace.go:205] Trace[920014932]: "GuaranteedUpdate etcd3" audit-id:f66f1c94-80c3-4e76-992a-1db8745376cb,key:/deployments/crossplane-system/crossplane-provider-helm-503c3591121b,type:*apps.Deployment (16-Sep-2023 19:29:24.274) (total time: 1278ms):
+2023-09-16T19:29:25.553413925Z stderr F Trace[920014932]: [1.278972988s] [1.278972988s] END
+2023-09-16T19:29:25.555642891Z stderr F I0916 19:29:25.555568       1 trace.go:205] Trace[1254770348]: "GuaranteedUpdate etcd3" audit-id:e992e68b-b96a-4911-9dfc-ed017cc5f5d5,key:/pkg.crossplane.io/providerrevisions/crossplane-provider-kubernetes-fd7ab5be249e,type:*unstructured.Unstructured (16-Sep-2023 19:29:24.022) (total time: 1533ms):
+2023-09-16T19:29:25.555655692Z stderr F Trace[1254770348]: [1.533242952s] [1.533242952s] END
+2023-09-16T19:29:25.555922312Z stderr F I0916 19:29:25.555861       1 trace.go:205] Trace[214721084]: "Update" url:/apis/pkg.crossplane.io/v1/providerrevisions/crossplane-provider-kubernetes-fd7ab5be249e,user-agent:Go-http-client/2.0,audit-id:e992e68b-b96a-4911-9dfc-ed017cc5f5d5,client:10.244.0.3,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.021) (total time: 1534ms):
+2023-09-16T19:29:25.555928912Z stderr F Trace[214721084]: ---"Write to database call finished" len:3629,err:<nil> 1533ms (19:29:25.555)
+2023-09-16T19:29:25.555931913Z stderr F Trace[214721084]: [1.534079115s] [1.534079115s] END
+2023-09-16T19:29:25.556150629Z stderr F I0916 19:29:25.556102       1 trace.go:205] Trace[1842551310]: "Update" url:/apis/apiextensions.k8s.io/v1/customresourcedefinitions/virtualmfadevices.iam.aws.upbound.io,user-agent:Go-http-client/2.0,audit-id:8ccd6946-0d68-46eb-89d2-2f2c0207c3ab,client:10.244.0.3,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.271) (total time: 1284ms):
+2023-09-16T19:29:25.55615783Z stderr F Trace[1842551310]: ---"Write to database call finished" len:13724,err:<nil> 1276ms (19:29:25.548)
+2023-09-16T19:29:25.55616463Z stderr F Trace[1842551310]: [1.284775022s] [1.284775022s] END
+2023-09-16T19:29:25.55643315Z stderr F I0916 19:29:25.556384       1 trace.go:205] Trace[1276488384]: "Patch" url:/apis/apps/v1/namespaces/crossplane-system/deployments/crossplane-provider-helm-503c3591121b,user-agent:Go-http-client/2.0,audit-id:f66f1c94-80c3-4e76-992a-1db8745376cb,client:10.244.0.3,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.274) (total time: 1282ms):
+2023-09-16T19:29:25.556441351Z stderr F Trace[1276488384]: ---"Object stored in database" 1276ms (19:29:25.553)
+2023-09-16T19:29:25.556451451Z stderr F Trace[1276488384]: [1.282094721s] [1.282094721s] END
+2023-09-16T19:29:25.557710945Z stderr F I0916 19:29:25.557636       1 trace.go:205] Trace[1423905854]: "GuaranteedUpdate etcd3" audit-id:cdba89fd-a00c-4dcc-8108-1d9ba6052fb7,key:/pkg.crossplane.io/providerrevisions/provider-aws-eks-511855a80bcd,type:*unstructured.Unstructured (16-Sep-2023 19:29:24.277) (total time: 1279ms):
+2023-09-16T19:29:25.557732647Z stderr F Trace[1423905854]: [1.279676941s] [1.279676941s] END
+2023-09-16T19:29:25.558614513Z stderr F I0916 19:29:25.558546       1 trace.go:205] Trace[630428141]: "Patch" url:/apis/pkg.crossplane.io/v1/providerrevisions/provider-aws-eks-511855a80bcd,user-agent:Go-http-client/2.0,audit-id:cdba89fd-a00c-4dcc-8108-1d9ba6052fb7,client:10.244.0.3,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.277) (total time: 1280ms):
+2023-09-16T19:29:25.558635414Z stderr F Trace[630428141]: ---"Object stored in database" 1278ms (19:29:25.558)
+2023-09-16T19:29:25.558638415Z stderr F Trace[630428141]: [1.280762622s] [1.280762622s] END
+2023-09-16T19:29:25.559224358Z stderr F I0916 19:29:25.559140       1 trace.go:205] Trace[882826395]: "GuaranteedUpdate etcd3" audit-id:530a8a2b-16c9-4beb-8435-f07654fac828,key:/pkg.crossplane.io/providerrevisions/crossplane-provider-kubernetes-fd7ab5be249e,type:*unstructured.Unstructured (16-Sep-2023 19:29:24.678) (total time: 880ms):
+2023-09-16T19:29:25.559234859Z stderr F Trace[882826395]: [880.159944ms] [880.159944ms] END
+2023-09-16T19:29:25.559479377Z stderr F I0916 19:29:25.559418       1 trace.go:205] Trace[1522923411]: "Patch" url:/apis/pkg.crossplane.io/v1/providerrevisions/crossplane-provider-kubernetes-fd7ab5be249e,user-agent:Go-http-client/2.0,audit-id:530a8a2b-16c9-4beb-8435-f07654fac828,client:10.244.0.3,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.678) (total time: 880ms):
+2023-09-16T19:29:25.559486978Z stderr F Trace[1522923411]: ---"Object stored in database" 876ms (19:29:25.559)
+2023-09-16T19:29:25.559489778Z stderr F Trace[1522923411]: [880.720586ms] [880.720586ms] END
+2023-09-16T19:29:25.560621662Z stderr F I0916 19:29:25.560524       1 trace.go:205] Trace[498667252]: "GuaranteedUpdate etcd3" audit-id:58d7caa8-ed60-4a17-b936-b87f38bebed5,key:/pkg.crossplane.io/providerrevisions/provider-aws-eks-511855a80bcd,type:*unstructured.Unstructured (16-Sep-2023 19:29:24.874) (total time: 686ms):
+2023-09-16T19:29:25.560647464Z stderr F Trace[498667252]: [686.4952ms] [686.4952ms] END
+2023-09-16T19:29:25.560897583Z stderr F I0916 19:29:25.560837       1 trace.go:205] Trace[329867555]: "Update" url:/apis/pkg.crossplane.io/v1/providerrevisions/provider-aws-eks-511855a80bcd,user-agent:Go-http-client/2.0,audit-id:58d7caa8-ed60-4a17-b936-b87f38bebed5,client:10.244.0.3,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.873) (total time: 687ms):
+2023-09-16T19:29:25.560905284Z stderr F Trace[329867555]: ---"Write to database call finished" len:4078,err:<nil> 686ms (19:29:25.560)
+2023-09-16T19:29:25.560908084Z stderr F Trace[329867555]: [687.754494ms] [687.754494ms] END
+2023-09-16T19:29:25.992236871Z stderr F I0916 19:29:25.992177       1 trace.go:205] Trace[370958421]: "GuaranteedUpdate etcd3" audit-id:732a8cc4-13a1-4443-b562-10e74a06c590,key:/events/default/upbound-provider-family-aws-710d8cfe9f53.178577ca263af0c2,type:*core.Event (16-Sep-2023 19:29:24.364) (total time: 1627ms):
+2023-09-16T19:29:25.992247872Z stderr F Trace[370958421]: ---"initial value restored" 1185ms (19:29:25.549)
+2023-09-16T19:29:25.992251072Z stderr F Trace[370958421]: ---"Txn call finished" err:<nil> 441ms (19:29:25.991)
+2023-09-16T19:29:25.992254173Z stderr F Trace[370958421]: [1.627618209s] [1.627618209s] END
+2023-09-16T19:29:25.994319627Z stderr F I0916 19:29:25.994250       1 trace.go:205] Trace[1000288178]: "Patch" url:/api/v1/namespaces/default/events/upbound-provider-family-aws-710d8cfe9f53.178577ca263af0c2,user-agent:Go-http-client/2.0,audit-id:732a8cc4-13a1-4443-b562-10e74a06c590,client:10.244.0.4,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.364) (total time: 1629ms):
+2023-09-16T19:29:25.994329728Z stderr F Trace[1000288178]: ---"About to apply patch" 1185ms (19:29:25.549)
+2023-09-16T19:29:25.994339429Z stderr F Trace[1000288178]: ---"Object stored in database" 443ms (19:29:25.994)
+2023-09-16T19:29:25.994341829Z stderr F Trace[1000288178]: [1.629845576s] [1.629845576s] END
+2023-09-16T19:29:25.994565245Z stderr F I0916 19:29:25.994492       1 trace.go:205] Trace[1688531340]: "GuaranteedUpdate etcd3" audit-id:01214ab6-a407-445d-bca9-2cb8e53987f9,key:/events/default/provider-aws-eks.178577cd44914bf5,type:*core.Event (16-Sep-2023 19:29:24.270) (total time: 1724ms):
+2023-09-16T19:29:25.994569046Z stderr F Trace[1688531340]: ---"initial value restored" 1283ms (19:29:25.553)
+2023-09-16T19:29:25.994571546Z stderr F Trace[1688531340]: ---"Txn call finished" err:<nil> 440ms (19:29:25.994)
+2023-09-16T19:29:25.994573746Z stderr F Trace[1688531340]: [1.724205213s] [1.724205213s] END
+2023-09-16T19:29:25.994726657Z stderr F I0916 19:29:25.994672       1 trace.go:205] Trace[1118486498]: "Patch" url:/api/v1/namespaces/default/events/provider-aws-eks.178577cd44914bf5,user-agent:Go-http-client/2.0,audit-id:01214ab6-a407-445d-bca9-2cb8e53987f9,client:10.244.0.3,accept:application/json, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:24.270) (total time: 1724ms):
+2023-09-16T19:29:25.994732258Z stderr F Trace[1118486498]: ---"About to apply patch" 1283ms (19:29:25.553)
+2023-09-16T19:29:25.994734858Z stderr F Trace[1118486498]: ---"Object stored in database" 440ms (19:29:25.994)
+2023-09-16T19:29:25.994737558Z stderr F Trace[1118486498]: [1.72442313s] [1.72442313s] END
+2023-09-16T19:29:39.712244069Z stderr F I0916 19:29:39.712176       1 trace.go:205] Trace[259117099]: "GuaranteedUpdate etcd3" audit-id:408983a6-e98b-47c4-91c1-a24d5a5858c5,key:/services/specs/crossplane-system/provider-aws-eks-511855a80bcd,type:*core.Service (16-Sep-2023 19:29:38.569) (total time: 1142ms):
+2023-09-16T19:29:39.745631159Z stderr F Trace[259117099]: [1.142560914s] [1.142560914s] END
+2023-09-16T19:29:39.74564626Z stderr F I0916 19:29:39.712380       1 trace.go:205] Trace[932473691]: "Patch" url:/api/v1/namespaces/crossplane-system/services/provider-aws-eks-511855a80bcd,user-agent:Go-http-client/2.0,audit-id:408983a6-e98b-47c4-91c1-a24d5a5858c5,client:10.244.0.3,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:38.569) (total time: 1142ms):
+2023-09-16T19:29:39.74565066Z stderr F Trace[932473691]: ---"Object stored in database" 1141ms (19:29:39.712)
+2023-09-16T19:29:39.74565376Z stderr F Trace[932473691]: [1.142833634s] [1.142833634s] END
+2023-09-16T19:29:50.145469063Z stderr F I0916 19:29:50.145361       1 trace.go:205] Trace[1072725662]: "GuaranteedUpdate etcd3" audit-id:93e3f2eb-0302-4f75-9550-a2b75a0189ee,key:/apiextensions.k8s.io/customresourcedefinitions/transitgatewayvpcattachments.ec2.aws.upbound.io,type:*apiextensions.CustomResourceDefinition (16-Sep-2023 19:29:49.102) (total time: 1042ms):
+2023-09-16T19:29:50.145498565Z stderr F Trace[1072725662]: ---"Txn call finished" err:<nil> 1030ms (19:29:50.144)
+2023-09-16T19:29:50.145518667Z stderr F Trace[1072725662]: [1.042361039s] [1.042361039s] END
+2023-09-16T19:29:50.146672353Z stderr F I0916 19:29:50.146596       1 trace.go:205] Trace[1256385025]: "GuaranteedUpdate etcd3" audit-id:4f1eb4b7-b561-4450-a98b-6f87f61bab91,key:/apiextensions.k8s.io/customresourcedefinitions/volumeattachments.ec2.aws.upbound.io,type:*apiextensions.CustomResourceDefinition (16-Sep-2023 19:29:49.087) (total time: 1059ms):
+2023-09-16T19:29:50.146682954Z stderr F Trace[1256385025]: ---"Txn call finished" err:<nil> 1043ms (19:29:50.145)
+2023-09-16T19:29:50.146686454Z stderr F Trace[1256385025]: [1.059404817s] [1.059404817s] END
+2023-09-16T19:29:50.147353804Z stderr F I0916 19:29:50.147286       1 trace.go:205] Trace[2041654381]: "GuaranteedUpdate etcd3" audit-id:46e03f4a-ae7f-4edf-8c35-6ffdfdec272d,key:/deployments/crossplane-system/provider-aws-iam-09f2fb02dd6e,type:*apps.Deployment (16-Sep-2023 19:29:49.095) (total time: 1052ms):
+2023-09-16T19:29:50.147364805Z stderr F Trace[2041654381]: [1.052161873s] [1.052161873s] END
+2023-09-16T19:29:50.147470813Z stderr F I0916 19:29:50.147425       1 trace.go:205] Trace[527209349]: "Patch" url:/apis/apps/v1/namespaces/crossplane-system/deployments/provider-aws-iam-09f2fb02dd6e,user-agent:Go-http-client/2.0,audit-id:46e03f4a-ae7f-4edf-8c35-6ffdfdec272d,client:10.244.0.3,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:49.094) (total time: 1052ms):
+2023-09-16T19:29:50.147477313Z stderr F Trace[527209349]: ---"Object stored in database" 1040ms (19:29:50.147)
+2023-09-16T19:29:50.147480314Z stderr F Trace[527209349]: [1.052500399s] [1.052500399s] END
+2023-09-16T19:29:50.150714855Z stderr F I0916 19:29:50.150632       1 trace.go:205] Trace[837489407]: "Update" url:/apis/apiextensions.k8s.io/v1/customresourcedefinitions/transitgatewayvpcattachments.ec2.aws.upbound.io/status,user-agent:kube-apiserver/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:93e3f2eb-0302-4f75-9550-a2b75a0189ee,client:::1,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:49.102) (total time: 1048ms):
+2023-09-16T19:29:50.150728356Z stderr F Trace[837489407]: ---"Write to database call finished" len:21420,err:<nil> 1042ms (19:29:50.145)
+2023-09-16T19:29:50.150732257Z stderr F Trace[837489407]: [1.04827158s] [1.04827158s] END
+2023-09-16T19:29:50.150787261Z stderr F I0916 19:29:50.150733       1 trace.go:205] Trace[355947188]: "Update" url:/apis/apiextensions.k8s.io/v1/customresourcedefinitions/volumeattachments.ec2.aws.upbound.io/status,user-agent:kube-apiserver/v1.25.3 (linux/amd64) kubernetes/434bfd8,audit-id:4f1eb4b7-b561-4450-a98b-6f87f61bab91,client:::1,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:49.086) (total time: 1064ms):
+2023-09-16T19:29:50.150791661Z stderr F Trace[355947188]: ---"Write to database call finished" len:17123,err:<nil> 1059ms (19:29:50.146)
+2023-09-16T19:29:50.150794461Z stderr F Trace[355947188]: [1.06400466s] [1.06400466s] END
+2023-09-16T19:29:50.154245719Z stderr F I0916 19:29:50.154144       1 trace.go:205] Trace[907774856]: "Create etcd3" audit-id:20b21a93-13da-401d-acef-ad658c8b8440,key:/serviceaccounts/crossplane-system/provider-aws-ec2-783e13654b20,type:*core.ServiceAccount (16-Sep-2023 19:29:49.094) (total time: 1059ms):
+2023-09-16T19:29:50.154297923Z stderr F Trace[907774856]: ---"Txn call finished" err:<nil> 1059ms (19:29:50.154)
+2023-09-16T19:29:50.154301724Z stderr F Trace[907774856]: [1.059182698s] [1.059182698s] END
+2023-09-16T19:29:50.154316925Z stderr F I0916 19:29:50.154244       1 trace.go:205] Trace[2147337914]: "Create" url:/api/v1/namespaces/crossplane-system/serviceaccounts,user-agent:Go-http-client/2.0,audit-id:20b21a93-13da-401d-acef-ad658c8b8440,client:10.244.0.3,accept:application/vnd.kubernetes.protobuf, */*,protocol:HTTP/2.0 (16-Sep-2023 19:29:49.094) (total time: 1059ms):
+2023-09-16T19:29:50.154320425Z stderr F Trace[2147337914]: ---"Write to database call finished" len:213,err:<nil> 1059ms (19:29:50.154)
+2023-09-16T19:29:50.154322825Z stderr F Trace[2147337914]: [1.059794344s] [1.059794344s] END
+2023-09-16T19:29:50.739914104Z stderr F I0916 19:29:50.739819       1 alloc.go:327] "allocated clusterIPs" service="crossplane-system/provider-aws-ec2-783e13654b20" clusterIPs=map[IPv4:10.96.63.220]
+2023-09-16T19:29:52.249268045Z stderr F I0916 19:29:52.249172       1 controller.go:616] quota admission added evaluator for: clusterclaims.devopstoolkitseries.com
