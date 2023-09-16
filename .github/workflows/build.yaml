@@ -16,7 +16,7 @@ jobs:
       - name: Generate manifests
         run: |
           timoni build dot-kubernetes timoni | tee package/all.yaml
-          sed -i '' -e '$ d' all.yaml
+          sed -i '' -e '$ d' package/all.yaml
           cat package/all.yaml
       # - name: Run tests
       #   run: |
