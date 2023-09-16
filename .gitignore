@@ -1,3 +1,4 @@
 /tmp
 /aws-creds.conf
 /kubeconfig*
+/kind-logs*
