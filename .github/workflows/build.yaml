@@ -15,7 +15,7 @@ jobs:
         uses: stefanprodan/timoni/actions/setup@main
       - name: Generate manifests
         run: |
-          timoni build dot-kubernetes timoni | tee package/all.yaml
+          timoni build dot-kubernetes timoni >package/all.yaml
           ls -l
           echo "xxxxxxxxxxx"
           ls -l package
