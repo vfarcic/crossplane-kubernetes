@@ -21,16 +21,17 @@ jobs:
           cat package/all.yaml
       - name: Run tests
         run: |
-          (
-            set -x; cd "$(mktemp -d)" &&
-            OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
-            ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
-            KREW="krew-${OS}_${ARCH}" &&
-            curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
-            tar zxvf "${KREW}.tar.gz" &&
-            ./"${KREW}" install krew
-          )
-          export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+          # (
+          #   set -x; cd "$(mktemp -d)" &&
+          #   OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+          #   ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+          #   KREW="krew-${OS}_${ARCH}" &&
+          #   curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+          #   tar zxvf "${KREW}.tar.gz" &&
+          #   ./"${KREW}" install krew
+          # )
+          # export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+          curl -L -o /usr/local/bin/kubectl-kuttl https://github.com/kudobuilder/kuttl/releases/download/v0.15.0/kubectl-kuttl_0.15.0_linux_i386
           kubectl krew install kuttl
           kind create cluster
           helm repo add crossplane-stable https://charts.crossplane.io/stable
