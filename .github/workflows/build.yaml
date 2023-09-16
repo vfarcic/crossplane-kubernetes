@@ -34,8 +34,8 @@ jobs:
           kubectl krew install kuttl
           # kind create cluster
           helm repo add crossplane-stable https://charts.crossplane.io/stable
-          kubectl kuttl test tests/
-          # kubectl kuttl test --start-kind --skip-delete  tests/
+          # kubectl kuttl test tests/
+          kubectl kuttl test --start-kind --skip-delete  tests/
           # kind delete cluster
       - name: Build the package
         run: |
