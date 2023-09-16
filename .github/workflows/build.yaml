@@ -16,15 +16,15 @@ jobs:
       - name: Generate manifests
         run: |
           timoni build dot-kubernetes timoni >package/all.yaml
-          echo "000"
           head -n -1 package/all.yaml > package/all.yaml.tmp
           mv package/all.yaml.tmp package/all.yaml
-          echo "111"
           cat package/all.yaml
-      # - name: Run tests
-      #   run: |
-      #     kubectl krew install kuttl
-      #     kind create cluster
+      - name: Run tests
+        run: |
+          kubectl krew install kuttl
+          kind create cluster
+          kubectl kuttl test tests/
+          kind delete cluster
       # - name: Build the package
       #   run: |
       #     cd package
