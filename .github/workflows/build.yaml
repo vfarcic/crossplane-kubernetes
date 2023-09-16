@@ -20,8 +20,6 @@ jobs:
           head -n -1 package/all.yaml > package/all.yaml.tmp
           mv package/all.yaml.tmp package/all.yaml
           echo "111"
-          sed -i '' -e '$ d' 
-          echo "222"
           cat package/all.yaml
       # - name: Run tests
       #   run: |
