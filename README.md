@@ -14,11 +14,7 @@ kubectl krew install kuttl
 
 kind create cluster
 
-# TODO: Move Timoni and testing to GitHub Actions
-
 kubectl kuttl test tests/
-
-# Destroy or reset the Kubernetes cluster
 
 kind delete cluster
 ```
