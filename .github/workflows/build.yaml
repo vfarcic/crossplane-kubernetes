@@ -31,8 +31,8 @@ jobs:
           #   ./"${KREW}" install krew
           # )
           # export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+          # kubectl krew install kuttl
           curl -L -o /usr/local/bin/kubectl-kuttl https://github.com/kudobuilder/kuttl/releases/download/v0.15.0/kubectl-kuttl_0.15.0_linux_i386
-          kubectl krew install kuttl
           kind create cluster
           helm repo add crossplane-stable https://charts.crossplane.io/stable
           kubectl kuttl test tests/
