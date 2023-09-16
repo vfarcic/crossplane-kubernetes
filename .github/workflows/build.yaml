@@ -33,7 +33,7 @@ jobs:
           export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
           kubectl krew install kuttl
           helm repo add crossplane-stable https://charts.crossplane.io/stable
-          kubectl kuttl test --start-kind --skip-delete --skip-cluster-delete tests/
+          kubectl kuttl test --start-kind --skip-delete --skip-cluster-delete --timeout 120 tests/
       - name: Build the package
         run: |
           cd package

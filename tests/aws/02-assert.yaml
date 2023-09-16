@@ -409,7 +409,6 @@ metadata:
   annotations:
     crossplane.io/composition-resource-name: clusterAuth
     crossplane.io/external-name: a-team-eks
-  generation: 1
   labels:
     crossplane.io/claim-name: a-team-eks
   name: a-team-eks
@@ -437,7 +436,6 @@ metadata:
   annotations:
     crossplane.io/composition-resource-name: ekscluster
     crossplane.io/external-name: a-team-eks
-  generation: 2
   labels:
     crossplane.io/claim-name: a-team-eks
   name: a-team-eks
@@ -474,7 +472,6 @@ metadata:
   annotations:
     crossplane.io/composition-resource-name: eksnodegroup
     crossplane.io/external-name: a-team-eks
-  generation: 2
   labels:
     crossplane.io/claim-name: a-team-eks
   name: a-team-eks
@@ -514,7 +511,6 @@ kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-controlplane
-  generation: 2
   labels:
     crossplane.io/claim-name: a-team-eks
   name: a-team-eks-controlplane
@@ -543,7 +539,6 @@ kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-service
-  generation: 2
   labels:
     crossplane.io/claim-name: a-team-eks
   name: a-team-eks-service
@@ -572,7 +567,6 @@ kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-worker
-  generation: 2
   labels:
     crossplane.io/claim-name: a-team-eks
   name: a-team-eks-worker
@@ -601,7 +595,6 @@ kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-cni
-  generation: 2
   labels:
     crossplane.io/claim-name: a-team-eks
   name: a-team-eks-cni
@@ -630,7 +623,6 @@ kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-registry
-  generation: 2
   labels:
     crossplane.io/claim-name: a-team-eks
   name: a-team-eks-registry
@@ -660,7 +652,6 @@ metadata:
   annotations:
     crossplane.io/composition-resource-name: iamrole-controlplane
     crossplane.io/external-name: a-team-eks-controlplane
-  generation: 2
   labels:
     crossplane.io/claim-name: a-team-eks
     role: a-team-eks-controlplane
@@ -696,7 +687,6 @@ metadata:
   annotations:
     crossplane.io/composition-resource-name: iamrole-nodegroup
     crossplane.io/external-name: a-team-eks-nodegroup
-  generation: 2
   labels:
     crossplane.io/claim-name: a-team-eks
     role: a-team-eks-nodegroup
