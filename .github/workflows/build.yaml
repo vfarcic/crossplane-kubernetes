@@ -11,24 +11,31 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - name: Build the package
+      - name: Generate manifests
         run: |
-          cd package
-          curl -sL https://cli.upbound.io | sh
-          ./up login --token ${{ secrets.UP_TOKEN }}
-          ./up xpkg build --name kubernetes.xpkg
-          ./up xpkg push --package kubernetes.xpkg xpkg.upbound.io/${{ secrets.UP_ACCOUNT }}/dot-kubernetes:v0.10.${{ github.run_number }}
-      - name: Update config
-        run: |
-          yq --inplace ".spec.package = \"xpkg.upbound.io/devops-toolkit/dot-kubernetes:v0.10.${{ github.run_number }}\"" config.yaml
-      - name: Commit changes
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add .
-          git commit -m "Config update [skip ci]"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.CROSSPLANE_TOKEN }}
-          branch: ${{ github.ref }}
+          go install github.com/stefanprodan/timoni/cmd/timoni@latest
+      # - name: Run tests
+      #   run: |
+      #     kubectl krew install kuttl
+      #     kind create cluster
+      # - name: Build the package
+      #   run: |
+      #     cd package
+      #     curl -sL https://cli.upbound.io | sh
+      #     ./up login --token ${{ secrets.UP_TOKEN }}
+      #     ./up xpkg build --name kubernetes.xpkg
+      #     ./up xpkg push --package kubernetes.xpkg xpkg.upbound.io/${{ secrets.UP_ACCOUNT }}/dot-kubernetes:v0.10.${{ github.run_number }}
+      # - name: Update config
+      #   run: |
+      #     yq --inplace ".spec.package = \"xpkg.upbound.io/devops-toolkit/dot-kubernetes:v0.10.${{ github.run_number }}\"" config.yaml
+      # - name: Commit changes
+      #   run: |
+      #     git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      #     git config --local user.name "github-actions[bot]"
+      #     git add .
+      #     git commit -m "Config update [skip ci]"
+      # - name: Push changes
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     github_token: ${{ secrets.CROSSPLANE_TOKEN }}
+      #     branch: ${{ github.ref }}
