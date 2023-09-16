@@ -15,6 +15,7 @@ commands:
   - command: kubectl wait --for condition=Healthy provider/provider-aws-eks --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/provider-aws-ec2 --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-aws --timeout=300s
+timeout: 120
 # startKIND: true
 # kindNodeCache: true
 # skipDelete: true
