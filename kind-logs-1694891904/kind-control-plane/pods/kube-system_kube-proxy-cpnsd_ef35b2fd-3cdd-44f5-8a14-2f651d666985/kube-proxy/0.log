@@ -1,0 +1,21 @@
+2023-09-16T19:16:45.290862973Z stderr F time="2023-09-16T19:16:45Z" level=warning msg="Running modprobe ip_vs failed with message: `modprobe: WARNING: Module ip_vs not found in directory /lib/modules/6.3.13-linuxkit`, error: exit status 1"
+2023-09-16T19:16:45.297125904Z stderr F I0916 19:16:45.297003       1 node.go:163] Successfully retrieved node IP: 172.18.0.2
+2023-09-16T19:16:45.297140918Z stderr F I0916 19:16:45.297052       1 server_others.go:138] "Detected node IP" address="172.18.0.2"
+2023-09-16T19:16:45.315260002Z stderr F I0916 19:16:45.315090       1 server_others.go:206] "Using iptables Proxier"
+2023-09-16T19:16:45.315272441Z stderr F I0916 19:16:45.315136       1 server_others.go:213] "kube-proxy running in dual-stack mode" ipFamily=IPv4
+2023-09-16T19:16:45.315275043Z stderr F I0916 19:16:45.315144       1 server_others.go:214] "Creating dualStackProxier for iptables"
+2023-09-16T19:16:45.315277068Z stderr F I0916 19:16:45.315152       1 server_others.go:501] "Detect-local-mode set to ClusterCIDR, but no IPv6 cluster CIDR defined, , defaulting to no-op detect-local for IPv6"
+2023-09-16T19:16:45.315279012Z stderr F I0916 19:16:45.315170       1 proxier.go:262] "Setting route_localnet=1, use nodePortAddresses to filter loopback addresses for NodePorts to skip it https://issues.k8s.io/90259"
+2023-09-16T19:16:45.315369214Z stderr F I0916 19:16:45.315274       1 proxier.go:262] "Setting route_localnet=1, use nodePortAddresses to filter loopback addresses for NodePorts to skip it https://issues.k8s.io/90259"
+2023-09-16T19:16:45.315516199Z stderr F I0916 19:16:45.315412       1 server.go:661] "Version info" version="v1.25.3"
+2023-09-16T19:16:45.31552546Z stderr F I0916 19:16:45.315437       1 server.go:663] "Golang settings" GOGC="" GOMAXPROCS="" GOTRACEBACK=""
+2023-09-16T19:16:45.315930625Z stderr F I0916 19:16:45.315800       1 conntrack.go:100] "Set sysctl" entry="net/netfilter/nf_conntrack_tcp_timeout_close_wait" value=3600
+2023-09-16T19:16:45.316182711Z stderr F I0916 19:16:45.316078       1 config.go:317] "Starting service config controller"
+2023-09-16T19:16:45.316189414Z stderr F I0916 19:16:45.316103       1 shared_informer.go:255] Waiting for caches to sync for service config
+2023-09-16T19:16:45.316325626Z stderr F I0916 19:16:45.316223       1 config.go:444] "Starting node config controller"
+2023-09-16T19:16:45.316332152Z stderr F I0916 19:16:45.316247       1 shared_informer.go:255] Waiting for caches to sync for node config
+2023-09-16T19:16:45.316481967Z stderr F I0916 19:16:45.316412       1 config.go:226] "Starting endpoint slice config controller"
+2023-09-16T19:16:45.316537429Z stderr F I0916 19:16:45.316516       1 shared_informer.go:255] Waiting for caches to sync for endpoint slice config
+2023-09-16T19:16:45.41684819Z stderr F I0916 19:16:45.416516       1 shared_informer.go:262] Caches are synced for node config
+2023-09-16T19:16:45.416863553Z stderr F I0916 19:16:45.416552       1 shared_informer.go:262] Caches are synced for service config
+2023-09-16T19:16:45.416944842Z stderr F I0916 19:16:45.416843       1 shared_informer.go:262] Caches are synced for endpoint slice config
