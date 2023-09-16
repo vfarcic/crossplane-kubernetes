@@ -5,7 +5,6 @@ timoni build dot-kubernetes timoni | tee package/all.yaml
 
 # Remove the last line that contains `---`.
 sed -i '' -e '$ d' all.yaml
-
 ```
 
 ## Run tests
