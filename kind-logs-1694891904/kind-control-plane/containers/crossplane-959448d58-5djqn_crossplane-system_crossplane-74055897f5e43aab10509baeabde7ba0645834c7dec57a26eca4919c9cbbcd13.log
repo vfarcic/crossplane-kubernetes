@@ -1,3 +1,0 @@
-2023-09-16T19:17:05.152724543Z stderr F I0916 19:17:05.152496       1 leaderelection.go:245] attempting to acquire leader lease crossplane-system/crossplane-leader-election-core...
-2023-09-16T19:17:05.159031937Z stderr F I0916 19:17:05.158795       1 leaderelection.go:255] successfully acquired lease crossplane-system/crossplane-leader-election-core
-2023-09-16T19:17:05.448241585Z stderr F Warning: ControllerConfig.pkg.crossplane.io/v1alpha1 has been deprecated and will be removed in a future release, but only after a comparable alternative is available.

@@ -1,5 +1,0 @@
-2023-09-16T19:16:59.848861663Z stderr F {"level":"info","ts":"2023-09-16T19:16:59Z","logger":"crossplane","msg":"Waiting for required CRDs to be present","names":["compositeresourcedefinitions.apiextensions.crossplane.io","providerrevisions.pkg.crossplane.io"],"poll-interval":1}
-2023-09-16T19:17:00.849048476Z stderr F {"level":"info","ts":"2023-09-16T19:17:00Z","logger":"crossplane","msg":"Waiting for required CRDs to be present","names":["compositeresourcedefinitions.apiextensions.crossplane.io","providerrevisions.pkg.crossplane.io"],"poll-interval":1}
-2023-09-16T19:17:01.849137579Z stderr F {"level":"info","ts":"2023-09-16T19:17:01Z","logger":"crossplane","msg":"Waiting for required CRDs to be present","names":["compositeresourcedefinitions.apiextensions.crossplane.io","providerrevisions.pkg.crossplane.io"],"poll-interval":1}
-2023-09-16T19:17:01.855861726Z stderr F {"level":"info","ts":"2023-09-16T19:17:01Z","logger":"crossplane","msg":"Step has been completed","Name":"CRDWaiter"}
-2023-09-16T19:17:01.855890284Z stderr F {"level":"info","ts":"2023-09-16T19:17:01Z","logger":"crossplane","msg":"Initialization has been completed"}
