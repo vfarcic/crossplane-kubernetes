@@ -11,9 +11,13 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - name: Setup Timoni
+        uses: stefanprodan/timoni/actions/setup@main
       - name: Generate manifests
         run: |
-          nix-env -i timoni
+          timoni build dot-kubernetes timoni | tee package/all.yaml
+          sed -i '' -e '$ d' all.yaml
+          cat package/all.yaml
       # - name: Run tests
       #   run: |
       #     kubectl krew install kuttl

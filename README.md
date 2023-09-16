@@ -2,6 +2,10 @@
 
 ```bash
 timoni build dot-kubernetes timoni | tee package/all.yaml
+
+# Remove the last line that contains `---`.
+sed -i '' -e '$ d' all.yaml
+
 ```
 
 ## Run tests
@@ -37,9 +41,6 @@ up login
 
 # Replace `[...]` with the version of the package (e.g., `v0.5.0`)
 export VERSION=[...]
-
-# Remove the last line that contains `---`.
-sed -i '' -e '$ d' all.yaml
 
 up xpkg build --name k8s.xpkg
 
