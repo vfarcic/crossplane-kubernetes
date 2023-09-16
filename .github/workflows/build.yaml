@@ -13,7 +13,7 @@ jobs:
           fetch-depth: 0
       - name: Generate manifests
         run: |
-          go install github.com/stefanprodan/timoni/cmd/timoni@latest
+          brew install stefanprodan/tap/timoni
       # - name: Run tests
       #   run: |
       #     kubectl krew install kuttl
