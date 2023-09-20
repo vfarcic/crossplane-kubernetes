@@ -1,0 +1,391 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: gitops-argo-cd
+  labels:
+    provider: argo
+spec:
+  compositeTypeRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: GitOps
+  patchSets:
+  - name: metadata
+    patches:
+    - fromFieldPath: metadata.labels
+  resources:
+  - name: helm
+    base:
+      apiVersion: helm.crossplane.io/v1beta1
+      kind: ProviderConfig
+      spec:
+        credentials:
+          source: Secret
+          secretRef:
+            key: kubeconfig
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+    - fromFieldPath: spec.parameters.kubeConfig.secretNamespace
+      toFieldPath: spec.credentials.secretRef.namespace
+    - fromFieldPath: spec.parameters.kubeConfig.secretName
+      toFieldPath: spec.credentials.secretRef.name
+    - fromFieldPath: spec.parameters.kubeConfig.secretKey
+      toFieldPath: spec.credentials.secretRef.key
+    readinessChecks:
+      - type: None
+  - name: argocd
+    base:
+      apiVersion: helm.crossplane.io/v1beta1
+      kind: Release
+      spec:
+        rollbackLimit: 3
+        forProvider:
+          namespace: argocd
+          chart:
+            name: argo-cd
+            repository: https://argoproj.github.io/argo-helm
+            version: "5.42.1"
+          values:
+            controller:
+              args: 
+                appResyncPeriod: "30"
+            configs:
+              secret: 
+                argocdServerAdminPassword: "$2a$10$m3eTlEdRen0nS86c5Zph5u/bDFQMcWZYdG3NVdiyaACCqoxLJaz16"
+                argocdServerAdminPasswordMtime: "2021-11-08T15:04:05Z"
+              cm: 
+                application.resourceTrackingMethod: annotation
+          set:
+          - name: server.extraArgs
+            value: "{--insecure}"
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-argocd"
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+  - name: kubernetes
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: ProviderConfig
+      spec:
+        credentials:
+          source: Secret
+          secretRef:
+            key: kubeconfig
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+    - fromFieldPath: spec.parameters.kubeConfig.secretNamespace
+      toFieldPath: spec.credentials.secretRef.namespace
+    - fromFieldPath: spec.parameters.kubeConfig.secretName
+      toFieldPath: spec.credentials.secretRef.name
+    - fromFieldPath: spec.parameters.kubeConfig.secretKey
+      toFieldPath: spec.credentials.secretRef.key
+    readinessChecks:
+      - type: None
+  - name: argocd-project
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: argoproj.io/v1alpha1
+            kind: AppProject
+            metadata:
+              name: production
+              namespace: argocd
+              finalizers:
+                - resources-finalizer.argocd.argoproj.io
+            spec:
+              description: Production project
+              sourceRepos:
+              - '*'
+              destinations:
+              - namespace: '*'
+                server: '*'
+              clusterResourceWhitelist:
+              - group: '*'
+                kind: '*'
+              namespaceResourceWhitelist:
+              - group: '*'
+                kind: '*'
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-argocd-project"
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+  - name: argocd-app
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              name: production-apps
+              namespace: argocd
+              finalizers:
+                - resources-finalizer.argocd.argoproj.io
+            spec:
+              project: production
+              source:
+                targetRevision: HEAD
+                path: deployment/app-prod
+              destination:
+                server: https://kubernetes.default.svc
+                namespace: prod
+              syncPolicy:
+                automated:
+                  selfHeal: true
+                  prune: true
+                  allowEmpty: true
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-argocd-app"
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+    - fromFieldPath: spec.parameters.gitOpsRepo
+      toFieldPath: spec.forProvider.manifest.spec.source.repoURL
+  - name: argocd-eso
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              name: external-secrets
+              namespace: argocd
+              finalizers:
+                - resources-finalizer.argocd.argoproj.io
+            spec:
+              project: production
+              source:
+                chart: external-secrets
+                repoURL: https://charts.external-secrets.io
+                targetRevision: 0.8.6
+                helm:
+                  releaseName: external-secrets
+                  values: |-
+                    installCRDs: true
+              destination:
+                server: https://kubernetes.default.svc
+                namespace: external-secrets
+              syncPolicy:
+                automated:
+                  selfHeal: true
+                  prune: true
+                  allowEmpty: true
+                syncOptions:
+                  - CreateNamespace=true
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-argocd-eso"
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+  - name: argocd-cert-manager
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              name: cert-manager
+              namespace: argocd
+              finalizers:
+                - resources-finalizer.argocd.argoproj.io
+            spec:
+              project: production
+              source:
+                chart: cert-manager
+                repoURL: https://charts.jetstack.io
+                targetRevision: v1.12.2
+                helm:
+                  releaseName: cert-manager
+                  parameters:
+                    - name: installCRDs
+                      value: "true"
+              destination:
+                server: https://kubernetes.default.svc
+                namespace: cert-manager
+              syncPolicy:
+                automated:
+                  selfHeal: true
+                  prune: true
+                  allowEmpty: true
+                syncOptions:
+                  - CreateNamespace=true
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-argocd-cert-manager"
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+  - name: argocd-kyverno
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              name: kyverno
+              namespace: argocd
+              finalizers:
+                - resources-finalizer.argocd.argoproj.io
+            spec:
+              project: production
+              source:
+                chart: kyverno
+                repoURL: https://kyverno.github.io/kyverno/
+                targetRevision: v1.12.2
+                helm:
+                  releaseName: kyverno
+                  values: |-
+                    admissionController.replicas: 3
+                    backgroundController.replicas: 2
+                    cleanupController.replicas: 2
+                    reportsController.replicas: 2
+              destination:
+                server: https://kubernetes.default.svc
+                namespace: kyverno
+              syncPolicy:
+                automated:
+                  selfHeal: true
+                  prune: true
+                  allowEmpty: true
+                syncOptions:
+                  - CreateNamespace=true
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-argocd-cert-manager"
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+  - name: argocd-project-dev
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: argoproj.io/v1alpha1
+            kind: AppProject
+            metadata:
+              name: dev
+              namespace: argocd
+              finalizers:
+                - resources-finalizer.argocd.argoproj.io
+            spec:
+              description: Dev project
+              sourceRepos:
+              - '*'
+              destinations:
+              - namespace: '*'
+                server: '*'
+              clusterResourceWhitelist:
+              - group: '*'
+                kind: '*'
+              namespaceResourceWhitelist:
+              - group: '*'
+                kind: '*'
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-argocd-project-dev"
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+  - name: argocd-app-dev
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              name: dev-apps
+              namespace: argocd
+              finalizers:
+                - resources-finalizer.argocd.argoproj.io
+            spec:
+              project: dev
+              source:
+                targetRevision: HEAD
+                path: deployment/app-dev
+              destination:
+                server: https://kubernetes.default.svc
+                namespace: dev
+              syncPolicy:
+                automated:
+                  selfHeal: true
+                  prune: true
+                  allowEmpty: true
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-argocd-app-dev"
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+    - fromFieldPath: spec.parameters.gitOpsRepo
+      toFieldPath: spec.forProvider.manifest.spec.source.repoURL
+  - name: ns-prod
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: infra
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+      - type: string
+        string:
+          fmt: '%s-ns-infra'
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+  

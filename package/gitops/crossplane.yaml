@@ -1,0 +1,12 @@
+apiVersion: meta.pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: gitops
+  annotations:
+    meta.crossplane.io/source: github.com/eya-rabeh/crossplane-kubernetes-gitops/tree/main/package/gitops
+    meta.crossplane.io/description: Fully operational GitOps tool Argo CD
+    meta.crossplane.io/readme: A Configuration package that defines GitOps and GitOpsClaim types that can be used to provision Kubernetes clusters with fully operational GitOps tool Argo CD
+spec:
+  dependsOn:
+  - provider: xpkg.upbound.io/crossplane-contrib/provider-helm
+    version: ">=v0.13.0"
