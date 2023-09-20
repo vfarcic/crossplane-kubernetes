@@ -1297,4 +1297,3 @@ spec:
     - fromFieldPath: spec.id
       toFieldPath: spec.providerConfigRef.name
   writeConnectionSecretsToNamespace: crossplane-system
----
