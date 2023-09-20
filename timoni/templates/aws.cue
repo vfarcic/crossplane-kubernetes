@@ -67,7 +67,9 @@ import (
 				name: "config-sql"
 				base: spec: forProvider: manifest: spec: package: _config.packages.configSql
 			},
-			#ProviderConfigAws,
+			#ProviderConfig & { _composeConfig:
+				name: "aws"
+			},
 		]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }

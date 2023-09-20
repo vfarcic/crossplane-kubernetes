@@ -4,6 +4,47 @@ import (
 	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
 )
 
+#ProviderConfig: crossplane.#ComposedTemplate & {
+    _composeConfig: crossplane.#ComposedTemplate
+    name:    _composeConfig.name + "-pc"
+    base: {
+        apiVersion: "kubernetes.crossplane.io/v1alpha1"
+        kind: "Object"
+        spec: {
+            forProvider: {
+                manifest: {
+                    apiVersion: _composeConfig.name + ".upbound.io/v1beta1"
+                    kind: "ProviderConfig"
+                    metadata: name: "default"
+                    spec: {
+						credentials: {
+                			source: "Secret"
+                			secretRef: {
+                  				namespace: "crossplane-system"
+                  				name: _composeConfig.name + "-creds"
+                  				key: "creds"
+							}
+						}
+                    }
+                }
+            }
+        }
+    }
+    patches: [{
+        fromFieldPath: "spec.id"
+        toFieldPath: "metadata.name"
+        transforms: [{
+            type: "string"
+            string: {
+                fmt: "%s-" + _composeConfig.name + "-pc"
+            }
+        }]
+    }, {
+        fromFieldPath: "spec.id"
+        toFieldPath: "spec.providerConfigRef.name"
+    }]
+}
+
 #ProviderConfigLocal: crossplane.#ComposedTemplate & {
     name: string
     base: {

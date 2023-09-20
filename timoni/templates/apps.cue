@@ -6,8 +6,8 @@ import (
 )
 
 #AppHelm: crossplane.#ComposedTemplate & {
-    _config:    crossplane.#ComposedTemplate
-    name: _config.name
+    _config: crossplane.#ComposedTemplate
+    name:    _config.name
     base: {
         apiVersion: "helm.crossplane.io/v1beta1"
         kind: "Release"
