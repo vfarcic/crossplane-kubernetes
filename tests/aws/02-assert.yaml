@@ -973,6 +973,28 @@ spec:
   providerConfigRef:
     name: a-team-eks
 ---
+apiVersion: helm.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: a-team-eks
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      key: kubeconfig
+      name: a-team-eks-cluster
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  name: a-team-eks
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      key: kubeconfig
+      name: a-team-eks-cluster
+---
 apiVersion: kubernetes.crossplane.io/v1alpha1
 kind: Object
 metadata:

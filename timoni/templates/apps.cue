@@ -100,6 +100,12 @@ import (
     }]
 }
 
+#AppCrossplaneConfig: crossplane.#ComposedTemplate & {
+    #AppCrossplaneProvider & {
+        base: spec: forProvider: manifest: kind: "Configuration"
+    }
+}
+
 #AppObject: crossplane.#ComposedTemplate & {
     _config:    crossplane.#ComposedTemplate
     name: _config.name

@@ -1,0 +1,18 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-gke
+spec:
+  compositionRef:
+    name: cluster-google-official
+  compositionSelector:
+    matchLabels:
+      cluster: gke
+      provider: google-official
+  id: a-team-gke
+  parameters:
+    minNodeCount: 1
+    nodeSize: medium
+  resourceRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: CompositeCluster

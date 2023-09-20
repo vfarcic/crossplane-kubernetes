@@ -53,31 +53,19 @@ import (
 			#ProviderKubernetesCc,
 			#AppCrossplaneProvider & { _composeConfig:
 				name: "kubernetes-provider"
-				base: spec: forProvider: manifest: {
-					kind: "Provider"
-					spec: package: _config.packages.providerKubernetes
-				}
+				base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
 			},
 			#AppCrossplaneProvider & { _composeConfig:
 				name: "helm-provider"
-				base: spec: forProvider: manifest: {
-					kind: "Provider"
-					spec: package: _config.packages.providerHelm
-				}
+				base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
 			},
-			#AppCrossplaneProvider & { _composeConfig:
+			#AppCrossplaneConfig & { _composeConfig:
 				name: "config-app"
-				base: spec: forProvider: manifest: {
-					kind: "Configuration"
-					spec: package: _config.packages.configApp
-				}
+				base: spec: forProvider: manifest: spec: package: _config.packages.configApp
 			},
-			#AppCrossplaneProvider & { _composeConfig:
+			#AppCrossplaneConfig & { _composeConfig:
 				name: "config-sql"
-				base: spec: forProvider: manifest: {
-					kind: "Configuration"
-					spec: package: _config.packages.configSql
-				}
+				base: spec: forProvider: manifest: spec: package: _config.packages.configSql
 			},
 			#ProviderConfigAws,
 		]
@@ -104,7 +92,6 @@ import (
 		}
 	}
 	patches: [{
-		// TODO: Move to `patchSets`
 		fromFieldPath: "spec.id"
 		toFieldPath:   "metadata.name"
 	}, {

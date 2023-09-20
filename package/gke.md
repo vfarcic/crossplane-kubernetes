@@ -73,7 +73,7 @@ spec:
 
 ```bash
 kubectl --namespace infra apply \
-    --filename ../../examples/k8s/gcp-gke-official.yaml
+    --filename ../examples/gcp-gke-official.yaml
     
 kubectl --namespace infra get clusterclaims
 
@@ -84,7 +84,7 @@ kubectl get managed
 
 ```bash
 kubectl --namespace infra delete \
-    --filename ../../examples/k8s/gcp-gke-official.yaml
+    --filename ../examples/gcp-gke-official.yaml
 
 kubectl get managed
 

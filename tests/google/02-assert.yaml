@@ -1,0 +1,387 @@
+---
+apiVersion: container.gcp.upbound.io/v1beta1
+kind: Cluster
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: gkecluster
+    crossplane.io/external-name: a-team-gke
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    initialNodeCount: 1
+    location: us-east1
+    removeDefaultNodePool: true
+  managementPolicy: FullControl
+  providerConfigRef:
+    name: default
+  writeConnectionSecretToRef:
+    name: a-team-gke-cluster
+---
+apiVersion: container.gcp.upbound.io/v1beta1
+kind: NodePool
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: nodepool
+    crossplane.io/external-name: a-team-gke
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    autoscaling:
+    - maxNodeCount: 3
+      minNodeCount: 1
+    clusterSelector:
+      matchControllerRef: true
+    initialNodeCount: 1
+    management:
+    - autoRepair: true
+      autoUpgrade: true
+    nodeConfig:
+    - machineType: e2-standard-4
+      oauthScopes:
+      - https://www.googleapis.com/auth/cloud-platform
+  managementPolicy: FullControl
+  providerConfigRef:
+    name: default
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      key: kubeconfig
+      name: a-team-gke-cluster
+  identity:
+    type: GoogleApplicationCredentials
+    source: Secret
+    secretRef:
+      name: gcp-creds
+      namespace: crossplane-system
+      key: creds
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: crossplane
+    crossplane.io/external-name: a-team-gke-crossplane
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-crossplane
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: crossplane
+      pullSecretRef:
+        name: ""
+        namespace: ""
+      repository: https://charts.crossplane.io/stable
+      version: 1.13.2
+    namespace: crossplane-system
+  providerConfigRef:
+    name: a-team-gke
+  rollbackLimit: 3
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      key: kubeconfig
+      name: a-team-gke-cluster
+  identity:
+    type: GoogleApplicationCredentials
+    source: Secret
+    secretRef:
+      name: gcp-creds
+      namespace: crossplane-system
+      key: creds
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: ns-dev
+    crossplane.io/external-name: a-team-gke-ns-dev
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-ns-dev
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: dev
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-gke
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: ns-production
+    crossplane.io/external-name: a-team-gke-ns-production
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-ns-production
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: production
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-gke
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: k8s-provider-sa
+    crossplane.io/external-name: a-team-gke-k8s-provider-sa
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-k8s-provider-sa
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: provider-kubernetes
+        namespace: crossplane-system
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-gke
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: k8s-provider-crb
+    crossplane.io/external-name: a-team-gke-k8s-provider-crb
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-k8s-provider-crb
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: provider-kubernetes
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: cluster-admin
+      subjects:
+      - kind: ServiceAccount
+        name: provider-kubernetes
+        namespace: crossplane-system
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-gke
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: k8s-provider-cc
+    crossplane.io/external-name: a-team-gke-k8s-provider-cc
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-k8s-provider-cc
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: pkg.crossplane.io/v1alpha1
+      kind: ControllerConfig
+      metadata:
+        name: provider-kubernetes
+      spec:
+        serviceAccountName: provider-kubernetes
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-gke
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: kubernetes-provider
+    crossplane.io/external-name: a-team-gke-kubernetes-provider
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-kubernetes-provider
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: pkg.crossplane.io/v1
+      kind: Provider
+      metadata:
+        name: crossplane-kubernetes-provider
+      spec:
+        controllerConfigRef:
+          name: provider-kubernetes
+        package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.9.0
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-gke
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: helm-provider
+    crossplane.io/external-name: a-team-gke-helm-provider
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-helm-provider
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: pkg.crossplane.io/v1
+      kind: Provider
+      metadata:
+        name: crossplane-helm-provider
+      spec:
+        controllerConfigRef:
+          name: provider-kubernetes
+        package: xpkg.upbound.io/crossplane-contrib/provider-helm:v0.15.0
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-gke
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: config-app
+    crossplane.io/external-name: a-team-gke-config-app
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-config-app
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: pkg.crossplane.io/v1
+      kind: Configuration
+      metadata:
+        name: crossplane-config-app
+      spec:
+        package: xpkg.upbound.io/devops-toolkit/dot-application:v0.5.39
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-gke
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: config-sql
+    crossplane.io/external-name: a-team-gke-config-sql
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-config-sql
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: pkg.crossplane.io/v1
+      kind: Configuration
+      metadata:
+        name: crossplane-config-sql
+      spec:
+        package: xpkg.upbound.io/devops-toolkit/dot-sql:v0.8.11
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-gke
+

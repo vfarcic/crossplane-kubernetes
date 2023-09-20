@@ -4,16 +4,16 @@ import (
 	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
 )
 
-#ProviderConfigKubernetesLocal: crossplane.#ComposedTemplate & {
-    name: "kubernetes"
+#ProviderConfigLocal: crossplane.#ComposedTemplate & {
+    name: string
     base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
-        kind: "ProviderConfig"
+        apiVersion: string
+        kind:       "ProviderConfig"
         spec: {
             credentials: {
                 secretRef: {
-                    key: "kubeconfig"
-                    name: "kubeconfig"
+                    key:       "kubeconfig"
+                    name:      "kubeconfig"
                     namespace: "crossplane-system"
                 }
                 source: "Secret"
@@ -22,16 +22,15 @@ import (
     }
     patches: [{
         fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
+        toFieldPath:   "metadata.name"
     }, {
         fromFieldPath: "spec.claimRef.namespace"
-        toFieldPath: "spec.credentials.secretRef.namespace"
+        toFieldPath:   "spec.credentials.secretRef.namespace"
     }, {
         fromFieldPath: "spec.id"
-        toFieldPath: "spec.credentials.secretRef.name"
+        toFieldPath:   "spec.credentials.secretRef.name"
         transforms: [{
-            string:
-                fmt: "%s-cluster"
+            string: fmt: "%s-cluster"
             type: "string"
         }]
     }]
@@ -40,40 +39,18 @@ import (
     }]
 }
 
-#ProviderConfigHelmLocal: crossplane.#ComposedTemplate & {
-    base: {
-        apiVersion: "helm.crossplane.io/v1beta1"
-        kind: "ProviderConfig"
-        spec: {
-            credentials: {
-                secretRef: {
-                    key: "kubeconfig"
-                    name: "kubeconfig"
-                    namespace: "crossplane-system"
-                }
-                source: "Secret"
-            }
-        }
+#ProviderConfigKubernetesLocal: crossplane.#ComposedTemplate & {
+    #ProviderConfigLocal & {
+        name: "kubernetes"
+        base: apiVersion: "kubernetes.crossplane.io/v1alpha1"
     }
-    name: "helm"
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-    }, {
-        fromFieldPath: "spec.claimRef.namespace"
-        toFieldPath: "spec.credentials.secretRef.namespace"
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath: "spec.credentials.secretRef.name"
-        transforms: [{
-            string:
-                fmt: "%s-cluster"
-            type: "string"
-        }]
-    }]
-    readinessChecks: [{
-        type: "None"
-    }]
+}
+
+#ProviderConfigHelmLocal: crossplane.#ComposedTemplate & {
+    #ProviderConfigLocal & {
+        name: "helm"
+        base: apiVersion: "helm.crossplane.io/v1beta1"
+    }
 }
 
 #ProviderKubernetesSa: crossplane.#ComposedTemplate & {

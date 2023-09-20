@@ -4,7 +4,7 @@
 timoni build dot-kubernetes timoni | tee package/all.yaml
 
 # Remove the last line that contains `---`.
-sed -i '' -e '$ d' all.yaml
+sed -i '' -e '$ d' package/all.yaml
 ```
 
 ## Run tests
@@ -14,7 +14,7 @@ kubectl krew install kuttl
 
 kind create cluster
 
-kubectl kuttl test tests/
+timoni build dot-kubernetes timoni | tee package/all.yaml && kubectl kuttl test tests/
 
 kind delete cluster
 ```

@@ -34,5 +34,6 @@ import (
 	objects: {
 		civo: #Civo
 		aws: #Aws & {_config:     config}
+		google: #Google & {_config:     config}
 	}
 }

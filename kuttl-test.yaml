@@ -5,6 +5,7 @@ testDirs:
 commands:
   - command: helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --wait
   - command: kubectl apply --filename providers/aws.yaml
+  - command: kubectl apply --filename providers/google.yaml
   - command: kubectl apply --filename providers/civo.yaml
   - command: kubectl apply --filename providers/provider-kubernetes-incluster.yaml
   - command: kubectl apply --filename providers/provider-helm-incluster.yaml
@@ -14,8 +15,10 @@ commands:
   - command: kubectl wait --for condition=Healthy provider/provider-aws-iam --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/provider-aws-eks --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/provider-aws-ec2 --timeout=300s
+  - command: kubectl wait --for condition=Healthy provider/provider-gcp-container --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-aws --timeout=300s
-timeout: 30
+  - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-gcp --timeout=300s
+timeout: 60
 # startKIND: true
 # kindNodeCache: true
 # skipDelete: true
