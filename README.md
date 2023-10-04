@@ -39,7 +39,5 @@ export VERSION=[...]
 
 up xpkg build --name k8s.xpkg
 
-up xpkg push \
-    --package k8s.xpkg \
-    xpkg.upbound.io/$UP_ACCOUNT/dot-kubernetes:$VERSION
+up xpkg push --package k8s.xpkg xpkg.upbound.io/$UP_ACCOUNT/dot-kubernetes:$VERSION
 ```
