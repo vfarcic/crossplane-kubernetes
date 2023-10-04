@@ -2,3 +2,5 @@
 /aws-creds.conf
 /kubeconfig*
 /kind-logs*
+/gcp-creds.json
+/gke_gcloud_auth_plugin_cache

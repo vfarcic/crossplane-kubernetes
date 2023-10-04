@@ -23,6 +23,7 @@ import (
 			#GoogleNodePool,
 			#GoogleProviderConfigHelmLocal,
 			#AppCrossplane,
+			#AppCilium,
 			#GoogleProviderConfigKubernetesLocal,
 			#AppNsProduction,
 			#AppNsDev,
@@ -92,6 +93,10 @@ import (
 		type: "ToCompositeFieldPath"
 		fromFieldPath: "status.message"
 		toFieldPath: "status.controlPlaneStatus"
+	}, {
+		type: "ToCompositeFieldPath"
+		fromFieldPath: "status.atProvider.clusterIpv4Cidr"
+		toFieldPath: "status.field1"
 	}]
 	connectionDetails: [{
 		fromConnectionSecretKey: "kubeconfig"
@@ -121,6 +126,11 @@ import (
 				nodeConfig: [{
 					oauthScopes: [{
 						"https://www.googleapis.com/auth/cloud-platform"
+					}]
+					taint: [{
+						key: "node.cilium.io/agent-not-ready"
+						value: "true"
+						effect: "NO_EXECUTE"
 					}]
 				}]
 				autoscaling: [{

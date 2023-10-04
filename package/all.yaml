@@ -640,6 +640,7 @@ spec:
             repository: https://charts.crossplane.io/stable
             version: 1.13.2
           namespace: crossplane-system
+          set: []
         rollbackLimit: 3
     name: crossplane
     patches:
@@ -963,6 +964,9 @@ spec:
     - fromFieldPath: status.message
       toFieldPath: status.controlPlaneStatus
       type: ToCompositeFieldPath
+    - fromFieldPath: status.atProvider.clusterIpv4Cidr
+      toFieldPath: status.field1
+      type: ToCompositeFieldPath
   - base:
       apiVersion: container.gcp.upbound.io/v1beta1
       kind: NodePool
@@ -983,6 +987,10 @@ spec:
           nodeConfig:
           - oauthScopes:
             - https://www.googleapis.com/auth/cloud-platform
+            taint:
+            - effect: NO_EXECUTE
+              key: node.cilium.io/agent-not-ready
+              value: "true"
     name: nodepool
     patches:
     - fromFieldPath: spec.id
@@ -1047,6 +1055,7 @@ spec:
             repository: https://charts.crossplane.io/stable
             version: 1.13.2
           namespace: crossplane-system
+          set: []
         rollbackLimit: 3
     name: crossplane
     patches:
@@ -1058,6 +1067,44 @@ spec:
         type: string
     - fromFieldPath: spec.id
       toFieldPath: spec.providerConfigRef.name
+  - base:
+      apiVersion: helm.crossplane.io/v1beta1
+      kind: Release
+      spec:
+        forProvider:
+          chart:
+            name: cilium
+            repository: https://helm.cilium.io
+            version: 1.14.2
+          namespace: kube-system
+          set:
+          - name: nodeinit.enabled
+            value: "true"
+          - name: nodeinit.reconfigureKubelet
+            value: "true"
+          - name: nodeinit.removeCbrBridge
+            value: "true"
+          - name: cni.binPath
+            value: /home/kubernetes/bin
+          - name: gke.enabled
+            value: "true"
+          - name: ipam.mode
+            value: kubernetes
+          - name: ipv4NativeRoutingCIDR
+        rollbackLimit: 3
+    name: cilium
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+      - string:
+          fmt: '%s-cilium'
+        type: string
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+    - fromFieldPath: status.field1
+      toFieldPath: spec.forProvider.set[6].value
+      type: FromCompositeFieldPath
   - base:
       apiVersion: kubernetes.crossplane.io/v1alpha1
       kind: ProviderConfig
@@ -1417,6 +1464,7 @@ spec:
             repository: https://charts.crossplane.io/stable
             version: 1.13.2
           namespace: crossplane-system
+          set: []
         rollbackLimit: 3
     name: crossplane
     patches:
@@ -1687,3 +1735,4 @@ spec:
     - fromFieldPath: spec.id
       toFieldPath: spec.providerConfigRef.name
   writeConnectionSecretsToNamespace: crossplane-system
+---

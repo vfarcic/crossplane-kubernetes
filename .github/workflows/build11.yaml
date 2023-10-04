@@ -1,4 +1,4 @@
-name: Build
+name: build11
 on:
   push:
     branches:
@@ -40,10 +40,10 @@ jobs:
           curl -sL https://cli.upbound.io | sh
           ./up login --token ${{ secrets.UP_TOKEN }}
           ./up xpkg build --name kubernetes.xpkg
-          ./up xpkg push --package kubernetes.xpkg xpkg.upbound.io/${{ secrets.UP_ACCOUNT }}/dot-kubernetes:v0.10.${{ github.run_number }}
+          ./up xpkg push --package kubernetes.xpkg xpkg.upbound.io/${{ secrets.UP_ACCOUNT }}/dot-kubernetes:v0.11.${{ github.run_number }}
       - name: Update config
         run: |
-          yq --inplace ".spec.package = \"xpkg.upbound.io/devops-toolkit/dot-kubernetes:v0.10.${{ github.run_number }}\"" config.yaml
+          yq --inplace ".spec.package = \"xpkg.upbound.io/devops-toolkit/dot-kubernetes:v0.11.${{ github.run_number }}\"" config.yaml
       - name: Commit changes
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"

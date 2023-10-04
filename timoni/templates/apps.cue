@@ -18,12 +18,13 @@ import (
                     repository: string
                     version: string
                 }
+                set: [...]
                 namespace: string
             }
             rollbackLimit: 3
         }
     }
-    patches: [{
+    patches: [...] | *[{
         fromFieldPath: "spec.id"
         toFieldPath: "metadata.name"
         transforms: [{
@@ -59,6 +60,55 @@ import (
         }
         namespace: "crossplane-system"
     }
+}
+
+#AppCilium: #AppHelm & { _config:
+    name: "cilium"
+    base: spec: forProvider: {
+        chart: {
+            repository: "https://helm.cilium.io"
+            version: "1.14.2"
+        }
+        set: [{
+            name: "nodeinit.enabled"
+            value: "true"
+        }, {
+            name: "nodeinit.reconfigureKubelet"
+            value: "true"
+        }, {
+            name: "nodeinit.removeCbrBridge"
+            value: "true"
+        }, {
+            name: "cni.binPath"
+            value: "/home/kubernetes/bin"
+        }, {
+            name: "gke.enabled"
+            value: "true"
+        }, {
+            name: "ipam.mode"
+            value: "kubernetes"
+        }, {
+            name: "ipv4NativeRoutingCIDR"
+        }]
+        namespace: "kube-system"
+    }
+    patches: [{
+        fromFieldPath: "spec.id"
+        toFieldPath: "metadata.name"
+        transforms: [{
+            type: "string"
+            string: {
+                fmt: "%s-" + _config.name
+            }
+        }]
+    }, {
+        fromFieldPath: "spec.id"
+        toFieldPath: "spec.providerConfigRef.name"
+    }, {
+        fromFieldPath: "status.field1"
+        toFieldPath: "spec.forProvider.set[6].value"
+        type: "FromCompositeFieldPath"
+    }]
 }
 
 #AppCrossplaneProvider: crossplane.#ComposedTemplate & {

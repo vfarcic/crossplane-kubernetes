@@ -40,15 +40,11 @@ kubectl --namespace crossplane-system \
     --from-file creds=./gcp-creds.json
 
 kubectl apply \
-    --filename ../../crossplane-config/provider-kubernetes-incluster.yaml
+    --filename ../providers/provider-kubernetes-incluster.yaml
 
-kubectl apply \
-    --filename ../../crossplane-config/provider-gcp-official.yaml
+kubectl apply --filename ../providers/google.yaml
 
-kubectl apply \
-    --filename ../../crossplane-config/config-k8s.yaml
-
-kubectl create namespace infra
+kubectl apply --filename ../config.yaml
 
 kubectl get pkgrev
 
@@ -72,12 +68,21 @@ spec:
 ## Create a GKE Cluster
 
 ```bash
+kubectl create namespace infra
+
 kubectl --namespace infra apply \
     --filename ../examples/gcp-gke-official.yaml
     
 kubectl --namespace infra get clusterclaims
 
 kubectl get managed
+
+export KUBECONFIG=$PWD/kubeconfig.yaml
+
+gcloud container clusters get-credentials a-team-gke \
+    --region us-east1 --project $PROJECT_ID
+
+kubectl get nodes
 ```
 
 ## Destroy 
@@ -91,4 +96,6 @@ kubectl get managed
 # Wait until all the resources are deleted (ignore `database`)
 
 gcloud projects delete $PROJECT_ID
+
+# 10.20.0.0/14
 ```

@@ -9,10 +9,10 @@ metadata:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
 spec:
   deletionPolicy: Delete
   forProvider:
@@ -35,26 +35,30 @@ metadata:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
 spec:
   deletionPolicy: Delete
   forProvider:
     autoscaling:
-    - maxNodeCount: 3
-      minNodeCount: 1
+      - maxNodeCount: 3
+        minNodeCount: 1
     clusterSelector:
       matchControllerRef: true
     initialNodeCount: 1
     management:
-    - autoRepair: true
-      autoUpgrade: true
+      - autoRepair: true
+        autoUpgrade: true
     nodeConfig:
-    - machineType: e2-standard-4
-      oauthScopes:
-      - https://www.googleapis.com/auth/cloud-platform
+      - machineType: e2-standard-4
+        oauthScopes:
+          - https://www.googleapis.com/auth/cloud-platform
+        taint:
+          - effect: NO_EXECUTE
+            key: node.cilium.io/agent-not-ready
+            value: "true"
   managementPolicy: FullControl
   providerConfigRef:
     name: default
@@ -190,10 +194,10 @@ metadata:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke-k8s-provider-sa
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
 spec:
   deletionPolicy: Delete
   forProvider:
@@ -217,10 +221,10 @@ metadata:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke-k8s-provider-crb
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
 spec:
   deletionPolicy: Delete
   forProvider:
@@ -234,9 +238,9 @@ spec:
         kind: ClusterRole
         name: cluster-admin
       subjects:
-      - kind: ServiceAccount
-        name: provider-kubernetes
-        namespace: crossplane-system
+        - kind: ServiceAccount
+          name: provider-kubernetes
+          namespace: crossplane-system
   managementPolicy: Default
   providerConfigRef:
     name: a-team-gke
@@ -251,10 +255,10 @@ metadata:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke-k8s-provider-cc
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
 spec:
   deletionPolicy: Delete
   forProvider:
@@ -279,10 +283,10 @@ metadata:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke-kubernetes-provider
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
 spec:
   deletionPolicy: Delete
   forProvider:
@@ -309,10 +313,10 @@ metadata:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke-helm-provider
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
 spec:
   deletionPolicy: Delete
   forProvider:
@@ -339,10 +343,10 @@ metadata:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke-config-app
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
 spec:
   deletionPolicy: Delete
   forProvider:
@@ -367,10 +371,10 @@ metadata:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke-config-sql
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
 spec:
   deletionPolicy: Delete
   forProvider:
@@ -384,4 +388,69 @@ spec:
   managementPolicy: Default
   providerConfigRef:
     name: a-team-gke
-
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: crossplane
+    crossplane.io/external-name: a-team-gke-crossplane
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-crossplane
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: crossplane
+      repository: https://charts.crossplane.io/stable
+      version: 1.13.2
+    namespace: crossplane-system
+  providerConfigRef:
+    name: a-team-gke
+  rollbackLimit: 3
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: cilium
+    crossplane.io/external-name: a-team-gke-cilium
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-cilium
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: cilium
+      repository: https://helm.cilium.io
+      version: 1.14.2
+    set:
+      - name: nodeinit.enabled
+        value: "true"
+      - name: nodeinit.reconfigureKubelet
+        value: "true"
+      - name: nodeinit.removeCbrBridge
+        value: "true"
+      - name: cni.binPath
+        value: /home/kubernetes/bin
+      - name: gke.enabled
+        value: "true"
+      - name: ipam.mode
+        value: kubernetes
+      - name: ipv4NativeRoutingCIDR
+    namespace: kube-system
+  providerConfigRef:
+    name: a-team-gke
+  rollbackLimit: 3

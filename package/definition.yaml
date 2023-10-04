@@ -62,6 +62,9 @@ spec:
               nodePoolStatus:
                 description: The status of the node pool.
                 type: string
+              field1:
+                description: A placeholder
+                type: string
     additionalPrinterColumns:
     - name: clusterName
       type: string
