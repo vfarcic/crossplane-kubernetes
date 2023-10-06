@@ -24,13 +24,9 @@ kubectl --namespace crossplane-system \
     --from-file creds=./azure-creds.json
 
 kubectl apply \
-    --filename ../../crossplane-config/provider-kubernetes-incluster.yaml
+    --filename ../providers/provider-kubernetes-incluster.yaml
 
-kubectl apply \
-    --filename ../../crossplane-config/provider-azure-official.yaml
-
-kubectl apply \
-    --filename ../../crossplane-config/config-k8s.yaml
+kubectl apply --filename ../config.yaml
 
 kubectl create namespace infra
 
@@ -39,25 +35,34 @@ kubectl get pkgrev
 # Wait until all the packages are healthy
 
 kubectl apply \
-    --filename ../../crossplane-config/provider-config-azure-official.yaml
+    --filename ../providers/provider-config-azure-official.yaml
 ```
 
 ## Create an EKS Cluster
 
 ```bash
 kubectl --namespace infra apply \
-    --filename ../../examples/k8s/azure-aks-official.yaml
+    --filename ../examples/azure-aks-official.yaml
 
 kubectl get managed
 
 kubectl --namespace infra get clusterclaims
+
+export KUBECONFIG=$PWD/kubeconfig.yaml
+
+az aks get-credentials --resource-group ateamaks \
+    --name ateamaks --file $KUBECONFIG
+
+kubectl get nodes
 ```
 
 ## Destroy 
 
 ```bash
+unset KUBECONFIG
+
 kubectl --namespace infra delete \
-    --filename ../../examples/k8s/azure-aks-official.yaml
+    --filename ../examples/azure-aks-official.yaml
 
 kubectl get managed
 ```

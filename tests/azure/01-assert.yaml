@@ -32,6 +32,9 @@ spec:
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
     name: a-team-aks-crossplane
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name: a-team-aks-cilium
   - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
     name: a-team-aks

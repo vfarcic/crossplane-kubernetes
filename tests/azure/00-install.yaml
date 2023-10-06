@@ -11,3 +11,4 @@ spec:
   parameters:
     nodeSize: medium
     minNodeCount: 1
+    version: 1.26.6

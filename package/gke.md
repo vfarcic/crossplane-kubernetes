@@ -88,6 +88,8 @@ kubectl get nodes
 ## Destroy 
 
 ```bash
+unset KUBECONFIG
+
 kubectl --namespace infra delete \
     --filename ../examples/gcp-gke-official.yaml
 

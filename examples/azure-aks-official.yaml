@@ -11,4 +11,3 @@ spec:
   parameters:
     nodeSize: small
     minNodeCount: 3
-    version: 1.25.4

@@ -23,6 +23,7 @@ import (
 			#AzureKubernetesCluster,
 			#ProviderConfigHelmLocal,
 			#AppCrossplane,
+			#AzureCilium,
 			#ProviderConfigKubernetesLocal,
 			#AppNsProduction,
 			#AppNsDev,
@@ -78,7 +79,6 @@ import (
 			forProvider: {
 				location:          "eastus"
 				dnsPrefix: 		   "dot"
-				kubernetesVersion: "1.25.4"
 				defaultNodePool: [{
 					maxCount:          10
 					enableAutoScaling: true
@@ -86,6 +86,9 @@ import (
 				}]
 				identity: [{
 					type: "SystemAssigned"
+				}]
+				networkProfile: [{
+					networkPlugin: "none"
 				}]
 			}
 		}
@@ -124,8 +127,8 @@ import (
       	transforms: [{
       		type: "map"
         	map: {
-          		small:  "Standard_D1_v2"
-          		medium: "Standard_D2_v2"
+          		small:  "Standard_D2_v2"
+          		medium: "Standard_D3_v2"
           		large:  "Standard_D4_v2"
 			}
 		}]
@@ -148,4 +151,22 @@ import (
     	fromConnectionSecretKey: "kubeconfig"
       	name:                    "value"
 	}]
+}
+
+#AzureCilium: #AppHelm & { _config:
+    name: "cilium"
+    base: spec: forProvider: {
+        chart: {
+            repository: "https://helm.cilium.io"
+            version: "1.14.2"
+        }
+        set: [{
+            name: "aksbyocni.enabled"
+            value: "true"
+        }, {
+            name: "nodeinit.enabled"
+            value: "true"
+        }]
+        namespace: "kube-system"
+    }
 }

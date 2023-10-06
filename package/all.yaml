@@ -1385,8 +1385,9 @@ spec:
           dnsPrefix: dot
           identity:
           - type: SystemAssigned
-          kubernetesVersion: 1.25.4
           location: eastus
+          networkProfile:
+          - networkPlugin: none
     connectionDetails:
     - fromConnectionSecretKey: kubeconfig
     - fromConnectionSecretKey: kubeconfig
@@ -1418,8 +1419,8 @@ spec:
       transforms:
       - map:
           large: Standard_D4_v2
-          medium: Standard_D2_v2
-          small: Standard_D1_v2
+          medium: Standard_D3_v2
+          small: Standard_D2_v2
         type: map
     - fromFieldPath: metadata.name
       toFieldPath: status.clusterName
@@ -1473,6 +1474,32 @@ spec:
       transforms:
       - string:
           fmt: '%s-crossplane'
+        type: string
+    - fromFieldPath: spec.id
+      toFieldPath: spec.providerConfigRef.name
+  - base:
+      apiVersion: helm.crossplane.io/v1beta1
+      kind: Release
+      spec:
+        forProvider:
+          chart:
+            name: cilium
+            repository: https://helm.cilium.io
+            version: 1.14.2
+          namespace: kube-system
+          set:
+          - name: aksbyocni.enabled
+            value: "true"
+          - name: nodeinit.enabled
+            value: "true"
+        rollbackLimit: 3
+    name: cilium
+    patches:
+    - fromFieldPath: spec.id
+      toFieldPath: metadata.name
+      transforms:
+      - string:
+          fmt: '%s-cilium'
         type: string
     - fromFieldPath: spec.id
       toFieldPath: spec.providerConfigRef.name
@@ -1735,3 +1762,4 @@ spec:
     - fromFieldPath: spec.id
       toFieldPath: spec.providerConfigRef.name
   writeConnectionSecretsToNamespace: crossplane-system
+---
