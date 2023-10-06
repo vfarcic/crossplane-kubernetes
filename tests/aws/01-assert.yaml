@@ -97,6 +97,10 @@ spec:
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
     name: a-team-eks-crossplane
+    # TODO: Uncomment
+  # - apiVersion: helm.crossplane.io/v1beta1
+  #   kind: Release
+  #   name: a-team-eks-cilium
   - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
     name: a-team-eks

@@ -263,7 +263,6 @@ import (
         }, {
             name: "ipv4NativeRoutingCIDR"
         }]
-        namespace: "kube-system"
     }
     patches: [{
         fromFieldPath: "spec.id"

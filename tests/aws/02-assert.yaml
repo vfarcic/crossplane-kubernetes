@@ -502,6 +502,11 @@ spec:
       crossplane-kind: nodegroup.eks.aws.upbound.io
       crossplane-name: a-team-eks
       crossplane-providerconfig: default
+      # TODO: Uncomment
+    # taint:
+    #   - effect: NO_EXECUTE
+    #     key: node.cilium.io/agent-not-ready
+    #     value: "true"
   managementPolicy: FullControl
   providerConfigRef:
     name: default
@@ -983,6 +988,71 @@ spec:
     secretRef:
       key: kubeconfig
       name: a-team-eks-cluster
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: crossplane
+    crossplane.io/external-name: a-team-eks-crossplane
+  labels:
+    crossplane.io/claim-name: a-team-eks
+  name: a-team-eks-crossplane
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: crossplane
+      pullSecretRef:
+        name: ""
+        namespace: ""
+      repository: https://charts.crossplane.io/stable
+      version: 1.13.2
+    namespace: crossplane-system
+  providerConfigRef:
+    name: a-team-eks
+  rollbackLimit: 3
+  # TODO: Uncomment
+# ---
+# apiVersion: helm.crossplane.io/v1beta1
+# kind: Release
+# metadata:
+#   annotations:
+#     crossplane.io/composition-resource-name: cilium
+#     crossplane.io/external-name: a-team-eks-cilium
+#   labels:
+#     crossplane.io/claim-name: a-team-eks
+#   name: a-team-eks-cilium
+#   ownerReferences:
+#   - apiVersion: devopstoolkitseries.com/v1alpha1
+#     blockOwnerDeletion: true
+#     controller: true
+#     kind: CompositeCluster
+# spec:
+#   deletionPolicy: Delete
+#   forProvider:
+#     chart:
+#       name: cilium
+#       repository: https://helm.cilium.io
+#       version: 1.14.2
+#     set:
+#       - name: eni.enabled
+#         value: "true"
+#       - name: ipam.mode
+#         value: eni
+#       - name: egressMasqueradeInterfaces
+#         value: eth0
+#       - name: routingMode
+#         value: native
+#     namespace: kube-system
+#   providerConfigRef:
+#     name: a-team-eks
+#   rollbackLimit: 3
 ---
 apiVersion: kubernetes.crossplane.io/v1alpha1
 kind: ProviderConfig

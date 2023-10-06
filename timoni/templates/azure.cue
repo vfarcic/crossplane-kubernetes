@@ -167,6 +167,5 @@ import (
             name: "nodeinit.enabled"
             value: "true"
         }]
-        namespace: "kube-system"
     }
 }

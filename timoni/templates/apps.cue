@@ -19,7 +19,7 @@ import (
                     version: string
                 }
                 set: [...]
-                namespace: string
+                namespace: string | *"kube-system"
             }
             rollbackLimit: 3
         }
