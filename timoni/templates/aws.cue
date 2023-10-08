@@ -53,16 +53,7 @@ import (
 					#AwsRouteTableAssociation1c,
 					#AwsAddonEbs,
 					#ProviderConfigHelmLocal,
-					#AppHelm & { _composeConfig:
-						name: "crossplane"
-						base: spec: forProvider: {
-							chart: {
-								repository: "https://charts.crossplane.io/stable"
-								version: _config.versions.crossplane
-							}
-							namespace: "crossplane-system"
-						}
-					},
+					#AppCrossplane & { base: spec: forProvider: chart: version: _config.versions.crossplane },
 					// TODO: kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
 					// TODO: Uncomment
 					// #AppHelm & { _config:

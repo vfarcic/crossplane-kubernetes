@@ -162,3 +162,14 @@ import (
     name: "dev"
 }
 
+#AppCrossplane: #AppHelm & { _composeConfig:
+	name: "crossplane"
+	base: spec: forProvider: {
+		chart: {
+			repository: "https://charts.crossplane.io/stable"
+			// version: _config.versions.crossplane
+			version: string
+		}
+		namespace: "crossplane-system"
+	}
+}

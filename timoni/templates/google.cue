@@ -77,64 +77,8 @@ import (
 					#GoogleCluster,
 					#GoogleNodePool,
 					#GoogleProviderConfigHelmLocal,
-					#AppHelm & { _composeConfig:
-						name: "crossplane"
-						base: spec: forProvider: {
-							chart: {
-								repository: "https://charts.crossplane.io/stable"
-								version: _config.versions.crossplane
-							}
-							namespace: "crossplane-system"
-						}
-					},
-					#AppHelm & { _composeConfig:
-						name: "cilium"
-						base: spec: forProvider: {
-							chart: {
-								repository: "https://helm.cilium.io"
-								version: _config.versions.cilium
-							}
-							set: [{
-								name: "nodeinit.enabled"
-								value: "true"
-							}, {
-								name: "nodeinit.reconfigureKubelet"
-								value: "true"
-							}, {
-								name: "nodeinit.removeCbrBridge"
-								value: "true"
-							}, {
-								name: "cni.binPath"
-								value: "/home/kubernetes/bin"
-							}, {
-								name: "gke.enabled"
-								value: "true"
-							}, {
-								name: "ipam.mode"
-								value: "kubernetes"
-							}, {
-								name: "ipv4NativeRoutingCIDR"
-							}]
-						}
-						patches: [{
-							fromFieldPath: "spec.id"
-							toFieldPath: "metadata.name"
-							transforms: [{
-								type: "string"
-								string: {
-									fmt: "%s-" + _composeConfig.name
-									type: "Format"
-								}
-							}]
-						}, {
-							fromFieldPath: "spec.id"
-							toFieldPath: "spec.providerConfigRef.name"
-						}, {
-							fromFieldPath: "status.field1"
-							toFieldPath: "spec.forProvider.set[6].value"
-							type: "FromCompositeFieldPath"
-						}]
-					},
+					#AppCrossplane & { base: spec: forProvider: chart: version: _config.versions.crossplane },
+					#GoogleCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
 					#GoogleProviderConfigKubernetesLocal,
 					#AppNsProduction,
 					#AppNsDev,
@@ -164,6 +108,32 @@ import (
     }
 }
 
+#GoogleCilium: #AppHelm & { _composeConfig:
+	name: "cilium"
+	base: spec: forProvider: {
+		chart: { repository: "https://helm.cilium.io", version: string }
+		set: [
+			{ name: "nodeinit.enabled", value: "true"},
+			{ name: "nodeinit.reconfigureKubelet", value: "true" },
+			{ name: "nodeinit.removeCbrBridge", value: "true" },
+			{ name: "cni.binPath", value: "/home/kubernetes/bin" },
+			{ name: "gke.enabled", value: "true" },
+			{ name: "ipam.mode", value: "kubernetes" },
+			{ name: "ipv4NativeRoutingCIDR" }
+		]
+	}
+	patches: [{
+		fromFieldPath: "spec.id"
+		toFieldPath: "metadata.name"
+		transforms: [{
+			type: "string"
+			string: { fmt: "%s-" + _composeConfig.name, type: "Format" }
+		}]},
+		{ fromFieldPath: "spec.id", toFieldPath: "spec.providerConfigRef.name" },
+		{ fromFieldPath: "status.field1", toFieldPath: "spec.forProvider.set[6].value", type: "FromCompositeFieldPath" }
+	]
+}
+
 #GoogleCluster: {
 	name: "gkecluster"
 	base: {
@@ -176,56 +146,35 @@ import (
 				removeDefaultNodePool: true
 				clusterAutoscaling: [{
 					autoProvisioningDefaults: [{
-						management: [{
-							autoRepair: true
-							autoUpgrade: true
-						}]
+						management: [{ autoRepair: true, autoUpgrade: true }]
 					}]
 				}]
 			}
 		}
 	}
-	patches: [{
-		fromFieldPath: "spec.id"
-		toFieldPath: "metadata.name"
-	}, {
-		fromFieldPath: "spec.id"
-		toFieldPath: "spec.writeConnectionSecretToRef.name"
-		transforms: [{
-			type: "string"
-			string: {
-				fmt:  "%s-cluster"
-				type: "Format"
-			}
-		}]
-	}, {
-		fromFieldPath: "spec.claimRef.namespace"
-		toFieldPath: "spec.writeConnectionSecretToRef.namespace"
-	}, {
-		fromFieldPath: "spec.parameters.version"
-		toFieldPath: "spec.forProvider.minMasterVersion"
-	}, {
-		type: "ToCompositeFieldPath"
-		fromFieldPath: "metadata.name"
-		toFieldPath: "status.clusterName"
-	}, {
-		type: "ToCompositeFieldPath"
-		fromFieldPath: "status.message"
-		toFieldPath: "status.controlPlaneStatus"
-	}, {
-		type: "ToCompositeFieldPath"
-		fromFieldPath: "status.atProvider.clusterIpv4Cidr"
-		toFieldPath: "status.field1"
-	}]
-	connectionDetails: [{
-		type: "FromConnectionSecretKey"
-		fromConnectionSecretKey: "kubeconfig"
-		name: "kubeconfig"
-	}, {
-		type: "FromConnectionSecretKey"
-		fromConnectionSecretKey: "kubeconfig"
-		name: "value"
-	}]
+	patches: [
+		{ fromFieldPath: "spec.id", toFieldPath: "metadata.name" },
+		{
+			fromFieldPath: "spec.id"
+			toFieldPath: "spec.writeConnectionSecretToRef.name"
+			transforms: [{
+				type: "string"
+				string: {
+					fmt:  "%s-cluster"
+					type: "Format"
+				}
+			}]
+		},
+		{ fromFieldPath: "spec.claimRef.namespace", toFieldPath: "spec.writeConnectionSecretToRef.namespace" },
+		{ fromFieldPath: "spec.parameters.version", toFieldPath: "spec.forProvider.minMasterVersion" },
+		{ type: "ToCompositeFieldPath", fromFieldPath: "metadata.name", toFieldPath: "status.clusterName" },
+		{ type: "ToCompositeFieldPath", fromFieldPath: "status.message", toFieldPath: "status.controlPlaneStatus" },
+		{ type: "ToCompositeFieldPath", fromFieldPath: "status.atProvider.clusterIpv4Cidr", toFieldPath: "status.field1" }
+	]
+	connectionDetails: [
+		{ type: "FromConnectionSecretKey", fromConnectionSecretKey: "kubeconfig", name: "kubeconfig" },
+		{ type: "FromConnectionSecretKey", fromConnectionSecretKey: "kubeconfig", name: "value" }
+	]
 }
 
 #GoogleNodePool: {
@@ -235,64 +184,31 @@ import (
       	kind: "NodePool"
       	spec: {
 			forProvider: {
-				nodeLocations: [{
-					"us-east1-b"
-				}, {
-					"us-east1-c"
-				}, {
-					"us-east1-d"
-				}]
-				clusterSelector: {
-					matchControllerRef: true
-				}
+				nodeLocations: [{ "us-east1-b" }, { "us-east1-c" }, { "us-east1-d" }]
+				clusterSelector: { matchControllerRef: true }
 				nodeConfig: [{
-					oauthScopes: [{
-						"https://www.googleapis.com/auth/cloud-platform"
-					}]
-					taint: [{
-						key: "node.cilium.io/agent-not-ready"
-						value: "true"
-						effect: "NO_EXECUTE"
-					}]
+					oauthScopes: [{ "https://www.googleapis.com/auth/cloud-platform" }]
+					taint: [{ key: "node.cilium.io/agent-not-ready", value: "true", effect: "NO_EXECUTE" }]
 				}]
-				autoscaling: [{
-					maxNodeCount: 3
-				}]
-				management: [{
-					autoRepair: true
-					autoUpgrade: true
-				}]
+				autoscaling: [{ maxNodeCount: 3 }]
+				management: [{ autoRepair: true, autoUpgrade: true }]
 			}
 		}
 	}
-    patches: [{
-		fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-	}, {
-      	fromFieldPath: "spec.parameters.version"
-        toFieldPath: "spec.forProvider.version"
-	}, {
-      	fromFieldPath: "spec.parameters.minNodeCount"
-        toFieldPath: "spec.forProvider.initialNodeCount"
-	}, {
-      	fromFieldPath: "spec.parameters.minNodeCount"
-        toFieldPath: "spec.forProvider.autoscaling[0].minNodeCount"
-	}, {
-      	fromFieldPath: "spec.parameters.nodeSize"
-        toFieldPath: "spec.forProvider.nodeConfig[0].machineType"
-        transforms: [{
-          	type: "map"
-            map: {
-				small: "e2-standard-2"
-				medium: "e2-standard-4"
-				large: "e2-standard-16"
-			}
-		}]
-	}, {
-      	type: "ToCompositeFieldPath"
-        fromFieldPath: "status.message"
-        toFieldPath: "status.nodePoolStatus"
-	}]
+    patches: [
+		{ fromFieldPath: "spec.id", toFieldPath: "metadata.name" },
+		{ fromFieldPath: "spec.parameters.version", toFieldPath: "spec.forProvider.version" }, 
+		{ fromFieldPath: "spec.parameters.minNodeCount", toFieldPath: "spec.forProvider.initialNodeCount" },
+		{ fromFieldPath: "spec.parameters.minNodeCount", toFieldPath: "spec.forProvider.autoscaling[0].minNodeCount" }, 
+		{
+			fromFieldPath: "spec.parameters.nodeSize"
+			toFieldPath: "spec.forProvider.nodeConfig[0].machineType"
+			transforms: [{
+				type: "map"
+				map: { small: "e2-standard-2", medium: "e2-standard-4", large: "e2-standard-16" }
+			}]},
+		{ type: "ToCompositeFieldPath", fromFieldPath: "status.message", toFieldPath: "status.nodePoolStatus" }
+	]
 }
 
 #GoogleProviderConfigLocal: {
@@ -302,44 +218,28 @@ import (
         kind:       "ProviderConfig"
         spec: {
             credentials: {
-                secretRef: {
-                    key:       "kubeconfig"
-                    name:      "kubeconfig"
-                    namespace: "crossplane-system"
-                }
+                secretRef: { key: "kubeconfig", name: "kubeconfig", namespace: "crossplane-system" }
                 source: "Secret"
             }
 			identity: {
 				type: "GoogleApplicationCredentials"
 				source: "Secret"
-				secretRef: {
-					name:      "gcp-creds"
-					namespace: "crossplane-system"
-					key:       "creds"
-				}
+				secretRef: { name: "gcp-creds", namespace: "crossplane-system", key: "creds" }
 			}
         }
     }
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath:   "metadata.name"
-    }, {
-        fromFieldPath: "spec.claimRef.namespace"
-        toFieldPath:   "spec.credentials.secretRef.namespace"
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath:   "spec.credentials.secretRef.name"
-        transforms: [{
-            string: {
-				fmt: "%s-cluster"
-				type: "Format"
-			}
-            type: "string"
-        }]
+    patches: [
+		{ fromFieldPath: "spec.id", toFieldPath:   "metadata.name" },
+		{ fromFieldPath: "spec.claimRef.namespace", toFieldPath:   "spec.credentials.secretRef.namespace" }, 
+		{
+			fromFieldPath: "spec.id"
+			toFieldPath:   "spec.credentials.secretRef.name"
+			transforms: [{
+				string: { fmt: "%s-cluster", type: "Format" }
+				type: "string"
+			}]
     }]
-    readinessChecks: [{
-        type: "None"
-    }]
+    readinessChecks: [{ type: "None" }]
 }
 
 #GoogleProviderConfigHelmLocal: {

@@ -53,6 +53,15 @@ spec:
                     default:
                       - dev
                       - production
+                  # TODO: Uncomment and implement
+                  # apps:
+                  #   type: object
+                  #   description: List of apps that should be installed in the cluster
+                  #   properties:
+                  #     crossplane:
+                  #       description: Install Crossplane
+                  #       type: boolean
+                  #       default: false
                 required:
                 - nodeSize
             required:
