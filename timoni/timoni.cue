@@ -5,8 +5,8 @@
 package main
 
 import (
+	crossplane "apiextensions.crossplane.io/composition/v1"
 	templates "timoni.sh/timoni/templates"
-	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
 )
 
 values: templates.#Config

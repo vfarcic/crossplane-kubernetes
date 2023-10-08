@@ -1,12 +1,11 @@
 package templates
 
 import (
-	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
     runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
-#AppHelm: crossplane.#ComposedTemplate & {
-    _config: crossplane.#ComposedTemplate
+#AppHelm: {
+    _config: {...}
     name:    _config.name
     base: {
         apiVersion: "helm.crossplane.io/v1beta1"
@@ -31,6 +30,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-" + _config.name
+                type: "Format"
             }
         }]
     }, {
@@ -62,9 +62,9 @@ import (
     }
 }
 
-#AppCrossplaneProvider: crossplane.#ComposedTemplate & {
-    _composeConfig:    crossplane.#ComposedTemplate
-    name: _composeConfig.name
+#AppCrossplaneProvider: {
+    _composeConfig: {...}
+    name:           _composeConfig.name
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
         kind: "Object"
@@ -93,6 +93,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-" + _composeConfig.name
+                type: "Format"
             }
         }]
     }, {
@@ -101,15 +102,15 @@ import (
     }]
 }
 
-#AppCrossplaneConfig: crossplane.#ComposedTemplate & {
+#AppCrossplaneConfig: {
     #AppCrossplaneProvider & {
         base: spec: forProvider: manifest: kind: "Configuration"
     }
 }
 
-#AppObject: crossplane.#ComposedTemplate & {
-    _config:    crossplane.#ComposedTemplate
-    name: _config.name
+#AppObject: {
+    _config: {...}
+    name:    _config.name
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
         kind: "Object"
@@ -126,6 +127,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-" + _config.name
+                type: "Format"
             }
         }]
     }, {
@@ -134,8 +136,8 @@ import (
     }]
 }
 
-#AppNs: crossplane.#ComposedTemplate & {
-    _config:    crossplane.#ComposedTemplate
+#AppNs: {
+    _config: {...}
     name: "ns-" + _config.name
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -155,6 +157,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-ns-" + _config.name
+                type: "Format"
             }
         }]
     }, {

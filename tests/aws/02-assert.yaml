@@ -234,6 +234,7 @@ metadata:
 spec:
   deletionPolicy: Delete
   forProvider:
+    name: a-team-eks
     description: Cluster communication with worker nodes
     region: us-east-1
     tags:

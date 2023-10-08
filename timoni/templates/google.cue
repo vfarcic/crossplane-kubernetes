@@ -1,7 +1,7 @@
 package templates
 
 import (
-	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
+	crossplane "apiextensions.crossplane.io/composition/v1"
 )
 
 #Google: crossplane.#Composition & {
@@ -18,35 +18,46 @@ import (
     spec: {
 		compositeTypeRef: _config.compositeTypeRef
 		patchSets: _config.patchSets
-		resources: [
-			#GoogleCluster,
-			#GoogleNodePool,
-			#GoogleProviderConfigHelmLocal,
-			#AppCrossplane,
-			#GoogleCilium,
-			#GoogleProviderConfigKubernetesLocal,
-			#AppNsProduction,
-			#AppNsDev,
-			#ProviderKubernetesSa,
-			#ProviderKubernetesCrb,
-			#ProviderKubernetesCc,
-			#AppCrossplaneProvider & { _composeConfig:
-				name: "kubernetes-provider"
-				base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
-			},
-			#AppCrossplaneProvider & { _composeConfig:
-				name: "helm-provider"
-				base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
-			},
-			#AppCrossplaneConfig & { _composeConfig:
-				name: "config-app"
-				base: spec: forProvider: manifest: spec: package: _config.packages.configApp
-			},
-			#AppCrossplaneConfig & { _composeConfig:
-				name: "config-sql"
-				base: spec: forProvider: manifest: spec: package: _config.packages.configSql
-			},
-		]
+		mode: "Pipeline"
+		pipeline: [{
+			step: "patch-and-transform"
+			functionRef: {
+				name: "function-patch-and-transform"
+			}
+			input: {
+				apiVersion: "pt.fn.crossplane.io/v1beta1"
+				kind: "Resources"
+				resources: [
+					#GoogleCluster,
+					#GoogleNodePool,
+					#GoogleProviderConfigHelmLocal,
+					#AppCrossplane,
+					#GoogleCilium,
+					#GoogleProviderConfigKubernetesLocal,
+					#AppNsProduction,
+					#AppNsDev,
+					#ProviderKubernetesSa,
+					#ProviderKubernetesCrb,
+					#ProviderKubernetesCc,
+					#AppCrossplaneProvider & { _composeConfig:
+						name: "kubernetes-provider"
+						base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
+					},
+					#AppCrossplaneProvider & { _composeConfig:
+						name: "helm-provider"
+						base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
+					},
+					#AppCrossplaneConfig & { _composeConfig:
+						name: "config-app"
+						base: spec: forProvider: manifest: spec: package: _config.packages.configApp
+					},
+					#AppCrossplaneConfig & { _composeConfig:
+						name: "config-sql"
+						base: spec: forProvider: manifest: spec: package: _config.packages.configSql
+					},
+				]
+			}
+		}]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }
 }
@@ -59,12 +70,15 @@ import (
 		spec: {
 			forProvider: {
 				location: "us-east1"
-				initialClusterVersion: "latest"
 				initialNodeCount: 1
 				removeDefaultNodePool: true
-				management: [{
-					autoRepair: true
-					autoUpgrade: true
+				clusterAutoscaling: [{
+					autoProvisioningDefaults: [{
+						management: [{
+							autoRepair: true
+							autoUpgrade: true
+						}]
+					}]
 				}]
 			}
 		}
@@ -77,7 +91,10 @@ import (
 		toFieldPath: "spec.writeConnectionSecretToRef.name"
 		transforms: [{
 			type: "string"
-			string: fmt: "%s-cluster"
+			string: {
+				fmt:  "%s-cluster"
+				type: "Format"
+			}
 		}]
 	}, {
 		fromFieldPath: "spec.claimRef.namespace"
@@ -99,8 +116,11 @@ import (
 		toFieldPath: "status.field1"
 	}]
 	connectionDetails: [{
+		type: "FromConnectionSecretKey"
 		fromConnectionSecretKey: "kubeconfig"
+		name: "kubeconfig"
 	}, {
+		type: "FromConnectionSecretKey"
 		fromConnectionSecretKey: "kubeconfig"
 		name: "value"
 	}]
@@ -113,7 +133,7 @@ import (
       	kind: "NodePool"
       	spec: {
 			forProvider: {
-				locations: [{
+				nodeLocations: [{
 					"us-east1-b"
 				}, {
 					"us-east1-c"
@@ -134,7 +154,6 @@ import (
 					}]
 				}]
 				autoscaling: [{
-					enabled: true
 					maxNodeCount: 3
 				}]
 				management: [{
@@ -147,9 +166,6 @@ import (
     patches: [{
 		fromFieldPath: "spec.id"
         toFieldPath: "metadata.name"
-	}, {
-      	fromFieldPath: "spec.writeConnectionSecretToRef.namespace"
-        toFieldPath: "spec.credentials.secretRef.namespace"
 	}, {
       	fromFieldPath: "spec.parameters.version"
         toFieldPath: "spec.forProvider.version"
@@ -177,7 +193,7 @@ import (
 	}]
 }
 
-#GoogleProviderConfigLocal: crossplane.#ComposedTemplate & {
+#GoogleProviderConfigLocal: {
 	name: string
     base: {
         apiVersion: string
@@ -212,7 +228,10 @@ import (
         fromFieldPath: "spec.id"
         toFieldPath:   "spec.credentials.secretRef.name"
         transforms: [{
-            string: fmt: "%s-cluster"
+            string: {
+				fmt: "%s-cluster"
+				type: "Format"
+			}
             type: "string"
         }]
     }]
@@ -221,14 +240,14 @@ import (
     }]
 }
 
-#GoogleProviderConfigHelmLocal: crossplane.#ComposedTemplate & {
+#GoogleProviderConfigHelmLocal: {
     #GoogleProviderConfigLocal & {
         name: "helm"
         base: apiVersion: "helm.crossplane.io/v1beta1"
     }
 }
 
-#GoogleProviderConfigKubernetesLocal: crossplane.#ComposedTemplate & {
+#GoogleProviderConfigKubernetesLocal: {
     #GoogleProviderConfigLocal & {
         name: "kubernetes"
         base: apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -271,6 +290,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-" + _config.name
+				type: "Format"
             }
         }]
     }, {

@@ -1,7 +1,7 @@
 package templates
 
 import (
-	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
+	crossplane "apiextensions.crossplane.io/composition/v1"
 )
 
 #Civo: crossplane.#Composition & {
@@ -18,9 +18,20 @@ import (
     spec: {
 		compositeTypeRef: _config.compositeTypeRef
 		patchSets: _config.patchSets
-		resources: [
-			#CivoClusterResource,
-		]
+		mode: "Pipeline"
+		pipeline: [{
+			step: "patch-and-transform"
+			functionRef: {
+				name: "function-patch-and-transform"
+			}
+			input: {
+				apiVersion: "pt.fn.crossplane.io/v1beta1"
+				kind: "Resources"
+				resources: [
+					#CivoClusterResource,
+				]
+			}
+		}]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }
 }
@@ -50,10 +61,13 @@ import (
 		}
 	}
 	connectionDetails: [{
+		type: "FromConnectionSecretKey"
 		fromConnectionSecretKey: "kubeconfig"
+		name: "kubeconfig"
 	}, {
+		type: "FromConnectionSecretKey"
 		fromConnectionSecretKey: "kubeconfig"
-		value: "value"
+		name: "value"
 	}]
 	patches: [{
 		fromFieldPath: "spec.id"
@@ -67,6 +81,7 @@ import (
 		transforms: [{
 			string: {
 				fmt: "%s-cluster"
+				type: "Format"
 			}
 			type: "string"
 		}]

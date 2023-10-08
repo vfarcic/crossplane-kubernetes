@@ -70,13 +70,13 @@ import (
 
 // CrossVersionObjectReference contains enough information to let you identify the referred resource.
 #CrossVersionObjectReference: {
-	// Kind of the referent; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+	// kind is the kind of the referent; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
 	kind: string @go(Kind) @protobuf(1,bytes,opt)
 
-	// Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
+	// name is the name of the referent; More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	name: string @go(Name) @protobuf(2,bytes,opt)
 
-	// API version of the referent
+	// apiVersion is the API version of the referent
 	// +optional
 	apiVersion?: string @go(APIVersion) @protobuf(3,bytes,opt)
 }
@@ -170,7 +170,7 @@ import (
 // number of replicas is not set instantly, instead, the safest value from the stabilization
 // window is chosen.
 #HPAScalingRules: {
-	// StabilizationWindowSeconds is the number of seconds for which past recommendations should be
+	// stabilizationWindowSeconds is the number of seconds for which past recommendations should be
 	// considered while scaling up or scaling down.
 	// StabilizationWindowSeconds must be greater than or equal to zero and less than or equal to 3600 (one hour).
 	// If not set, use the default values:
@@ -207,14 +207,14 @@ import (
 
 // HPAScalingPolicy is a single policy which must hold true for a specified past interval.
 #HPAScalingPolicy: {
-	// Type is used to specify the scaling policy.
+	// type is used to specify the scaling policy.
 	type: #HPAScalingPolicyType @go(Type) @protobuf(1,bytes,opt,casttype=HPAScalingPolicyType)
 
-	// Value contains the amount of change which is permitted by the policy.
+	// value contains the amount of change which is permitted by the policy.
 	// It must be greater than zero
 	value: int32 @go(Value) @protobuf(2,varint,opt)
 
-	// PeriodSeconds specifies the window of time for which the policy should hold true.
+	// periodSeconds specifies the window of time for which the policy should hold true.
 	// PeriodSeconds must be greater than zero and less than or equal to 1800 (30 min).
 	periodSeconds: int32 @go(PeriodSeconds) @protobuf(3,varint,opt)
 }
@@ -533,7 +533,7 @@ import (
 // Kubernetes, and have special scaling options on top of those available to
 // normal per-pod metrics using the "pods" source.
 #ResourceMetricStatus: {
-	// Name is the name of the resource in question.
+	// name is the name of the resource in question.
 	name: v1.#ResourceName @go(Name) @protobuf(1,bytes)
 
 	// current contains the current value for the given metric
@@ -546,13 +546,13 @@ import (
 // Kubernetes, and have special scaling options on top of those available to
 // normal per-pod metrics using the "pods" source.
 #ContainerResourceMetricStatus: {
-	// Name is the name of the resource in question.
+	// name is the name of the resource in question.
 	name: v1.#ResourceName @go(Name) @protobuf(1,bytes)
 
 	// current contains the current value for the given metric
 	current: #MetricValueStatus @go(Current) @protobuf(2,bytes)
 
-	// Container is the name of the container in the pods of the scaling target
+	// container is the name of the container in the pods of the scaling target
 	container: string @go(Container) @protobuf(3,bytes,opt)
 }
 

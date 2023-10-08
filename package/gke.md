@@ -95,9 +95,7 @@ kubectl --namespace infra delete \
 
 kubectl get managed
 
-# Wait until all the resources are deleted (ignore `database`)
+# Wait until all the resources are deleted
 
-gcloud projects delete $PROJECT_ID
-
-# 10.20.0.0/14
+gcloud projects delete $PROJECT_ID --quiet
 ```

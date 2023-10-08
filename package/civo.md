@@ -19,8 +19,9 @@ helm upgrade --install \
 # Replace `[...]` with your Civo token
 export CIVO_TOKEN=[...]
 
-export CIVO_TOKEN_ENCODED=$(\
-    echo $CIVO_TOKEN | base64)
+export CIVO_TOKEN_ENCODED=$(echo $CIVO_TOKEN | base64)
+
+kubectl apply --filename ../config.yaml
 
 echo "apiVersion: v1
 kind: Secret
@@ -31,24 +32,6 @@ type: Opaque
 data:
   credentials: $CIVO_TOKEN_ENCODED" \
     | kubectl apply --filename -
-
-echo "
-apiVersion: pkg.crossplane.io/v1
-kind: Configuration
-metadata:
-  name: crossplane-k8s
-spec:
-  package: vfarcic/crossplane-k8s:v0.4.8
-
----
-
-apiVersion: pkg.crossplane.io/v1
-kind: Provider
-metadata:
-  name: crossplane-provider-civo
-spec:
-  package: crossplane/provider-civo:main
-" | kubectl apply --filename -
 
 kubectl get pkgrev
 

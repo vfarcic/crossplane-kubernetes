@@ -1,7 +1,7 @@
 package templates
 
 import (
-	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
+	crossplane "apiextensions.crossplane.io/composition/v1"
 )
 
 #Aws: crossplane.#Composition & {
@@ -18,62 +18,73 @@ import (
     spec: {
 		compositeTypeRef: _config.compositeTypeRef
 		patchSets: _config.patchSets
-		resources: [
-			#AwsCluster,
-			#AwsClusterAuth,
-			#AwsNodeGroup,
-			#AwsIamControlPlane,
-			#AwsIamNodeGroup,
-			#AwsIamAttachmentControlPlane,
-			#AwsIamAttachmentService,
-			#AwsIamAttachmentWorker,
-			#AwsIamAttachmentCni,
-			#AwsIamAttachmentRegistry,
-			#AwsVpc,
-			#AwsSecurityGroup,
-			#AwsSecurityGroupRule,
-			#AwsSubnet1a,
-			#AwsSubnet1b,
-			#AwsSubnet1c,
-			#AwsGateway,
-			#AwsRouteTable,
-			#AwsRoute,
-			#AwsMainRouteAssociation,
-			#AwsRouteTableAssociation1a,
-			#AwsRouteTableAssociation1b,
-			#AwsRouteTableAssociation1c,
-			#AwsAddonEbs,
-			#ProviderConfigHelmLocal,
-			#AppCrossplane,
-			// TODO: kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
-			// TODO: Uncomment
-			// #AwsCilium,
-			#ProviderConfigKubernetesLocal,
-			#AppNsProduction,
-			#AppNsDev,
-			#ProviderKubernetesSa,
-			#ProviderKubernetesCrb,
-			#ProviderKubernetesCc,
-			#AppCrossplaneProvider & { _composeConfig:
-				name: "kubernetes-provider"
-				base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
-			},
-			#AppCrossplaneProvider & { _composeConfig:
-				name: "helm-provider"
-				base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
-			},
-			#AppCrossplaneConfig & { _composeConfig:
-				name: "config-app"
-				base: spec: forProvider: manifest: spec: package: _config.packages.configApp
-			},
-			#AppCrossplaneConfig & { _composeConfig:
-				name: "config-sql"
-				base: spec: forProvider: manifest: spec: package: _config.packages.configSql
-			},
-			#ProviderConfig & { _composeConfig:
-				name: "aws"
-			},
-		]
+		mode: "Pipeline"
+		pipeline: [{
+			step: "patch-and-transform"
+			functionRef: {
+				name: "function-patch-and-transform"
+			}
+			input: {
+				apiVersion: "pt.fn.crossplane.io/v1beta1"
+				kind: "Resources"
+				resources: [
+					#AwsCluster,
+					#AwsClusterAuth,
+					#AwsNodeGroup,
+					#AwsIamControlPlane,
+					#AwsIamNodeGroup,
+					#AwsIamAttachmentControlPlane,
+					#AwsIamAttachmentService,
+					#AwsIamAttachmentWorker,
+					#AwsIamAttachmentCni,
+					#AwsIamAttachmentRegistry,
+					#AwsVpc,
+					#AwsSecurityGroup,
+					#AwsSecurityGroupRule,
+					#AwsSubnet1a,
+					#AwsSubnet1b,
+					#AwsSubnet1c,
+					#AwsGateway,
+					#AwsRouteTable,
+					#AwsRoute,
+					#AwsMainRouteAssociation,
+					#AwsRouteTableAssociation1a,
+					#AwsRouteTableAssociation1b,
+					#AwsRouteTableAssociation1c,
+					#AwsAddonEbs,
+					#ProviderConfigHelmLocal,
+					#AppCrossplane,
+					// TODO: kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
+					// TODO: Uncomment
+					// #AwsCilium,
+					#ProviderConfigKubernetesLocal,
+					#AppNsProduction,
+					#AppNsDev,
+					#ProviderKubernetesSa,
+					#ProviderKubernetesCrb,
+					#ProviderKubernetesCc,
+					#AppCrossplaneProvider & { _composeConfig:
+						name: "kubernetes-provider"
+						base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
+					},
+					#AppCrossplaneProvider & { _composeConfig:
+						name: "helm-provider"
+						base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
+					},
+					#AppCrossplaneConfig & { _composeConfig:
+						name: "config-app"
+						base: spec: forProvider: manifest: spec: package: _config.packages.configApp
+					},
+					#AppCrossplaneConfig & { _composeConfig:
+						name: "config-sql"
+						base: spec: forProvider: manifest: spec: package: _config.packages.configSql
+					},
+					#ProviderConfig & { _composeConfig:
+						name: "aws"
+					},
+				]
+			}
+		}]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }
 }
@@ -107,7 +118,10 @@ import (
 		toFieldPath: "spec.forProvider.roleArnSelector.matchLabels.role"
 		transforms: [{
 			type: "string"
-			string: fmt: "%s-controlplane"
+			string: {
+				fmt: "%s-controlplane"
+				type: "Format"
+			}
 		}]
 	}, {
 		type: "ToCompositeFieldPath"
@@ -140,14 +154,19 @@ import (
         toFieldPath: "spec.writeConnectionSecretToRef.name"
         transforms: [{
           	type: "string"
-            string: fmt: "%s-cluster"
+            string: {
+				fmt: "%s-cluster"
+				type: "Format"
+			}
 		}]
 	}, {
       	fromFieldPath: "spec.claimRef.namespace"
         toFieldPath: "spec.writeConnectionSecretToRef.namespace"
 	}]
     connectionDetails: [{
+		type: "FromConnectionSecretKey"
       	fromConnectionSecretKey: "kubeconfig"
+		name: "kubeconfig"
 	}]
 }
 
@@ -198,7 +217,10 @@ import (
       	toFieldPath: "spec.forProvider.nodeRoleArnSelector.matchLabels.role"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-nodegroup"
+        	string: {
+				fmt: "%s-nodegroup"
+				type: "Format"
+			}
 		}]
 	}, {
     	fromFieldPath: "spec.parameters.minNodeCount"
@@ -213,8 +235,8 @@ import (
 	}]
 }
 
-#AwsIam: crossplane.#ComposedTemplate & {
-    _config:    crossplane.#ComposedTemplate
+#AwsIam: {
+    _config: {...}
     name: "iamrole-" + _config.name
     base: {
         apiVersion: "iam.aws.upbound.io/v1beta1"
@@ -226,14 +248,20 @@ import (
       	toFieldPath: "metadata.name"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-" + _config.name
+        	string: {
+				fmt: "%s-" + _config.name
+				type: "Format"
+			}
 		}]
 	}, {
     	fromFieldPath: "spec.id"
       	toFieldPath: "metadata.labels.role"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-" + _config.name
+        	string: {
+				fmt: "%s-" + _config.name
+				type: "Format"
+			}
 		}]
     }]
 }
@@ -267,12 +295,12 @@ import (
 		"""
 }
 
-#AwsIamAttachmentControlPlaneRole: crossplane.#ComposedTemplate & {
-	_config:    crossplane.#ComposedTemplate
-	name: "iamattachment-" + _config.name
+#AwsIamAttachmentControlPlaneRole: {
+	_config: {...}
+	name:    "iamattachment-" + _config.name
     base: {
       	apiVersion: "iam.aws.upbound.io/v1beta1"
-      	kind: "RolePolicyAttachment"
+      	kind:       "RolePolicyAttachment"
       	spec: {
         	forProvider: {
           		policyArn: string
@@ -282,24 +310,30 @@ import (
 	}
     patches: [{
     	fromFieldPath: "spec.id"
-      	toFieldPath: "metadata.name"
+      	toFieldPath:   "metadata.name"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-" + _config.name
+        	string: {
+				fmt: "%s-" + _config.name
+				type: "Format"
+			}
 		}]
 	}, {
     	fromFieldPath: "spec.id"
       	toFieldPath: "spec.forProvider.roleSelector.matchLabels.role"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-controlplane"
+        	string: {
+				fmt: "%s-controlplane"
+				type: "Format"
+			}
 		}]
 	}]
 }
 
-#AwsIamAttachmentNodeGroup: crossplane.#ComposedTemplate & {
-	_config:    crossplane.#ComposedTemplate
-	name: "iamattachment-" + _config.name
+#AwsIamAttachmentNodeGroup: {
+	_config: {...}
+	name:    "iamattachment-" + _config.name
     base: {
       	apiVersion: "iam.aws.upbound.io/v1beta1"
       	kind: "RolePolicyAttachment"
@@ -315,14 +349,20 @@ import (
       	toFieldPath: "metadata.name"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-" + _config.name
+        	string: {
+				fmt: "%s-" + _config.name
+				type: "Format"
+			}
 		}]
 	}, {
     	fromFieldPath: "spec.id"
       	toFieldPath: "spec.forProvider.roleSelector.matchLabels.role"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-nodegroup"
+        	string: {
+				fmt: "%s-nodegroup"
+				type: "Format"
+			}
 		}]
 	}]
 }
@@ -389,7 +429,7 @@ import (
       	toFieldPath: "metadata.name"
 	}, {
     	fromFieldPath: "spec.id"
-      	toFieldPath: "spec.forProvider.groupName"
+      	toFieldPath: "spec.forProvider.name"
 	}]
     readinessChecks: [{
     	type: "None"
@@ -420,9 +460,9 @@ import (
 	}]
 }
 
-#AwsSubnet: crossplane.#ComposedTemplate & {
-	_config:    crossplane.#ComposedTemplate
-  	name: "subnet-nodepool-" + _config.name
+#AwsSubnet: {
+	_config: {...}
+  	name:    "subnet-nodepool-" + _config.name
     base: {
     	apiVersion: "ec2.aws.upbound.io/v1beta1"
     	kind: "Subnet"
@@ -448,7 +488,10 @@ import (
       	toFieldPath: "metadata.name"
       	transforms: [{
       		type: "string"
-			string: fmt: "%s-" + _config.name
+			string: {
+				fmt: "%s-" + _config.name
+				type: "Format"
+			}
 		}]
 	}]
 }
@@ -543,9 +586,9 @@ import (
 	}]
 }
 
-#AwsRouteTableAssociation: crossplane.#ComposedTemplate & {
-	_config:    crossplane.#ComposedTemplate
-	name: "routeTableAssociation" + _config.name
+#AwsRouteTableAssociation: {
+	_config: {...}
+	name:    "routeTableAssociation" + _config.name
     base: {
       	apiVersion: "ec2.aws.upbound.io/v1beta1"
       	kind: "RouteTableAssociation"
@@ -568,7 +611,10 @@ import (
       	toFieldPath: "metadata.name"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-" + _config.name
+        	string: {
+				fmt: "%s-" + _config.name
+				type: "Format"
+			}
 		}]
 	}]
 }
@@ -604,12 +650,15 @@ import (
       	toFieldPath: "metadata.name"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-ebs"
+        	string: {
+				fmt: "%s-ebs"
+				type: "Format"
+			}
 		}]
 	}]
 }
 
-#ProviderConfigAws: crossplane.#ComposedTemplate & {
+#ProviderConfigAws: {
     name: "aws-pc"
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -641,6 +690,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-aws-pc"
+				type: "Format"
             }
         }]
     }, {
