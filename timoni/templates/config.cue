@@ -18,14 +18,15 @@ import (
 		}]
 	}]
 	versions: {
-		traefik: string
+		traefik: 	string
 		crossplane: string
+		cilium: 	string
 	}
 	packages: {
 		providerKubernetes: string
-		providerHelm: string
-		configApp: string
-		configSql: string
+		providerHelm: 		string
+		configApp: 			string
+		configSql: 			string
 	}
 }
 

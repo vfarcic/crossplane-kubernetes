@@ -5,15 +5,15 @@ import (
 )
 
 #AppHelm: {
-    _config: {...}
-    name:    _config.name
+    _composeConfig: {...}
+    name:    _composeConfig.name
     base: {
         apiVersion: "helm.crossplane.io/v1beta1"
         kind: "Release"
         spec: {
             forProvider: {
                 chart: {
-                    name: _config.name
+                    name: _composeConfig.name
                     repository: string
                     version: string
                 }
@@ -29,7 +29,7 @@ import (
         transforms: [{
             type: "string"
             string: {
-                fmt: "%s-" + _config.name
+                fmt: "%s-" + _composeConfig.name
                 type: "Format"
             }
         }]
@@ -39,7 +39,7 @@ import (
     }]
 }
 
-#AppTraefik: #AppHelm & { _config:
+#AppTraefik: #AppHelm & { _composeConfig:
     name: "traefik"
     base: spec: forProvider: {
         chart: {
@@ -47,18 +47,6 @@ import (
             version: string
         }
         namespace: "traefik"
-    }
-}
-
-
-#AppCrossplane: #AppHelm & { _config:
-    name: "crossplane"
-    base: spec: forProvider: {
-        chart: {
-            repository: "https://charts.crossplane.io/stable"
-            version: "1.13.2"
-        }
-        namespace: "crossplane-system"
     }
 }
 

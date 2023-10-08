@@ -20,10 +20,56 @@ import (
 		patchSets: _config.patchSets
 		mode: "Pipeline"
 		pipeline: [{
+	// 		step: "namespaces"
+	// 		functionRef: name: "loop"
+	// 		input: {
+	// 			apiVersion: "pt.fn.crossplane.io/v1beta1"
+	// 			kind: "Resources"
+	// 			valuesXrPath: "spec.parameters.namespaces"
+	// 			namePrefix: "ns-"
+	// 			paths: [{
+	// 				"spec.forProvider.manifest.metadata.name",
+	// 			}]
+	// 			resources: [{
+	// 				base: {
+	// 					apiVersion: "kubernetes.crossplane.io/v1alpha1"
+	// 					kind: "Object"
+	// 					spec: forProvider: manifest: {
+	// 						apiVersion: "v1"
+	// 						kind: "Namespace"
+	// 					}
+	// 				}
+	// 			}]
+	// 		}
+    // // name: "ns-" + _config.name
+    // // base: {
+    // //     apiVersion: "kubernetes.crossplane.io/v1alpha1"
+    // //     kind: "Object"
+    // //     spec: forProvider: manifest: {
+    // //         apiVersion: "v1"
+    // //         kind: "Namespace"
+    // //         metadata: {
+    // //             name: _config.name
+    // //         }
+    // //     }
+    // // }
+    // // patches: [{
+    // //     fromFieldPath: "spec.id"
+    // //     toFieldPath: "metadata.name"
+    // //     transforms: [{
+    // //         type: "string"
+    // //         string: {
+    // //             fmt: "%s-ns-" + _config.name
+    // //             type: "Format"
+    // //         }
+    // //     }]
+    // // }, {
+    // //     fromFieldPath: "spec.id"
+    // //     toFieldPath: "spec.providerConfigRef.name"
+    // // }]
+	// 	}, {
 			step: "patch-and-transform"
-			functionRef: {
-				name: "function-patch-and-transform"
-			}
+			functionRef: name: "function-patch-and-transform"
 			input: {
 				apiVersion: "pt.fn.crossplane.io/v1beta1"
 				kind: "Resources"
@@ -31,8 +77,64 @@ import (
 					#GoogleCluster,
 					#GoogleNodePool,
 					#GoogleProviderConfigHelmLocal,
-					#AppCrossplane,
-					#GoogleCilium,
+					#AppHelm & { _composeConfig:
+						name: "crossplane"
+						base: spec: forProvider: {
+							chart: {
+								repository: "https://charts.crossplane.io/stable"
+								version: _config.versions.crossplane
+							}
+							namespace: "crossplane-system"
+						}
+					},
+					#AppHelm & { _composeConfig:
+						name: "cilium"
+						base: spec: forProvider: {
+							chart: {
+								repository: "https://helm.cilium.io"
+								version: _config.versions.cilium
+							}
+							set: [{
+								name: "nodeinit.enabled"
+								value: "true"
+							}, {
+								name: "nodeinit.reconfigureKubelet"
+								value: "true"
+							}, {
+								name: "nodeinit.removeCbrBridge"
+								value: "true"
+							}, {
+								name: "cni.binPath"
+								value: "/home/kubernetes/bin"
+							}, {
+								name: "gke.enabled"
+								value: "true"
+							}, {
+								name: "ipam.mode"
+								value: "kubernetes"
+							}, {
+								name: "ipv4NativeRoutingCIDR"
+							}]
+						}
+						patches: [{
+							fromFieldPath: "spec.id"
+							toFieldPath: "metadata.name"
+							transforms: [{
+								type: "string"
+								string: {
+									fmt: "%s-" + _composeConfig.name
+									type: "Format"
+								}
+							}]
+						}, {
+							fromFieldPath: "spec.id"
+							toFieldPath: "spec.providerConfigRef.name"
+						}, {
+							fromFieldPath: "status.field1"
+							toFieldPath: "spec.forProvider.set[6].value"
+							type: "FromCompositeFieldPath"
+						}]
+					},
 					#GoogleProviderConfigKubernetesLocal,
 					#AppNsProduction,
 					#AppNsDev,
@@ -252,53 +354,4 @@ import (
         name: "kubernetes"
         base: apiVersion: "kubernetes.crossplane.io/v1alpha1"
     }
-}
-
-#GoogleCilium: #AppHelm & { _config:
-    name: "cilium"
-    base: spec: forProvider: {
-        chart: {
-            repository: "https://helm.cilium.io"
-            version: "1.14.2"
-        }
-        set: [{
-            name: "nodeinit.enabled"
-            value: "true"
-        }, {
-            name: "nodeinit.reconfigureKubelet"
-            value: "true"
-        }, {
-            name: "nodeinit.removeCbrBridge"
-            value: "true"
-        }, {
-            name: "cni.binPath"
-            value: "/home/kubernetes/bin"
-        }, {
-            name: "gke.enabled"
-            value: "true"
-        }, {
-            name: "ipam.mode"
-            value: "kubernetes"
-        }, {
-            name: "ipv4NativeRoutingCIDR"
-        }]
-    }
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-        transforms: [{
-            type: "string"
-            string: {
-                fmt: "%s-" + _config.name
-				type: "Format"
-            }
-        }]
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath: "spec.providerConfigRef.name"
-    }, {
-        fromFieldPath: "status.field1"
-        toFieldPath: "spec.forProvider.set[6].value"
-        type: "FromCompositeFieldPath"
-    }]
 }

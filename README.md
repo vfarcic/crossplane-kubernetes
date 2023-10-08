@@ -14,7 +14,7 @@ kubectl krew install kuttl
 
 kind create cluster
 
-timoni build dot-kubernetes timoni | tee package/all.yaml && kubectl kuttl test tests/
+timoni build dot-kubernetes timoni | tee package/all.yaml && kubectl kuttl test
 
 kind delete cluster
 ```

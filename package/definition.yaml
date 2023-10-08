@@ -45,11 +45,19 @@ spec:
                     description: The minimum number of nodes.
                     type: integer
                     default: 1
+                  namespaces:
+                    description: List of Namespaces that should be created in the cluster
+                    type: array
+                    items:
+                      type: string
+                    default:
+                      - dev
+                      - production
                 required:
                 - nodeSize
             required:
-            - id
-            - parameters
+              - id
+              - parameters
           status:
             type: object
             properties:

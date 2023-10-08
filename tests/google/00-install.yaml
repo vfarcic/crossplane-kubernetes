@@ -11,3 +11,7 @@ spec:
   parameters:
     nodeSize: medium
     minNodeCount: 1
+    namespaces:
+      - dev
+      - staging
+      - production

@@ -13,6 +13,7 @@ commands:
   - command: kubectl apply --filename package/definition.yaml
   - command: kubectl apply --filename package/all.yaml
   - command: kubectl apply --filename providers/function-patch-and-transform.yaml
+  - command: kubectl apply --filename providers/function-loop.yaml
   - command: kubectl wait --for condition=Healthy provider/provider-civo --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/provider-aws-iam --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/provider-aws-eks --timeout=300s
@@ -23,6 +24,7 @@ commands:
   - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-gcp --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-azure --timeout=300s
   - command: kubectl wait --for condition=Healthy function/function-patch-and-transform --timeout=300s
+  - command: kubectl wait --for condition=Healthy function/loop --timeout=300s
 timeout: 120
 # startKIND: true
 # kindNodeCache: true

@@ -53,10 +53,49 @@ import (
 					#AwsRouteTableAssociation1c,
 					#AwsAddonEbs,
 					#ProviderConfigHelmLocal,
-					#AppCrossplane,
+					#AppHelm & { _composeConfig:
+						name: "crossplane"
+						base: spec: forProvider: {
+							chart: {
+								repository: "https://charts.crossplane.io/stable"
+								version: _config.versions.crossplane
+							}
+							namespace: "crossplane-system"
+						}
+					},
 					// TODO: kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
 					// TODO: Uncomment
-					// #AwsCilium,
+					// #AppHelm & { _config:
+					// 	name: "cilium"
+					// 	base: spec: forProvider: {
+					// 		chart: {
+					// 			repository: "https://helm.cilium.io"
+					// 			// TODO: Switch to variable
+					// 			version: "1.14.2"
+					// 		}
+					// 		set: [{
+					// 			name: "nodeinit.enabled"
+					// 			value: "true"
+					// 		}, {
+					// 			name: "nodeinit.reconfigureKubelet"
+					// 			value: "true"
+					// 		}, {
+					// 			name: "nodeinit.removeCbrBridge"
+					// 			value: "true"
+					// 		}, {
+					// 			name: "cni.binPath"
+					// 			value: "/home/kubernetes/bin"
+					// 		}, {
+					// 			name: "gke.enabled"
+					// 			value: "true"
+					// 		}, {
+					// 			name: "ipam.mode"
+					// 			value: "kubernetes"
+					// 		}, {
+					// 			name: "ipv4NativeRoutingCIDR"
+					// 		}]
+					// 	}
+					// },
 					#ProviderConfigKubernetesLocal,
 					#AppNsProduction,
 					#AppNsDev,
@@ -697,36 +736,4 @@ import (
         fromFieldPath: "spec.id"
         toFieldPath: "spec.providerConfigRef.name"
     }]
-}
-
-#AwsCilium: #AppHelm & { _config:
-    name: "cilium"
-    base: spec: forProvider: {
-        chart: {
-            repository: "https://helm.cilium.io"
-			// TODO: Switch to variable
-            version: "1.14.2"
-        }
-        set: [{
-            name: "nodeinit.enabled"
-            value: "true"
-        }, {
-            name: "nodeinit.reconfigureKubelet"
-            value: "true"
-        }, {
-            name: "nodeinit.removeCbrBridge"
-            value: "true"
-        }, {
-            name: "cni.binPath"
-            value: "/home/kubernetes/bin"
-        }, {
-            name: "gke.enabled"
-            value: "true"
-        }, {
-            name: "ipam.mode"
-            value: "kubernetes"
-        }, {
-            name: "ipv4NativeRoutingCIDR"
-        }]
-    }
 }

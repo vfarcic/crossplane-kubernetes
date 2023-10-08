@@ -31,8 +31,32 @@ import (
 					#AzureResourceGroup,
 					#AzureKubernetesCluster,
 					#ProviderConfigHelmLocal,
-					#AppCrossplane,
-					#AzureCilium,
+					#AppHelm & { _composeConfig:
+						name: "crossplane"
+						base: spec: forProvider: {
+							chart: {
+								repository: "https://charts.crossplane.io/stable"
+								version: _config.versions.crossplane
+							}
+							namespace: "crossplane-system"
+						}
+					},
+					#AppHelm & { _composeConfig:
+						name: "cilium"
+						base: spec: forProvider: {
+							chart: {
+								repository: "https://helm.cilium.io"
+								version: "1.14.2"
+							}
+							set: [{
+								name: "aksbyocni.enabled"
+								value: "true"
+							}, {
+								name: "nodeinit.enabled"
+								value: "true"
+							}]
+						}
+					},
 					#ProviderConfigKubernetesLocal,
 					#AppNsProduction,
 					#AppNsDev,
@@ -162,21 +186,4 @@ import (
     	fromConnectionSecretKey: "kubeconfig"
       	name:                    "value"
 	}]
-}
-
-#AzureCilium: #AppHelm & { _config:
-    name: "cilium"
-    base: spec: forProvider: {
-        chart: {
-            repository: "https://helm.cilium.io"
-            version: "1.14.2"
-        }
-        set: [{
-            name: "aksbyocni.enabled"
-            value: "true"
-        }, {
-            name: "nodeinit.enabled"
-            value: "true"
-        }]
-    }
 }

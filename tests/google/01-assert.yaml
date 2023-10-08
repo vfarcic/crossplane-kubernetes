@@ -62,6 +62,10 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: Object
     name: a-team-gke-ns-production
+  # TODO: Uncomment
+  # - apiVersion: kubernetes.crossplane.io/v1alpha1
+  #   kind: Object
+  #   name: a-team-gke-ns-staging
   - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
     name: a-team-gke
