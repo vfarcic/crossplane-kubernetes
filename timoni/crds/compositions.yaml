@@ -3,11 +3,11 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  creationTimestamp: "2023-10-08T07:23:09Z"
+  creationTimestamp: "2023-10-11T18:00:53Z"
   generation: 1
   name: compositions.apiextensions.crossplane.io
-  resourceVersion: "546"
-  uid: 5a901260-ea65-44d6-8cff-7fdafa2d07f7
+  resourceVersion: "687"
+  uid: 3da1335a-0a5b-4ad4-96d7-9dbb58b74ec0
 spec:
   conversion:
     strategy: None
@@ -1436,12 +1436,12 @@ status:
     - comp
     singular: composition
   conditions:
-  - lastTransitionTime: "2023-10-08T07:23:09Z"
+  - lastTransitionTime: "2023-10-11T18:00:53Z"
     message: no conflicts found
     reason: NoConflicts
     status: "True"
     type: NamesAccepted
-  - lastTransitionTime: "2023-10-08T07:23:09Z"
+  - lastTransitionTime: "2023-10-11T18:00:53Z"
     message: the initial names have been accepted
     reason: InitialNamesAccepted
     status: "True"
