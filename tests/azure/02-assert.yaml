@@ -152,10 +152,8 @@ kind: Object
 metadata:
   annotations:
     crossplane.io/composition-resource-name: ns-dev
-    crossplane.io/external-name: a-team-aks-ns-dev
   labels:
     crossplane.io/claim-name: a-team-aks
-  name: a-team-aks-ns-dev
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
     blockOwnerDeletion: true
@@ -178,10 +176,8 @@ kind: Object
 metadata:
   annotations:
     crossplane.io/composition-resource-name: ns-production
-    crossplane.io/external-name: a-team-aks-ns-production
   labels:
     crossplane.io/claim-name: a-team-aks
-  name: a-team-aks-ns-production
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
     blockOwnerDeletion: true

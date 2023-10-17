@@ -14,7 +14,11 @@ kubectl krew install kuttl
 
 kind create cluster
 
-timoni build dot-kubernetes timoni | tee package/all.yaml && kubectl kuttl test
+# The first time `kuttl` is run, it has to install a bunch of
+#   packages and that might take more time than the default
+#   timeout.
+# Feel free to remote `--timeout` from all subsequent runs.
+timoni build dot-kubernetes timoni | tee package/all.yaml && kubectl kuttl test --timeout 600
 
 kind delete cluster
 ```

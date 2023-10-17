@@ -19,55 +19,5 @@ spec:
   parameters:
     minNodeCount: 1
     nodeSize: medium
-  resourceRefs:
-  - apiVersion: container.gcp.upbound.io/v1beta1
-    kind: Cluster
-    name: a-team-gke
-  - apiVersion: container.gcp.upbound.io/v1beta1
-    kind: NodePool
-    name: a-team-gke
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: ProviderConfig
-    name: a-team-gke
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: Release
-    name: a-team-gke-cilium
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: Release
-    name: a-team-gke-crossplane
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-config-app
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-config-sql
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-helm-provider
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-k8s-provider-cc
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-k8s-provider-crb
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-k8s-provider-sa
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-kubernetes-provider
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-ns-dev
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-ns-production
-  # TODO: Uncomment
-  # - apiVersion: kubernetes.crossplane.io/v1alpha1
-  #   kind: Object
-  #   name: a-team-gke-ns-staging
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: ProviderConfig
-    name: a-team-gke
   writeConnectionSecretToRef:
     namespace: crossplane-system

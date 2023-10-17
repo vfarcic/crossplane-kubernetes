@@ -4,4 +4,4 @@ kind: Function
 metadata:
   name: loop
 spec:
-  package: 'c8n.io/vfarcic/crossplane-function-loop:v0.0.1'
+  package: 'c8n.io/vfarcic/crossplane-function-loop:v0.0.3'

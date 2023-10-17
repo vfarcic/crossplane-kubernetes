@@ -25,7 +25,7 @@ commands:
   - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-azure --timeout=300s
   - command: kubectl wait --for condition=Healthy function/function-patch-and-transform --timeout=300s
   - command: kubectl wait --for condition=Healthy function/loop --timeout=300s
-timeout: 120
+timeout: 30
 # startKIND: true
 # kindNodeCache: true
 # skipDelete: true

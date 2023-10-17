@@ -124,44 +124,6 @@ import (
     }]
 }
 
-#AppNs: {
-    _config: {...}
-    name: "ns-" + _config.name
-    base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
-        kind: "Object"
-        spec: forProvider: manifest: {
-            apiVersion: "v1"
-            kind: "Namespace"
-            metadata: {
-                name: _config.name
-            }
-        }
-    }
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-        transforms: [{
-            type: "string"
-            string: {
-                fmt: "%s-ns-" + _config.name
-                type: "Format"
-            }
-        }]
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath: "spec.providerConfigRef.name"
-    }]
-}
-
-#AppNsProduction: #AppNs & { _config:
-    name: "production"
-}
-
-#AppNsDev: #AppNs & { _config:
-    name: "dev"
-}
-
 #AppCrossplane: #AppHelm & { _composeConfig:
 	name: "crossplane"
 	base: spec: forProvider: {
