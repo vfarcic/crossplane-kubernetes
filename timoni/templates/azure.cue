@@ -45,10 +45,10 @@ import (
 						name: "helm-provider"
 						base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
 					},
-					#AppCrossplaneConfig & { _composeConfig:
-						name: "config-app"
-						base: spec: forProvider: manifest: spec: package: _config.packages.configApp
-					},
+					// #AppCrossplaneConfig & { _composeConfig:
+					// 	name: "config-app"
+					// 	base: spec: forProvider: manifest: spec: package: _config.packages.configApp
+					// },
 					#AppCrossplaneConfig & { _composeConfig:
 						name: "config-sql"
 						base: spec: forProvider: manifest: spec: package: _config.packages.configSql

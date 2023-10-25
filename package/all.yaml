@@ -857,31 +857,6 @@ spec:
                 apiVersion: pkg.crossplane.io/v1
                 kind: Configuration
                 metadata:
-                  name: crossplane-config-app
-                spec:
-                  controllerConfigRef:
-                    name: provider-kubernetes
-                  package: xpkg.upbound.io/devops-toolkit/dot-application:v0.5.39
-        name: config-app
-        patches:
-        - fromFieldPath: spec.id
-          toFieldPath: metadata.name
-          transforms:
-          - string:
-              fmt: '%s-config-app'
-              type: Format
-            type: string
-        - fromFieldPath: spec.id
-          toFieldPath: spec.providerConfigRef.name
-      - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: pkg.crossplane.io/v1
-                kind: Configuration
-                metadata:
                   name: crossplane-config-sql
                 spec:
                   controllerConfigRef:
@@ -1319,31 +1294,6 @@ spec:
                 apiVersion: pkg.crossplane.io/v1
                 kind: Configuration
                 metadata:
-                  name: crossplane-config-app
-                spec:
-                  controllerConfigRef:
-                    name: provider-kubernetes
-                  package: xpkg.upbound.io/devops-toolkit/dot-application:v0.5.39
-        name: config-app
-        patches:
-        - fromFieldPath: spec.id
-          toFieldPath: metadata.name
-          transforms:
-          - string:
-              fmt: '%s-config-app'
-              type: Format
-            type: string
-        - fromFieldPath: spec.id
-          toFieldPath: spec.providerConfigRef.name
-      - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: pkg.crossplane.io/v1
-                kind: Configuration
-                metadata:
                   name: crossplane-config-sql
                 spec:
                   controllerConfigRef:
@@ -1696,31 +1646,6 @@ spec:
           transforms:
           - string:
               fmt: '%s-helm-provider'
-              type: Format
-            type: string
-        - fromFieldPath: spec.id
-          toFieldPath: spec.providerConfigRef.name
-      - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: pkg.crossplane.io/v1
-                kind: Configuration
-                metadata:
-                  name: crossplane-config-app
-                spec:
-                  controllerConfigRef:
-                    name: provider-kubernetes
-                  package: xpkg.upbound.io/devops-toolkit/dot-application:v0.5.39
-        name: config-app
-        patches:
-        - fromFieldPath: spec.id
-          toFieldPath: metadata.name
-          transforms:
-          - string:
-              fmt: '%s-config-app'
               type: Format
             type: string
         - fromFieldPath: spec.id
