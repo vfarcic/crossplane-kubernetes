@@ -337,34 +337,6 @@ apiVersion: kubernetes.crossplane.io/v1alpha1
 kind: Object
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: config-app
-    crossplane.io/external-name: a-team-gke-config-app
-  labels:
-    crossplane.io/claim-name: a-team-gke
-  name: a-team-gke-config-app
-  ownerReferences:
-    - apiVersion: devopstoolkitseries.com/v1alpha1
-      blockOwnerDeletion: true
-      controller: true
-      kind: CompositeCluster
-spec:
-  deletionPolicy: Delete
-  forProvider:
-    manifest:
-      apiVersion: pkg.crossplane.io/v1
-      kind: Configuration
-      metadata:
-        name: crossplane-config-app
-      spec:
-        package: xpkg.upbound.io/devops-toolkit/dot-application:v0.5.39
-  managementPolicy: Default
-  providerConfigRef:
-    name: a-team-gke
----
-apiVersion: kubernetes.crossplane.io/v1alpha1
-kind: Object
-metadata:
-  annotations:
     crossplane.io/composition-resource-name: config-sql
     crossplane.io/external-name: a-team-gke-config-sql
   labels:

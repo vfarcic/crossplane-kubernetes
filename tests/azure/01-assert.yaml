@@ -19,54 +19,5 @@ spec:
   parameters:
     minNodeCount: 1
     nodeSize: medium
-  resourceRefs:
-  - apiVersion: azure.upbound.io/v1beta1
-    kind: ResourceGroup
-    name: a-team-aks
-  - apiVersion: containerservice.azure.upbound.io/v1beta1
-    kind: KubernetesCluster
-    name: a-team-aks
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: ProviderConfig
-    name: a-team-aks
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: Release
-    name: a-team-aks-crossplane
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: Release
-    name: a-team-aks-cilium
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: ProviderConfig
-    name: a-team-aks
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-ns-production
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-ns-dev
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-k8s-provider-sa
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-k8s-provider-crb
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-k8s-provider-cc
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-kubernetes-provider
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-helm-provider
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-config-app
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-config-sql
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-azure-pc
   writeConnectionSecretToRef:
     namespace: crossplane-system
