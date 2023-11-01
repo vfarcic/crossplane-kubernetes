@@ -1,0 +1,6 @@
+project: dot
+providers:
+  google_secretmanager:
+    env:
+      CIVO_TOKEN:
+        path: projects/vfarcic/secrets/civo-token/versions/1

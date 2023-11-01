@@ -45,11 +45,28 @@ spec:
                     description: The minimum number of nodes.
                     type: integer
                     default: 1
+                  namespaces:
+                    description: List of Namespaces that should be created in the cluster
+                    type: array
+                    items:
+                      type: string
+                    default:
+                      - dev
+                      - production
+                  # TODO: Uncomment and implement
+                  # apps:
+                  #   type: object
+                  #   description: List of apps that should be installed in the cluster
+                  #   properties:
+                  #     crossplane:
+                  #       description: Install Crossplane
+                  #       type: boolean
+                  #       default: false
                 required:
                 - nodeSize
             required:
-            - id
-            - parameters
+              - id
+              - parameters
           status:
             type: object
             properties:

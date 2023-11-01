@@ -1,7 +1,7 @@
 package templates
 
 import (
-	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
+	crossplane "apiextensions.crossplane.io/composition/v1"
 )
 
 #Azure: crossplane.#Composition & {
@@ -18,40 +18,88 @@ import (
     spec: {
 		compositeTypeRef: _config.compositeTypeRef
 		patchSets: _config.patchSets
-		resources: [
-			#AzureResourceGroup,
-			#AzureKubernetesCluster,
-			#ProviderConfigHelmLocal,
-			#AppCrossplane,
-			#AzureCilium,
-			#ProviderConfigKubernetesLocal,
-			#AppNsProduction,
-			#AppNsDev,
-			#ProviderKubernetesSa,
-			#ProviderKubernetesCrb,
-			#ProviderKubernetesCc,
-			#AppCrossplaneProvider & { _composeConfig:
-				name: "kubernetes-provider"
-				base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
-			},
-			#AppCrossplaneProvider & { _composeConfig:
-				name: "helm-provider"
-				base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
-			},
-			// #AppCrossplaneConfig & { _composeConfig:
-			// 	name: "config-app"
-			// 	base: spec: forProvider: manifest: spec: package: _config.packages.configApp
-			// },
-			#AppCrossplaneConfig & { _composeConfig:
-				name: "config-sql"
-				base: spec: forProvider: manifest: spec: package: _config.packages.configSql
-			},
-			#ProviderConfig & { _composeConfig:
-				name: "azure"
-			},
-		]
+		mode: "Pipeline"
+		pipeline: [{
+			step: "patch-and-transform"
+			functionRef: {
+				name: "function-patch-and-transform"
+			}
+			input: {
+				apiVersion: "pt.fn.crossplane.io/v1beta1"
+				kind: "Resources"
+				resources: [
+					#AzureResourceGroup,
+					#AzureKubernetesCluster,
+					#ProviderConfigHelmLocal,
+					#AppCrossplane & { base: spec: forProvider: chart: version: _config.versions.crossplane },
+					#AzureCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
+					#ProviderConfigKubernetesLocal,
+					#ProviderKubernetesSa,
+					#ProviderKubernetesCrb,
+					#ProviderKubernetesCc,
+					#AppCrossplaneProvider & { _composeConfig:
+						name: "kubernetes-provider"
+						base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
+					},
+					#AppCrossplaneProvider & { _composeConfig:
+						name: "helm-provider"
+						base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
+					},
+					// #AppCrossplaneConfig & { _composeConfig:
+					// 	name: "config-app"
+					// 	base: spec: forProvider: manifest: spec: package: _config.packages.configApp
+					// },
+					#AppCrossplaneConfig & { _composeConfig:
+						name: "config-sql"
+						base: spec: forProvider: manifest: spec: package: _config.packages.configSql
+					},
+					#ProviderConfig & { _composeConfig:
+						name: "azure"
+					},
+				]
+			}
+		} , {
+			step: "namespaces"
+			functionRef: name: "loop"
+			input: {
+				apiVersion: "pt.fn.crossplane.io/v1beta1"
+				kind: "Resources"
+				valuesXrPath: "spec.parameters.namespaces"
+				namePrefix: "ns-"
+				paths: [
+					{"spec.forProvider.manifest.metadata.name"},
+					{"spec.providerConfigRef.name = spec.id"}]
+				resources: [{
+					base: {
+						apiVersion: "kubernetes.crossplane.io/v1alpha1"
+						kind: "Object"
+						spec: forProvider: manifest: {
+							apiVersion: "v1"
+							kind: "Namespace"
+						}
+					}
+				}]
+			}
+		}]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }
+}
+
+#AzureCilium: #AppHelm & { _composeConfig:
+	name: "cilium"
+	base: spec: forProvider: {
+		chart: {
+			repository: "https://helm.cilium.io"
+			version: string
+		}
+		set: [{
+			name: "aksbyocni.enabled"
+			value: "true"
+		}, {
+			name: "nodeinit.enabled"
+			value: "true"
+		}]
+	}
 }
 
 #AzureResourceGroup: {
@@ -64,9 +112,6 @@ import (
     patches: [{
     	fromFieldPath: "spec.id"
       	toFieldPath: "metadata.name"
-	}, {
-    	fromFieldPath: "spec.id"
-      	toFieldPath: "spec.forProvider.name"
 	}]
 }
 
@@ -98,13 +143,13 @@ import (
       	toFieldPath:   "metadata.name"
 	}, {
     	fromFieldPath: "spec.id"
-      	toFieldPath:   "spec.forProvider.name"
-	}, {
-    	fromFieldPath: "spec.id"
       	toFieldPath:   "spec.writeConnectionSecretToRef.name"
       	transforms: [{
       		type: "string"
-        	string: fmt: "%s-cluster"
+        	string: {
+				fmt: "%s-cluster"
+				type: "Format"
+			}
 		}]
 	}, {
     	fromFieldPath: "spec.claimRef.namespace"
@@ -146,26 +191,12 @@ import (
       	toFieldPath:   "status.nodePoolStatus"
 	}]
     connectionDetails: [{
+		type:                    "FromConnectionSecretKey"
     	fromConnectionSecretKey: "kubeconfig"
+		name:                    "kubeconfig"
 	}, {
+		type:                    "FromConnectionSecretKey"
     	fromConnectionSecretKey: "kubeconfig"
       	name:                    "value"
 	}]
-}
-
-#AzureCilium: #AppHelm & { _config:
-    name: "cilium"
-    base: spec: forProvider: {
-        chart: {
-            repository: "https://helm.cilium.io"
-            version: "1.14.2"
-        }
-        set: [{
-            name: "aksbyocni.enabled"
-            value: "true"
-        }, {
-            name: "nodeinit.enabled"
-            value: "true"
-        }]
-    }
 }

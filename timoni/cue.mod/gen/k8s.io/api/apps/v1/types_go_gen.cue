@@ -16,6 +16,7 @@ import (
 #DeprecatedRollbackTo:           "deprecated.deployment.rollback.to"
 #DeprecatedTemplateGeneration:   "deprecated.daemonset.template.generation"
 #StatefulSetPodNameLabel:        "statefulset.kubernetes.io/pod-name"
+#PodIndexLabel:                  "apps.kubernetes.io/pod-index"
 
 // StatefulSet represents a set of pods with consistent identities.
 // Identities are defined as:
@@ -192,6 +193,7 @@ import (
 	// of the StatefulSet. Each pod will be named with the format
 	// <statefulsetname>-<podindex>. For example, a pod in a StatefulSet named
 	// "web" with index number "3" would be named "web-3".
+	// The only allowed template.spec.restartPolicy value is "Always".
 	template: v1.#PodTemplateSpec @go(Template) @protobuf(3,bytes,opt)
 
 	// volumeClaimTemplates is a list of claims that pods are allowed to reference.
@@ -252,7 +254,7 @@ import (
 	// default ordinals behavior assigns a "0" index to the first replica and
 	// increments the index by one for each additional replica requested. Using
 	// the ordinals field requires the StatefulSetStartOrdinal feature gate to be
-	// enabled, which is alpha.
+	// enabled, which is beta.
 	// +optional
 	ordinals?: null | #StatefulSetOrdinals @go(Ordinals,*StatefulSetOrdinals) @protobuf(11,bytes,opt)
 }
@@ -370,6 +372,7 @@ import (
 	selector?: null | metav1.#LabelSelector @go(Selector,*metav1.LabelSelector) @protobuf(2,bytes,opt)
 
 	// Template describes the pods that will be created.
+	// The only allowed template.spec.restartPolicy value is "Always".
 	template: v1.#PodTemplateSpec @go(Template) @protobuf(3,bytes,opt)
 
 	// The deployment strategy to use to replace existing pods with new ones.
@@ -639,6 +642,7 @@ import (
 	// The DaemonSet will create exactly one copy of this pod on every node
 	// that matches the template's node selector (or on every node if no node
 	// selector is specified).
+	// The only allowed template.spec.restartPolicy value is "Always".
 	// More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller#pod-template
 	template: v1.#PodTemplateSpec @go(Template) @protobuf(2,bytes,opt)
 

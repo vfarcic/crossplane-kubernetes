@@ -1,20 +1,19 @@
 package templates
 
 import (
-	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
     runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
-#AppHelm: crossplane.#ComposedTemplate & {
-    _config: crossplane.#ComposedTemplate
-    name:    _config.name
+#AppHelm: {
+    _composeConfig: {...}
+    name:    _composeConfig.name
     base: {
         apiVersion: "helm.crossplane.io/v1beta1"
         kind: "Release"
         spec: {
             forProvider: {
                 chart: {
-                    name: _config.name
+                    name: _composeConfig.name
                     repository: string
                     version: string
                 }
@@ -30,7 +29,8 @@ import (
         transforms: [{
             type: "string"
             string: {
-                fmt: "%s-" + _config.name
+                fmt: "%s-" + _composeConfig.name
+                type: "Format"
             }
         }]
     }, {
@@ -39,7 +39,7 @@ import (
     }]
 }
 
-#AppTraefik: #AppHelm & { _config:
+#AppTraefik: #AppHelm & { _composeConfig:
     name: "traefik"
     base: spec: forProvider: {
         chart: {
@@ -50,21 +50,9 @@ import (
     }
 }
 
-
-#AppCrossplane: #AppHelm & { _config:
-    name: "crossplane"
-    base: spec: forProvider: {
-        chart: {
-            repository: "https://charts.crossplane.io/stable"
-            version: "1.13.2"
-        }
-        namespace: "crossplane-system"
-    }
-}
-
-#AppCrossplaneProvider: crossplane.#ComposedTemplate & {
-    _composeConfig:    crossplane.#ComposedTemplate
-    name: _composeConfig.name
+#AppCrossplaneProvider: {
+    _composeConfig: {...}
+    name:           _composeConfig.name
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
         kind: "Object"
@@ -93,6 +81,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-" + _composeConfig.name
+                type: "Format"
             }
         }]
     }, {
@@ -101,15 +90,15 @@ import (
     }]
 }
 
-#AppCrossplaneConfig: crossplane.#ComposedTemplate & {
+#AppCrossplaneConfig: {
     #AppCrossplaneProvider & {
         base: spec: forProvider: manifest: kind: "Configuration"
     }
 }
 
-#AppObject: crossplane.#ComposedTemplate & {
-    _config:    crossplane.#ComposedTemplate
-    name: _config.name
+#AppObject: {
+    _config: {...}
+    name:    _config.name
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
         kind: "Object"
@@ -126,6 +115,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-" + _config.name
+                type: "Format"
             }
         }]
     }, {
@@ -134,40 +124,14 @@ import (
     }]
 }
 
-#AppNs: crossplane.#ComposedTemplate & {
-    _config:    crossplane.#ComposedTemplate
-    name: "ns-" + _config.name
-    base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
-        kind: "Object"
-        spec: forProvider: manifest: {
-            apiVersion: "v1"
-            kind: "Namespace"
-            metadata: {
-                name: _config.name
-            }
-        }
-    }
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-        transforms: [{
-            type: "string"
-            string: {
-                fmt: "%s-ns-" + _config.name
-            }
-        }]
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath: "spec.providerConfigRef.name"
-    }]
+#AppCrossplane: #AppHelm & { _composeConfig:
+	name: "crossplane"
+	base: spec: forProvider: {
+		chart: {
+			repository: "https://charts.crossplane.io/stable"
+			// version: _config.versions.crossplane
+			version: string
+		}
+		namespace: "crossplane-system"
+	}
 }
-
-#AppNsProduction: #AppNs & { _config:
-    name: "production"
-}
-
-#AppNsDev: #AppNs & { _config:
-    name: "dev"
-}
-

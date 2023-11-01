@@ -1,11 +1,7 @@
 package templates
 
-import (
-	crossplane "github.com/crossplane/crossplane/apis/apiextensions/v1"
-)
-
-#ProviderConfig: crossplane.#ComposedTemplate & {
-    _composeConfig: crossplane.#ComposedTemplate
+#ProviderConfig: {
+    _composeConfig: {...}
     name:    _composeConfig.name + "-pc"
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -37,6 +33,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-" + _composeConfig.name + "-pc"
+                type: "Format"
             }
         }]
     }, {
@@ -45,7 +42,7 @@ import (
     }]
 }
 
-#ProviderConfigLocal: crossplane.#ComposedTemplate & {
+#ProviderConfigLocal: {
     name: string
     base: {
         apiVersion: string
@@ -71,7 +68,10 @@ import (
         fromFieldPath: "spec.id"
         toFieldPath:   "spec.credentials.secretRef.name"
         transforms: [{
-            string: fmt: "%s-cluster"
+            string: {
+                fmt: "%s-cluster"
+                type: "Format"
+            }
             type: "string"
         }]
     }]
@@ -80,21 +80,21 @@ import (
     }]
 }
 
-#ProviderConfigKubernetesLocal: crossplane.#ComposedTemplate & {
+#ProviderConfigKubernetesLocal: {
     #ProviderConfigLocal & {
         name: "kubernetes"
         base: apiVersion: "kubernetes.crossplane.io/v1alpha1"
     }
 }
 
-#ProviderConfigHelmLocal: crossplane.#ComposedTemplate & {
+#ProviderConfigHelmLocal: {
     #ProviderConfigLocal & {
         name: "helm"
         base: apiVersion: "helm.crossplane.io/v1beta1"
     }
 }
 
-#ProviderKubernetesSa: crossplane.#ComposedTemplate & {
+#ProviderKubernetesSa: {
     name: "k8s-provider-sa"
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -119,6 +119,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-k8s-provider-sa"
+                type: "Format"
             }
         }]
     }, {
@@ -127,7 +128,7 @@ import (
     }]
 }
 
-#ProviderKubernetesCrb: crossplane.#ComposedTemplate & {
+#ProviderKubernetesCrb: {
     name: "k8s-provider-crb"
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -161,6 +162,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-k8s-provider-crb"
+                type: "Format"
             }
         }]
     }, {
@@ -169,7 +171,7 @@ import (
     }]
 }
 
-#ProviderKubernetesCc: crossplane.#ComposedTemplate & {
+#ProviderKubernetesCc: {
     name: "k8s-provider-cc"
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -196,6 +198,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-k8s-provider-cc"
+                type: "Format"
             }
         }]
     }, {
@@ -204,7 +207,7 @@ import (
     }]
 }
 
-#ProviderHelmCC: crossplane.#ComposedTemplate & {
+#ProviderHelmCC: {
     name: "helm-provider-cc"
     base: {
         apiVersion: "kubernetes.crossplane.io/v1alpha1"
@@ -231,6 +234,7 @@ import (
             type: "string"
             string: {
                 fmt: "%s-helm-provider-cc"
+                type: "Format"
             }
         }]
     }, {
