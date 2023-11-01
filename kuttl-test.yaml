@@ -3,7 +3,7 @@ kind: TestSuite
 testDirs:
   - ./tests/
 commands:
-  - command: helm upgrade --install crossplane crossplane-master/crossplane --namespace crossplane-system --create-namespace --wait --devel
+  - command: helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --wait
   - command: kubectl apply --filename providers/aws.yaml
   - command: kubectl apply --filename providers/google.yaml
   - command: kubectl apply --filename providers/azure.yaml
