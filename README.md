@@ -14,6 +14,8 @@ kubectl krew install kuttl
 
 kind create cluster
 
+helm repo update
+
 # The first time `kuttl` is run, it has to install a bunch of
 #   packages and that might take more time than the default
 #   timeout.
