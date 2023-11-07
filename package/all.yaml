@@ -10,10 +10,6 @@ spec:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
   mode: Pipeline
-  patchSets:
-  - name: metadata
-    patches:
-    - fromFieldPath: metadata.labels
   pipeline:
   - functionRef:
       name: function-patch-and-transform
@@ -93,10 +89,6 @@ spec:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
   mode: Pipeline
-  patchSets:
-  - name: metadata
-    patches:
-    - fromFieldPath: metadata.labels
   pipeline:
   - functionRef:
       name: function-patch-and-transform
@@ -936,10 +928,6 @@ spec:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
   mode: Pipeline
-  patchSets:
-  - name: metadata
-    patches:
-    - fromFieldPath: metadata.labels
   pipeline:
   - functionRef:
       name: function-patch-and-transform
@@ -1345,10 +1333,6 @@ spec:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
   mode: Pipeline
-  patchSets:
-  - name: metadata
-    patches:
-    - fromFieldPath: metadata.labels
   pipeline:
   - functionRef:
       name: function-patch-and-transform
