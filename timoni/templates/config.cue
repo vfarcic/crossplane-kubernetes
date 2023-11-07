@@ -11,12 +11,6 @@ import (
 		apiVersion: "devopstoolkitseries.com/v1alpha1"
 		kind:       "CompositeCluster"
 	}
-	patchSets: [{
-		name: "metadata"
-		patches: [{
-			fromFieldPath: "metadata.labels"
-		}]
-	}]
 	versions: {
 		traefik: 	string
 		crossplane: string

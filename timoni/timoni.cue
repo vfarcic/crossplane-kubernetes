@@ -24,12 +24,6 @@ timoni: {
 			apiVersion: string @tag(apiVersion)
 			kind:       string @tag(kind)
 		}
-		config: patchSets: [{
-			name: string
-			patches: [{
-				fromFieldPath: string
-			}]
-		}]
 		config: resources?: [...crossplane.#ComposedTemplate]
 	}
 	apply: all: [ for obj in instance.objects {obj}]
