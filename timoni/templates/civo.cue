@@ -17,7 +17,6 @@ import (
 	}
     spec: {
 		compositeTypeRef: _config.compositeTypeRef
-		patchSets: _config.patchSets
 		mode: "Pipeline"
 		pipeline: [{
 			step: "patch-and-transform"
