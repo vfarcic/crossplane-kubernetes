@@ -54,7 +54,7 @@ import (
 			}
 		} , {
 			step: "namespaces"
-			functionRef: name: "loop"
+			functionRef: name: "vfarcic-crossplane-function-loop"
 			input: {
 				apiVersion: "pt.fn.crossplane.io/v1beta1"
 				kind: "Resources"

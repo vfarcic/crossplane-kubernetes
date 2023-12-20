@@ -895,7 +895,7 @@ spec:
           toFieldPath: spec.providerConfigRef.name
     step: patch-and-transform
   - functionRef:
-      name: loop
+      name: vfarcic-crossplane-function-loop
     input:
       apiVersion: pt.fn.crossplane.io/v1beta1
       kind: Resources
@@ -1300,7 +1300,7 @@ spec:
           toFieldPath: spec.providerConfigRef.name
     step: patch-and-transform
   - functionRef:
-      name: loop
+      name: vfarcic-crossplane-function-loop
     input:
       apiVersion: pt.fn.crossplane.io/v1beta1
       kind: Resources
@@ -1689,7 +1689,7 @@ spec:
           toFieldPath: spec.providerConfigRef.name
     step: patch-and-transform
   - functionRef:
-      name: loop
+      name: vfarcic-crossplane-function-loop
     input:
       apiVersion: pt.fn.crossplane.io/v1beta1
       kind: Resources
