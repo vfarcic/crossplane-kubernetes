@@ -21,7 +21,7 @@ import (
 		pipeline: [{
 			step: "patch-and-transform"
 			functionRef: {
-				name: "function-patch-and-transform"
+				name: "crossplane-contrib-function-patch-and-transform"
 			}
 			input: {
 				apiVersion: "pt.fn.crossplane.io/v1beta1"

@@ -9,5 +9,5 @@ spec:
       provider: google-official
       cluster: gke
   parameters:
-    nodeSize: medium
+    nodeSize: small
     minNodeCount: 1

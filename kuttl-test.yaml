@@ -23,7 +23,7 @@ commands:
   - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-aws --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-gcp --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-azure --timeout=300s
-  - command: kubectl wait --for condition=Healthy function/function-patch-and-transform --timeout=300s
+  - command: kubectl wait --for condition=Healthy function/crossplane-contrib-function-patch-and-transform --timeout=300s
   - command: kubectl wait --for condition=Healthy function/loop --timeout=300s
 timeout: 30
 # startKIND: true
