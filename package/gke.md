@@ -3,7 +3,11 @@
 ## Setup
 
 ```bash
-# Create a management Kubernetes cluster manually (e.g., minikube, Rancher Desktop, eksctl, etc.)
+# Install `crossplane` CLI by following the instructions at
+#   https://docs.crossplane.io/latest/cli/#installing-the-cli
+
+# Create a management Kubernetes cluster manually
+#   (e.g., minikube, Rancher Desktop, eksctl, etc.).
 
 export PROJECT_ID=dot-$(date +%Y%m%d%H%M%S)
 
@@ -42,6 +46,9 @@ kubectl --namespace crossplane-system \
 kubectl apply \
     --filename ../providers/provider-kubernetes-incluster.yaml
 
+kubectl apply \
+    --filename ../providers/provider-helm-incluster.yaml
+
 kubectl apply --filename ../providers/google.yaml
 
 kubectl apply --filename ../config.yaml
@@ -72,10 +79,10 @@ kubectl create namespace infra
 
 kubectl --namespace infra apply \
     --filename ../examples/gcp-gke-official.yaml
-    
-kubectl --namespace infra get clusterclaims
 
-kubectl get managed
+crossplane beta trace clusterclaim a-team-gke --namespace infra
+
+# Wait until all the resources are `READY`
 
 export KUBECONFIG=$PWD/kubeconfig.yaml
 
@@ -95,7 +102,7 @@ kubectl --namespace infra delete \
 
 kubectl get managed
 
-# Wait until all the resources are deleted
+# Wait until all the resources are deleted (ignore `object`).
 
 gcloud projects delete $PROJECT_ID --quiet
 ```
