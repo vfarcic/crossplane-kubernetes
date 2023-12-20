@@ -139,7 +139,7 @@ metadata:
     crossplane.io/composition-resource-name: ns-dev
   labels:
     crossplane.io/claim-name: a-team-gke
-    function: vfarcic-crossplane-function-loop
+    function: loop
     functionValue: dev
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
@@ -165,7 +165,7 @@ metadata:
     crossplane.io/composition-resource-name: ns-production
   labels:
     crossplane.io/claim-name: a-team-gke
-    function: vfarcic-crossplane-function-loop
+    function: loop
     functionValue: production
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
@@ -191,7 +191,7 @@ metadata:
     crossplane.io/composition-resource-name: ns-staging
   labels:
     crossplane.io/claim-name: a-team-gke
-    function: vfarcic-crossplane-function-loop
+    function: loop
     functionValue: staging
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
