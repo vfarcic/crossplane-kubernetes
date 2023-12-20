@@ -12,7 +12,7 @@ spec:
   mode: Pipeline
   pipeline:
   - functionRef:
-      name: function-patch-and-transform
+      name: crossplane-contrib-function-patch-and-transform
     input:
       apiVersion: pt.fn.crossplane.io/v1beta1
       kind: Resources
@@ -91,7 +91,7 @@ spec:
   mode: Pipeline
   pipeline:
   - functionRef:
-      name: function-patch-and-transform
+      name: crossplane-contrib-function-patch-and-transform
     input:
       apiVersion: pt.fn.crossplane.io/v1beta1
       kind: Resources
@@ -930,7 +930,7 @@ spec:
   mode: Pipeline
   pipeline:
   - functionRef:
-      name: function-patch-and-transform
+      name: crossplane-contrib-function-patch-and-transform
     input:
       apiVersion: pt.fn.crossplane.io/v1beta1
       kind: Resources
@@ -1335,7 +1335,7 @@ spec:
   mode: Pipeline
   pipeline:
   - functionRef:
-      name: function-patch-and-transform
+      name: crossplane-contrib-function-patch-and-transform
     input:
       apiVersion: pt.fn.crossplane.io/v1beta1
       kind: Resources
