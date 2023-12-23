@@ -912,8 +912,6 @@ spec:
               manifest:
                 apiVersion: v1
                 kind: Namespace
-        readinessChecks:
-        - type: None
       valuesXrPath: spec.parameters.namespaces
     step: namespaces
   writeConnectionSecretsToNamespace: crossplane-system
@@ -1319,8 +1317,6 @@ spec:
               manifest:
                 apiVersion: v1
                 kind: Namespace
-        readinessChecks:
-        - type: None
       valuesXrPath: spec.parameters.namespaces
     step: namespaces
   writeConnectionSecretsToNamespace: crossplane-system
@@ -1710,8 +1706,6 @@ spec:
               manifest:
                 apiVersion: v1
                 kind: Namespace
-        readinessChecks:
-        - type: None
       valuesXrPath: spec.parameters.namespaces
     step: namespaces
   writeConnectionSecretsToNamespace: crossplane-system
