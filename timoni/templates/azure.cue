@@ -57,7 +57,7 @@ import (
 					},
 				]
 			}
-		} , {
+		}, {
 			step: "namespaces"
 			functionRef: name: "vfarcic-crossplane-function-loop"
 			input: {
@@ -77,11 +77,14 @@ import (
 							kind: "Namespace"
 						}
 					}
-					readinessChecks: [{
-						type: "None"
-					}]
+					// readinessChecks: [{
+					// 	type: "None"
+					// }]
 				}]
 			}
+		}, {
+			step: "automatically-detect-ready-composed-resources"
+			functionRef: name: "function-auto-ready"
 		}]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }
