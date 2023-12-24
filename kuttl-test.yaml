@@ -14,6 +14,7 @@ commands:
   - command: kubectl apply --filename package/all.yaml
   - command: kubectl apply --filename providers/function-patch-and-transform.yaml
   - command: kubectl apply --filename providers/function-loop.yaml
+  - command: kubectl apply --filename providers/function-auto-ready.yaml
   - command: kubectl wait --for condition=Healthy provider/provider-civo --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/provider-aws-iam --timeout=300s
   - command: kubectl wait --for condition=Healthy provider/provider-aws-eks --timeout=300s
