@@ -1716,4 +1716,3 @@ spec:
       name: upbound-function-auto-ready
     step: automatically-detect-ready-composed-resources
   writeConnectionSecretsToNamespace: crossplane-system
----
