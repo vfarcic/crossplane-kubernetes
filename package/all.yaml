@@ -104,7 +104,7 @@ spec:
               region: us-east-1
               roleArnSelector:
                 matchControllerRef: true
-              version: "1.27"
+              version: "1.28"
               vpcConfig:
               - endpointPrivateAccess: true
                 endpointPublicAccess: true
