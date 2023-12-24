@@ -58,33 +58,9 @@ import (
 				]
 			}
 		}, {
-			step: "namespaces"
-			functionRef: name: "vfarcic-crossplane-function-loop"
-			input: {
-				apiVersion: "pt.fn.crossplane.io/v1beta1"
-				kind: "Resources"
-				valuesXrPath: "spec.parameters.namespaces"
-				namePrefix: "ns-"
-				paths: [
-					{"spec.forProvider.manifest.metadata.name"},
-					{"spec.providerConfigRef.name = spec.id"}]
-				resources: [{
-					base: {
-						apiVersion: "kubernetes.crossplane.io/v1alpha1"
-						kind: "Object"
-						spec: forProvider: manifest: {
-							apiVersion: "v1"
-							kind: "Namespace"
-						}
-					}
-					// readinessChecks: [{
-					// 	type: "None"
-					// }]
-				}]
-			}
+			#FunctionLoopNamespaces
 		}, {
-			step: "automatically-detect-ready-composed-resources"
-			functionRef: name: "upbound-function-auto-ready"
+			#FunctionReady
 		}]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }

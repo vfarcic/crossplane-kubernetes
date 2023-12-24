@@ -912,10 +912,11 @@ spec:
               manifest:
                 apiVersion: v1
                 kind: Namespace
-        readinessChecks:
-        - type: None
       valuesXrPath: spec.parameters.namespaces
     step: namespaces
+  - functionRef:
+      name: upbound-function-auto-ready
+    step: automatically-detect-ready-composed-resources
   writeConnectionSecretsToNamespace: crossplane-system
 ---
 apiVersion: apiextensions.crossplane.io/v1
@@ -1319,10 +1320,11 @@ spec:
               manifest:
                 apiVersion: v1
                 kind: Namespace
-        readinessChecks:
-        - type: None
       valuesXrPath: spec.parameters.namespaces
     step: namespaces
+  - functionRef:
+      name: upbound-function-auto-ready
+    step: automatically-detect-ready-composed-resources
   writeConnectionSecretsToNamespace: crossplane-system
 ---
 apiVersion: apiextensions.crossplane.io/v1
@@ -1716,3 +1718,4 @@ spec:
       name: upbound-function-auto-ready
     step: automatically-detect-ready-composed-resources
   writeConnectionSecretsToNamespace: crossplane-system
+---
