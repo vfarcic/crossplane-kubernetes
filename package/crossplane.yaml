@@ -27,7 +27,7 @@ spec:
   - function: xpkg.upbound.io/crossplane-contrib/function-patch-and-transform
     version: ">=v0.1.4"
   - function: c8n.io/vfarcic/crossplane-function-loop
-    version: ">=v0.0.3"
+    version: ">=v0.0.4"
   # - provider: xpkg.upbound.io/crossplane-contrib/provider-helm
   #   version: ">=v0.14.0"
   # - provider: xpkg.upbound.io/crossplane-contrib/provider-kubernetes
