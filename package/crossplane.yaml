@@ -28,6 +28,8 @@ spec:
     version: ">=v0.1.4"
   - function: c8n.io/vfarcic/crossplane-function-loop
     version: ">=v0.0.4"
+  - function: xpkg.upbound.io/upbound/function-auto-ready
+    version: ">=v0.2.1"
   # - provider: xpkg.upbound.io/crossplane-contrib/provider-helm
   #   version: ">=v0.14.0"
   # - provider: xpkg.upbound.io/crossplane-contrib/provider-kubernetes

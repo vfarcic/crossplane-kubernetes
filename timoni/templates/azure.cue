@@ -84,7 +84,7 @@ import (
 			}
 		}, {
 			step: "automatically-detect-ready-composed-resources"
-			functionRef: name: "function-auto-ready"
+			functionRef: name: "upbound-function-auto-ready"
 		}]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }
