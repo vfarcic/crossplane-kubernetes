@@ -77,6 +77,9 @@ import (
 							kind: "Namespace"
 						}
 					}
+					readinessChecks: [{
+						type: "None"
+					}]
 				}]
 			}
 		}]
