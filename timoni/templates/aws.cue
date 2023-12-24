@@ -149,7 +149,7 @@ import (
 		spec: {
 			forProvider: {
 				region: "us-east-1"
-				version: "1.27"
+				version: "1.28"
 				roleArnSelector: matchControllerRef: true
 				vpcConfig: [{
 					endpointPrivateAccess: true
