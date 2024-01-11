@@ -2,32 +2,4 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestSuite
 testDirs:
   - ./tests/
-commands:
-  - command: helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --wait
-  - command: kubectl apply --filename providers/aws.yaml
-  - command: kubectl apply --filename providers/google.yaml
-  - command: kubectl apply --filename providers/azure.yaml
-  - command: kubectl apply --filename providers/civo.yaml
-  - command: kubectl apply --filename providers/provider-kubernetes-incluster.yaml
-  - command: kubectl apply --filename providers/provider-helm-incluster.yaml
-  - command: kubectl apply --filename package/definition.yaml
-  - command: kubectl apply --filename package/all.yaml
-  - command: kubectl apply --filename providers/function-patch-and-transform.yaml
-  - command: kubectl apply --filename providers/function-loop.yaml
-  - command: kubectl apply --filename providers/function-auto-ready.yaml
-  - command: kubectl wait --for condition=Healthy provider/provider-civo --timeout=300s
-  - command: kubectl wait --for condition=Healthy provider/provider-aws-iam --timeout=300s
-  - command: kubectl wait --for condition=Healthy provider/provider-aws-eks --timeout=300s
-  - command: kubectl wait --for condition=Healthy provider/provider-aws-ec2 --timeout=300s
-  - command: kubectl wait --for condition=Healthy provider/provider-gcp-container --timeout=300s
-  - command: kubectl wait --for condition=Healthy provider/provider-azure-containerservice --timeout=300s
-  - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-aws --timeout=300s
-  - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-gcp --timeout=300s
-  - command: kubectl wait --for condition=Healthy provider/upbound-provider-family-azure --timeout=300s
-  - command: kubectl wait --for condition=Healthy function/crossplane-contrib-function-patch-and-transform --timeout=300s
-  - command: kubectl wait --for condition=Healthy function/vfarcic-crossplane-function-loop --timeout=300s
 timeout: 30
-# startKIND: true
-# kindNodeCache: true
-# skipDelete: true
-# skipClusterDelete: true

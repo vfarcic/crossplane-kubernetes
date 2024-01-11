@@ -13,13 +13,9 @@ jobs:
           fetch-depth: 0
       - name: Setup Timoni
         uses: stefanprodan/timoni/actions/setup@main
-      - name: Generate manifests
-        run: |
-          timoni build dot-kubernetes timoni >package/all.yaml
-          head -n -1 package/all.yaml > package/all.yaml.tmp
-          mv package/all.yaml.tmp package/all.yaml
-          cat package/all.yaml
-      - name: Run tests
+      - name: Setup Task
+        uses: arduino/setup-task@v1
+      - name: Setup kuttl
         run: |
           (
             set -x; cd "$(mktemp -d)" &&
@@ -32,18 +28,18 @@ jobs:
           )
           export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
           kubectl krew install kuttl
-          helm repo add crossplane-stable https://charts.crossplane.io/stable
-          kubectl kuttl test --start-kind --skip-delete --skip-cluster-delete --timeout 120 tests/
-      - name: Build the package
+      - name: Setup up
         run: |
-          cd package
           curl -sL https://cli.upbound.io | sh
-          ./up login --token ${{ secrets.UP_TOKEN }}
-          ./up xpkg build --name kubernetes.xpkg
-          ./up xpkg push --package kubernetes.xpkg xpkg.upbound.io/${{ secrets.UP_ACCOUNT }}/dot-kubernetes:v0.11.${{ github.run_number }}
-      - name: Update config
-        run: |
-          yq --inplace ".spec.package = \"xpkg.upbound.io/devops-toolkit/dot-kubernetes:v0.11.${{ github.run_number }}\"" config.yaml
+          mv up /usr/local/bin/
+      - name: Test
+        run: task test
+      - name: Publish
+        run: task package-publish
+        env:
+          UP_ACCOUNT: ${{ secrets.UP_ACCOUNT }}
+          UP_TOKEN: ${{ secrets.UP_TOKEN }}
+          VERSION: v0.11.${{ github.run_number }}
       - name: Commit changes
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
