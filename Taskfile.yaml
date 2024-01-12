@@ -55,8 +55,7 @@ tasks:
         sh: ls -1 providers | grep -v config
     deps:
       - package-generate
-      - cmd: kind create cluster
-        ignore_error: true
+      - cluster-create-kind
       - helm-repo
     cmds:
       - helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --wait
@@ -70,6 +69,12 @@ tasks:
     desc: Destroys the cluster
     cmds:
       - kind delete cluster
+  cluster-create-kind:
+    desc: Creates a kind cluster
+    cmds:
+      - cmd: kind create cluster
+        ignore_error: true
+    internal: true
   helm-repo:
     cmds:
       - helm repo add crossplane-stable https://charts.crossplane.io/stable
