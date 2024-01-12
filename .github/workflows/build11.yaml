@@ -28,13 +28,13 @@ jobs:
           )
           export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
           kubectl krew install kuttl
-          kubectl kuttl --help
-      # - name: Setup up
-      #   run: |
-      #     curl -sL https://cli.upbound.io | sh
-      #     mv up /usr/local/bin/
-      # - name: Test
-      #   run: task test
+      - name: Setup up
+        run: |
+          curl -sL https://cli.upbound.io | sh
+          mv up /usr/local/bin/
+      - name: Test
+        run: kubectl kuttl --help
+        # run: task test
       # - name: Publish
       #   run: task package-publish
       #   env:
