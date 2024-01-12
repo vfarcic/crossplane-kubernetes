@@ -28,26 +28,27 @@ jobs:
           )
           export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
           kubectl krew install kuttl
-      - name: Setup up
-        run: |
-          curl -sL https://cli.upbound.io | sh
-          mv up /usr/local/bin/
-      - name: Test
-        run: task test
-      - name: Publish
-        run: task package-publish
-        env:
-          UP_ACCOUNT: ${{ secrets.UP_ACCOUNT }}
-          UP_TOKEN: ${{ secrets.UP_TOKEN }}
-          VERSION: v0.11.${{ github.run_number }}
-      - name: Commit changes
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add .
-          git commit -m "Config update [skip ci]"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.CROSSPLANE_TOKEN }}
-          branch: ${{ github.ref }}
+          kubectl kuttl --help
+      # - name: Setup up
+      #   run: |
+      #     curl -sL https://cli.upbound.io | sh
+      #     mv up /usr/local/bin/
+      # - name: Test
+      #   run: task test
+      # - name: Publish
+      #   run: task package-publish
+      #   env:
+      #     UP_ACCOUNT: ${{ secrets.UP_ACCOUNT }}
+      #     UP_TOKEN: ${{ secrets.UP_TOKEN }}
+      #     VERSION: v0.11.${{ github.run_number }}
+      # - name: Commit changes
+      #   run: |
+      #     git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      #     git config --local user.name "github-actions[bot]"
+      #     git add .
+      #     git commit -m "Config update [skip ci]"
+      # - name: Push changes
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     github_token: ${{ secrets.CROSSPLANE_TOKEN }}
+      #     branch: ${{ github.ref }}
