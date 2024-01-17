@@ -33,7 +33,7 @@ tasks:
       - task: test-watch
       - defer: { task: cluster-destroy }
   test-watch:
-    desc: Runs tests assuming that the cluster is already created and everything is installed.
+    desc: Runs tests in the watch mode assuming that the cluster is already created and everything is installed.
     deps:
       - task: package-generate
     cmds:
@@ -45,6 +45,13 @@ tasks:
       - tests/**/*.yaml
     generates:
       - package/all.yaml
+  test-once:
+    desc: Runs tests once assuming that the cluster is already created and everything is installed.
+    deps:
+      - task: package-generate
+    cmds:
+      - task: package-apply
+      - kubectl kuttl test
 
   # Cluster
   cluster-create:
