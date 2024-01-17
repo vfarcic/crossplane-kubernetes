@@ -3,7 +3,7 @@
 ```bash
 nix-shell --run $SHELL
 
-task manifests
+task package-generate
 ```
 
 ## Run tests
@@ -14,6 +14,8 @@ nix-shell --run $SHELL
 task cluster-create
 
 task test-watch
+
+# Stop the watcher with `ctrl+c`
 
 task cluster-destroy
 ```

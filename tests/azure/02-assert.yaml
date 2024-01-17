@@ -309,7 +309,7 @@ spec:
       spec:
         controllerConfigRef:
           name: provider-kubernetes
-        package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.9.0
+        package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.11.0
   managementPolicy: Default
   providerConfigRef:
     name: a-team-aks

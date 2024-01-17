@@ -97,7 +97,7 @@ package templates
 #ProviderKubernetesSa: {
     name: "k8s-provider-sa"
     base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
+        apiVersion: "kubernetes.crossplane.io/v1alpha2"
         kind: "Object"
         spec: {
             forProvider: {
@@ -131,7 +131,7 @@ package templates
 #ProviderKubernetesCrb: {
     name: "k8s-provider-crb"
     base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
+        apiVersion: "kubernetes.crossplane.io/v1alpha2"
         kind: "Object"
         spec: {
             forProvider: {
@@ -174,7 +174,7 @@ package templates
 #ProviderKubernetesCc: {
     name: "k8s-provider-cc"
     base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
+        apiVersion: "kubernetes.crossplane.io/v1alpha2"
         kind: "Object"
         spec: {
             forProvider: {
@@ -210,7 +210,7 @@ package templates
 #ProviderHelmCC: {
     name: "helm-provider-cc"
     base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
+        apiVersion: "kubernetes.crossplane.io/v1alpha2"
         kind: "Object"
         spec: {
             forProvider: {

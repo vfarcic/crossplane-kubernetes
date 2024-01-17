@@ -717,7 +717,7 @@ spec:
         readinessChecks:
         - type: None
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -739,7 +739,7 @@ spec:
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -768,7 +768,7 @@ spec:
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -803,7 +803,7 @@ spec:
                 spec:
                   controllerConfigRef:
                     name: provider-kubernetes
-                  package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.9.0
+                  package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.11.0
         name: kubernetes-provider
         patches:
         - fromFieldPath: spec.id
@@ -1153,7 +1153,7 @@ spec:
         readinessChecks:
         - type: None
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -1175,7 +1175,7 @@ spec:
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -1204,7 +1204,7 @@ spec:
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -1239,7 +1239,7 @@ spec:
                 spec:
                   controllerConfigRef:
                     name: provider-kubernetes
-                  package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.9.0
+                  package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.11.0
         name: kubernetes-provider
         patches:
         - fromFieldPath: spec.id
@@ -1517,7 +1517,7 @@ spec:
         readinessChecks:
         - type: None
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -1539,7 +1539,7 @@ spec:
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -1568,7 +1568,7 @@ spec:
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -1603,7 +1603,7 @@ spec:
                 spec:
                   controllerConfigRef:
                     name: provider-kubernetes
-                  package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.9.0
+                  package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.11.0
         name: kubernetes-provider
         patches:
         - fromFieldPath: spec.id
