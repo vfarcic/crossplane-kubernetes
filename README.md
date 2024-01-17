@@ -4,9 +4,11 @@
 nix-shell --run $SHELL
 
 task package-generate
+
+exit
 ```
 
-## Run tests
+## Run Tests
 
 ```bash
 nix-shell --run $SHELL
@@ -18,6 +20,8 @@ task test-watch
 # Stop the watcher with `ctrl+c`
 
 task cluster-destroy
+
+exit
 ```
 
 ## Publish To Upbound
@@ -35,4 +39,6 @@ export UP_TOKEN=[...]
 export VERSION=[...]
 
 task package-publish
+
+exit
 ```
