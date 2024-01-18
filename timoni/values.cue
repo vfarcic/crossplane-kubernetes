@@ -7,7 +7,7 @@ values: {
 	versions: {
 		traefik: 	  "23.0.1"
 		crossplane:   "1.14.5"
-		openfunction: "0.7.0"
+		openfunction: "v1.2.0-v0.7.0"
 		cilium: 	  "1.14.2"
 	}
 	packages: {
