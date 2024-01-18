@@ -11,5 +11,3 @@ spec:
   parameters:
     nodeSize: medium
     minNodeCount: 3
-  writeConnectionSecretToRef:
-    name: a-team-eks

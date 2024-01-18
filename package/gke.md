@@ -78,7 +78,7 @@ spec:
 kubectl create namespace infra
 
 kubectl --namespace infra apply \
-    --filename ../examples/gcp-gke-official.yaml
+    --filename ../examples/gcp-gke.yaml
 
 crossplane beta trace clusterclaim a-team-gke --namespace infra
 
@@ -98,7 +98,7 @@ kubectl get nodes
 unset KUBECONFIG
 
 kubectl --namespace infra delete \
-    --filename ../examples/gcp-gke-official.yaml
+    --filename ../examples/gcp-gke.yaml
 
 kubectl get managed
 

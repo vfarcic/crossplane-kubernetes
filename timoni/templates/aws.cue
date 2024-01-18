@@ -9,10 +9,10 @@ import (
     apiVersion: #Config.apiVersion
 	kind:       "Composition"
 	metadata: {
-		name: "cluster-aws-official"
+		name: "cluster-aws"
 		labels: {
 			"cluster": "eks"
-			"provider": "aws-official"
+			"provider": "aws"
 		}
 	}
     spec: {
@@ -96,6 +96,8 @@ import (
 			}
 		} , {
 			#AppCrossplane & { _composeConfig: version: _config.versions.crossplane },
+		}, {
+			#AppOpenFunction & { _composeConfig: version: _config.versions.openfunction },
 		} , {
 			#ProviderKubernetesNamespaces
 		}, {
@@ -677,7 +679,7 @@ import (
 #ProviderConfigAws: {
     name: "aws-pc"
     base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
+        apiVersion: "kubernetes.crossplane.io/v1alpha2"
         kind: "Object"
         spec: {
             forProvider: {

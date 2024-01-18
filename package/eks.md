@@ -47,7 +47,7 @@ kubectl wait --for=condition=healthy provider.pkg.crossplane.io \
 # Wait until all the packages are healthy
 
 kubectl apply \
-    --filename ../providers/provider-config-aws-official.yaml
+    --filename ../providers/provider-config-aws.yaml
 
 kubectl create namespace infra
 ```
@@ -56,7 +56,7 @@ kubectl create namespace infra
 
 ```bash
 kubectl --namespace infra apply \
-    --filename ../examples/aws-eks-official.yaml
+    --filename ../examples/aws-eks.yaml
     
 kubectl --namespace infra get clusterclaims
 
@@ -67,7 +67,7 @@ kubectl get managed
 
 ```bash
 kubectl --namespace infra delete \
-    --filename ../examples/aws-eks-official.yaml
+    --filename ../examples/aws-eks.yaml
 
 kubectl get managed
 

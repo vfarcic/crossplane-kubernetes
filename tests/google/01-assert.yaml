@@ -4,11 +4,11 @@ metadata:
   name: a-team-gke
 spec:
   compositionRef:
-    name: cluster-google-official
+    name: cluster-google
   compositionSelector:
     matchLabels:
       cluster: gke
-      provider: google-official
+      provider: google
   id: a-team-gke
   parameters:
     minNodeCount: 1
@@ -34,11 +34,11 @@ spec:
     kind: ClusterClaim
     name: a-team-gke
   compositionRef:
-    name: cluster-google-official
+    name: cluster-google
   compositionSelector:
     matchLabels:
       cluster: gke
-      provider: google-official
+      provider: google
   compositionUpdatePolicy: Automatic
   id: a-team-gke
   parameters:
@@ -61,15 +61,6 @@ spec:
     kind: Release
     name: a-team-gke-cilium
   - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-ns-dev
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-ns-production
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-gke-ns-staging
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
     name: a-team-gke
   - apiVersion: kubernetes.crossplane.io/v1alpha2
@@ -81,6 +72,15 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name: a-team-gke-k8s-provider-sa
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-ns-dev
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-ns-production
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-ns-staging
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
@@ -109,3 +109,4 @@ spec:
   providerConfigRef:
     name: a-team-gke
   rollbackLimit: 3
+

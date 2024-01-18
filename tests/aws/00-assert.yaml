@@ -4,11 +4,11 @@ metadata:
   name: a-team-eks
 spec:
   compositionRef:
-    name: cluster-aws-official
+    name: cluster-aws
   compositionSelector:
     matchLabels:
       cluster: eks
-      provider: aws-official
+      provider: aws
   id: a-team-eks
   parameters:
     minNodeCount: 3
@@ -28,11 +28,11 @@ spec:
     kind: ClusterClaim
     name: a-team-eks
   compositionRef:
-    name: cluster-aws-official
+    name: cluster-aws
   compositionSelector:
     matchLabels:
       cluster: eks
-      provider: aws-official
+      provider: aws
   id: a-team-eks
   parameters:
     minNodeCount: 3
@@ -114,17 +114,11 @@ spec:
     kind: Role
     name:  a-team-eks-nodegroup
   - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name:  a-team-eks-aws-pc
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name:  a-team-eks-ns-dev
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name:  a-team-eks-ns-production
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
     name:  a-team-eks
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name:  a-team-eks-aws-pc
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name:  a-team-eks-k8s-provider-cc
@@ -134,6 +128,12 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name:  a-team-eks-k8s-provider-sa
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name:  a-team-eks-ns-dev
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name:  a-team-eks-ns-production
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
@@ -860,7 +860,7 @@ spec:
   providerConfigRef:
     name: default
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -883,11 +883,12 @@ spec:
       metadata:
         name: provider-kubernetes
         namespace: crossplane-system
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-eks
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -917,11 +918,12 @@ spec:
       - kind: ServiceAccount
         name: provider-kubernetes
         namespace: crossplane-system
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-eks
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -941,11 +943,12 @@ spec:
       kind: Namespace
       metadata:
         name: dev
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-eks
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -965,11 +968,12 @@ spec:
       kind: Namespace
       metadata:
         name: production
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-eks
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -993,7 +997,8 @@ spec:
         name: provider-kubernetes
       spec:
         serviceAccountName: provider-kubernetes
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-eks
 ---
@@ -1055,7 +1060,7 @@ spec:
       key: kubeconfig
       name: a-team-eks-cluster
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -1084,6 +1089,7 @@ spec:
             name: aws-creds
             namespace: crossplane-system
           source: Secret
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-eks

@@ -35,14 +35,14 @@ kubectl get pkgrev
 # Wait until all the packages are healthy
 
 kubectl apply \
-    --filename ../providers/provider-config-azure-official.yaml
+    --filename ../providers/provider-config-azure.yaml
 ```
 
 ## Create an EKS Cluster
 
 ```bash
 kubectl --namespace infra apply \
-    --filename ../examples/azure-aks-official.yaml
+    --filename ../examples/azure-aks.yaml
 
 kubectl get managed
 
@@ -62,7 +62,7 @@ kubectl get nodes
 unset KUBECONFIG
 
 kubectl --namespace infra delete \
-    --filename ../examples/azure-aks-official.yaml
+    --filename ../examples/azure-aks.yaml
 
 kubectl get managed
 ```

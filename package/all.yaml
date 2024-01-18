@@ -82,8 +82,8 @@ kind: Composition
 metadata:
   labels:
     cluster: eks
-    provider: aws-official
-  name: cluster-aws-official
+    provider: aws
+  name: cluster-aws
 spec:
   compositeTypeRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
@@ -768,7 +768,7 @@ spec:
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -831,9 +831,41 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.openfunction }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+            annotations:
+              crossplane.io/external-name: openfunction
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+          spec:
+            forProvider:
+              chart:
+                name: openfunction
+                repository: https://openfunction.github.io/charts
+                version: 0.7.0
+              set:
+              - name: revisionController.enable
+                value: "true"
+              namespace: openfunction
+            rollbackLimit: 3
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-openfunction
+  - functionRef:
+      name: upbound-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ range .observed.composite.resource.spec.parameters.namespaces }}
           ---
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           metadata:
             name: {{ $.observed.composite.resource.spec.id }}-ns-{{ . }}
@@ -863,8 +895,8 @@ kind: Composition
 metadata:
   labels:
     cluster: gke
-    provider: google-official
-  name: cluster-google-official
+    provider: google
+  name: cluster-google
 spec:
   compositeTypeRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
@@ -1178,9 +1210,41 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.openfunction }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+            annotations:
+              crossplane.io/external-name: openfunction
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+          spec:
+            forProvider:
+              chart:
+                name: openfunction
+                repository: https://openfunction.github.io/charts
+                version: 0.7.0
+              set:
+              - name: revisionController.enable
+                value: "true"
+              namespace: openfunction
+            rollbackLimit: 3
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-openfunction
+  - functionRef:
+      name: upbound-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ range .observed.composite.resource.spec.parameters.namespaces }}
           ---
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           metadata:
             name: {{ $.observed.composite.resource.spec.id }}-ns-{{ . }}
@@ -1210,8 +1274,8 @@ kind: Composition
 metadata:
   labels:
     cluster: aks
-    provider: azure-official
-  name: cluster-azure-official
+    provider: azure
+  name: cluster-azure
 spec:
   compositeTypeRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
@@ -1446,7 +1510,7 @@ spec:
         - fromFieldPath: spec.id
           toFieldPath: spec.providerConfigRef.name
       - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           spec:
             forProvider:
@@ -1509,9 +1573,41 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.openfunction }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+            annotations:
+              crossplane.io/external-name: openfunction
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+          spec:
+            forProvider:
+              chart:
+                name: openfunction
+                repository: https://openfunction.github.io/charts
+                version: 0.7.0
+              set:
+              - name: revisionController.enable
+                value: "true"
+              namespace: openfunction
+            rollbackLimit: 3
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-openfunction
+  - functionRef:
+      name: upbound-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ range .observed.composite.resource.spec.parameters.namespaces }}
           ---
-          apiVersion: kubernetes.crossplane.io/v1alpha1
+          apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           metadata:
             name: {{ $.observed.composite.resource.spec.id }}-ns-{{ . }}

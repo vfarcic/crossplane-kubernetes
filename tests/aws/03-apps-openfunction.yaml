@@ -1,3 +1,4 @@
+---
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: ClusterClaim
 metadata:
@@ -6,8 +7,11 @@ spec:
   id: a-team-eks
   compositionSelector:
     matchLabels:
-      provider: aws-official
+      provider: aws
       cluster: eks
   parameters:
     nodeSize: medium
     minNodeCount: 3
+    apps:
+      crossplane: true
+      openfunction: true

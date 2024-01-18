@@ -5,9 +5,10 @@ package main
 
 values: {
 	versions: {
-		traefik: 	"23.0.1"
-		crossplane: "1.14.5"
-		cilium: 	"1.14.2"
+		traefik: 	  "23.0.1"
+		crossplane:   "1.14.5"
+		openfunction: "0.7.0"
+		cilium: 	  "1.14.2"
 	}
 	packages: {
 		providerKubernetes: "xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.11.0"

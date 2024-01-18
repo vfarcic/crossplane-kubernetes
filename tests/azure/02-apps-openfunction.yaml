@@ -1,19 +1,17 @@
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: ClusterClaim
 metadata:
-  name: a-team-gke
+  name: a-team-aks
 spec:
-  id: a-team-gke
+  id: a-team-aks
   compositionSelector:
     matchLabels:
-      provider: google
-      cluster: gke
+      provider: azure
+      cluster: aks
   parameters:
     nodeSize: medium
     minNodeCount: 1
-    namespaces:
-      - dev
-      - staging
-      - production
+    version: 1.26.6
     apps:
       crossplane: true
+      openfunction: true

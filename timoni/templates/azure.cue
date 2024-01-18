@@ -9,10 +9,10 @@ import (
     apiVersion: #Config.apiVersion
 	kind:       "Composition"
 	metadata: {
-		name: "cluster-azure-official"
+		name: "cluster-azure"
 		labels: {
 			"cluster": "aks"
-			"provider": "azure-official"
+			"provider": "azure"
 		}
 	}
     spec: {
@@ -42,6 +42,8 @@ import (
 			}
 		}, {
 			#AppCrossplane & { _composeConfig: version: _config.versions.crossplane },
+		}, {
+			#AppOpenFunction & { _composeConfig: version: _config.versions.openfunction },
 		}, {
 			#ProviderKubernetesNamespaces
 		}, {

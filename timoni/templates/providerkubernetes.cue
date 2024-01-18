@@ -4,7 +4,7 @@ package templates
     _composeConfig: {...}
     name:    _composeConfig.name + "-pc"
     base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
+        apiVersion: "kubernetes.crossplane.io/v1alpha2"
         kind: "Object"
         spec: {
             forProvider: {
@@ -213,7 +213,7 @@ package templates
         input: inline: template: """
         {{ range .observed.composite.resource.spec.parameters.namespaces }}
         ---
-        apiVersion: kubernetes.crossplane.io/v1alpha1
+        apiVersion: kubernetes.crossplane.io/v1alpha2
         kind: Object
         metadata:
           name: {{ $.observed.composite.resource.spec.id }}-ns-{{ . }}

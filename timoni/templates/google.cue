@@ -9,10 +9,10 @@ import (
     apiVersion: #Config.apiVersion
 	kind:       "Composition"
 	metadata: {
-		name: "cluster-google-official"
+		name: "cluster-google"
 		labels: {
 			"cluster": "gke"
-			"provider": "google-official"
+			"provider": "google"
 		}
 	}
     spec: {
@@ -37,6 +37,8 @@ import (
 			}
 		} , {
 			#AppCrossplane & { _composeConfig: version: _config.versions.crossplane },
+		}, {
+			#AppOpenFunction & { _composeConfig: version: _config.versions.openfunction },
 		} , {
 			#ProviderKubernetesNamespaces
 		}, {

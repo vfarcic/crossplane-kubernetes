@@ -12,9 +12,10 @@ import (
 		kind:       "CompositeCluster"
 	}
 	versions: {
-		traefik: 	string
-		crossplane: string
-		cilium: 	string
+		traefik: 	  string
+		crossplane:   string
+		openfunction: string
+		cilium: 	  string
 	}
 	packages: {
 		providerKubernetes: string

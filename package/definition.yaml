@@ -61,6 +61,10 @@ spec:
                         description: Install Crossplane
                         type: boolean
                         default: false
+                      openfunction:
+                        description: Install OpenFunction
+                        type: boolean
+                        default: false
                 required:
                 - nodeSize
             required:

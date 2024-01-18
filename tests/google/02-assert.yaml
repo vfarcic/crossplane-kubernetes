@@ -1,20 +1,25 @@
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: ClusterClaim
 metadata:
-  name: a-team-aks
+  name: a-team-gke
 spec:
   compositionRef:
-    name: cluster-azure
+    name: cluster-google
   compositionSelector:
     matchLabels:
-      cluster: aks
-      provider: azure
-  id: a-team-aks
+      cluster: gke
+      provider: google
+  id: a-team-gke
   parameters:
     minNodeCount: 1
     nodeSize: medium
+    namespaces:
+      - dev
+      - staging
+      - production
     apps:
       crossplane: true
+      openfunction: true
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
@@ -23,60 +28,66 @@ apiVersion: devopstoolkitseries.com/v1alpha1
 kind: CompositeCluster
 metadata:
   labels:
-    crossplane.io/claim-name: a-team-aks
+    crossplane.io/claim-name: a-team-gke
 spec:
   claimRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: ClusterClaim
-    name: a-team-aks
+    name: a-team-gke
   compositionRef:
-    name: cluster-azure
+    name: cluster-google
   compositionSelector:
     matchLabels:
-      cluster: aks
-      provider: azure
+      cluster: gke
+      provider: google
   compositionUpdatePolicy: Automatic
-  id: a-team-aks
+  id: a-team-gke
   parameters:
     minNodeCount: 1
     nodeSize: medium
+    apps:
+      crossplane: true
+      openfunction: true
   resourceRefs:
-  - apiVersion: azure.upbound.io/v1beta1
-    kind: ResourceGroup
-    name: a-team-aks
-  - apiVersion: containerservice.azure.upbound.io/v1beta1
-    kind: KubernetesCluster
-    name: a-team-aks
+  - apiVersion: container.gcp.upbound.io/v1beta1
+    kind: Cluster
+    name: a-team-gke
+  - apiVersion: container.gcp.upbound.io/v1beta1
+    kind: NodePool
+    name: a-team-gke
   - apiVersion: helm.crossplane.io/v1beta1
     kind: ProviderConfig
-    name: a-team-aks
+    name: a-team-gke
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
-    name:  a-team-aks-app-crossplane
+    name:  a-team-gke-app-crossplane
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
-    name: a-team-aks-cilium
+    name:  a-team-gke-app-openfunction
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name: a-team-gke-cilium
   - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
-    name: a-team-aks
+    name: a-team-gke
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-aks-azure-pc
+    name: a-team-gke-k8s-provider-cc
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-aks-k8s-provider-cc
+    name: a-team-gke-k8s-provider-crb
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-aks-k8s-provider-crb
+    name: a-team-gke-k8s-provider-sa
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-aks-k8s-provider-sa
+    name: a-team-gke-ns-dev
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-aks-ns-dev
+    name: a-team-gke-ns-production
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-aks-ns-production
+    name: a-team-gke-ns-staging
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
@@ -84,11 +95,11 @@ apiVersion: helm.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: a-team-aks-app-crossplane
-    crossplane.io/external-name: crossplane
+    crossplane.io/composition-resource-name: a-team-gke-app-openfunction
+    crossplane.io/external-name: openfunction
   labels:
-    crossplane.io/claim-name: a-team-aks
-  name: a-team-aks-app-crossplane
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-app-openfunction
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
     blockOwnerDeletion: true
@@ -98,10 +109,13 @@ spec:
   deletionPolicy: Delete
   forProvider:
     chart:
-      name: crossplane
-      repository: https://charts.crossplane.io/stable
-      version: 1.14.5
-    namespace: crossplane-system
+      name: openfunction
+      repository: https://openfunction.github.io/charts
+      version: "0.7.0"
+    set:
+    - name: revisionController.enable
+      value: "true"
+    namespace: openfunction
   providerConfigRef:
-    name: a-team-aks
+    name: a-team-gke
   rollbackLimit: 3

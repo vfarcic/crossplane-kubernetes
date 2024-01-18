@@ -1,3 +1,26 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-eks
+spec:
+  compositionRef:
+    name: cluster-aws
+  compositionSelector:
+    matchLabels:
+      cluster: eks
+      provider: aws
+  id: a-team-eks
+  parameters:
+    minNodeCount: 3
+    nodeSize: medium
+    apps:
+      crossplane: true
+      openfunction: true
+  resourceRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: CompositeCluster
+---
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: CompositeCluster
 metadata:
@@ -18,6 +41,9 @@ spec:
   parameters:
     minNodeCount: 3
     nodeSize: medium
+    apps:
+      crossplane: true
+      openfunction: true
   resourceRefs:
   - apiVersion: ec2.aws.upbound.io/v1beta1
     kind: InternetGateway
@@ -76,6 +102,9 @@ spec:
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
     name:  a-team-eks-app-crossplane
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-eks-app-openfunction
   - apiVersion: iam.aws.upbound.io/v1beta1
     kind: RolePolicyAttachment
     name:  a-team-eks-cni
@@ -125,11 +154,11 @@ apiVersion: helm.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: a-team-eks-app-crossplane
-    crossplane.io/external-name: crossplane
+    crossplane.io/composition-resource-name: a-team-eks-app-openfunction
+    crossplane.io/external-name: openfunction
   labels:
     crossplane.io/claim-name: a-team-eks
-  name: a-team-eks-app-crossplane
+  name: a-team-eks-app-openfunction
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
     blockOwnerDeletion: true
@@ -139,10 +168,13 @@ spec:
   deletionPolicy: Delete
   forProvider:
     chart:
-      name: crossplane
-      repository: https://charts.crossplane.io/stable
-      version: 1.14.5
-    namespace: crossplane-system
+      name: openfunction
+      repository: https://openfunction.github.io/charts
+      version: "0.7.0"
+    set:
+    - name: revisionController.enable
+      value: "true"
+    namespace: openfunction
   providerConfigRef:
     name: a-team-eks
   rollbackLimit: 3

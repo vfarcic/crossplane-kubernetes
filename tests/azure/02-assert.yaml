@@ -1,3 +1,4 @@
+---
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: ClusterClaim
 metadata:
@@ -15,6 +16,7 @@ spec:
     nodeSize: medium
     apps:
       crossplane: true
+      openfunction: true
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
@@ -40,6 +42,9 @@ spec:
   parameters:
     minNodeCount: 1
     nodeSize: medium
+    apps:
+      crossplane: true
+      openfunction: true
   resourceRefs:
   - apiVersion: azure.upbound.io/v1beta1
     kind: ResourceGroup
@@ -53,6 +58,9 @@ spec:
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
     name:  a-team-aks-app-crossplane
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-aks-app-openfunction
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
     name: a-team-aks-cilium
@@ -84,11 +92,11 @@ apiVersion: helm.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: a-team-aks-app-crossplane
-    crossplane.io/external-name: crossplane
+    crossplane.io/composition-resource-name: a-team-aks-app-openfunction
+    crossplane.io/external-name: openfunction
   labels:
     crossplane.io/claim-name: a-team-aks
-  name: a-team-aks-app-crossplane
+  name: a-team-aks-app-openfunction
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
     blockOwnerDeletion: true
@@ -98,10 +106,13 @@ spec:
   deletionPolicy: Delete
   forProvider:
     chart:
-      name: crossplane
-      repository: https://charts.crossplane.io/stable
-      version: 1.14.5
-    namespace: crossplane-system
+      name: openfunction
+      repository: https://openfunction.github.io/charts
+      version: "0.7.0"
+    set:
+    - name: revisionController.enable
+      value: "true"
+    namespace: openfunction
   providerConfigRef:
     name: a-team-aks
   rollbackLimit: 3

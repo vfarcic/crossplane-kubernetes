@@ -6,8 +6,15 @@ spec:
   id: a-team-gke
   compositionSelector:
     matchLabels:
-      provider: google-official
+      provider: google
       cluster: gke
   parameters:
     nodeSize: medium
     minNodeCount: 1
+    namespaces:
+      - dev
+      - staging
+      - production
+    apps:
+      crossplane: true
+      openfunction: true

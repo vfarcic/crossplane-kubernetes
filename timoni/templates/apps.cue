@@ -76,5 +76,37 @@ package templates
     }
 }
 
+#AppOpenFunction: {
+    _composeConfig: {...}
+    #FunctionGoTemplating & {
+        step: "app-openfunction"
+        input: inline: template: """
+        {{ if .observed.composite.resource.spec.parameters.apps.openfunction }}
+        ---
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+          annotations:
+            crossplane.io/external-name: openfunction
+            gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+        spec:
+          forProvider:
+            chart:
+              name: openfunction
+              repository: https://openfunction.github.io/charts
+              version: \( _composeConfig.version )
+            set:
+            - name: revisionController.enable
+              value: "true"
+            namespace: openfunction
+          rollbackLimit: 3
+          providerConfigRef:
+            name: {{ $.observed.composite.resource.spec.id }}
+        {{ end }}
+        """
+    }
+}
+
 // TODO: Add OpenFunction
 // TODO: Add Secret with container registry creadentials

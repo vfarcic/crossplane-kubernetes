@@ -6,7 +6,7 @@ spec:
   id: a-team-aks
   compositionSelector:
     matchLabels:
-      provider: azure-official
+      provider: azure
       cluster: aks
   parameters:
     nodeSize: medium

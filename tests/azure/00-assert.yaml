@@ -4,11 +4,11 @@ metadata:
   name: a-team-aks
 spec:
   compositionRef:
-    name: cluster-azure-official
+    name: cluster-azure
   compositionSelector:
     matchLabels:
       cluster: aks
-      provider: azure-official
+      provider: azure
   id: a-team-aks
   parameters:
     minNodeCount: 1
@@ -28,11 +28,11 @@ spec:
     kind: ClusterClaim
     name: a-team-aks
   compositionRef:
-    name: cluster-azure-official
+    name: cluster-azure
   compositionSelector:
     matchLabels:
       cluster: aks
-      provider: azure-official
+      provider: azure
   compositionUpdatePolicy: Automatic
   id: a-team-aks
   parameters:
@@ -52,17 +52,11 @@ spec:
     kind: Release
     name: a-team-aks-cilium
   - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-azure-pc
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-ns-dev
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: Object
-    name: a-team-aks-ns-production
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
     name: a-team-aks
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-azure-pc
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name: a-team-aks-k8s-provider-cc
@@ -72,6 +66,12 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name: a-team-aks-k8s-provider-sa
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-ns-dev
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-ns-production
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
@@ -193,7 +193,7 @@ spec:
       key: kubeconfig
       name: a-team-aks-cluster
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -213,11 +213,12 @@ spec:
       kind: Namespace
       metadata:
         name: dev
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-aks
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -237,11 +238,12 @@ spec:
       kind: Namespace
       metadata:
         name: production
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-aks
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -264,11 +266,12 @@ spec:
       metadata:
         name: provider-kubernetes
         namespace: crossplane-system
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-aks
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -298,11 +301,12 @@ spec:
       - kind: ServiceAccount
         name: provider-kubernetes
         namespace: crossplane-system
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-aks
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
@@ -326,6 +330,7 @@ spec:
         name: provider-kubernetes
       spec:
         serviceAccountName: provider-kubernetes
-  managementPolicy: Default
+  managementPolicies:
+  - '*'
   providerConfigRef:
     name: a-team-aks

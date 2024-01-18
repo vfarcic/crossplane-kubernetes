@@ -6,7 +6,7 @@ spec:
   id: a-team-gke
   compositionSelector:
     matchLabels:
-      provider: google-official
+      provider: google
       cluster: gke
   parameters:
     nodeSize: medium
