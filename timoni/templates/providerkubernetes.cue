@@ -207,38 +207,29 @@ package templates
     }]
 }
 
-#ProviderHelmCC: {
-    name: "helm-provider-cc"
-    base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha2"
-        kind: "Object"
-        spec: {
-            forProvider: {
-                manifest: {
-                    apiVersion: "pkg.crossplane.io/v1beta1"
-                    kind: "ControllerConfig"
-                    metadata: {
-                        name: "provider-kubernetes"
-                    }
-                    spec: {
-                        serviceAccountName: "provider-kubernetes"
-                    }
-                }
-            }
-        }
+#ProviderKubernetesNamespaces: {
+    #FunctionGoTemplating & { 
+        step: "namespaces"
+        input: inline: template: """
+        {{ range .observed.composite.resource.spec.parameters.namespaces }}
+        ---
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        metadata:
+          name: {{ $.observed.composite.resource.spec.id }}-ns-{{ . }}
+          annotations:
+            crossplane.io/external-name: {{ . }}
+            gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-ns-{{ . }}
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: "v1"
+              kind: "Namespace"
+              metadata:
+                name: {{ . }}
+          providerConfigRef:
+            name: {{ $.observed.composite.resource.spec.id }}
+        {{ end }}
+        """
     }
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-        transforms: [{
-            type: "string"
-            string: {
-                fmt: "%s-helm-provider-cc"
-                type: "Format"
-            }
-        }]
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath: "spec.providerConfigRef.name"
-    }]
 }

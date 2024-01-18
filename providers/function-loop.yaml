@@ -1,7 +1,0 @@
----
-apiVersion: pkg.crossplane.io/v1beta1
-kind: Function
-metadata:
-  name: vfarcic-crossplane-function-loop
-spec:
-  package: 'c8n.io/vfarcic/crossplane-function-loop:v0.0.3'

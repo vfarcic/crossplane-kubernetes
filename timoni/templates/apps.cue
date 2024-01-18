@@ -1,9 +1,5 @@
 package templates
 
-import (
-    runtime "k8s.io/apimachinery/pkg/runtime"
-)
-
 #AppHelm: {
     _composeConfig: {...}
     name:    _composeConfig.name
@@ -39,6 +35,7 @@ import (
     }]
 }
 
+// TODO: Add to hyperscalers
 #AppTraefik: #AppHelm & { _composeConfig:
     name: "traefik"
     base: spec: forProvider: {
@@ -50,88 +47,34 @@ import (
     }
 }
 
-#AppCrossplaneProvider: {
+#AppCrossplane: {
     _composeConfig: {...}
-    name:           _composeConfig.name
-    base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
-        kind: "Object"
-        spec: {
-            forProvider: {
-                manifest: {
-                    apiVersion: "pkg.crossplane.io/v1"
-                    kind: string | *"Provider"
-                    metadata: {
-                        name: "crossplane-" + _composeConfig.name
-                    }
-                    spec: {
-                        package: string
-                        controllerConfigRef: {
-                            name: "provider-kubernetes"
-                        }
-                    }
-                }
-            }
-        }
-    }
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-        transforms: [{
-            type: "string"
-            string: {
-                fmt: "%s-" + _composeConfig.name
-                type: "Format"
-            }
-        }]
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath: "spec.providerConfigRef.name"
-    }]
-}
-
-#AppCrossplaneConfig: {
-    #AppCrossplaneProvider & {
-        base: spec: forProvider: manifest: kind: "Configuration"
+    #FunctionGoTemplating & {
+        step: "app-crossplane"
+        input: inline: template: """
+        {{ if .observed.composite.resource.spec.parameters.apps.crossplane }}
+        ---
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
+          annotations:
+            crossplane.io/external-name: crossplane
+            gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
+        spec:
+          forProvider:
+            chart:
+              name: crossplane
+              repository: https://charts.crossplane.io/stable
+              version: \( _composeConfig.version )
+            namespace: crossplane-system
+          rollbackLimit: 3
+          providerConfigRef:
+            name: {{ $.observed.composite.resource.spec.id }}
+        {{ end }}
+        """
     }
 }
 
-#AppObject: {
-    _config: {...}
-    name:    _config.name
-    base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha1"
-        kind: "Object"
-        spec: {
-            forProvider: {
-                manifest: runtime.#RawExtension
-            }
-        }
-    }
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-        transforms: [{
-            type: "string"
-            string: {
-                fmt: "%s-" + _config.name
-                type: "Format"
-            }
-        }]
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath: "spec.providerConfigRef.name"
-    }]
-}
-
-#AppCrossplane: #AppHelm & { _composeConfig:
-	name: "crossplane"
-	base: spec: forProvider: {
-		chart: {
-			repository: "https://charts.crossplane.io/stable"
-			// version: _config.versions.crossplane
-			version: string
-		}
-		namespace: "crossplane-system"
-	}
-}
+// TODO: Add OpenFunction
+// TODO: Add Secret with container registry creadentials

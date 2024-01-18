@@ -52,7 +52,6 @@ import (
 					#AwsRouteTableAssociation1c,
 					#AwsAddonEbs,
 					#ProviderConfigHelmLocal,
-					#AppCrossplane & { base: spec: forProvider: chart: version: _config.versions.crossplane },
 					// TODO: kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
 					// TODO: Uncomment
 					// #AppHelm & { _config:
@@ -90,29 +89,15 @@ import (
 					#ProviderKubernetesSa,
 					#ProviderKubernetesCrb,
 					#ProviderKubernetesCc,
-					#AppCrossplaneProvider & { _composeConfig:
-						name: "kubernetes-provider"
-						base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
-					},
-					#AppCrossplaneProvider & { _composeConfig:
-						name: "helm-provider"
-						base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
-					},
-					// #AppCrossplaneConfig & { _composeConfig:
-					// 	name: "config-app"
-					// 	base: spec: forProvider: manifest: spec: package: _config.packages.configApp
-					// },
-					#AppCrossplaneConfig & { _composeConfig:
-						name: "config-sql"
-						base: spec: forProvider: manifest: spec: package: _config.packages.configSql
-					},
 					#ProviderConfig & { _composeConfig:
 						name: "aws"
 					},
 				]
 			}
 		} , {
-			#FunctionLoopNamespaces
+			#AppCrossplane & { _composeConfig: version: _config.versions.crossplane },
+		} , {
+			#ProviderKubernetesNamespaces
 		}, {
 			#FunctionReady
 		}]

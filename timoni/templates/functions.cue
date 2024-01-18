@@ -5,26 +5,13 @@ package templates
     functionRef: name: "upbound-function-auto-ready"
 }
 
-#FunctionLoopNamespaces: {
-    step: "namespaces"
-    functionRef: name: "vfarcic-crossplane-function-loop"
+#FunctionGoTemplating: {
+    functionRef: name: "upbound-function-go-templating"
+    step: string
     input: {
-        apiVersion: "pt.fn.crossplane.io/v1beta1"
-        kind: "Resources"
-        valuesXrPath: "spec.parameters.namespaces"
-        namePrefix: "ns-"
-        paths: [
-            {"spec.forProvider.manifest.metadata.name"},
-            {"spec.providerConfigRef.name = spec.id"}]
-        resources: [{
-            base: {
-                apiVersion: "kubernetes.crossplane.io/v1alpha1"
-                kind: "Object"
-                spec: forProvider: manifest: {
-                    apiVersion: "v1"
-                    kind: "Namespace"
-                }
-            }
-        }]
+        apiVersion: "gotemplating.fn.crossplane.io/v1beta1"
+        kind: "GoTemplate"
+        source: "Inline"
+        inline: template: string
     }
 }

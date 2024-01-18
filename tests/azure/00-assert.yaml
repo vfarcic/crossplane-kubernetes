@@ -16,3 +16,316 @@ spec:
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: a-team-aks
+spec:
+  claimRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: ClusterClaim
+    name: a-team-aks
+  compositionRef:
+    name: cluster-azure-official
+  compositionSelector:
+    matchLabels:
+      cluster: aks
+      provider: azure-official
+  compositionUpdatePolicy: Automatic
+  id: a-team-aks
+  parameters:
+    minNodeCount: 1
+    nodeSize: medium
+  resourceRefs:
+  - apiVersion: azure.upbound.io/v1beta1
+    kind: ResourceGroup
+    name: a-team-aks
+  - apiVersion: containerservice.azure.upbound.io/v1beta1
+    kind: KubernetesCluster
+    name: a-team-aks
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: ProviderConfig
+    name: a-team-aks
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name: a-team-aks-cilium
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-aks-azure-pc
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-aks-ns-dev
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: Object
+    name: a-team-aks-ns-production
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: ProviderConfig
+    name: a-team-aks
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-k8s-provider-cc
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-k8s-provider-crb
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-k8s-provider-sa
+  writeConnectionSecretToRef:
+    namespace: crossplane-system
+---
+apiVersion: azure.upbound.io/v1beta1
+kind: ResourceGroup
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: resourcegroup
+    crossplane.io/external-name: a-team-aks
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  name: a-team-aks
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    location: eastus
+  initProvider: {}
+  managementPolicies:
+  - '*'
+  providerConfigRef:
+    name: default
+---
+apiVersion: containerservice.azure.upbound.io/v1beta1
+kind: KubernetesCluster
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: aks
+    crossplane.io/external-name: a-team-aks
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  name: a-team-aks
+  ownerReferences:
+    - apiVersion: devopstoolkitseries.com/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    defaultNodePool:
+      - enableAutoScaling: true
+        maxCount: 10
+        minCount: 1
+        name: a-team-aks
+        vmSize: Standard_D3_v2
+    dnsPrefix: dot
+    identity:
+      - type: SystemAssigned
+    kubernetesVersion: 1.26.6
+    location: eastus
+    resourceGroupName: a-team-aks
+    networkProfile:
+      - networkPlugin: none
+  managementPolicy: FullControl
+  providerConfigRef:
+    name: default
+  writeConnectionSecretToRef:
+    name: a-team-aks-cluster
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  name: a-team-aks
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      key: kubeconfig
+      name: a-team-aks-cluster
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: cilium
+    crossplane.io/external-name: a-team-aks-cilium
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  name: a-team-aks-cilium
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: cilium
+      repository: https://helm.cilium.io
+      version: 1.14.2
+    set:
+      - name: aksbyocni.enabled
+        value: "true"
+      - name: nodeinit.enabled
+        value: "true"
+    namespace: kube-system
+  providerConfigRef:
+    name: a-team-aks
+  rollbackLimit: 3
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  name: a-team-aks
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      key: kubeconfig
+      name: a-team-aks-cluster
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: a-team-aks-ns-dev
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: dev
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-aks
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: a-team-aks-ns-production
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: production
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-aks
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: k8s-provider-sa
+    crossplane.io/external-name: a-team-aks-k8s-provider-sa
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  name: a-team-aks-k8s-provider-sa
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: provider-kubernetes
+        namespace: crossplane-system
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-aks
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: k8s-provider-crb
+    crossplane.io/external-name: a-team-aks-k8s-provider-crb
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  name: a-team-aks-k8s-provider-crb
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: provider-kubernetes
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: cluster-admin
+      subjects:
+      - kind: ServiceAccount
+        name: provider-kubernetes
+        namespace: crossplane-system
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-aks
+---
+apiVersion: kubernetes.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: k8s-provider-cc
+    crossplane.io/external-name: a-team-aks-k8s-provider-cc
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  name: a-team-aks-k8s-provider-cc
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: pkg.crossplane.io/v1alpha1
+      kind: ControllerConfig
+      metadata:
+        name: provider-kubernetes
+      spec:
+        serviceAccountName: provider-kubernetes
+  managementPolicy: Default
+  providerConfigRef:
+    name: a-team-aks

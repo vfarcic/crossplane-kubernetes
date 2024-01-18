@@ -6,7 +6,7 @@ package main
 values: {
 	versions: {
 		traefik: 	"23.0.1"
-		crossplane: "1.13.2"
+		crossplane: "1.14.5"
 		cilium: 	"1.14.2"
 	}
 	packages: {

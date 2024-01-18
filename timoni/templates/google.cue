@@ -28,32 +28,17 @@ import (
 					#GoogleCluster,
 					#GoogleNodePool,
 					#GoogleProviderConfigHelmLocal,
-					#AppCrossplane & { base: spec: forProvider: chart: version: _config.versions.crossplane },
 					#GoogleCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
 					#GoogleProviderConfigKubernetesLocal,
 					#ProviderKubernetesSa,
 					#ProviderKubernetesCrb,
 					#ProviderKubernetesCc,
-					#AppCrossplaneProvider & { _composeConfig:
-						name: "kubernetes-provider"
-						base: spec: forProvider: manifest: spec: package: _config.packages.providerKubernetes
-					},
-					#AppCrossplaneProvider & { _composeConfig:
-						name: "helm-provider"
-						base: spec: forProvider: manifest: spec: package: _config.packages.providerHelm
-					},
-					// #AppCrossplaneConfig & { _composeConfig:
-					// 	name: "config-app"
-					// 	base: spec: forProvider: manifest: spec: package: _config.packages.configApp
-					// },
-					#AppCrossplaneConfig & { _composeConfig:
-						name: "config-sql"
-						base: spec: forProvider: manifest: spec: package: _config.packages.configSql
-					},
 				]
 			}
 		} , {
-			#FunctionLoopNamespaces
+			#AppCrossplane & { _composeConfig: version: _config.versions.crossplane },
+		} , {
+			#ProviderKubernetesNamespaces
 		}, {
 			#FunctionReady
 		}]

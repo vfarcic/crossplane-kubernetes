@@ -26,8 +26,8 @@ spec:
     version: ">=v0.33.0"
   - function: xpkg.upbound.io/crossplane-contrib/function-patch-and-transform
     version: ">=v0.1.4"
-  - function: c8n.io/vfarcic/crossplane-function-loop
-    version: ">=v0.0.4"
+  - function: xpkg.upbound.io/crossplane-contrib/function-go-templating
+    version: ">=v0.4.0"
   - function: xpkg.upbound.io/upbound/function-auto-ready
     version: ">=v0.2.1"
   # - provider: xpkg.upbound.io/crossplane-contrib/provider-helm

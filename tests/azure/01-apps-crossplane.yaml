@@ -1,0 +1,16 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-aks
+spec:
+  id: a-team-aks
+  compositionSelector:
+    matchLabels:
+      provider: azure-official
+      cluster: aks
+  parameters:
+    nodeSize: medium
+    minNodeCount: 1
+    version: 1.26.6
+    apps:
+      crossplane: true
