@@ -86,9 +86,6 @@ import (
 					// 	}
 					// },
 					#ProviderConfigKubernetesLocal,
-					#ProviderKubernetesSa,
-					#ProviderKubernetesCrb,
-					#ProviderKubernetesCc,
 					#ProviderConfig & { _composeConfig:
 						name: "aws"
 					},

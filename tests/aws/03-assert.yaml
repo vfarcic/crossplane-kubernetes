@@ -134,15 +134,6 @@ spec:
     name:  a-team-eks-aws-pc
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name:  a-team-eks-k8s-provider-cc
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name:  a-team-eks-k8s-provider-crb
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name:  a-team-eks-k8s-provider-sa
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
     name:  a-team-eks-ns-dev
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object

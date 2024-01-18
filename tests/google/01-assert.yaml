@@ -65,15 +65,6 @@ spec:
     name: a-team-gke
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-gke-k8s-provider-cc
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name: a-team-gke-k8s-provider-crb
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name: a-team-gke-k8s-provider-sa
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
     name: a-team-gke-ns-dev
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object

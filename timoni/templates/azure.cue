@@ -32,9 +32,6 @@ import (
 					#ProviderConfigHelmLocal,
 					#AzureCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
 					#ProviderConfigKubernetesLocal,
-					#ProviderKubernetesSa,
-					#ProviderKubernetesCrb,
-					#ProviderKubernetesCc,
 					#ProviderConfig & { _composeConfig:
 						name: "azure"
 					},

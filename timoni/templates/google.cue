@@ -30,9 +30,6 @@ import (
 					#GoogleProviderConfigHelmLocal,
 					#GoogleCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
 					#GoogleProviderConfigKubernetesLocal,
-					#ProviderKubernetesSa,
-					#ProviderKubernetesCrb,
-					#ProviderKubernetesCc,
 				]
 			}
 		} , {
