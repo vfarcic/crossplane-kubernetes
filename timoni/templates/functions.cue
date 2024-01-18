@@ -6,7 +6,7 @@ package templates
 }
 
 #FunctionGoTemplating: {
-    functionRef: name: "upbound-function-go-templating"
+    functionRef: name: "crossplane-contrib-function-go-templating"
     step: string
     input: {
         apiVersion: "gotemplating.fn.crossplane.io/v1beta1"
