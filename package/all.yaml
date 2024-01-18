@@ -771,7 +771,7 @@ spec:
               chart:
                 name: openfunction
                 repository: https://openfunction.github.io/charts
-                version: 0.7.0
+                version: v1.2.0-v0.7.0
               set:
               - name: revisionController.enable
                 value: "true"
@@ -1076,7 +1076,7 @@ spec:
               chart:
                 name: openfunction
                 repository: https://openfunction.github.io/charts
-                version: 0.7.0
+                version: v1.2.0-v0.7.0
               set:
               - name: revisionController.enable
                 value: "true"
@@ -1365,7 +1365,7 @@ spec:
               chart:
                 name: openfunction
                 repository: https://openfunction.github.io/charts
-                version: 0.7.0
+                version: v1.2.0-v0.7.0
               set:
               - name: revisionController.enable
                 value: "true"
