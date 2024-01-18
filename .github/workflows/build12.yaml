@@ -52,3 +52,4 @@ jobs:
         with:
           github_token: ${{ secrets.CROSSPLANE_TOKEN }}
           branch: ${{ github.ref }}
+
