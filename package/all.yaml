@@ -797,7 +797,7 @@ spec:
           toFieldPath: spec.providerConfigRef.name
     step: patch-and-transform
   - functionRef:
-      name: upbound-function-go-templating
+      name: crossplane-contrib-function-go-templating
     input:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
@@ -826,7 +826,7 @@ spec:
       source: Inline
     step: app-crossplane
   - functionRef:
-      name: upbound-function-go-templating
+      name: crossplane-contrib-function-go-templating
     input:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
@@ -858,7 +858,7 @@ spec:
       source: Inline
     step: app-openfunction
   - functionRef:
-      name: upbound-function-go-templating
+      name: crossplane-contrib-function-go-templating
     input:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
@@ -1176,7 +1176,7 @@ spec:
           toFieldPath: spec.providerConfigRef.name
     step: patch-and-transform
   - functionRef:
-      name: upbound-function-go-templating
+      name: crossplane-contrib-function-go-templating
     input:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
@@ -1205,7 +1205,7 @@ spec:
       source: Inline
     step: app-crossplane
   - functionRef:
-      name: upbound-function-go-templating
+      name: crossplane-contrib-function-go-templating
     input:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
@@ -1237,7 +1237,7 @@ spec:
       source: Inline
     step: app-openfunction
   - functionRef:
-      name: upbound-function-go-templating
+      name: crossplane-contrib-function-go-templating
     input:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
@@ -1539,7 +1539,7 @@ spec:
           toFieldPath: spec.providerConfigRef.name
     step: patch-and-transform
   - functionRef:
-      name: upbound-function-go-templating
+      name: crossplane-contrib-function-go-templating
     input:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
@@ -1568,7 +1568,7 @@ spec:
       source: Inline
     step: app-crossplane
   - functionRef:
-      name: upbound-function-go-templating
+      name: crossplane-contrib-function-go-templating
     input:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
@@ -1600,7 +1600,7 @@ spec:
       source: Inline
     step: app-openfunction
   - functionRef:
-      name: upbound-function-go-templating
+      name: crossplane-contrib-function-go-templating
     input:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
