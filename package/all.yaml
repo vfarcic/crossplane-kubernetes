@@ -769,9 +769,7 @@ spec:
           spec:
             forProvider:
               chart:
-                name: openfunction
-                repository: https://openfunction.github.io/charts
-                version: v1.2.0-v0.7.0
+                url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
               set:
               - name: revisionController.enable
                 value: "true"
@@ -1106,9 +1104,7 @@ spec:
           spec:
             forProvider:
               chart:
-                name: openfunction
-                repository: https://openfunction.github.io/charts
-                version: v1.2.0-v0.7.0
+                url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
               set:
               - name: revisionController.enable
                 value: "true"
@@ -1464,9 +1460,7 @@ spec:
           spec:
             forProvider:
               chart:
-                name: openfunction
-                repository: https://openfunction.github.io/charts
-                version: v1.2.0-v0.7.0
+                url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
               set:
               - name: revisionController.enable
                 value: "true"

@@ -14,9 +14,12 @@ import (
 	versions: {
 		traefik: 	     string
 		crossplane:      string
-		openFunction:    string
+		// openFunction:    string
 		externalSecrets: string
 		cilium: 	     string
+	}
+	charts: {
+		openFunction: string
 	}
 	packages: {
 		providerKubernetes: string

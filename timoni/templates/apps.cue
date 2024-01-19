@@ -93,9 +93,7 @@ package templates
         spec:
           forProvider:
             chart:
-              name: openfunction
-              repository: https://openfunction.github.io/charts
-              version: \( _composeConfig.version )
+              url: \( _composeConfig.url )
             set:
             - name: revisionController.enable
               value: "true"

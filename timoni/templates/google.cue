@@ -35,7 +35,7 @@ import (
 		} , {
 			#AppCrossplane & { _composeConfig: version: _config.versions.crossplane },
 		}, {
-			#AppOpenFunction & { _composeConfig: version: _config.versions.openFunction },
+			#AppOpenFunction & { _composeConfig: url: _config.charts.openFunction },
 		}, {
 			#AppExternalSecrets & { _composeConfig: version: _config.versions.externalSecrets },
 		} , {

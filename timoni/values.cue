@@ -7,9 +7,12 @@ values: {
 	versions: {
 		traefik: 	     "23.0.1"
 		crossplane:      "1.14.5"
-		openFunction:    "0.7.0"
+		// openFunction:    "v1.2.0-v0.7.0"
 		externalSecrets: "0.9.11"
 		cilium: 	     "1.14.2"
+	}
+	charts: {
+		openFunction: "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
 	}
 	packages: {
 		providerKubernetes: "xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.11.0"
