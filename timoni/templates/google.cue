@@ -33,11 +33,13 @@ import (
 				]
 			}
 		} , {
-			#AppCrossplane & { _composeConfig: version: _config.versions.crossplane },
+			#AppCrossplane & { _version: _config.versions.crossplane },
 		}, {
-			#AppOpenFunction & { _composeConfig: url: _config.charts.openFunction },
+			#AppOpenFunction & { _url: _config.charts.openFunction },
 		}, {
-			#AppExternalSecrets & { _composeConfig: version: _config.versions.externalSecrets },
+			#AppExternalSecrets & { _version: _config.versions.externalSecrets },
+		}, {
+			#AppExternalSecretsStore & { _name: "google" },
 		} , {
 			#ProviderKubernetesNamespaces
 		} , {

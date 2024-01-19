@@ -733,20 +733,23 @@ spec:
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
+            name: '{{ $.observed.composite.resource.spec.id }}-app-crossplane'
             annotations:
               crossplane.io/external-name: crossplane
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-crossplane'
           spec:
             forProvider:
               chart:
                 name: crossplane
                 repository: https://charts.crossplane.io/stable
                 version: 1.14.5
+                url: ""
+              set: []
               namespace: crossplane-system
             rollbackLimit: 3
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -762,21 +765,25 @@ spec:
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+            name: '{{ $.observed.composite.resource.spec.id }}-app-openfunction'
             annotations:
               crossplane.io/external-name: openfunction
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-openfunction'
           spec:
             forProvider:
               chart:
+                name: openfunction
+                repository: ""
+                version: ""
                 url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
               set:
-              - name: revisionController.enable
-                value: "true"
+                - name: revisionController.enable
+                  value: "true"
               namespace: openfunction
             rollbackLimit: 3
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -792,23 +799,25 @@ spec:
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+            name: '{{ $.observed.composite.resource.spec.id }}-app-external-secrets'
             annotations:
               crossplane.io/external-name: external-secrets
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-external-secrets'
           spec:
             forProvider:
               chart:
                 name: external-secrets
                 repository: https://charts.external-secrets.io
                 version: 0.9.11
+                url: ""
               set:
-              - name: installCRDs
-                value: "true"
+                - name: installCRDs
+                  value: "true"
               namespace: external-secrets
             rollbackLimit: 3
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -841,6 +850,43 @@ spec:
       kind: GoTemplate
       source: Inline
     step: namespaces
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
+          {{ if .observed.composite.resource.spec.parameters.creds }}
+          ---
+          apiVersion: kubernetes.crossplane.io/v1alpha2
+          kind: Object
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-creds
+            annotations:
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-creds
+              crossplane.io/external-name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+          spec:
+            references:
+            - patchesFrom:
+                apiVersion: v1
+                kind: Secret
+                name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                fieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+              toFieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+            forProvider:
+              manifest:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                  namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: creds
   - functionRef:
       name: upbound-function-auto-ready
     step: automatically-detect-ready-composed-resources
@@ -1068,20 +1114,23 @@ spec:
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
+            name: '{{ $.observed.composite.resource.spec.id }}-app-crossplane'
             annotations:
               crossplane.io/external-name: crossplane
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-crossplane'
           spec:
             forProvider:
               chart:
                 name: crossplane
                 repository: https://charts.crossplane.io/stable
                 version: 1.14.5
+                url: ""
+              set: []
               namespace: crossplane-system
             rollbackLimit: 3
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1097,21 +1146,25 @@ spec:
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+            name: '{{ $.observed.composite.resource.spec.id }}-app-openfunction'
             annotations:
               crossplane.io/external-name: openfunction
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-openfunction'
           spec:
             forProvider:
               chart:
+                name: openfunction
+                repository: ""
+                version: ""
                 url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
               set:
-              - name: revisionController.enable
-                value: "true"
+                - name: revisionController.enable
+                  value: "true"
               namespace: openfunction
             rollbackLimit: 3
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1127,27 +1180,74 @@ spec:
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+            name: '{{ $.observed.composite.resource.spec.id }}-app-external-secrets'
             annotations:
               crossplane.io/external-name: external-secrets
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-external-secrets'
           spec:
             forProvider:
               chart:
                 name: external-secrets
                 repository: https://charts.external-secrets.io
                 version: 0.9.11
+                url: ""
               set:
-              - name: installCRDs
-                value: "true"
+                - name: installCRDs
+                  value: "true"
               namespace: external-secrets
             rollbackLimit: 3
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
     step: app-external-secrets
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
+          {{ if and .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled .observed.composite.resource.spec.parameters.apps.externalSecrets.store }}
+          ---
+          apiVersion: kubernetes.crossplane.io/v1alpha2
+          kind: Object
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-secret-store'
+            annotations:
+              crossplane.io/external-name: google
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-secret-store'
+          spec:
+            references:
+              - patchesFrom:
+                  apiVersion: gcp.upbound.io/v1beta1
+                  kind: ProviderConfig
+                  name: default
+                  fieldPath: spec.projectID
+                toFieldPath: spec.provider.gcpsm.projectID
+            forProvider:
+              manifest:
+                apiVersion: external-secrets.io/v1beta1
+                kind: ClusterSecretStore
+                metadata:
+                  name: google
+                spec:
+                  provider:
+                    gcpsm:
+                      auth:
+                        secretRef:
+                          secretAccessKeySecretRef:
+                            name: '{{ $.observed.composite.resource.spec.parameters.creds.name }}'
+                            key: '{{ $.observed.composite.resource.spec.parameters.creds.key }}'
+                            namespace: '{{ $.observed.composite.resource.spec.parameters.creds.namespace }}'
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: secret-store
   - functionRef:
       name: crossplane-contrib-function-go-templating
     input:
@@ -1424,20 +1524,23 @@ spec:
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
+            name: '{{ $.observed.composite.resource.spec.id }}-app-crossplane'
             annotations:
               crossplane.io/external-name: crossplane
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-crossplane'
           spec:
             forProvider:
               chart:
                 name: crossplane
                 repository: https://charts.crossplane.io/stable
                 version: 1.14.5
+                url: ""
+              set: []
               namespace: crossplane-system
             rollbackLimit: 3
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1453,21 +1556,25 @@ spec:
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+            name: '{{ $.observed.composite.resource.spec.id }}-app-openfunction'
             annotations:
               crossplane.io/external-name: openfunction
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-openfunction'
           spec:
             forProvider:
               chart:
+                name: openfunction
+                repository: ""
+                version: ""
                 url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
               set:
-              - name: revisionController.enable
-                value: "true"
+                - name: revisionController.enable
+                  value: "true"
               namespace: openfunction
             rollbackLimit: 3
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1483,23 +1590,25 @@ spec:
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+            name: '{{ $.observed.composite.resource.spec.id }}-app-external-secrets'
             annotations:
               crossplane.io/external-name: external-secrets
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-external-secrets'
           spec:
             forProvider:
               chart:
                 name: external-secrets
                 repository: https://charts.external-secrets.io
                 version: 0.9.11
+                url: ""
               set:
-              - name: installCRDs
-                value: "true"
+                - name: installCRDs
+                  value: "true"
               namespace: external-secrets
             rollbackLimit: 3
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1532,6 +1641,43 @@ spec:
       kind: GoTemplate
       source: Inline
     step: namespaces
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
+          {{ if .observed.composite.resource.spec.parameters.creds }}
+          ---
+          apiVersion: kubernetes.crossplane.io/v1alpha2
+          kind: Object
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-creds
+            annotations:
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-creds
+              crossplane.io/external-name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+          spec:
+            references:
+            - patchesFrom:
+                apiVersion: v1
+                kind: Secret
+                name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                fieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+              toFieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+            forProvider:
+              manifest:
+                apiVersion: v1
+                kind: Secret
+                metadata:
+                  name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                  namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: creds
   - functionRef:
       name: upbound-function-auto-ready
     step: automatically-detect-ready-composed-resources

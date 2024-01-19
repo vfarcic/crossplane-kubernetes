@@ -18,90 +18,88 @@ import (
     spec: {
 		compositeTypeRef: _config.compositeTypeRef
 		mode: "Pipeline"
-		pipeline: [{
-			step: "patch-and-transform"
-			functionRef: {
-				name: "crossplane-contrib-function-patch-and-transform"
-			}
-			input: {
-				apiVersion: "pt.fn.crossplane.io/v1beta1"
-				kind: "Resources"
-				resources: [
-					#AwsCluster,
-					#AwsClusterAuth,
-					#AwsNodeGroup,
-					#AwsIamControlPlane,
-					#AwsIamNodeGroup,
-					#AwsIamAttachmentControlPlane,
-					#AwsIamAttachmentService,
-					#AwsIamAttachmentWorker,
-					#AwsIamAttachmentCni,
-					#AwsIamAttachmentRegistry,
-					#AwsVpc,
-					#AwsSecurityGroup,
-					#AwsSecurityGroupRule,
-					#AwsSubnet1a,
-					#AwsSubnet1b,
-					#AwsSubnet1c,
-					#AwsGateway,
-					#AwsRouteTable,
-					#AwsRoute,
-					#AwsMainRouteAssociation,
-					#AwsRouteTableAssociation1a,
-					#AwsRouteTableAssociation1b,
-					#AwsRouteTableAssociation1c,
-					#AwsAddonEbs,
-					#ProviderConfigHelmLocal,
-					// TODO: kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
-					// TODO: Uncomment
-					// #AppHelm & { _config:
-					// 	name: "cilium"
-					// 	base: spec: forProvider: {
-					// 		chart: {
-					// 			repository: "https://helm.cilium.io"
-					// 			// TODO: Switch to variable
-					// 			version: "1.14.2"
-					// 		}
-					// 		set: [{
-					// 			name: "nodeinit.enabled"
-					// 			value: "true"
-					// 		}, {
-					// 			name: "nodeinit.reconfigureKubelet"
-					// 			value: "true"
-					// 		}, {
-					// 			name: "nodeinit.removeCbrBridge"
-					// 			value: "true"
-					// 		}, {
-					// 			name: "cni.binPath"
-					// 			value: "/home/kubernetes/bin"
-					// 		}, {
-					// 			name: "gke.enabled"
-					// 			value: "true"
-					// 		}, {
-					// 			name: "ipam.mode"
-					// 			value: "kubernetes"
-					// 		}, {
-					// 			name: "ipv4NativeRoutingCIDR"
-					// 		}]
-					// 	}
-					// },
-					#ProviderConfigKubernetesLocal,
-					#ProviderConfig & { _composeConfig:
-						name: "aws"
-					},
-				]
-			}
-		} , {
-			#AppCrossplane & { _composeConfig: version: _config.versions.crossplane },
-		}, {
-			#AppOpenFunction & { _composeConfig: url: _config.charts.openFunction },
-		}, {
-			#AppExternalSecrets & { _composeConfig: version: _config.versions.externalSecrets },
-		} , {
-			#ProviderKubernetesNamespaces
-		}, {
-			#FunctionReady
-		}]
+		pipeline: [
+			{
+				step: "patch-and-transform"
+				functionRef: {
+					name: "crossplane-contrib-function-patch-and-transform"
+				}
+				input: {
+					apiVersion: "pt.fn.crossplane.io/v1beta1"
+					kind: "Resources"
+					resources: [
+						#AwsCluster,
+						#AwsClusterAuth,
+						#AwsNodeGroup,
+						#AwsIamControlPlane,
+						#AwsIamNodeGroup,
+						#AwsIamAttachmentControlPlane,
+						#AwsIamAttachmentService,
+						#AwsIamAttachmentWorker,
+						#AwsIamAttachmentCni,
+						#AwsIamAttachmentRegistry,
+						#AwsVpc,
+						#AwsSecurityGroup,
+						#AwsSecurityGroupRule,
+						#AwsSubnet1a,
+						#AwsSubnet1b,
+						#AwsSubnet1c,
+						#AwsGateway,
+						#AwsRouteTable,
+						#AwsRoute,
+						#AwsMainRouteAssociation,
+						#AwsRouteTableAssociation1a,
+						#AwsRouteTableAssociation1b,
+						#AwsRouteTableAssociation1c,
+						#AwsAddonEbs,
+						#ProviderConfigHelmLocal,
+						// TODO: kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
+						// TODO: Uncomment
+						// #AppHelm & { _config:
+						// 	name: "cilium"
+						// 	base: spec: forProvider: {
+						// 		chart: {
+						// 			repository: "https://helm.cilium.io"
+						// 			// TODO: Switch to variable
+						// 			version: "1.14.2"
+						// 		}
+						// 		set: [{
+						// 			name: "nodeinit.enabled"
+						// 			value: "true"
+						// 		}, {
+						// 			name: "nodeinit.reconfigureKubelet"
+						// 			value: "true"
+						// 		}, {
+						// 			name: "nodeinit.removeCbrBridge"
+						// 			value: "true"
+						// 		}, {
+						// 			name: "cni.binPath"
+						// 			value: "/home/kubernetes/bin"
+						// 		}, {
+						// 			name: "gke.enabled"
+						// 			value: "true"
+						// 		}, {
+						// 			name: "ipam.mode"
+						// 			value: "kubernetes"
+						// 		}, {
+						// 			name: "ipv4NativeRoutingCIDR"
+						// 		}]
+						// 	}
+						// },
+						#ProviderConfigKubernetesLocal,
+						#ProviderConfig & { _composeConfig:
+							name: "aws"
+						},
+					]
+				}
+			},
+			{ #AppCrossplane & { _version: _config.versions.crossplane } },
+			{ #AppOpenFunction & { _url: _config.charts.openFunction } },
+			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
+			{ #ProviderKubernetesNamespaces },
+			{ #Creds },
+			{ #FunctionReady },
+		]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }
 }

@@ -1,8 +1,10 @@
 package templates
 
+import "encoding/yaml"
+
 #AppHelm: {
     _composeConfig: {...}
-    name:    _composeConfig.name
+    name: _composeConfig.name
     base: {
         apiVersion: "helm.crossplane.io/v1beta1"
         kind: "Release"
@@ -48,92 +50,122 @@ package templates
 }
 
 #AppCrossplane: {
-    _composeConfig: {...}
+    _version: string
+    _template: #ReleaseTemplate & {
+        _name:            "crossplane"
+        _chartVersion:    _version
+        _chartRepository: "https://charts.crossplane.io/stable"
+        _chartURL:        ""
+        _namespace:       "crossplane-system"
+    }
     #FunctionGoTemplating & {
         step: "app-crossplane"
         input: inline: template: """
         {{ if .observed.composite.resource.spec.parameters.apps.crossplane.enabled }}
         ---
-        apiVersion: helm.crossplane.io/v1beta1
-        kind: Release
-        metadata:
-          name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
-          annotations:
-            crossplane.io/external-name: crossplane
-            gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-crossplane
-        spec:
-          forProvider:
-            chart:
-              name: crossplane
-              repository: https://charts.crossplane.io/stable
-              version: \( _composeConfig.version )
-            namespace: crossplane-system
-          rollbackLimit: 3
-          providerConfigRef:
-            name: {{ $.observed.composite.resource.spec.id }}
+        \( yaml.Marshal(_template) )
         {{ end }}
         """
     }
 }
 
 #AppOpenFunction: {
-    _composeConfig: {...}
+    _url: string
+    _template: #ReleaseTemplate & {
+        _name:            "openfunction"
+        _chartVersion:    ""
+        _chartRepository: ""
+        _chartURL:        _url
+        _set: [{
+            name:  "revisionController.enable"
+            value: "true"
+        }]
+        _namespace: "openfunction"
+    }
     #FunctionGoTemplating & {
         step: "app-openfunction"
         input: inline: template: """
         {{ if .observed.composite.resource.spec.parameters.apps.openfunction.enabled }}
         ---
-        apiVersion: helm.crossplane.io/v1beta1
-        kind: Release
-        metadata:
-          name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
-          annotations:
-            crossplane.io/external-name: openfunction
-            gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-openfunction
-        spec:
-          forProvider:
-            chart:
-              url: \( _composeConfig.url )
-            set:
-            - name: revisionController.enable
-              value: "true"
-            namespace: openfunction
-          rollbackLimit: 3
-          providerConfigRef:
-            name: {{ $.observed.composite.resource.spec.id }}
+        \( yaml.Marshal(_template) )
         {{ end }}
         """
     }
 }
 
 #AppExternalSecrets: {
-    _composeConfig: {...}
+    _version: string
+    _template: #ReleaseTemplate & {
+        _name:            "external-secrets"
+        _chartVersion:    _version
+        _chartRepository: "https://charts.external-secrets.io"
+        _chartURL:        ""
+        _set: [{
+            name: "installCRDs"
+            value: "true"
+        }]
+        _namespace: "external-secrets"
+    }
     #FunctionGoTemplating & {
         step: "app-external-secrets"
         input: inline: template: """
         {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
         ---
-        apiVersion: helm.crossplane.io/v1beta1
-        kind: Release
-        metadata:
-          name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
-          annotations:
-            crossplane.io/external-name: external-secrets
-            gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
-        spec:
-          forProvider:
-            chart:
-              name: external-secrets
-              repository: https://charts.external-secrets.io
-              version: \( _composeConfig.version )
-            set:
-            - name: installCRDs
-              value: "true"
-            namespace: external-secrets
-          rollbackLimit: 3
-          providerConfigRef:
-            name: {{ $.observed.composite.resource.spec.id }}
+        \( yaml.Marshal(_template) )
         {{ end }}
         """
     }
 }
+
+#AppExternalSecretsStore: {
+    _name:           string
+    _id:             "{{ $.observed.composite.resource.spec.id }}"
+    _credsName:      "{{ $.observed.composite.resource.spec.parameters.creds.name }}"
+    _credsKey:       "{{ $.observed.composite.resource.spec.parameters.creds.key }}"
+    _credsNamespace: "{{ $.observed.composite.resource.spec.parameters.creds.namespace }}"
+    _template: {
+          apiVersion: "kubernetes.crossplane.io/v1alpha2"
+          kind: "Object"
+          metadata: {
+              name: _id + "-secret-store"
+              annotations: {
+                  "crossplane.io/external-name": _name
+                  "gotemplating.fn.crossplane.io/composition-resource-name": _id + "-secret-store"
+              }
+          }
+          spec: {
+              references: [{
+                patchesFrom: {
+                    apiVersion: "gcp.upbound.io/v1beta1"
+                    kind:       "ProviderConfig"
+                    name:       "default"
+                    fieldPath:  "spec.projectID"
+                }
+                toFieldPath:    "spec.provider.gcpsm.projectID"
+              }]
+              forProvider: {
+                  manifest: {
+                      apiVersion: "external-secrets.io/v1beta1"
+                      kind:       "ClusterSecretStore"
+                      metadata: name: _name
+                      spec: provider: gcpsm: auth: secretRef: secretAccessKeySecretRef: {
+                          name:      _credsName
+                          key:       _credsKey
+                          namespace: _credsNamespace
+                      }
+                  }
+              }
+              providerConfigRef: name: _id
+        }
+    }
+    #FunctionGoTemplating & {
+        step: "secret-store"
+        input: inline: template: """
+        {{ if and .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled .observed.composite.resource.spec.parameters.apps.externalSecrets.store }}
+        ---
+        \( yaml.Marshal(_template) )
+        {{ end }}
+        """
+    }
+}
+

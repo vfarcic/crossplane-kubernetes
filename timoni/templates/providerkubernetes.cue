@@ -156,3 +156,36 @@ package templates
         """
     }
 }
+
+#ReleaseTemplate: {
+    _id:              "{{ $.observed.composite.resource.spec.id }}"
+    _name:            string
+    _chartVersion:    string
+    _chartRepository: string
+    _chartURL:        string
+    _namespace:       string
+    _set:             [...]
+    apiVersion: "helm.crossplane.io/v1beta1"
+    kind:       "Release"
+    metadata: {
+        name: _id + "-app-" + _name
+        annotations: {
+            "crossplane.io/external-name": _name
+            "gotemplating.fn.crossplane.io/composition-resource-name": _id + "-app-" + _name
+        }
+    }
+    spec: {
+        forProvider: {
+            chart: {
+                name:       _name
+                repository: _chartRepository
+                version:    _chartVersion
+                url:        _chartURL
+            }
+            set: _set
+            namespace: _namespace
+        }
+        rollbackLimit: 3
+        providerConfigRef: name: _id
+    }
+}

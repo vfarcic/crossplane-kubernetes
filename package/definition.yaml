@@ -78,6 +78,9 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                          store:
+                            type: boolean
+                            description: Whether to create secret store. If `true`, `creds` field needs to be set as well.
                   creds:
                     type: object
                     description: The secret with hyperscaler credentials.
