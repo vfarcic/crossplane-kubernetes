@@ -40,7 +40,9 @@ import (
 		}, {
 			#AppCrossplane & { _composeConfig: version: _config.versions.crossplane },
 		}, {
-			#AppOpenFunction & { _composeConfig: version: _config.versions.openfunction },
+			#AppOpenFunction & { _composeConfig: version: _config.versions.openFunction },
+		}, {
+			#AppExternalSecrets & { _composeConfig: version: _config.versions.externalSecrets },
 		}, {
 			#ProviderKubernetesNamespaces
 		}, {

@@ -16,5 +16,7 @@ spec:
       - staging
       - production
     apps:
-      crossplane: true
-      openfunction: true
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true

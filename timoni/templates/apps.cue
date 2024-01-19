@@ -52,7 +52,7 @@ package templates
     #FunctionGoTemplating & {
         step: "app-crossplane"
         input: inline: template: """
-        {{ if .observed.composite.resource.spec.parameters.apps.crossplane }}
+        {{ if .observed.composite.resource.spec.parameters.apps.crossplane.enabled }}
         ---
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release
@@ -81,7 +81,7 @@ package templates
     #FunctionGoTemplating & {
         step: "app-openfunction"
         input: inline: template: """
-        {{ if .observed.composite.resource.spec.parameters.apps.openfunction }}
+        {{ if .observed.composite.resource.spec.parameters.apps.openfunction.enabled }}
         ---
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release
@@ -108,5 +108,34 @@ package templates
     }
 }
 
-// TODO: Add OpenFunction
-// TODO: Add Secret with container registry creadentials
+#AppExternalSecrets: {
+    _composeConfig: {...}
+    #FunctionGoTemplating & {
+        step: "app-external-secrets"
+        input: inline: template: """
+        {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
+        ---
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+          annotations:
+            crossplane.io/external-name: external-secrets
+            gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+        spec:
+          forProvider:
+            chart:
+              name: external-secrets
+              repository: https://charts.external-secrets.io
+              version: \( _composeConfig.version )
+            set:
+            - name: installCRDs
+              value: "true"
+            namespace: external-secrets
+          rollbackLimit: 3
+          providerConfigRef:
+            name: {{ $.observed.composite.resource.spec.id }}
+        {{ end }}
+        """
+    }
+}

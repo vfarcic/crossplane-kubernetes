@@ -18,8 +18,10 @@ spec:
       - staging
       - production
     apps:
-      crossplane: true
-      openfunction: true
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
@@ -46,8 +48,10 @@ spec:
     minNodeCount: 1
     nodeSize: medium
     apps:
-      crossplane: true
-      openfunction: true
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true
   resourceRefs:
   - apiVersion: container.gcp.upbound.io/v1beta1
     kind: Cluster

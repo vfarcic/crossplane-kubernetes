@@ -13,4 +13,5 @@ spec:
     nodeSize: medium
     minNodeCount: 3
     apps:
-      crossplane: true
+      crossplane:
+        enabled: true

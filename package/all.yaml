@@ -728,7 +728,7 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
-          {{ if .observed.composite.resource.spec.parameters.apps.crossplane }}
+          {{ if .observed.composite.resource.spec.parameters.apps.crossplane.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
@@ -757,7 +757,7 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
-          {{ if .observed.composite.resource.spec.parameters.apps.openfunction }}
+          {{ if .observed.composite.resource.spec.parameters.apps.openfunction.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
@@ -783,6 +783,38 @@ spec:
       kind: GoTemplate
       source: Inline
     step: app-openfunction
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+            annotations:
+              crossplane.io/external-name: external-secrets
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+          spec:
+            forProvider:
+              chart:
+                name: external-secrets
+                repository: https://charts.external-secrets.io
+                version: 0.9.11
+              set:
+              - name: installCRDs
+                value: "true"
+              namespace: external-secrets
+            rollbackLimit: 3
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-external-secrets
   - functionRef:
       name: crossplane-contrib-function-go-templating
     input:
@@ -1033,7 +1065,7 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
-          {{ if .observed.composite.resource.spec.parameters.apps.crossplane }}
+          {{ if .observed.composite.resource.spec.parameters.apps.crossplane.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
@@ -1062,7 +1094,7 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
-          {{ if .observed.composite.resource.spec.parameters.apps.openfunction }}
+          {{ if .observed.composite.resource.spec.parameters.apps.openfunction.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
@@ -1088,6 +1120,38 @@ spec:
       kind: GoTemplate
       source: Inline
     step: app-openfunction
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+            annotations:
+              crossplane.io/external-name: external-secrets
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+          spec:
+            forProvider:
+              chart:
+                name: external-secrets
+                repository: https://charts.external-secrets.io
+                version: 0.9.11
+              set:
+              - name: installCRDs
+                value: "true"
+              namespace: external-secrets
+            rollbackLimit: 3
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-external-secrets
   - functionRef:
       name: crossplane-contrib-function-go-templating
     input:
@@ -1322,7 +1386,7 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
-          {{ if .observed.composite.resource.spec.parameters.apps.crossplane }}
+          {{ if .observed.composite.resource.spec.parameters.apps.crossplane.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
@@ -1351,7 +1415,7 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
-          {{ if .observed.composite.resource.spec.parameters.apps.openfunction }}
+          {{ if .observed.composite.resource.spec.parameters.apps.openfunction.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
           kind: Release
@@ -1377,6 +1441,38 @@ spec:
       kind: GoTemplate
       source: Inline
     step: app-openfunction
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+            annotations:
+              crossplane.io/external-name: external-secrets
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-external-secrets
+          spec:
+            forProvider:
+              chart:
+                name: external-secrets
+                repository: https://charts.external-secrets.io
+                version: 0.9.11
+              set:
+              - name: installCRDs
+                value: "true"
+              namespace: external-secrets
+            rollbackLimit: 3
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-external-secrets
   - functionRef:
       name: crossplane-contrib-function-go-templating
     input:

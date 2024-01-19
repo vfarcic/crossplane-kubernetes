@@ -18,6 +18,9 @@ spec:
   parameters:
     minNodeCount: 3
     nodeSize: medium
+    apps:
+      crossplane:
+        enabled: true
   resourceRefs:
   - apiVersion: ec2.aws.upbound.io/v1beta1
     kind: InternetGateway

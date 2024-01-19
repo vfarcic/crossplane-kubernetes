@@ -13,5 +13,7 @@ spec:
     minNodeCount: 1
     version: 1.26.6
     apps:
-      crossplane: true
-      openfunction: true
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true

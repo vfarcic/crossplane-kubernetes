@@ -58,13 +58,26 @@ spec:
                     description: List of apps that should be installed in the cluster
                     properties:
                       crossplane:
+                        type: object
                         description: Install Crossplane
-                        type: boolean
-                        default: false
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
                       openfunction:
+                        type: object
                         description: Install OpenFunction
-                        type: boolean
-                        default: false
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                      externalSecrets:
+                        type: object
+                        description: Install External Secrets Operator (ESO)
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
                 required:
                 - nodeSize
             required:

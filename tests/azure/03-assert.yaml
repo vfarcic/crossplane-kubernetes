@@ -19,6 +19,8 @@ spec:
         enabled: true
       openfunction:
         enabled: true
+      externalSecrets:
+        enabled: true
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
@@ -49,6 +51,8 @@ spec:
         enabled: true
       openfunction:
         enabled: true
+      externalSecrets:
+        enabled: true
   resourceRefs:
   - apiVersion: azure.upbound.io/v1beta1
     kind: ResourceGroup
@@ -62,6 +66,9 @@ spec:
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
     name:  a-team-aks-app-crossplane
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-aks-app-external-secrets
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
     name:  a-team-aks-app-openfunction
@@ -87,11 +94,11 @@ apiVersion: helm.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: a-team-aks-app-openfunction
-    crossplane.io/external-name: openfunction
+    crossplane.io/composition-resource-name: a-team-eks-app-external-secrets
+    crossplane.io/external-name: external-secrets
   labels:
-    crossplane.io/claim-name: a-team-aks
-  name: a-team-aks-app-openfunction
+    crossplane.io/claim-name: a-team-eks
+  name: a-team-eks-app-external-secrets
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
     blockOwnerDeletion: true
@@ -101,13 +108,13 @@ spec:
   deletionPolicy: Delete
   forProvider:
     chart:
-      name: openfunction
-      repository: https://openfunction.github.io/charts
-      version: v1.2.0-v0.7.0
+      name: external-secrets
+      repository: https://charts.external-secrets.io
+      version: "0.9.11"
     set:
-    - name: revisionController.enable
+    - name: installCRDs
       value: "true"
-    namespace: openfunction
+    namespace: external-secrets
   providerConfigRef:
-    name: a-team-aks
+    name: a-team-eks
   rollbackLimit: 3
