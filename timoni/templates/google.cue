@@ -40,6 +40,8 @@ import (
 			#AppExternalSecrets & { _composeConfig: version: _config.versions.externalSecrets },
 		} , {
 			#ProviderKubernetesNamespaces
+		} , {
+			#Creds
 		}, {
 			#FunctionReady
 		}]

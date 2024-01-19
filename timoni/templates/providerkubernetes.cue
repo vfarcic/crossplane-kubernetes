@@ -120,3 +120,39 @@ package templates
         """
     }
 }
+
+#Creds: {
+    #FunctionGoTemplating & { 
+        step: "creds"
+        input: inline: template: """
+        {{ if .observed.composite.resource.spec.parameters.creds }}
+        ---
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        metadata:
+          name: {{ $.observed.composite.resource.spec.id }}-creds
+          annotations:
+            gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-creds
+            crossplane.io/external-name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+        spec:
+          references:
+          - patchesFrom:
+              apiVersion: v1
+              kind: Secret
+              name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+              namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+              fieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+            toFieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: Secret
+              metadata:
+                name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+          providerConfigRef:
+            name: {{ $.observed.composite.resource.spec.id }}
+        {{ end }}
+        """
+    }
+}

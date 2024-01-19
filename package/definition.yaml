@@ -78,6 +78,24 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                  creds:
+                    type: object
+                    description: The secret with hyperscaler credentials.
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the secret
+                      namespace:
+                        type: string
+                        description: The namespace of the secret
+                        default: crossplane-system
+                      key:
+                        type: string
+                        description: The key in the secret that contains the credentials
+                    required:
+                    - name
+                    - namespace
+                    - key
                 required:
                 - nodeSize
             required:
