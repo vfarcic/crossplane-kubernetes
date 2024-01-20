@@ -33,15 +33,14 @@ import (
 						#ProviderConfigHelmLocal,
 						#AzureCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
 						#ProviderConfigKubernetesLocal,
-						#ProviderConfig & { _composeConfig:
-							name: "azure"
-						},
+						#ProviderConfig & { _composeConfig: name: "azure" },
 					]
 				}
 			},
 			{ #AppCrossplane & { _version: _config.versions.crossplane } },
 			{ #AppOpenFunction & { _url: _config.charts.openFunction } },
 			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
+			{ #AppExternalSecretsStore & { _name: "azure" } },
 			{ #ProviderKubernetesNamespaces },
 			{ #Creds },
 			{ #FunctionReady },

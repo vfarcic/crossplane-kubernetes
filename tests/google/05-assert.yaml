@@ -28,7 +28,8 @@ spec:
     creds:
       name: gcp-creds
       namespace: crossplane-system
-      key: creds
+      keys:
+        - google-creds
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
@@ -65,7 +66,8 @@ spec:
     creds:
       name: gcp-creds
       namespace: crossplane-system
-      key: creds
+      keys:
+        - google-creds
   resourceRefs:
   - apiVersion: container.gcp.upbound.io/v1beta1
     kind: Cluster
@@ -137,7 +139,7 @@ spec:
               secretRef:
                 secretAccessKeySecretRef:
                   name: gcp-creds
-                  key: creds
+                  key: google-creds
                   namespace: crossplane-system
   providerConfigRef:
     name: a-team-gke

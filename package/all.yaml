@@ -828,6 +828,74 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if and .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled .observed.composite.resource.spec.parameters.apps.externalSecrets.store }}
+          ---
+          apiVersion: kubernetes.crossplane.io/v1alpha2
+          kind: Object
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-secret-store
+            annotations:
+              crossplane.io/external-name: aws
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-secret-store
+          spec:
+            {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+            references:
+              - patchesFrom:
+                  apiVersion: gcp.upbound.io/v1beta1
+                  kind: ProviderConfig
+                  name: default
+                  fieldPath: spec.projectID
+                toFieldPath: spec.provider.gcpsm.projectID
+            {{ end }}
+            forProvider:
+              manifest:
+                apiVersion: external-secrets.io/v1beta1
+                kind: ClusterSecretStore
+                metadata:
+                  name: aws
+                spec:
+                  provider:
+                    {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+                    gcpsm:
+                      auth:
+                        secretRef:
+                          secretAccessKeySecretRef:
+                            name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                            key: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+                            namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                    {{ end }}
+                    {{ if and $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}
+                    aws:
+                      service: SecretsManager
+                      region: us-east-1
+                      auth:
+                        secretRef:
+                          accessKeyIDSecretRef:
+                            name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                            key: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey }}
+                            namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                          secretAccessKeySecretRef:
+                            name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                            key: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}
+                            namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                    {{ end }}
+                    {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}
+                    azurekv:
+                      authType: ManagedIdentity
+                      vaultUrl: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}
+                    {{ end }}
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: secret-store
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ range .observed.composite.resource.spec.parameters.namespaces }}
           ---
           apiVersion: kubernetes.crossplane.io/v1alpha2
@@ -867,13 +935,15 @@ spec:
               crossplane.io/external-name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
           spec:
             references:
+            {{ range $.observed.composite.resource.spec.parameters.creds.keys }}
             - patchesFrom:
                 apiVersion: v1
                 kind: Secret
                 name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
                 namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
-                fieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
-              toFieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+                fieldPath: data.{{ . }}
+              toFieldPath: data.{{ . }}
+            {{ end }}
             forProvider:
               manifest:
                 apiVersion: v1
@@ -1214,11 +1284,12 @@ spec:
           apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           metadata:
-            name: '{{ $.observed.composite.resource.spec.id }}-secret-store'
+            name: {{ $.observed.composite.resource.spec.id }}-secret-store
             annotations:
               crossplane.io/external-name: google
-              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-secret-store'
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-secret-store
           spec:
+            {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
             references:
               - patchesFrom:
                   apiVersion: gcp.upbound.io/v1beta1
@@ -1226,6 +1297,7 @@ spec:
                   name: default
                   fieldPath: spec.projectID
                 toFieldPath: spec.provider.gcpsm.projectID
+            {{ end }}
             forProvider:
               manifest:
                 apiVersion: external-secrets.io/v1beta1
@@ -1234,16 +1306,37 @@ spec:
                   name: google
                 spec:
                   provider:
+                    {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
                     gcpsm:
                       auth:
                         secretRef:
                           secretAccessKeySecretRef:
-                            name: '{{ $.observed.composite.resource.spec.parameters.creds.name }}'
-                            key: '{{ $.observed.composite.resource.spec.parameters.creds.key }}'
-                            namespace: '{{ $.observed.composite.resource.spec.parameters.creds.namespace }}'
+                            name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                            key: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+                            namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                    {{ end }}
+                    {{ if and $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}
+                    aws:
+                      service: SecretsManager
+                      region: us-east-1
+                      auth:
+                        secretRef:
+                          accessKeyIDSecretRef:
+                            name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                            key: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey }}
+                            namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                          secretAccessKeySecretRef:
+                            name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                            key: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}
+                            namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                    {{ end }}
+                    {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}
+                    azurekv:
+                      authType: ManagedIdentity
+                      vaultUrl: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}
+                    {{ end }}
             providerConfigRef:
-              name: '{{ $.observed.composite.resource.spec.id }}'
-
+              name: {{ $.observed.composite.resource.spec.id }}
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1293,13 +1386,15 @@ spec:
               crossplane.io/external-name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
           spec:
             references:
+            {{ range $.observed.composite.resource.spec.parameters.creds.keys }}
             - patchesFrom:
                 apiVersion: v1
                 kind: Secret
                 name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
                 namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
-                fieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
-              toFieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+                fieldPath: data.{{ . }}
+              toFieldPath: data.{{ . }}
+            {{ end }}
             forProvider:
               manifest:
                 apiVersion: v1
@@ -1619,6 +1714,74 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if and .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled .observed.composite.resource.spec.parameters.apps.externalSecrets.store }}
+          ---
+          apiVersion: kubernetes.crossplane.io/v1alpha2
+          kind: Object
+          metadata:
+            name: {{ $.observed.composite.resource.spec.id }}-secret-store
+            annotations:
+              crossplane.io/external-name: azure
+              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-secret-store
+          spec:
+            {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+            references:
+              - patchesFrom:
+                  apiVersion: gcp.upbound.io/v1beta1
+                  kind: ProviderConfig
+                  name: default
+                  fieldPath: spec.projectID
+                toFieldPath: spec.provider.gcpsm.projectID
+            {{ end }}
+            forProvider:
+              manifest:
+                apiVersion: external-secrets.io/v1beta1
+                kind: ClusterSecretStore
+                metadata:
+                  name: azure
+                spec:
+                  provider:
+                    {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+                    gcpsm:
+                      auth:
+                        secretRef:
+                          secretAccessKeySecretRef:
+                            name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                            key: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+                            namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                    {{ end }}
+                    {{ if and $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}
+                    aws:
+                      service: SecretsManager
+                      region: us-east-1
+                      auth:
+                        secretRef:
+                          accessKeyIDSecretRef:
+                            name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                            key: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey }}
+                            namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                          secretAccessKeySecretRef:
+                            name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
+                            key: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}
+                            namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
+                    {{ end }}
+                    {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}
+                    azurekv:
+                      authType: ManagedIdentity
+                      vaultUrl: {{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}
+                    {{ end }}
+            providerConfigRef:
+              name: {{ $.observed.composite.resource.spec.id }}
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: secret-store
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ range .observed.composite.resource.spec.parameters.namespaces }}
           ---
           apiVersion: kubernetes.crossplane.io/v1alpha2
@@ -1658,13 +1821,15 @@ spec:
               crossplane.io/external-name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
           spec:
             references:
+            {{ range $.observed.composite.resource.spec.parameters.creds.keys }}
             - patchesFrom:
                 apiVersion: v1
                 kind: Secret
                 name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
                 namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
-                fieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
-              toFieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+                fieldPath: data.{{ . }}
+              toFieldPath: data.{{ . }}
+            {{ end }}
             forProvider:
               manifest:
                 apiVersion: v1

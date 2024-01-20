@@ -1,22 +1,19 @@
+---
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: ClusterClaim
 metadata:
-  name: a-team-gke
+  name: a-team-aks
 spec:
   compositionRef:
-    name: cluster-google
+    name: cluster-azure
   compositionSelector:
     matchLabels:
-      cluster: gke
-      provider: google
-  id: a-team-gke
+      cluster: aks
+      provider: azure
+  id: a-team-aks
   parameters:
     minNodeCount: 1
     nodeSize: medium
-    namespaces:
-      - dev
-      - staging
-      - production
     apps:
       crossplane:
         enabled: true
@@ -24,11 +21,14 @@ spec:
         enabled: true
       externalSecrets:
         enabled: true
+        store: true
+        azureVaultUrl: https://dot.vault.azure.net
     creds:
-      name: gcp-creds
+      name: azure-creds
       namespace: crossplane-system
       keys:
-        - google-creds
+        - creds
+        - vaultUrl
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
@@ -37,20 +37,20 @@ apiVersion: devopstoolkitseries.com/v1alpha1
 kind: CompositeCluster
 metadata:
   labels:
-    crossplane.io/claim-name: a-team-gke
+    crossplane.io/claim-name: a-team-aks
 spec:
   claimRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: ClusterClaim
-    name: a-team-gke
+    name: a-team-aks
   compositionRef:
-    name: cluster-google
+    name: cluster-azure
   compositionSelector:
     matchLabels:
-      cluster: gke
-      provider: google
+      cluster: aks
+      provider: azure
   compositionUpdatePolicy: Automatic
-  id: a-team-gke
+  id: a-team-aks
   parameters:
     minNodeCount: 1
     nodeSize: medium
@@ -61,48 +61,54 @@ spec:
         enabled: true
       externalSecrets:
         enabled: true
+        store: true
+        azureVaultUrl: https://dot.vault.azure.net
     creds:
-      name: gcp-creds
+      name: azure-creds
       namespace: crossplane-system
       keys:
-        - google-creds
+        - creds
+        - vaultUrl
   resourceRefs:
-  - apiVersion: container.gcp.upbound.io/v1beta1
-    kind: Cluster
-    name: a-team-gke
-  - apiVersion: container.gcp.upbound.io/v1beta1
-    kind: NodePool
-    name: a-team-gke
+  - apiVersion: azure.upbound.io/v1beta1
+    kind: ResourceGroup
+    name: a-team-aks
+  - apiVersion: containerservice.azure.upbound.io/v1beta1
+    kind: KubernetesCluster
+    name: a-team-aks
   - apiVersion: helm.crossplane.io/v1beta1
     kind: ProviderConfig
-    name: a-team-gke
+    name: a-team-aks
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
-    name:  a-team-gke-app-crossplane
+    name:  a-team-aks-app-crossplane
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
-    name:  a-team-gke-app-external-secrets
+    name:  a-team-aks-app-external-secrets
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
-    name:  a-team-gke-app-openfunction
+    name:  a-team-aks-app-openfunction
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
-    name: a-team-gke-cilium
+    name: a-team-aks-cilium
   - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
-    name: a-team-gke
+    name: a-team-aks
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-gke-creds
+    name: a-team-aks-azure-pc
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-gke-ns-dev
+    name: a-team-aks-creds
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-gke-ns-production
+    name: a-team-aks-ns-dev
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-gke-ns-staging
+    name: a-team-aks-ns-production
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-secret-store
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
@@ -110,24 +116,20 @@ apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: a-team-gke-creds
-    crossplane.io/external-name: gcp-creds
-  name: a-team-gke-creds
+    crossplane.io/composition-resource-name: a-team-aks-secret-store
+    crossplane.io/external-name: azure
+  name: a-team-aks-secret-store
 spec:
-  references:
-  - patchesFrom:
-      apiVersion: v1
-      kind: Secret
-      name: gcp-creds
-      namespace: crossplane-system
-      fieldPath: data.google-creds
-    toFieldPath: data.google-creds
   forProvider:
     manifest:
-      apiVersion: v1
-      kind: Secret
+      apiVersion: external-secrets.io/v1beta1
+      kind: ClusterSecretStore
       metadata:
-        name: gcp-creds
-        namespace: crossplane-system
+        name: azure
+      spec:
+        provider:
+          azurekv:
+            authType: ManagedIdentity
+            vaultUrl: https://dot.vault.azure.net
   providerConfigRef:
-    name: a-team-gke
+    name: a-team-aks

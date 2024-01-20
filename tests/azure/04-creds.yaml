@@ -22,4 +22,6 @@ spec:
     creds:
       name: azure-creds
       namespace: crossplane-system
-      key: creds
+      keys:
+        - creds
+        - vaultUrl

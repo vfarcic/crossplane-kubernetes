@@ -25,4 +25,5 @@ spec:
     creds:
       name: gcp-creds
       namespace: crossplane-system
-      key: creds
+      keys:
+        - google-creds

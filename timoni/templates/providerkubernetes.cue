@@ -136,13 +136,15 @@ package templates
             crossplane.io/external-name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
         spec:
           references:
+          {{ range $.observed.composite.resource.spec.parameters.creds.keys }}
           - patchesFrom:
               apiVersion: v1
               kind: Secret
               name: {{ $.observed.composite.resource.spec.parameters.creds.name }}
               namespace: {{ $.observed.composite.resource.spec.parameters.creds.namespace }}
-              fieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
-            toFieldPath: data.{{ $.observed.composite.resource.spec.parameters.creds.key }}
+              fieldPath: data.{{ . }}
+            toFieldPath: data.{{ . }}
+          {{ end }}
           forProvider:
             manifest:
               apiVersion: v1

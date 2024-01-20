@@ -24,7 +24,9 @@ spec:
     creds:
       name: azure-creds
       namespace: crossplane-system
-      key: creds
+      keys:
+        - creds
+        - vaultUrl
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
@@ -60,7 +62,9 @@ spec:
     creds:
       name: azure-creds
       namespace: crossplane-system
-      key: creds
+      keys:
+        - creds
+        - vaultUrl
   resourceRefs:
   - apiVersion: azure.upbound.io/v1beta1
     kind: ResourceGroup
@@ -110,13 +114,20 @@ metadata:
   name: a-team-aks-creds
 spec:
   references:
-  - patchesFrom:
-      apiVersion: v1
-      kind: Secret
-      name: azure-creds
-      namespace: crossplane-system
-      fieldPath: data.creds
-    toFieldPath: data.creds
+    - patchesFrom:
+        apiVersion: v1
+        kind: Secret
+        name: azure-creds
+        namespace: crossplane-system
+        fieldPath: data.creds
+      toFieldPath: data.creds
+    - patchesFrom:
+        apiVersion: v1
+        kind: Secret
+        name: azure-creds
+        namespace: crossplane-system
+        fieldPath: data.vaultUrl
+      toFieldPath: data.vaultUrl
   forProvider:
     manifest:
       apiVersion: v1

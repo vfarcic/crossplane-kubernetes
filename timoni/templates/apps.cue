@@ -118,52 +118,75 @@ import "encoding/yaml"
 }
 
 #AppExternalSecretsStore: {
-    _name:           string
-    _id:             "{{ $.observed.composite.resource.spec.id }}"
-    _credsName:      "{{ $.observed.composite.resource.spec.parameters.creds.name }}"
-    _credsKey:       "{{ $.observed.composite.resource.spec.parameters.creds.key }}"
-    _credsNamespace: "{{ $.observed.composite.resource.spec.parameters.creds.namespace }}"
-    _template: {
-          apiVersion: "kubernetes.crossplane.io/v1alpha2"
-          kind: "Object"
-          metadata: {
-              name: _id + "-secret-store"
-              annotations: {
-                  "crossplane.io/external-name": _name
-                  "gotemplating.fn.crossplane.io/composition-resource-name": _id + "-secret-store"
-              }
-          }
-          spec: {
-              references: [{
-                patchesFrom: {
-                    apiVersion: "gcp.upbound.io/v1beta1"
-                    kind:       "ProviderConfig"
-                    name:       "default"
-                    fieldPath:  "spec.projectID"
-                }
-                toFieldPath:    "spec.provider.gcpsm.projectID"
-              }]
-              forProvider: {
-                  manifest: {
-                      apiVersion: "external-secrets.io/v1beta1"
-                      kind:       "ClusterSecretStore"
-                      metadata: name: _name
-                      spec: provider: gcpsm: auth: secretRef: secretAccessKeySecretRef: {
-                          name:      _credsName
-                          key:       _credsKey
-                          namespace: _credsNamespace
-                      }
-                  }
-              }
-              providerConfigRef: name: _id
-        }
-    }
+    _name:                  string
+    _id:                    "{{ $.observed.composite.resource.spec.id }}"
+    _credsName:             "{{ $.observed.composite.resource.spec.parameters.creds.name }}"
+    _googleCredsKey:        "{{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}"
+    _awsAccessKeyIDKey:     "{{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey }}"
+    _awsSecretAccessKeyKey: "{{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}"
+    _azureVaultUrl:         "{{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}"
+    _credsNamespace:        "{{ $.observed.composite.resource.spec.parameters.creds.namespace }}"
     #FunctionGoTemplating & {
         step: "secret-store"
         input: inline: template: """
         {{ if and .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled .observed.composite.resource.spec.parameters.apps.externalSecrets.store }}
         ---
-        \( yaml.Marshal(_template) )
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        metadata:
+          name: \( _id )-secret-store
+          annotations:
+            crossplane.io/external-name: \( _name )
+            gotemplating.fn.crossplane.io/composition-resource-name: \( _id )-secret-store
+        spec:
+          {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+          references:
+            - patchesFrom:
+                apiVersion: gcp.upbound.io/v1beta1
+                kind: ProviderConfig
+                name: default
+                fieldPath: spec.projectID
+              toFieldPath: spec.provider.gcpsm.projectID
+          {{ end }}
+          forProvider:
+            manifest:
+              apiVersion: external-secrets.io/v1beta1
+              kind: ClusterSecretStore
+              metadata:
+                name: \( _name )
+              spec:
+                provider:
+                  {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+                  gcpsm:
+                    auth:
+                      secretRef:
+                        secretAccessKeySecretRef:
+                          name: \( _credsName )
+                          key: \( _googleCredsKey )
+                          namespace: \( _credsNamespace )
+                  {{ end }}
+                  {{ if and $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}
+                  aws:
+                    service: SecretsManager
+                    region: us-east-1
+                    auth:
+                      secretRef:
+                        accessKeyIDSecretRef:
+                          name: \( _credsName )
+                          key: \( _awsAccessKeyIDKey )
+                          namespace: \( _credsNamespace )
+                        secretAccessKeySecretRef:
+                          name: \( _credsName )
+                          key: \( _awsSecretAccessKeyKey )
+                          namespace: \( _credsNamespace )
+                  {{ end }}
+                  {{ if $.observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}
+                  azurekv:
+                    authType: ManagedIdentity
+                    vaultUrl: \( _azureVaultUrl )
+                  {{ end }}
+          providerConfigRef:
+            name: \( _id )
         {{ end }}
         """
     }

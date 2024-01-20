@@ -18,35 +18,30 @@ import (
     spec: {
 		compositeTypeRef: _config.compositeTypeRef
 		mode: "Pipeline"
-		pipeline: [{
-			step: "patch-and-transform"
-			functionRef: name: "crossplane-contrib-function-patch-and-transform"
-			input: {
-				apiVersion: "pt.fn.crossplane.io/v1beta1"
-				kind: "Resources"
-				resources: [
-					#GoogleCluster,
-					#GoogleNodePool,
-					#GoogleProviderConfigHelmLocal,
-					#GoogleCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
-					#GoogleProviderConfigKubernetesLocal,
-				]
-			}
-		} , {
-			#AppCrossplane & { _version: _config.versions.crossplane },
-		}, {
-			#AppOpenFunction & { _url: _config.charts.openFunction },
-		}, {
-			#AppExternalSecrets & { _version: _config.versions.externalSecrets },
-		}, {
-			#AppExternalSecretsStore & { _name: "google" },
-		} , {
-			#ProviderKubernetesNamespaces
-		} , {
-			#Creds
-		}, {
-			#FunctionReady
-		}]
+		pipeline: [
+			{
+				step: "patch-and-transform"
+				functionRef: name: "crossplane-contrib-function-patch-and-transform"
+				input: {
+					apiVersion: "pt.fn.crossplane.io/v1beta1"
+					kind: "Resources"
+					resources: [
+						#GoogleCluster,
+						#GoogleNodePool,
+						#GoogleProviderConfigHelmLocal,
+						#GoogleCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
+						#GoogleProviderConfigKubernetesLocal,
+					]
+				}
+			},
+			{ #AppCrossplane & { _version: _config.versions.crossplane } },
+			{ #AppOpenFunction & { _url: _config.charts.openFunction } },
+			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
+			{ #AppExternalSecretsStore & { _name: "google" } },
+			{ #ProviderKubernetesNamespaces },
+			{ #Creds },
+			{ #FunctionReady }
+		]
 		writeConnectionSecretsToNamespace: "crossplane-system"
     }
 }
