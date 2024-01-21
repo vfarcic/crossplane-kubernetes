@@ -29,6 +29,7 @@ spec:
         secrets:
           - fromSecret: registry-auth
             toSecret: push-secret
+            toNamespace: production
     creds:
       name: gcp-creds
       namespace: crossplane-system
@@ -66,11 +67,12 @@ spec:
         enabled: true
       externalSecrets:
         enabled: true
-        store: true # New
-        googleCredentialsKey: google-creds # New
-        secrets: # New
-          - fromSecret: registry-auth # New
-            toSecret: push-secret # New
+        store: true
+        googleCredentialsKey: google-creds
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
     creds:
       name: gcp-creds
       namespace: crossplane-system
@@ -169,6 +171,7 @@ spec:
       kind: ExternalSecret
       metadata:
         name: push-secret
+        namespace: production
       spec:
         refreshInterval: 1h
         secretStoreRef:

@@ -26,6 +26,7 @@ spec:
         secrets:
           - fromSecret: registry-auth
             toSecret: push-secret
+            toNamespace: production
     creds:
       name: azure-creds
       namespace: crossplane-system
@@ -69,6 +70,7 @@ spec:
         secrets:
           - fromSecret: registry-auth
             toSecret: push-secret
+            toNamespace: production
     creds:
       name: azure-creds
       namespace: crossplane-system
@@ -157,6 +159,7 @@ spec:
       kind: ExternalSecret
       metadata:
         name: push-secret
+        namespace: production
       spec:
         refreshInterval: 1h
         secretStoreRef:

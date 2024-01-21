@@ -901,30 +901,32 @@ spec:
           apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}
+            name: '{{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}'
             annotations:
-              crossplane.io/external-name: {{ .toSecret }}
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}
+              crossplane.io/external-name: '{{ .toSecret }}'
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}'
           spec:
             forProvider:
               manifest:
                 apiVersion: external-secrets.io/v1beta1
                 kind: ExternalSecret
                 metadata:
-                  name: {{ .toSecret }}
+                  name: '{{ .toSecret }}'
+                  namespace: '{{ .toNamespace }}'
                 spec:
                   refreshInterval: 1h
                   secretStoreRef:
                     kind: ClusterSecretStore
                     name: aws
                   target:
-                    name: {{ .toSecret }}
+                    name: '{{ .toSecret }}'
                     creationPolicy: Owner
                   dataFrom:
-                  - extract:
-                      key: {{ .fromSecret }}
+                    - extract:
+                        key: '{{ .fromSecret }}'
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1391,30 +1393,32 @@ spec:
           apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}
+            name: '{{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}'
             annotations:
-              crossplane.io/external-name: {{ .toSecret }}
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}
+              crossplane.io/external-name: '{{ .toSecret }}'
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}'
           spec:
             forProvider:
               manifest:
                 apiVersion: external-secrets.io/v1beta1
                 kind: ExternalSecret
                 metadata:
-                  name: {{ .toSecret }}
+                  name: '{{ .toSecret }}'
+                  namespace: '{{ .toNamespace }}'
                 spec:
                   refreshInterval: 1h
                   secretStoreRef:
                     kind: ClusterSecretStore
                     name: google
                   target:
-                    name: {{ .toSecret }}
+                    name: '{{ .toSecret }}'
                     creationPolicy: Owner
                   dataFrom:
-                  - extract:
-                      key: {{ .fromSecret }}
+                    - extract:
+                        key: '{{ .fromSecret }}'
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1865,30 +1869,32 @@ spec:
           apiVersion: kubernetes.crossplane.io/v1alpha2
           kind: Object
           metadata:
-            name: {{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}
+            name: '{{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}'
             annotations:
-              crossplane.io/external-name: {{ .toSecret }}
-              gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}
+              crossplane.io/external-name: '{{ .toSecret }}'
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-secret-{{ .toSecret }}'
           spec:
             forProvider:
               manifest:
                 apiVersion: external-secrets.io/v1beta1
                 kind: ExternalSecret
                 metadata:
-                  name: {{ .toSecret }}
+                  name: '{{ .toSecret }}'
+                  namespace: '{{ .toNamespace }}'
                 spec:
                   refreshInterval: 1h
                   secretStoreRef:
                     kind: ClusterSecretStore
                     name: azure
                   target:
-                    name: {{ .toSecret }}
+                    name: '{{ .toSecret }}'
                     creationPolicy: Owner
                   dataFrom:
-                  - extract:
-                      key: {{ .fromSecret }}
+                    - extract:
+                        key: '{{ .fromSecret }}'
             providerConfigRef:
-              name: {{ $.observed.composite.resource.spec.id }}
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
