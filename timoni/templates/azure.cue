@@ -41,6 +41,7 @@ import (
 			{ #AppOpenFunction & { _url: _config.charts.openFunction } },
 			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
 			{ #AppExternalSecretsStore & { _name: "azure" } },
+			{ #AppExternalSecretsSecret & { _name: "azure" } },
 			{ #ProviderKubernetesNamespaces },
 			{ #Creds },
 			{ #FunctionReady },

@@ -93,6 +93,21 @@ spec:
                           azureVaultUrl:
                             type: string
                             description: The URL of Azure Vault.
+                          secrets:
+                            type: array
+                            description: List of secrets to be created from the secret store. The `store` parameter must be set to `true` for this feature to work.
+                            items:
+                              type: object
+                              properties:
+                                fromSecret:
+                                  type: string
+                                  description: The name or the key of secret in the external secret store
+                                toSecret:
+                                  type: string
+                                  description: The name of the secret
+                              required:
+                              - fromSecret
+                              - toSecret
                   creds:
                     type: object
                     description: The secret with hyperscaler credentials.

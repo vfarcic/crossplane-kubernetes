@@ -23,6 +23,9 @@ spec:
         enabled: true
         store: true
         azureVaultUrl: https://dot.vault.azure.net
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
     creds:
       name: azure-creds
       namespace: crossplane-system
@@ -63,6 +66,9 @@ spec:
         enabled: true
         store: true
         azureVaultUrl: https://dot.vault.azure.net
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
     creds:
       name: azure-creds
       namespace: crossplane-system
@@ -108,6 +114,9 @@ spec:
     name: a-team-aks-ns-production
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
+    name: a-team-aks-secret-push-secret
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
     name: a-team-aks-secret-store
   writeConnectionSecretToRef:
     namespace: crossplane-system
@@ -131,5 +140,33 @@ spec:
           azurekv:
             authType: ManagedIdentity
             vaultUrl: https://dot.vault.azure.net
+  providerConfigRef:
+    name: a-team-aks
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: a-team-aks-secret-push-secret
+    crossplane.io/external-name: push-secret
+  name: a-team-aks-secret-push-secret
+spec:
+  forProvider:
+    manifest:
+      apiVersion: external-secrets.io/v1beta1
+      kind: ExternalSecret
+      metadata:
+        name: push-secret
+      spec:
+        refreshInterval: 1h
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: azure
+        target:
+          name: push-secret
+          creationPolicy: Owner
+        dataFrom:
+        - extract:
+            key: registry-auth
   providerConfigRef:
     name: a-team-aks

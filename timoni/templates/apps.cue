@@ -192,3 +192,42 @@ import "encoding/yaml"
     }
 }
 
+#AppExternalSecretsSecret: {
+    _name: string
+    _id:   "{{ $.observed.composite.resource.spec.id }}"
+    #FunctionGoTemplating & {
+        step: "secrets"
+        input: inline: template: """
+        {{ range .observed.composite.resource.spec.parameters.apps.externalSecrets.secrets }}
+        ---
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        metadata:
+          name: \( _id )-secret-{{ .toSecret }}
+          annotations:
+            crossplane.io/external-name: {{ .toSecret }}
+            gotemplating.fn.crossplane.io/composition-resource-name: \( _id )-secret-{{ .toSecret }}
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: external-secrets.io/v1beta1
+              kind: ExternalSecret
+              metadata:
+                name: {{ .toSecret }}
+              spec:
+                refreshInterval: 1h
+                secretStoreRef:
+                  kind: ClusterSecretStore
+                  name: \( _name )
+                target:
+                  name: {{ .toSecret }}
+                  creationPolicy: Owner
+                dataFrom:
+                - extract:
+                    key: {{ .fromSecret }}
+          providerConfigRef:
+            name: \( _id )
+        {{ end }}
+        """
+    }
+}
