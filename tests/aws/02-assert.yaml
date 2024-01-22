@@ -103,9 +103,9 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
     name:  a-team-eks
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name:  a-team-eks-aws-pc
+  # - apiVersion: kubernetes.crossplane.io/v1alpha2
+  #   kind: Object
+  #   name:  a-team-eks-aws-pc
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name:  a-team-eks-ns-dev
