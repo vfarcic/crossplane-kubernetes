@@ -2,7 +2,7 @@ package templates
 
 #FunctionReady: {
     step: "automatically-detect-ready-composed-resources"
-    functionRef: name: "upbound-function-auto-ready"
+    functionRef: name: "crossplane-contrib-function-auto-ready"
 }
 
 #FunctionGoTemplating: {
