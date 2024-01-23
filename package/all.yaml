@@ -693,34 +693,6 @@ spec:
             type: string
         readinessChecks:
         - type: None
-      - base:
-          apiVersion: kubernetes.crossplane.io/v1alpha2
-          kind: Object
-          spec:
-            forProvider:
-              manifest:
-                apiVersion: aws.upbound.io/v1beta1
-                kind: ProviderConfig
-                metadata:
-                  name: default
-                spec:
-                  credentials:
-                    secretRef:
-                      key: creds
-                      name: aws-creds
-                      namespace: crossplane-system
-                    source: Secret
-        name: aws-pc
-        patches:
-        - fromFieldPath: spec.id
-          toFieldPath: metadata.name
-          transforms:
-          - string:
-              fmt: '%s-aws-pc'
-              type: Format
-            type: string
-        - fromFieldPath: spec.id
-          toFieldPath: spec.providerConfigRef.name
     step: patch-and-transform
   - functionRef:
       name: crossplane-contrib-function-go-templating
@@ -999,7 +971,7 @@ spec:
       source: Inline
     step: creds
   - functionRef:
-      name: upbound-function-auto-ready
+      name: crossplane-contrib-function-auto-ready
     step: automatically-detect-ready-composed-resources
   writeConnectionSecretsToNamespace: crossplane-system
 ---
@@ -1491,7 +1463,7 @@ spec:
       source: Inline
     step: creds
   - functionRef:
-      name: upbound-function-auto-ready
+      name: crossplane-contrib-function-auto-ready
     step: automatically-detect-ready-composed-resources
   writeConnectionSecretsToNamespace: crossplane-system
 ---
@@ -1967,6 +1939,6 @@ spec:
       source: Inline
     step: creds
   - functionRef:
-      name: upbound-function-auto-ready
+      name: crossplane-contrib-function-auto-ready
     step: automatically-detect-ready-composed-resources
   writeConnectionSecretsToNamespace: crossplane-system

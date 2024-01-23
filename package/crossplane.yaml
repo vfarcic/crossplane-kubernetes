@@ -28,7 +28,7 @@ spec:
     version: ">=v0.1.4"
   - function: xpkg.upbound.io/crossplane-contrib/function-go-templating
     version: ">=v0.4.0"
-  - function: xpkg.upbound.io/upbound/function-auto-ready
+  - function: xpkg.upbound.io/crossplane-contrib/function-auto-ready
     version: ">=v0.2.1"
   # - provider: xpkg.upbound.io/crossplane-contrib/provider-helm
   #   version: ">=v0.14.0"

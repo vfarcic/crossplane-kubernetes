@@ -87,9 +87,6 @@ import (
 						// 	}
 						// },
 						#ProviderConfigKubernetesLocal,
-						#ProviderConfig & { _composeConfig:
-							name: "aws"
-						},
 					]
 				}
 			},
@@ -674,44 +671,3 @@ import (
 		}]
 	}]
 }
-
-// #ProviderConfigAws: {
-//     name: "aws-pc"
-//     base: {
-//         apiVersion: "kubernetes.crossplane.io/v1alpha2"
-//         kind: "Object"
-//         spec: {
-//             forProvider: {
-//                 manifest: {
-//                     apiVersion: "aws.upbound.io/v1beta1"
-//                     kind: "ProviderConfig"
-//                     metadata: name: "default"
-//                     spec: {
-// 						credentials: {
-//                 			source: "Secret"
-//                 			secretRef: {
-//                   				namespace: "crossplane-system"
-//                   				name: "aws-creds"
-//                   				key: "creds"
-// 							}
-// 						}
-//                     }
-//                 }
-//             }
-//         }
-//     }
-//     patches: [{
-//         fromFieldPath: "spec.id"
-//         toFieldPath: "metadata.name"
-//         transforms: [{
-//             type: "string"
-//             string: {
-//                 fmt: "%s-aws-pc"
-// 				type: "Format"
-//             }
-//         }]
-//     }, {
-//         fromFieldPath: "spec.id"
-//         toFieldPath: "spec.providerConfigRef.name"
-//     }]
-// }
