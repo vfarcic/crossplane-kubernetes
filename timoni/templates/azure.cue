@@ -33,7 +33,7 @@ import (
 						#ProviderConfigHelmLocal,
 						#AzureCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
 						#ProviderConfigKubernetesLocal,
-						#ProviderConfig & { _composeConfig: name: "azure" },
+						// #ProviderConfig & { _composeConfig: name: "azure" },
 					]
 				}
 			},

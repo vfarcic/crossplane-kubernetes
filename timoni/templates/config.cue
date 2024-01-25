@@ -17,6 +17,7 @@ import (
 		// openFunction:    string
 		externalSecrets: string
 		cilium: 	     string
+		eks:  		     string
 	}
 	charts: {
 		openFunction: string

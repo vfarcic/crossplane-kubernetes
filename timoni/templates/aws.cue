@@ -28,7 +28,7 @@ import (
 					apiVersion: "pt.fn.crossplane.io/v1beta1"
 					kind: "Resources"
 					resources: [
-						#AwsCluster,
+						#AwsCluster & { _version: _config.versions.eks },
 						#AwsClusterAuth,
 						#AwsNodeGroup,
 						#AwsIamControlPlane,
@@ -104,6 +104,7 @@ import (
 }
 
 #AwsCluster: {
+	_version: string
 	name: "ekscluster"
 	base: {
 		apiVersion: "eks.aws.upbound.io/v1beta1"
@@ -111,7 +112,7 @@ import (
 		spec: {
 			forProvider: {
 				region: "us-east-1"
-				version: "1.28"
+				version: _version
 				roleArnSelector: matchControllerRef: true
 				vpcConfig: [{
 					endpointPrivateAccess: true

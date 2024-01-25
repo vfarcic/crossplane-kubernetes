@@ -1,46 +1,46 @@
 package templates
 
-#ProviderConfig: {
-    _composeConfig: {...}
-    name:    _composeConfig.name + "-pc"
-    base: {
-        apiVersion: "kubernetes.crossplane.io/v1alpha2"
-        kind: "Object"
-        spec: {
-            forProvider: {
-                manifest: {
-                    apiVersion: _composeConfig.name + ".upbound.io/v1beta1"
-                    kind: "ProviderConfig"
-                    metadata: name: "default"
-                    spec: {
-						credentials: {
-                			source: "Secret"
-                			secretRef: {
-                  				namespace: "crossplane-system"
-                  				name: _composeConfig.name + "-creds"
-                  				key: "creds"
-							}
-						}
-                    }
-                }
-            }
-        }
-    }
-    patches: [{
-        fromFieldPath: "spec.id"
-        toFieldPath: "metadata.name"
-        transforms: [{
-            type: "string"
-            string: {
-                fmt: "%s-" + _composeConfig.name + "-pc"
-                type: "Format"
-            }
-        }]
-    }, {
-        fromFieldPath: "spec.id"
-        toFieldPath: "spec.providerConfigRef.name"
-    }]
-}
+// #ProviderConfig: {
+//     _composeConfig: {...}
+//     name:    _composeConfig.name + "-pc"
+//     base: {
+//         apiVersion: "kubernetes.crossplane.io/v1alpha2"
+//         kind: "Object"
+//         spec: {
+//             forProvider: {
+//                 manifest: {
+//                     apiVersion: _composeConfig.name + ".upbound.io/v1beta1"
+//                     kind: "ProviderConfig"
+//                     metadata: name: "default"
+//                     spec: {
+// 						credentials: {
+//                 			source: "Secret"
+//                 			secretRef: {
+//                   				namespace: "crossplane-system"
+//                   				name: _composeConfig.name + "-creds"
+//                   				key: "creds"
+// 							}
+// 						}
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     patches: [{
+//         fromFieldPath: "spec.id"
+//         toFieldPath: "metadata.name"
+//         transforms: [{
+//             type: "string"
+//             string: {
+//                 fmt: "%s-" + _composeConfig.name + "-pc"
+//                 type: "Format"
+//             }
+//         }]
+//     }, {
+//         fromFieldPath: "spec.id"
+//         toFieldPath: "spec.providerConfigRef.name"
+//     }]
+// }
 
 #ProviderConfigLocal: {
     name: string
