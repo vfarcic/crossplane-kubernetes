@@ -758,8 +758,6 @@ spec:
 
           {{ end }}
       kind: GoTemplate
-      readinessChecks:
-      - type: None
       source: Inline
     step: app-openfunction
   - functionRef:
@@ -1252,8 +1250,6 @@ spec:
 
           {{ end }}
       kind: GoTemplate
-      readinessChecks:
-      - type: None
       source: Inline
     step: app-openfunction
   - functionRef:
@@ -1702,8 +1698,6 @@ spec:
 
           {{ end }}
       kind: GoTemplate
-      readinessChecks:
-      - type: None
       source: Inline
     step: app-openfunction
   - functionRef:
