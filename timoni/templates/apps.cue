@@ -82,7 +82,7 @@ import "encoding/yaml"
         }]
         _namespace: "openfunction"
     }
-    #FunctionGoTemplatingNone & {
+    #FunctionGoTemplating & {
         step: "app-openfunction"
         input: inline: template: """
         {{ if .observed.composite.resource.spec.parameters.apps.openfunction.enabled }}
