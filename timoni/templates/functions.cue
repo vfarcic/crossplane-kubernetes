@@ -15,3 +15,15 @@ package templates
         inline: template: string
     }
 }
+
+#FunctionGoTemplatingNone: {
+    functionRef: name: "crossplane-contrib-function-go-templating"
+    step: string
+    input: {
+        apiVersion: "gotemplating.fn.crossplane.io/v1beta1"
+        kind: "GoTemplate"
+        source: "Inline"
+        inline: template: string
+        readinessChecks: [{ type: "None" }]
+    }
+}
