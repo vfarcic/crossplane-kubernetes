@@ -198,6 +198,7 @@ import "encoding/yaml"
     _fromSecret: "{{ .fromSecret }}"
     _toSecret: "{{ .toSecret }}"
     _toNamespace: "{{ .toNamespace }}"
+    _type: "{{ .type }}"
     _template: {
         apiVersion: "kubernetes.crossplane.io/v1alpha2"
         kind: "Object"
@@ -226,6 +227,7 @@ import "encoding/yaml"
                         target: {
                             name: _toSecret
                             creationPolicy: "Owner"
+                            template: type: _type
                         }
                         dataFrom: [{
                             extract: key: _fromSecret

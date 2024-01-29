@@ -893,6 +893,8 @@ spec:
                   target:
                     name: '{{ .toSecret }}'
                     creationPolicy: Owner
+                    template:
+                      type: '{{ .type }}'
                   dataFrom:
                     - extract:
                         key: '{{ .fromSecret }}'
@@ -1385,6 +1387,8 @@ spec:
                   target:
                     name: '{{ .toSecret }}'
                     creationPolicy: Owner
+                    template:
+                      type: '{{ .type }}'
                   dataFrom:
                     - extract:
                         key: '{{ .fromSecret }}'
@@ -1833,6 +1837,8 @@ spec:
                   target:
                     name: '{{ .toSecret }}'
                     creationPolicy: Owner
+                    template:
+                      type: '{{ .type }}'
                   dataFrom:
                     - extract:
                         key: '{{ .fromSecret }}'

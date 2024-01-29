@@ -25,6 +25,9 @@ spec:
         awsAccessKeyIDKey: access-key-id
         awsSecretAccessKeyKey: secret-access-key
         secrets:
+          - fromSecret: something
+            toSecret: else
+            toNamespace: production
           - fromSecret: registry-auth
             toSecret: push-secret
             toNamespace: production
@@ -69,6 +72,9 @@ spec:
         awsAccessKeyIDKey: access-key-id
         awsSecretAccessKeyKey: secret-access-key
         secrets:
+          - fromSecret: something
+            toSecret: else
+            toNamespace: production
           - fromSecret: registry-auth
             toSecret: push-secret
             toNamespace: production
@@ -180,6 +186,9 @@ spec:
     name: a-team-eks-ns-production
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
+    name: a-team-eks-secret-else
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
     name: a-team-eks-secret-push-secret
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
@@ -223,6 +232,37 @@ apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
   annotations:
+    crossplane.io/composition-resource-name: a-team-eks-secret-else
+    crossplane.io/external-name: else
+  name: a-team-eks-secret-else
+spec:
+  forProvider:
+    manifest:
+      apiVersion: external-secrets.io/v1beta1
+      kind: ExternalSecret
+      metadata:
+        name: else
+        namespace: production
+      spec:
+        refreshInterval: 1h
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: aws
+        target:
+          name: else
+          creationPolicy: Owner
+          template:
+            type: Opaque
+        dataFrom:
+        - extract:
+            key: something
+  providerConfigRef:
+    name: a-team-eks
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  annotations:
     crossplane.io/composition-resource-name: a-team-eks-secret-push-secret
     crossplane.io/external-name: push-secret
   name: a-team-eks-secret-push-secret
@@ -242,6 +282,8 @@ spec:
         target:
           name: push-secret
           creationPolicy: Owner
+          template:
+            type: kubernetes.io/dockerconfigjson
         dataFrom:
         - extract:
             key: registry-auth
