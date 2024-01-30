@@ -31,6 +31,7 @@ spec:
           - fromSecret: registry-auth
             toSecret: push-secret
             toNamespace: production
+            type: kubernetes.io/dockerconfigjson
     creds:
       name: aws-creds
       namespace: crossplane-system
