@@ -166,6 +166,10 @@ spec:
         value: "true"
       - name: nodeinit.enabled
         value: "true"
+      - name: authentication.mutual.spire.enabled
+        value: "true"
+      - name: authentication.mutual.spire.install.enabled
+        value: "true"
     namespace: kube-system
   providerConfigRef:
     name: a-team-aks

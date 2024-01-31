@@ -58,7 +58,9 @@ import (
 			{ name: "cni.binPath", value: "/home/kubernetes/bin" },
 			{ name: "gke.enabled", value: "true" },
 			{ name: "ipam.mode", value: "kubernetes" },
-			{ name: "ipv4NativeRoutingCIDR" }
+			{ name: "ipv4NativeRoutingCIDR" },
+        	{ name: "authentication.mutual.spire.enabled", value: "true" },
+        	{ name: "authentication.mutual.spire.install.enabled", value: "true" },
 		]
 	}
 	patches: [{

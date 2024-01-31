@@ -57,12 +57,11 @@ import (
 			repository: "https://helm.cilium.io"
 			version: string
 		}
-		set: [{
-			name: "aksbyocni.enabled"
-			value: "true"
-		}, {
-			name: "nodeinit.enabled"
-			value: "true"
+		set: [
+			{ name: "aksbyocni.enabled", value: "true" },
+			{ name: "nodeinit.enabled", value: "true" },
+        	{ name: "authentication.mutual.spire.enabled", value: "true" },
+        	{ name: "authentication.mutual.spire.install.enabled", value: "true" },
 		}]
 	}
 }
