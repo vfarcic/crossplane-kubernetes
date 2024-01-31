@@ -1140,6 +1140,10 @@ spec:
               - name: ipam.mode
                 value: kubernetes
               - name: ipv4NativeRoutingCIDR
+              - name: authentication.mutual.spire.enabled
+                value: "true"
+              - name: authentication.mutual.spire.install.enabled
+                value: "true"
             rollbackLimit: 3
         name: cilium
         patches:
@@ -1599,6 +1603,10 @@ spec:
               - name: aksbyocni.enabled
                 value: "true"
               - name: nodeinit.enabled
+                value: "true"
+              - name: authentication.mutual.spire.enabled
+                value: "true"
+              - name: authentication.mutual.spire.install.enabled
                 value: "true"
             rollbackLimit: 3
         name: cilium
