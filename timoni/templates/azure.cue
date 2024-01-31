@@ -62,7 +62,7 @@ import (
 			{ name: "nodeinit.enabled", value: "true" },
         	{ name: "authentication.mutual.spire.enabled", value: "true" },
         	{ name: "authentication.mutual.spire.install.enabled", value: "true" },
-		}]
+		]
 	}
 }
 
