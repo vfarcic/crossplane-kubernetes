@@ -22,6 +22,21 @@ spec:
         enabled: true
       openfunction:
         enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        googleCredentialsKey: google-creds
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+      dapr:
+        enabled: true
+    creds:
+      name: gcp-creds
+      namespace: crossplane-system
+      keys:
+        - google-creds
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
@@ -52,6 +67,21 @@ spec:
         enabled: true
       openfunction:
         enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        googleCredentialsKey: google-creds
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+      dapr:
+        enabled: true
+    creds:
+      name: gcp-creds
+      namespace: crossplane-system
+      keys:
+        - google-creds
   resourceRefs:
   - apiVersion: container.gcp.upbound.io/v1beta1
     kind: Cluster
@@ -67,6 +97,12 @@ spec:
     name:  a-team-gke-app-crossplane
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
+    name: a-team-gke-app-dapr
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-gke-app-external-secrets
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
     name:  a-team-gke-app-openfunction
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
@@ -76,6 +112,9 @@ spec:
     name: a-team-gke
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
+    name: a-team-gke-creds
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
     name: a-team-gke-ns-dev
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
@@ -83,6 +122,12 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name: a-team-gke-ns-staging
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-secret-push-secret
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-secret-store
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
@@ -90,11 +135,11 @@ apiVersion: helm.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: a-team-gke-app-openfunction
-    crossplane.io/external-name: openfunction
+    crossplane.io/composition-resource-name: a-team-gke-app-dapr
+    crossplane.io/external-name: dapr
   labels:
     crossplane.io/claim-name: a-team-gke
-  name: a-team-gke-app-openfunction
+  name: a-team-gke-app-dapr
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
     blockOwnerDeletion: true
@@ -104,10 +149,11 @@ spec:
   deletionPolicy: Delete
   forProvider:
     chart:
-      url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
-    set:
-    - name: revisionController.enable
-      value: "true"
-    namespace: openfunction
+      name: dapr
+      repository: https://dapr.github.io/helm-charts/
+      version: 1.12.4
+    namespace: dapr-system
   providerConfigRef:
     name: a-team-gke
+  rollbackLimit: 3
+

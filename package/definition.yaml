@@ -71,6 +71,13 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                      dapr:
+                        type: object
+                        description: Install Dapr. Do not enable it if OpenFunction is enabled since it comes with Dapr.
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
                       externalSecrets:
                         type: object
                         description: Install External Secrets Operator (ESO)

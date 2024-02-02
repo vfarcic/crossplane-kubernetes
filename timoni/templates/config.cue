@@ -14,7 +14,7 @@ import (
 	versions: {
 		traefik: 	     string
 		crossplane:      string
-		// openFunction:    string
+		dapr: 		     string
 		externalSecrets: string
 		cilium: 	     string
 		eks:  		     string

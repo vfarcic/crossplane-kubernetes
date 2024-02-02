@@ -39,6 +39,7 @@ import (
 			},
 			{ #AppCrossplane & { _version: _config.versions.crossplane } },
 			{ #AppOpenFunction & { _url: _config.charts.openFunction } },
+			{ #AppDapr & { _version: _config.versions.dapr } },
 			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
 			{ #AppExternalSecretsStore & { _name: "azure" } },
 			{ #AppExternalSecretsSecret & { _name: "azure" } },

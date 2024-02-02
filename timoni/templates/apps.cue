@@ -18,7 +18,7 @@ import "encoding/yaml"
                 set: [...]
                 namespace: string | *"kube-system"
             }
-            rollbackLimit: 3
+            rollbackLimit: int | *3
         }
     }
     patches: [...] | *[{
@@ -69,6 +69,26 @@ import "encoding/yaml"
     }
 }
 
+#AppDapr: {
+    _version: string
+    _template: #ReleaseTemplate & {
+        _name:            "dapr"
+        _chartVersion:    _version
+        _chartRepository: "https://dapr.github.io/helm-charts/"
+        _chartURL:        ""
+        _namespace:       "dapr-system"
+    }
+    #FunctionGoTemplating & {
+        step: "app-dapr"
+        input: inline: template: """
+        {{ if .observed.composite.resource.spec.parameters.apps.dapr.enabled }}
+        ---
+        \( yaml.Marshal(_template) )
+        {{ end }}
+        """
+    }
+}
+
 #AppOpenFunction: {
     _url: string
     _template: #ReleaseTemplate & {
@@ -81,6 +101,7 @@ import "encoding/yaml"
             value: "true"
         }]
         _namespace: "openfunction"
+        // _rollbackLimit: 10
     }
     #FunctionGoTemplating & {
         step: "app-openfunction"

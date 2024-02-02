@@ -19,6 +19,22 @@ spec:
         enabled: true
       openfunction:
         enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        azureVaultUrl: https://dot.vault.azure.net
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+      dapr:
+        enabled: true
+    creds:
+      name: azure-creds
+      namespace: crossplane-system
+      keys:
+        - creds
+        - vaultUrl
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
@@ -49,6 +65,22 @@ spec:
         enabled: true
       openfunction:
         enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        azureVaultUrl: https://dot.vault.azure.net
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+      dapr:
+        enabled: true
+    creds:
+      name: azure-creds
+      namespace: crossplane-system
+      keys:
+        - creds
+        - vaultUrl
   resourceRefs:
   - apiVersion: azure.upbound.io/v1beta1
     kind: ResourceGroup
@@ -64,6 +96,12 @@ spec:
     name:  a-team-aks-app-crossplane
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
+    name: a-team-aks-app-dapr
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-aks-app-external-secrets
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
     name:  a-team-aks-app-openfunction
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
@@ -71,15 +109,21 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
     name: a-team-aks
-  # - apiVersion: kubernetes.crossplane.io/v1alpha2
-  #   kind: Object
-  #   name: a-team-aks-azure-pc
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-creds
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name: a-team-aks-ns-dev
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name: a-team-aks-ns-production
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-secret-push-secret
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-secret-store
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
@@ -87,11 +131,11 @@ apiVersion: helm.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: a-team-aks-app-openfunction
-    crossplane.io/external-name: openfunction
+    crossplane.io/composition-resource-name: a-team-aks-app-dapr
+    crossplane.io/external-name: dapr
   labels:
     crossplane.io/claim-name: a-team-aks
-  name: a-team-aks-app-openfunction
+  name: a-team-aks-app-dapr
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v1alpha1
     blockOwnerDeletion: true
@@ -101,10 +145,10 @@ spec:
   deletionPolicy: Delete
   forProvider:
     chart:
-      url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
-    set:
-    - name: revisionController.enable
-      value: "true"
-    namespace: openfunction
+      name: dapr
+      repository: https://dapr.github.io/helm-charts/
+      version: 1.12.4
+    namespace: dapr-system
   providerConfigRef:
     name: a-team-aks
+  rollbackLimit: 3

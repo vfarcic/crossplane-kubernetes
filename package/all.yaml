@@ -766,6 +766,38 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.dapr.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dapr'
+            annotations:
+              crossplane.io/external-name: dapr
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dapr'
+          spec:
+            forProvider:
+              chart:
+                name: dapr
+                repository: https://dapr.github.io/helm-charts/
+                version: 1.12.4
+                url: ""
+              set: []
+              namespace: dapr-system
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-dapr
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
@@ -1264,6 +1296,38 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.dapr.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dapr'
+            annotations:
+              crossplane.io/external-name: dapr
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dapr'
+          spec:
+            forProvider:
+              chart:
+                name: dapr
+                repository: https://dapr.github.io/helm-charts/
+                version: 1.12.4
+                url: ""
+              set: []
+              namespace: dapr-system
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-dapr
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
@@ -1712,6 +1776,38 @@ spec:
       kind: GoTemplate
       source: Inline
     step: app-openfunction
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.dapr.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dapr'
+            annotations:
+              crossplane.io/external-name: dapr
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dapr'
+          spec:
+            forProvider:
+              chart:
+                name: dapr
+                repository: https://dapr.github.io/helm-charts/
+                version: 1.12.4
+                url: ""
+              set: []
+              namespace: dapr-system
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-dapr
   - functionRef:
       name: crossplane-contrib-function-go-templating
     input:

@@ -166,6 +166,7 @@ package templates
     _chartRepository: string
     _chartURL:        string
     _namespace:       string
+    _rollbackLimit:   int | *3
     _set:             [...]
     apiVersion: "helm.crossplane.io/v1beta1"
     kind:       "Release"
@@ -189,5 +190,6 @@ package templates
         }
         rollbackLimit: 3
         providerConfigRef: name: _id
+        rollbackLimit: _rollbackLimit
     }
 }

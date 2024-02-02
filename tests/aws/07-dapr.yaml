@@ -1,0 +1,40 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-eks
+spec:
+  id: a-team-eks
+  compositionSelector:
+    matchLabels:
+      provider: aws
+      cluster: eks
+  parameters:
+    nodeSize: medium
+    minNodeCount: 3
+    apps:
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        awsAccessKeyIDKey: access-key-id
+        awsSecretAccessKeyKey: secret-access-key
+        secrets:
+          - fromSecret: something
+            toSecret: else
+            toNamespace: production
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+            type: kubernetes.io/dockerconfigjson
+      dapr: # New
+        enabled: true # New
+    creds:
+      name: aws-creds
+      namespace: crossplane-system
+      keys:
+        - access-key-id
+        - secret-access-key
