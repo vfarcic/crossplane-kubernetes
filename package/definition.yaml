@@ -78,6 +78,13 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                      traefik:
+                        type: object
+                        description: Install Traefik.
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
                       externalSecrets:
                         type: object
                         description: Install External Secrets Operator (ESO)

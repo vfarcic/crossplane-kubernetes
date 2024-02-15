@@ -1,0 +1,161 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-aks
+spec:
+  compositionRef:
+    name: cluster-azure
+  compositionSelector:
+    matchLabels:
+      cluster: aks
+      provider: azure
+  id: a-team-aks
+  parameters:
+    minNodeCount: 1
+    nodeSize: medium
+    apps:
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        azureVaultUrl: https://dot.vault.azure.net
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+      dapr:
+        enabled: true
+      traefik:
+        enabled: true
+    creds:
+      name: azure-creds
+      namespace: crossplane-system
+      keys:
+        - creds
+        - vaultUrl
+  resourceRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: CompositeCluster
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: a-team-aks
+spec:
+  claimRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: ClusterClaim
+    name: a-team-aks
+  compositionRef:
+    name: cluster-azure
+  compositionSelector:
+    matchLabels:
+      cluster: aks
+      provider: azure
+  compositionUpdatePolicy: Automatic
+  id: a-team-aks
+  parameters:
+    minNodeCount: 1
+    nodeSize: medium
+    apps:
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        azureVaultUrl: https://dot.vault.azure.net
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+      dapr:
+        enabled: true
+      traefik:
+        enabled: true
+    creds:
+      name: azure-creds
+      namespace: crossplane-system
+      keys:
+        - creds
+        - vaultUrl
+  resourceRefs:
+  - apiVersion: azure.upbound.io/v1beta1
+    kind: ResourceGroup
+    name: a-team-aks
+  - apiVersion: containerservice.azure.upbound.io/v1beta1
+    kind: KubernetesCluster
+    name: a-team-aks
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: ProviderConfig
+    name: a-team-aks
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-aks-app-crossplane
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name: a-team-aks-app-dapr
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-aks-app-external-secrets
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-aks-app-openfunction
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-aks-app-traefik
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name: a-team-aks-cilium
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: ProviderConfig
+    name: a-team-aks
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-creds
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-ns-dev
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-ns-production
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-secret-push-secret
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-aks-secret-store
+  writeConnectionSecretToRef:
+    namespace: crossplane-system
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: a-team-aks-app-traefik
+    crossplane.io/external-name: traefik
+  labels:
+    crossplane.io/claim-name: a-team-aks
+  name: a-team-aks-app-traefik
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 26.0.0
+    namespace: traefik
+  providerConfigRef:
+    name: a-team-aks
+  rollbackLimit: 3

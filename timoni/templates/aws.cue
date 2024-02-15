@@ -93,6 +93,7 @@ import (
 			{ #AppCrossplane & { _version: _config.versions.crossplane } },
 			{ #AppOpenFunction & { _url: _config.charts.openFunction } },
 			{ #AppDapr & { _version: _config.versions.dapr } },
+			{ #AppTraefik & { _version: _config.versions.traefik } },
 			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
 			{ #AppExternalSecretsStore & { _name: "aws" } },
 			{ #AppExternalSecretsSecret & { _name: "aws" } },

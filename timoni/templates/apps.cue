@@ -37,18 +37,6 @@ import "encoding/yaml"
     }]
 }
 
-// TODO: Add to hyperscalers
-#AppTraefik: #AppHelm & { _composeConfig:
-    name: "traefik"
-    base: spec: forProvider: {
-        chart: {
-            repository: "https://helm.traefik.io/traefik"
-            version: string
-        }
-        namespace: "traefik"
-    }
-}
-
 #AppCrossplane: {
     _version: string
     _template: #ReleaseTemplate & {
@@ -82,6 +70,26 @@ import "encoding/yaml"
         step: "app-dapr"
         input: inline: template: """
         {{ if .observed.composite.resource.spec.parameters.apps.dapr.enabled }}
+        ---
+        \( yaml.Marshal(_template) )
+        {{ end }}
+        """
+    }
+}
+
+#AppTraefik: {
+    _version: string
+    _template: #ReleaseTemplate & {
+        _name:            "traefik"
+        _chartVersion:    _version
+        _chartRepository: "https://helm.traefik.io/traefik"
+        _chartURL:        ""
+        _namespace:       "traefik"
+    }
+    #FunctionGoTemplating & {
+        step: "app-traefik"
+        input: inline: template: """
+        {{ if .observed.composite.resource.spec.parameters.apps.traefik.enabled }}
         ---
         \( yaml.Marshal(_template) )
         {{ end }}

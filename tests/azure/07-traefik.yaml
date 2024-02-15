@@ -1,0 +1,37 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-aks
+spec:
+  id: a-team-aks
+  compositionSelector:
+    matchLabels:
+      provider: azure
+      cluster: aks
+  parameters:
+    nodeSize: medium
+    minNodeCount: 1
+    version: 1.26.6
+    apps:
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        azureVaultUrl: https://dot.vault.azure.net
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+      dapr:
+        enabled: true
+      traefik: # New
+        enabled: true # New
+    creds:
+      name: azure-creds
+      namespace: crossplane-system
+      keys:
+        - creds
+        - vaultUrl

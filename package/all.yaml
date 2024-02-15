@@ -798,6 +798,38 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.traefik.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-traefik'
+            annotations:
+              crossplane.io/external-name: traefik
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-traefik'
+          spec:
+            forProvider:
+              chart:
+                name: traefik
+                repository: https://helm.traefik.io/traefik
+                version: 26.0.0
+                url: ""
+              set: []
+              namespace: traefik
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-traefik
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
@@ -1328,6 +1360,38 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.traefik.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-traefik'
+            annotations:
+              crossplane.io/external-name: traefik
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-traefik'
+          spec:
+            forProvider:
+              chart:
+                name: traefik
+                repository: https://helm.traefik.io/traefik
+                version: 26.0.0
+                url: ""
+              set: []
+              namespace: traefik
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-traefik
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
@@ -1808,6 +1872,38 @@ spec:
       kind: GoTemplate
       source: Inline
     step: app-dapr
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.traefik.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-traefik'
+            annotations:
+              crossplane.io/external-name: traefik
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-traefik'
+          spec:
+            forProvider:
+              chart:
+                name: traefik
+                repository: https://helm.traefik.io/traefik
+                version: 26.0.0
+                url: ""
+              set: []
+              namespace: traefik
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-traefik
   - functionRef:
       name: crossplane-contrib-function-go-templating
     input:

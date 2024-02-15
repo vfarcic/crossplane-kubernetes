@@ -1,0 +1,165 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team-gke
+spec:
+  compositionRef:
+    name: cluster-google
+  compositionSelector:
+    matchLabels:
+      cluster: gke
+      provider: google
+  id: a-team-gke
+  parameters:
+    minNodeCount: 1
+    nodeSize: medium
+    namespaces:
+      - dev
+      - staging
+      - production
+    apps:
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        googleCredentialsKey: google-creds
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+      dapr:
+        enabled: true
+      traefik:
+        enabled: true
+    creds:
+      name: gcp-creds
+      namespace: crossplane-system
+      keys:
+        - google-creds
+  resourceRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: CompositeCluster
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: a-team-gke
+spec:
+  claimRef:
+    apiVersion: devopstoolkitseries.com/v1alpha1
+    kind: ClusterClaim
+    name: a-team-gke
+  compositionRef:
+    name: cluster-google
+  compositionSelector:
+    matchLabels:
+      cluster: gke
+      provider: google
+  compositionUpdatePolicy: Automatic
+  id: a-team-gke
+  parameters:
+    minNodeCount: 1
+    nodeSize: medium
+    apps:
+      crossplane:
+        enabled: true
+      openfunction:
+        enabled: true
+      externalSecrets:
+        enabled: true
+        store: true
+        googleCredentialsKey: google-creds
+        secrets:
+          - fromSecret: registry-auth
+            toSecret: push-secret
+            toNamespace: production
+      dapr:
+        enabled: true
+      traefik:
+        enabled: true
+    creds:
+      name: gcp-creds
+      namespace: crossplane-system
+      keys:
+        - google-creds
+  resourceRefs:
+  - apiVersion: container.gcp.upbound.io/v1beta1
+    kind: Cluster
+    name: a-team-gke
+  - apiVersion: container.gcp.upbound.io/v1beta1
+    kind: NodePool
+    name: a-team-gke
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: ProviderConfig
+    name: a-team-gke
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-gke-app-crossplane
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name: a-team-gke-app-dapr
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-gke-app-external-secrets
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-gke-app-openfunction
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name:  a-team-gke-app-traefik
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+    name: a-team-gke-cilium
+  - apiVersion: kubernetes.crossplane.io/v1alpha1
+    kind: ProviderConfig
+    name: a-team-gke
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-creds
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-ns-dev
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-ns-production
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-ns-staging
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-secret-push-secret
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+    name: a-team-gke-secret-store
+  writeConnectionSecretToRef:
+    namespace: crossplane-system
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: a-team-gke-app-traefik
+    crossplane.io/external-name: traefik
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  name: a-team-gke-app-traefik
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 26.0.0
+    namespace: traefik
+  providerConfigRef:
+    name: a-team-gke
+  rollbackLimit: 3
