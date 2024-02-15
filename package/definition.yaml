@@ -100,9 +100,11 @@ spec:
                             description: The key with Google credentials in the secret.
                           awsAccessKeyIDKey:
                             type: string
+                            default: accessKeyID
                             description: The key with Access Key ID in the secret.
                           awsSecretAccessKeyKey:
                             type: string
+                            default: secretAccessKey
                             description: The key with Secret Access Key in the secret.
                           azureVaultUrl:
                             type: string

@@ -22,8 +22,8 @@ spec:
       externalSecrets:
         enabled: true
         store: true
-        awsAccessKeyIDKey: access-key-id
-        awsSecretAccessKeyKey: secret-access-key
+        awsAccessKeyIDKey: accessKeyID
+        awsSecretAccessKeyKey: secretAccessKey
         secrets:
           - fromSecret: something
             toSecret: else
@@ -70,8 +70,8 @@ spec:
       externalSecrets:
         enabled: true
         store: true
-        awsAccessKeyIDKey: access-key-id
-        awsSecretAccessKeyKey: secret-access-key
+        awsAccessKeyIDKey: accessKeyID
+        awsSecretAccessKeyKey: secretAccessKey
         secrets:
           - fromSecret: something
             toSecret: else
@@ -220,11 +220,11 @@ spec:
               secretRef:
                 accessKeyIDSecretRef:
                   name: aws-creds
-                  key: access-key-id
+                  key: accessKeyID
                   namespace: crossplane-system
                 secretAccessKeySecretRef:
                   name: aws-creds
-                  key: secret-access-key
+                  key: secretAccessKey
                   namespace: crossplane-system
   providerConfigRef:
     name: a-team-eks

@@ -22,8 +22,8 @@ spec:
       externalSecrets:
         enabled: true
         store: true
-        awsAccessKeyIDKey: access-key-id
-        awsSecretAccessKeyKey: secret-access-key
+        awsAccessKeyIDKey: accessKeyID
+        awsSecretAccessKeyKey: secretAccessKey
         secrets:
           - fromSecret: something
             toSecret: else
@@ -74,8 +74,8 @@ spec:
       externalSecrets:
         enabled: true
         store: true
-        awsAccessKeyIDKey: access-key-id
-        awsSecretAccessKeyKey: secret-access-key
+        awsAccessKeyIDKey: accessKeyID
+        awsSecretAccessKeyKey: secretAccessKey
         secrets:
           - fromSecret: something
             toSecret: else
