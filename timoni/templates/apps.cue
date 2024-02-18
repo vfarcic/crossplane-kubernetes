@@ -97,6 +97,33 @@ import "encoding/yaml"
     }
 }
 
+#AppDynatrace: {
+    _version: string
+    _template: #ReleaseTemplate & {
+        _name:            "dynatrace-operator"
+        _chartVersion:    _version
+        _chartRepository: "oci://docker.io/dynatrace/dynatrace-operator"
+        _chartURL:        ""
+        _namespace:       "dynatrace"
+        _set: [{
+            name: "installCRDs"
+            value: "true"
+        }, {
+            name: "csidriver.enabled"
+            value: "true"
+        }]
+    }
+    #FunctionGoTemplating & {
+        step: "app-dynatrace"
+        input: inline: template: """
+        {{ if .observed.composite.resource.spec.parameters.apps.dynatrace.enabled }}
+        ---
+        \( yaml.Marshal(_template) )
+        {{ end }}
+        """
+    }
+}
+
 #AppOpenFunction: {
     _url: string
     _template: #ReleaseTemplate & {

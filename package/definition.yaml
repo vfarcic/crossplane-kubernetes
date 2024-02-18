@@ -85,6 +85,13 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                      dynatrace:
+                        type: object
+                        description: Install Dynatrace operator.
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
                       externalSecrets:
                         type: object
                         description: Install External Secrets Operator (ESO)

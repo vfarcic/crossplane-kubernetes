@@ -1,6 +1,0 @@
-apiVersion: pkg.crossplane.io/v1
-kind: Provider
-metadata:
-  name: provider-civo
-spec:
-  package: xpkg.upbound.io/civo/provider-civo:v0.1

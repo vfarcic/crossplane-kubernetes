@@ -13,6 +13,7 @@ import (
 	}
 	versions: {
 		traefik: 	     string
+		dynatrace: 	     string
 		crossplane:      string
 		dapr: 		     string
 		externalSecrets: string
@@ -33,7 +34,6 @@ import (
 #Instance: {
 	config: #Config
 	objects: {
-		civo:   #Civo
 		aws:    #Aws    & {_config: config}
 		google: #Google & {_config: config}
 		azure:  #Azure  & {_config: config}

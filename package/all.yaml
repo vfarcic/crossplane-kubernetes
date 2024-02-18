@@ -2,85 +2,6 @@ apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
   labels:
-    cluster: ck
-    provider: civo
-  name: cluster-civo
-spec:
-  compositeTypeRef:
-    apiVersion: devopstoolkitseries.com/v1alpha1
-    kind: CompositeCluster
-  mode: Pipeline
-  pipeline:
-  - functionRef:
-      name: crossplane-contrib-function-patch-and-transform
-    input:
-      apiVersion: pt.fn.crossplane.io/v1beta1
-      kind: Resources
-      resources:
-      - base:
-          apiVersion: cluster.civo.crossplane.io/v1alpha1
-          kind: CivoKubernetes
-          spec:
-            applications:
-            - civo-cluster-autoscaler
-            connectionDetails:
-              connectionSecretNamePrefix: cluster-civo
-              connectionSecretNamespace: crossplane-system
-            name: civocluster
-            pools:
-            - count: 1
-              id: 8382e422-dcdd-461f-afb4-2ab67f171c3e
-              size: g3.k3s.small
-            providerConfigRef:
-              name: crossplane-provider-civo
-        connectionDetails:
-        - fromConnectionSecretKey: kubeconfig
-          name: kubeconfig
-          type: FromConnectionSecretKey
-        - fromConnectionSecretKey: kubeconfig
-          name: value
-          type: FromConnectionSecretKey
-        name: civocluster
-        patches:
-        - fromFieldPath: spec.id
-          toFieldPath: metadata.name
-        - fromFieldPath: spec.id
-          toFieldPath: spec.name
-        - fromFieldPath: spec.id
-          toFieldPath: spec.writeConnectionSecretToRef.name
-          transforms:
-          - string:
-              fmt: '%s-cluster'
-              type: Format
-            type: string
-        - fromFieldPath: spec.claimRef.namespace
-          toFieldPath: spec.writeConnectionSecretToRef.namespace
-        - fromFieldPath: spec.parameters.minNodeCount
-          toFieldPath: spec.pools[0].count
-        - fromFieldPath: spec.parameters.nodeSize
-          toFieldPath: spec.pools[0].size
-          transforms:
-          - map:
-              large: g3.k3s.xlarge
-              medium: g3.k3s.medium
-              small: g3.k3s.small
-            type: map
-        - fromFieldPath: metadata.name
-          toFieldPath: status.clusterName
-          type: ToCompositeFieldPath
-        - fromFieldPath: status.message
-          toFieldPath: status.controlPlaneStatus
-          type: ToCompositeFieldPath
-        - fromFieldPath: status.message
-          toFieldPath: status.nodePoolStatus
-          type: ToCompositeFieldPath
-    step: patch-and-transform
-  writeConnectionSecretsToNamespace: crossplane-system
----
-apiVersion: apiextensions.crossplane.io/v1
-kind: Composition
-metadata:
-  labels:
     cluster: eks
     provider: aws
   name: cluster-aws
@@ -830,6 +751,42 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.dynatrace.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-operator'
+            annotations:
+              crossplane.io/external-name: dynatrace-operator
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-operator'
+          spec:
+            forProvider:
+              chart:
+                name: dynatrace-operator
+                repository: oci://docker.io/dynatrace/dynatrace-operator
+                version: 1.0.0-rc.0
+                url: ""
+              set:
+                - name: installCRDs
+                  value: "true"
+                - name: csidriver.enabled
+                  value: "true"
+              namespace: dynatrace
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-dynatrace
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
@@ -1392,6 +1349,42 @@ spec:
       apiVersion: gotemplating.fn.crossplane.io/v1beta1
       inline:
         template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.dynatrace.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-operator'
+            annotations:
+              crossplane.io/external-name: dynatrace-operator
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-operator'
+          spec:
+            forProvider:
+              chart:
+                name: dynatrace-operator
+                repository: oci://docker.io/dynatrace/dynatrace-operator
+                version: 1.0.0-rc.0
+                url: ""
+              set:
+                - name: installCRDs
+                  value: "true"
+                - name: csidriver.enabled
+                  value: "true"
+              namespace: dynatrace
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-dynatrace
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
           {{ if .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled }}
           ---
           apiVersion: helm.crossplane.io/v1beta1
@@ -1904,6 +1897,42 @@ spec:
       kind: GoTemplate
       source: Inline
     step: app-traefik
+  - functionRef:
+      name: crossplane-contrib-function-go-templating
+    input:
+      apiVersion: gotemplating.fn.crossplane.io/v1beta1
+      inline:
+        template: |-
+          {{ if .observed.composite.resource.spec.parameters.apps.dynatrace.enabled }}
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-operator'
+            annotations:
+              crossplane.io/external-name: dynatrace-operator
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-operator'
+          spec:
+            forProvider:
+              chart:
+                name: dynatrace-operator
+                repository: oci://docker.io/dynatrace/dynatrace-operator
+                version: 1.0.0-rc.0
+                url: ""
+              set:
+                - name: installCRDs
+                  value: "true"
+                - name: csidriver.enabled
+                  value: "true"
+              namespace: dynatrace
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          {{ end }}
+      kind: GoTemplate
+      source: Inline
+    step: app-dynatrace
   - functionRef:
       name: crossplane-contrib-function-go-templating
     input:

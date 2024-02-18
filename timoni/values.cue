@@ -8,6 +8,7 @@ values: {
 		crossplane:      "1.14.5"
 		dapr:            "1.12.4"
 		traefik:		 "26.0.0"
+		dynatrace:		 "1.0.0-rc.0"
 		externalSecrets: "0.9.11"
 		cilium: 	     "1.14.2"
 		eks:			 "1.29"
