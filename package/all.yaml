@@ -777,6 +777,44 @@ spec:
             providerConfigRef:
               name: '{{ $.observed.composite.resource.spec.id }}'
 
+          ---
+          apiVersion: kubernetes.crossplane.io/v1alpha2
+          kind: Object
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dynakube'
+            annotations:
+              crossplane.io/external-name: dynakube
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dynakube'
+          spec:
+            forProvider:
+              manifest:
+                apiVersion: dynatrace.com/v1beta1
+                kind: DynaKube
+                metadata:
+                  name: dynatrace
+                  namespace: dynatrace
+                  annotations:
+                    feature.dynatrace.com/k8s-app-enabled: "true"
+                spec:
+                  apiUrl: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}'
+                  oneAgent:
+                    applicationMonitoring:
+                      useCSIDriver: true
+                  activeGate:
+                    capabilities:
+                      - kubernetes-monitoring
+                      - routing
+                    image: ""
+                    resources:
+                      requests:
+                        cpu: 500m
+                        memory: 512Mi
+                      limits:
+                        cpu: 1000m
+                        memory: 1.5Gi
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1375,6 +1413,44 @@ spec:
             providerConfigRef:
               name: '{{ $.observed.composite.resource.spec.id }}'
 
+          ---
+          apiVersion: kubernetes.crossplane.io/v1alpha2
+          kind: Object
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dynakube'
+            annotations:
+              crossplane.io/external-name: dynakube
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dynakube'
+          spec:
+            forProvider:
+              manifest:
+                apiVersion: dynatrace.com/v1beta1
+                kind: DynaKube
+                metadata:
+                  name: dynatrace
+                  namespace: dynatrace
+                  annotations:
+                    feature.dynatrace.com/k8s-app-enabled: "true"
+                spec:
+                  apiUrl: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}'
+                  oneAgent:
+                    applicationMonitoring:
+                      useCSIDriver: true
+                  activeGate:
+                    capabilities:
+                      - kubernetes-monitoring
+                      - routing
+                    image: ""
+                    resources:
+                      requests:
+                        cpu: 500m
+                        memory: 512Mi
+                      limits:
+                        cpu: 1000m
+                        memory: 1.5Gi
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1926,6 +2002,44 @@ spec:
                   value: "true"
               namespace: dynatrace
             rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
+          ---
+          apiVersion: kubernetes.crossplane.io/v1alpha2
+          kind: Object
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dynakube'
+            annotations:
+              crossplane.io/external-name: dynakube
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dynakube'
+          spec:
+            forProvider:
+              manifest:
+                apiVersion: dynatrace.com/v1beta1
+                kind: DynaKube
+                metadata:
+                  name: dynatrace
+                  namespace: dynatrace
+                  annotations:
+                    feature.dynatrace.com/k8s-app-enabled: "true"
+                spec:
+                  apiUrl: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}'
+                  oneAgent:
+                    applicationMonitoring:
+                      useCSIDriver: true
+                  activeGate:
+                    capabilities:
+                      - kubernetes-monitoring
+                      - routing
+                    image: ""
+                    resources:
+                      requests:
+                        cpu: 500m
+                        memory: 512Mi
+                      limits:
+                        cpu: 1000m
+                        memory: 1.5Gi
             providerConfigRef:
               name: '{{ $.observed.composite.resource.spec.id }}'
 

@@ -99,7 +99,10 @@ import "encoding/yaml"
 
 #AppDynatrace: {
     _version: string
-    _template: #ReleaseTemplate & {
+    _apiUrl:  "{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}"
+    _id:      "{{ $.observed.composite.resource.spec.id }}"
+    _name:    "dynakube"
+    _templateDynatrace: #ReleaseTemplate & {
         _name:            "dynatrace-operator"
         _chartVersion:    _version
         _chartRepository: "oci://docker.io/dynatrace/dynatrace-operator"
@@ -113,12 +116,64 @@ import "encoding/yaml"
             value: "true"
         }]
     }
+    _templateDynakube: {
+        apiVersion: "kubernetes.crossplane.io/v1alpha2"
+        kind:       "Object"
+        metadata: {
+            name: _id + "-app-" + _name
+            annotations: {
+                "crossplane.io/external-name": "dynakube"
+                "gotemplating.fn.crossplane.io/composition-resource-name": _id + "-app-" + _name
+            }
+        }
+        spec: {
+            forProvider: {
+                manifest: {
+                    apiVersion: "dynatrace.com/v1beta1"
+                    kind:       "DynaKube"
+                    metadata: {
+                        name: "dynatrace"
+                        namespace: "dynatrace"
+                        annotations: { "feature.dynatrace.com/k8s-app-enabled": "true" }
+                    }
+                    spec: {
+                        apiUrl: _apiUrl
+                        oneAgent: {
+                            applicationMonitoring: { useCSIDriver: true }
+                        }
+                        activeGate: {
+                            capabilities: [
+                                { "kubernetes-monitoring" },
+                                { "routing" }
+                            ]
+                            image: ""
+                            resources: {
+                                requests: {
+                                    cpu: "500m"
+                                    memory: "512Mi"
+                                }
+                                limits: {
+                                    cpu: "1000m"
+                                    memory: "1.5Gi"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            providerConfigRef: {
+                name: _id
+            }
+        }   
+    }
     #FunctionGoTemplating & {
         step: "app-dynatrace"
         input: inline: template: """
         {{ if .observed.composite.resource.spec.parameters.apps.dynatrace.enabled }}
         ---
-        \( yaml.Marshal(_template) )
+        \( yaml.Marshal(_templateDynatrace) )
+        ---
+        \( yaml.Marshal(_templateDynakube) )
         {{ end }}
         """
     }

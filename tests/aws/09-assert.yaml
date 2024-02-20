@@ -37,7 +37,8 @@ spec:
       traefik:
         enabled: true
       dynatrace:
-        enabled: true 
+        enabled: true
+        apiUrl: https://something.sprint.dynatracelabs.com/api
     creds:
       name: aws-creds
       namespace: crossplane-system
@@ -90,7 +91,8 @@ spec:
       traefik:
         enabled: true
       dynatrace:
-        enabled: true 
+        enabled: true
+        apiUrl: https://something.sprint.dynatracelabs.com/api
     creds:
       name: aws-creds
       namespace: crossplane-system
@@ -196,6 +198,9 @@ spec:
     name: a-team-eks
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
+    name: a-team-eks-app-dynakube
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
     name: a-team-eks-creds
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
@@ -245,3 +250,49 @@ spec:
   providerConfigRef:
     name: a-team-eks
   rollbackLimit: 3
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: a-team-eks-app-dynakube
+  annotations:
+    crossplane.io/composition-resource-name: a-team-eks-app-dynakube
+  labels:
+    crossplane.io/claim-name: a-team-eks
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: dynatrace.com/v1beta1
+      kind: DynaKube
+      metadata:
+        name: dynatrace
+        namespace: dynatrace
+        annotations:
+          feature.dynatrace.com/k8s-app-enabled: "true"
+      spec:
+        apiUrl: https://something.sprint.dynatracelabs.com/api
+        oneAgent:
+          applicationMonitoring:
+            useCSIDriver: true
+        activeGate:
+          capabilities:
+            - kubernetes-monitoring
+            - routing
+          image: ""
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1.5Gi
+  managementPolicies:
+    - '*'
+  providerConfigRef:
+    name: a-team-eks

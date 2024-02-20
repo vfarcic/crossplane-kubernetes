@@ -87,11 +87,14 @@ spec:
                             default: false
                       dynatrace:
                         type: object
-                        description: Install Dynatrace operator.
+                        description: Install Dynatrace operator. A secret `dynatrace` with tokens musts exist in the `dynatrace` Namespace.
                         properties:
                           enabled:
                             type: boolean
                             default: false
+                          apiUrl:
+                            type: string
+                            description: The URL of the Dynatrace API
                       externalSecrets:
                         type: object
                         description: Install External Secrets Operator (ESO)

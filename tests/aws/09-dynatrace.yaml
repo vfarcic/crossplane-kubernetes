@@ -34,6 +34,7 @@ spec:
         enabled: true
       dynatrace: # New
         enabled: true # New
+        apiUrl: https://something.sprint.dynatracelabs.com/api # New
     creds:
       name: aws-creds
       namespace: crossplane-system

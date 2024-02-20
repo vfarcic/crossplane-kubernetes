@@ -126,6 +126,9 @@ spec:
     name: a-team-gke
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
+    name: a-team-gke-app-dynakube
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
     name: a-team-gke-creds
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
@@ -175,3 +178,49 @@ spec:
   providerConfigRef:
     name: a-team-gke
   rollbackLimit: 3
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: a-team-gke-app-dynakube
+  annotations:
+    crossplane.io/composition-resource-name: a-team-gke-app-dynakube
+  labels:
+    crossplane.io/claim-name: a-team-gke
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: dynatrace.com/v1beta1
+      kind: DynaKube
+      metadata:
+        name: dynatrace
+        namespace: dynatrace
+        annotations:
+          feature.dynatrace.com/k8s-app-enabled: "true"
+      spec:
+        apiUrl: https://something.sprint.dynatracelabs.com/api
+        oneAgent:
+          applicationMonitoring:
+            useCSIDriver: true
+        activeGate:
+          capabilities:
+            - kubernetes-monitoring
+            - routing
+          image: ""
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1.5Gi
+  managementPolicies:
+    - '*'
+  providerConfigRef:
+    name: a-team-gke
