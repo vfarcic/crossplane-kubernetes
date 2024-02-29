@@ -40,7 +40,7 @@ import (
 			{ #AppTraefik & { _version: _config.versions.traefik } },
 			{ #AppDynatrace & { _version: _config.versions.dynatrace } },
 			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
-			{ #AppExternalSecretsStore & { _name: "google" } },
+			{ #GoogleExternalSecretsStore },
 			{ #AppExternalSecretsSecret & { _name: "google" } },
 			{ #ProviderKubernetesNamespaces },
 			{ #Creds },
@@ -197,5 +197,53 @@ import (
     #GoogleProviderConfigLocal & {
         name: "kubernetes"
         base: apiVersion: "kubernetes.crossplane.io/v1alpha1"
+    }
+}
+
+#GoogleExternalSecretsStore: {
+    _name:                  "google"
+    _id:                    "{{ $.observed.composite.resource.spec.id }}"
+    _credsName:             "{{ $.observed.composite.resource.spec.parameters.creds.name }}"
+    _googleCredsKey:        "{{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}"
+    _credsNamespace:        "{{ $.observed.composite.resource.spec.parameters.creds.namespace }}"
+    #FunctionGoTemplating & {
+        step: "secret-store"
+        input: inline: template: """
+        {{ if and .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled .observed.composite.resource.spec.parameters.apps.externalSecrets.store .observed.composite.resource.spec.parameters.apps.externalSecrets.googleCredentialsKey }}
+        ---
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        metadata:
+          name: \( _id )-secret-store
+          annotations:
+            crossplane.io/external-name: \( _name )
+            gotemplating.fn.crossplane.io/composition-resource-name: \( _id )-secret-store
+        spec:
+          references:
+            - patchesFrom:
+                apiVersion: gcp.upbound.io/v1beta1
+                kind: ProviderConfig
+                name: default
+                fieldPath: spec.projectID
+              toFieldPath: spec.provider.gcpsm.projectID
+          forProvider:
+            manifest:
+              apiVersion: external-secrets.io/v1beta1
+              kind: ClusterSecretStore
+              metadata:
+                name: \( _name )
+              spec:
+                provider:
+                  gcpsm:
+                    auth:
+                      secretRef:
+                        secretAccessKeySecretRef:
+                          name: \( _credsName )
+                          key: \( _googleCredsKey )
+                          namespace: \( _credsNamespace )
+          providerConfigRef:
+            name: \( _id )
+        {{ end }}
+        """
     }
 }

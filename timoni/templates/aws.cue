@@ -96,7 +96,7 @@ import (
 			{ #AppTraefik & { _version: _config.versions.traefik } },
 			{ #AppDynatrace & { _version: _config.versions.dynatrace } },
 			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
-			{ #AppExternalSecretsStore & { _name: "aws" } },
+			{ #AwsExternalSecretsStore },
 			{ #AppExternalSecretsSecret & { _name: "aws" } },
 			{ #ProviderKubernetesNamespaces },
 			{ #Creds },
@@ -674,4 +674,52 @@ import (
 			}
 		}]
 	}]
+}
+
+#AwsExternalSecretsStore: {
+    _name:                  "aws"
+    _id:                    "{{ $.observed.composite.resource.spec.id }}"
+    _credsName:             "{{ $.observed.composite.resource.spec.parameters.creds.name }}"
+    _awsAccessKeyIDKey:     "{{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey }}"
+    _awsSecretAccessKeyKey: "{{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}"
+    _credsNamespace:        "{{ $.observed.composite.resource.spec.parameters.creds.namespace }}"
+    #FunctionGoTemplating & {
+        step: "secret-store"
+        input: inline: template: """
+        {{ if and .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled .observed.composite.resource.spec.parameters.apps.externalSecrets.store .observed.composite.resource.spec.parameters.apps.externalSecrets.awsAccessKeyIDKey .observed.composite.resource.spec.parameters.apps.externalSecrets.awsSecretAccessKeyKey }}
+        ---
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        metadata:
+          name: \( _id )-secret-store
+          annotations:
+            crossplane.io/external-name: \( _name )
+            gotemplating.fn.crossplane.io/composition-resource-name: \( _id )-secret-store
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: external-secrets.io/v1beta1
+              kind: ClusterSecretStore
+              metadata:
+                name: \( _name )
+              spec:
+                provider:
+                  aws:
+                    service: SecretsManager
+                    region: us-east-1
+                    auth:
+                      secretRef:
+                        accessKeyIDSecretRef:
+                          name: \( _credsName )
+                          key: \( _awsAccessKeyIDKey )
+                          namespace: \( _credsNamespace )
+                        secretAccessKeySecretRef:
+                          name: \( _credsName )
+                          key: \( _awsSecretAccessKeyKey )
+                          namespace: \( _credsNamespace )
+          providerConfigRef:
+            name: \( _id )
+        {{ end }}
+        """
+    }
 }

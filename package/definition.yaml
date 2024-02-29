@@ -107,18 +107,18 @@ spec:
                             description: Whether to create secret store. If `true`, `creds` field needs to be set as well.
                           googleCredentialsKey:
                             type: string
-                            description: The key with Google credentials in the secret.
+                            description: The key with Google credentials in the secret. Works only with clusters in Google Cloud.
                           awsAccessKeyIDKey:
                             type: string
                             default: accessKeyID
-                            description: The key with Access Key ID in the secret.
+                            description: The key with Access Key ID in the secret. Works only with clusters in AWS.
                           awsSecretAccessKeyKey:
                             type: string
                             default: secretAccessKey
-                            description: The key with Secret Access Key in the secret.
+                            description: The key with Secret Access Key in the secret. Works only with clusters in AWS.
                           azureVaultUrl:
                             type: string
-                            description: The URL of Azure Vault.
+                            description: The URL of Azure Vault. Works only with clusters in Azure.
                           secrets:
                             type: array
                             description: List of secrets to be created from the secret store. The `store` parameter must be set to `true` for this feature to work.

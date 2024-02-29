@@ -43,7 +43,7 @@ import (
 			{ #AppTraefik & { _version: _config.versions.traefik } },
 			{ #AppDynatrace & { _version: _config.versions.dynatrace } },
 			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
-			{ #AppExternalSecretsStore & { _name: "azure" } },
+			{ #AzureExternalSecretsStore },
 			{ #AppExternalSecretsSecret & { _name: "azure" } },
 			{ #ProviderKubernetesNamespaces },
 			{ #Creds },
@@ -166,4 +166,41 @@ import (
     	fromConnectionSecretKey: "kubeconfig"
       	name:                    "value"
 	}]
+}
+
+#AzureExternalSecretsStore: {
+    _name:                  "azure"
+    _id:                    "{{ $.observed.composite.resource.spec.id }}"
+    _credsName:             "{{ $.observed.composite.resource.spec.parameters.creds.name }}"
+    _azureVaultUrl:         "{{ $.observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}"
+    _credsNamespace:        "{{ $.observed.composite.resource.spec.parameters.creds.namespace }}"
+    #FunctionGoTemplating & {
+        step: "secret-store"
+        input: inline: template: """
+        {{ if and .observed.composite.resource.spec.parameters.apps.externalSecrets.enabled .observed.composite.resource.spec.parameters.apps.externalSecrets.store .observed.composite.resource.spec.parameters.apps.externalSecrets.azureVaultUrl }}
+        ---
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        metadata:
+          name: \( _id )-secret-store
+          annotations:
+            crossplane.io/external-name: \( _name )
+            gotemplating.fn.crossplane.io/composition-resource-name: \( _id )-secret-store
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: external-secrets.io/v1beta1
+              kind: ClusterSecretStore
+              metadata:
+                name: \( _name )
+              spec:
+                provider:
+                  azurekv:
+                    authType: ManagedIdentity
+                    vaultUrl: \( _azureVaultUrl )
+          providerConfigRef:
+            name: \( _id )
+        {{ end }}
+        """
+    }
 }
