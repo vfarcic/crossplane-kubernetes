@@ -1,4 +1,4 @@
-# AWS EKS Example
+# Azure AKS Example
 
 ## Setup
 
@@ -38,7 +38,7 @@ kubectl apply \
     --filename ../providers/provider-config-azure.yaml
 ```
 
-## Create an EKS Cluster
+## Create an AKS Cluster
 
 ```bash
 kubectl --namespace infra apply \
