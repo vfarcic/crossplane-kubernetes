@@ -94,7 +94,7 @@ import (
 			{ #AppOpenFunction & { _url: _config.charts.openFunction } },
 			{ #AppDapr & { _version: _config.versions.dapr } },
 			{ #AppTraefik & { _version: _config.versions.traefik } },
-			{ #AppDynatrace & { _version: _config.versions.dynatrace } },
+			{ #AppDynatrace & { _url: _config.charts.dynatrace } },
 			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
 			{ #AwsExternalSecretsStore },
 			{ #AppExternalSecretsSecret & { _name: "aws" } },

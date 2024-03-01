@@ -98,15 +98,15 @@ import "encoding/yaml"
 }
 
 #AppDynatrace: {
-    _version: string
-    _apiUrl:  "{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}"
-    _id:      "{{ $.observed.composite.resource.spec.id }}"
-    _name:    "dynakube"
+    _url:    string
+    _apiUrl: "{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}"
+    _id:     "{{ $.observed.composite.resource.spec.id }}"
+    _name:   "dynakube"
     _templateDynatrace: #ReleaseTemplate & {
         _name:            "dynatrace-operator"
-        _chartVersion:    _version
-        _chartRepository: "oci://docker.io/dynatrace/dynatrace-operator"
-        _chartURL:        ""
+        _chartVersion:    ""
+        _chartRepository: ""
+        _chartURL:        _url
         _namespace:       "dynatrace"
         _set: [{
             name: "installCRDs"

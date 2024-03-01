@@ -15,6 +15,7 @@ values: {
 	}
 	charts: {
 		openFunction: "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
+		dynatrace:    "https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable/dynatrace-operator-0.13.1.tgz"
 	}
 	packages: {
 		providerKubernetes: "xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.11.0"

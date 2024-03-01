@@ -163,8 +163,9 @@ spec:
   forProvider:
     chart:
       name: dynatrace-operator
-      repository: oci://docker.io/dynatrace/dynatrace-operator
-      version: 1.0.0-rc.0
+      repository: ""
+      version: ""
+      url: https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable/dynatrace-operator-0.13.1.tgz
     set:
       - name: installCRDs
         value: "true"

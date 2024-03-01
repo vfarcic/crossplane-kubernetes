@@ -1,0 +1,24 @@
+{
+  "packages": [
+    "kind@0.22.0",
+    "gh@2.44.1",
+    "kubectl@1.29.2",
+    "bat@0.24.0",
+    "timoni@0.17.0",
+    "upbound@0.24.1",
+    "yq-go@4.41.1",
+    "go-task@3.31.0",
+    "kubernetes-helm@3.14.1",
+    "kuttl@0.15.0"
+  ],
+  "shell": {
+    "init_hook": [],
+    "scripts": {
+      "cluster-create":  ["task cluster-create"],
+      "cluster-destroy": ["task cluster-destroy"],
+      "package-publish": ["task package-publish"],
+      "test":            ["task test"],
+      "test-watch":      ["task test-watch"]
+    }
+  }
+}

@@ -22,6 +22,7 @@ import (
 	}
 	charts: {
 		openFunction: string
+		dynatrace:    string
 	}
 	packages: {
 		providerKubernetes: string
