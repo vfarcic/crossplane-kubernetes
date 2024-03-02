@@ -41,7 +41,7 @@ import (
 			{ #AppOpenFunction & { _url: _config.charts.openFunction } },
 			{ #AppDapr & { _version: _config.versions.dapr } },
 			{ #AppTraefik & { _version: _config.versions.traefik } },
-			{ #AppDynatrace & { _url: _config.charts.dynatrace } },
+			{ #AppDynatrace & { _version: _config.versions.dynatrace } },
 			{ #AppExternalSecrets & { _version: _config.versions.externalSecrets } },
 			{ #AzureExternalSecretsStore },
 			{ #AppExternalSecretsSecret & { _name: "azure" } },
