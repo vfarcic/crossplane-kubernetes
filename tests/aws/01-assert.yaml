@@ -35,7 +35,6 @@ spec:
       crossplane-kind: nodegroup.eks.aws.upbound.io
       crossplane-name: a-team-eks
       crossplane-providerconfig: default
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 

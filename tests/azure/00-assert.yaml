@@ -121,7 +121,6 @@ spec:
     resourceGroupName: a-team-aks
     networkProfile:
       - networkPlugin: none
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
   writeConnectionSecretToRef:

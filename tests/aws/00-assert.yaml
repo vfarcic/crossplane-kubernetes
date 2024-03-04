@@ -116,9 +116,6 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha1
     kind: ProviderConfig
     name:  a-team-eks
-  # - apiVersion: kubernetes.crossplane.io/v1alpha2
-  #   kind: Object
-  #   name:  a-team-eks-aws-pc
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name:  a-team-eks-ns-dev
@@ -175,7 +172,6 @@ spec:
       matchControllerRef: true
     vpcIdSelector:
       matchControllerRef: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -201,7 +197,6 @@ spec:
     region: us-east-1
     routeTableIdSelector:
       matchControllerRef: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -229,7 +224,6 @@ spec:
       matchLabels:
         access: public
         zone: us-east-1a
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -257,7 +251,6 @@ spec:
       matchLabels:
         access: public
         zone: us-east-1b
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -285,7 +278,6 @@ spec:
       matchLabels:
         access: public
         zone: us-east-1c
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -312,7 +304,6 @@ spec:
       crossplane-providerconfig: default
     vpcIdSelector:
       matchControllerRef: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -342,7 +333,6 @@ spec:
       matchControllerRef: true
     toPort: 0
     type: egress
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -371,7 +361,6 @@ spec:
       crossplane-providerconfig: default
     vpcIdSelector:
       matchControllerRef: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -404,7 +393,6 @@ spec:
       kubernetes.io/role/elb: "1"
     vpcIdSelector:
       matchControllerRef: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -437,7 +425,6 @@ spec:
       kubernetes.io/role/elb: "1"
     vpcIdSelector:
       matchControllerRef: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -470,7 +457,6 @@ spec:
       kubernetes.io/role/elb: "1"
     vpcIdSelector:
       matchControllerRef: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -497,7 +483,6 @@ spec:
       crossplane-kind: vpc.ec2.aws.upbound.io
       crossplane-name: a-team-eks
       crossplane-providerconfig: default
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -528,7 +513,6 @@ spec:
       crossplane-kind: addon.eks.aws.upbound.io
       crossplane-name: a-team-eks-ebs
       crossplane-providerconfig: default
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -553,7 +537,6 @@ spec:
       matchControllerRef: true
     refreshPeriod: 10m0s
     region: us-east-1
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
   writeConnectionSecretToRef:
@@ -591,7 +574,6 @@ spec:
       endpointPublicAccess: true
       subnetIdSelector:
         matchControllerRef: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -636,7 +618,6 @@ spec:
     #   - effect: NO_EXECUTE
     #     key: node.cilium.io/agent-not-ready
     #     value: "true"
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -664,7 +645,6 @@ spec:
       matchControllerRef: true
       matchLabels:
         role: a-team-eks-controlplane
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -692,7 +672,6 @@ spec:
       matchControllerRef: true
       matchLabels:
         role: a-team-eks-controlplane
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -720,7 +699,6 @@ spec:
       matchControllerRef: true
       matchLabels:
         role: a-team-eks-nodegroup
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -748,7 +726,6 @@ spec:
       matchControllerRef: true
       matchLabels:
         role: a-team-eks-nodegroup
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -776,7 +753,6 @@ spec:
       matchControllerRef: true
       matchLabels:
         role: a-team-eks-nodegroup
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -811,7 +787,6 @@ spec:
       crossplane-kind: role.iam.aws.upbound.io
       crossplane-name: a-team-eks-controlplane
       crossplane-providerconfig: default
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
@@ -846,7 +821,6 @@ spec:
       crossplane-kind: role.iam.aws.upbound.io
       crossplane-name: a-team-eks-nodegroup
       crossplane-providerconfig: default
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---

@@ -90,7 +90,6 @@ spec:
     initialNodeCount: 1
     location: us-east1
     removeDefaultNodePool: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
   writeConnectionSecretToRef:
@@ -130,7 +129,6 @@ spec:
           - effect: NO_EXECUTE
             key: node.cilium.io/agent-not-ready
             value: "true"
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
