@@ -791,7 +791,7 @@ spec:
                 apiVersion: dynatrace.com/v1beta1
                 kind: DynaKube
                 metadata:
-                  name: dynatrace
+                  name: '{{ $.observed.composite.resource.spec.id }}'
                   namespace: dynatrace
                   annotations:
                     feature.dynatrace.com/k8s-app-enabled: "true"
@@ -1402,7 +1402,7 @@ spec:
                 apiVersion: dynatrace.com/v1beta1
                 kind: DynaKube
                 metadata:
-                  name: dynatrace
+                  name: '{{ $.observed.composite.resource.spec.id }}'
                   namespace: dynatrace
                   annotations:
                     feature.dynatrace.com/k8s-app-enabled: "true"
@@ -1970,7 +1970,7 @@ spec:
                 apiVersion: dynatrace.com/v1beta1
                 kind: DynaKube
                 metadata:
-                  name: dynatrace
+                  name: '{{ $.observed.composite.resource.spec.id }}'
                   namespace: dynatrace
                   annotations:
                     feature.dynatrace.com/k8s-app-enabled: "true"

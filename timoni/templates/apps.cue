@@ -132,7 +132,7 @@ import "encoding/yaml"
                     apiVersion: "dynatrace.com/v1beta1"
                     kind:       "DynaKube"
                     metadata: {
-                        name: "dynatrace"
+                        name: _id
                         namespace: "dynatrace"
                         annotations: { "feature.dynatrace.com/k8s-app-enabled": "true" }
                     }

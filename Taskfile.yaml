@@ -38,7 +38,7 @@ tasks:
       - task: package-generate
     cmds:
       - task: package-apply
-      - kubectl kuttl test
+      - chainsaw test
     watch: true
     sources:
       - timoni/**/*.cue
@@ -51,7 +51,7 @@ tasks:
       - task: package-generate
     cmds:
       - task: package-apply
-      - kubectl kuttl test
+      - chainsaw test
 
   # Cluster
   cluster-create:
