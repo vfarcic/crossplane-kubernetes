@@ -151,7 +151,6 @@ spec:
       crossplane-providerconfig: default
     vpcIdSelector:
       matchControllerRef: true
-  managementPolicy: FullControl
   providerConfigRef:
     name: default
 ---
