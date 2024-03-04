@@ -165,9 +165,8 @@ spec:
       name: dynatrace-operator
       repository: "https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable"
       version: "0.15.0"
-      # url: https://github.com/Dynatrace/dynatrace-operator/releases/download/v0.15.0/dynatrace-operator-0.15.0.tgz
     set:
-      - name: installCRDs
+      - name: installCRD
         value: "true"
       - name: csidriver.enabled
         value: "true"

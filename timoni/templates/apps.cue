@@ -109,7 +109,7 @@ import "encoding/yaml"
         _chartURL:        ""
         _namespace:       "dynatrace"
         _set: [{
-            name: "installCRDs"
+            name: "installCRD"
             value: "true"
         }, {
             name: "csidriver.enabled"

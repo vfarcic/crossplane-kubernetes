@@ -768,7 +768,7 @@ spec:
                 version: 0.15.0
                 url: ""
               set:
-                - name: installCRDs
+                - name: installCRD
                   value: "true"
                 - name: csidriver.enabled
                   value: "true"
@@ -1379,7 +1379,7 @@ spec:
                 version: 0.15.0
                 url: ""
               set:
-                - name: installCRDs
+                - name: installCRD
                   value: "true"
                 - name: csidriver.enabled
                   value: "true"
@@ -1947,7 +1947,7 @@ spec:
                 version: 0.15.0
                 url: ""
               set:
-                - name: installCRDs
+                - name: installCRD
                   value: "true"
                 - name: csidriver.enabled
                   value: "true"
