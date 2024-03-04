@@ -1,7 +1,7 @@
 ## Generate manifests
 
 ```bash
-nix-shell --run $SHELL
+devbox shell
 
 task package-generate
 
@@ -11,7 +11,7 @@ exit
 ## Run Tests
 
 ```bash
-nix-shell --run $SHELL
+devbox shell
 
 task cluster-create
 
@@ -27,7 +27,7 @@ exit
 ## Publish To Upbound
 
 ```bash
-nix-shell --run $SHELL
+devbox shell
 
 # Replace `[...]` with the Upbound Cloud account
 export UP_ACCOUNT=[...]
