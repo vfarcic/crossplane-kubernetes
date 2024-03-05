@@ -1,0 +1,59 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: aws
+spec:
+  template: true
+  bindings:
+    - name: hyperscaler
+      value: aws
+    - name: cluster
+      value: eks
+  steps:
+    - try:
+        - apply:
+            file: 00-install.yaml
+        - assert:
+            file: 00-assert.yaml
+        - apply:
+            file: 01-update.yaml
+        - assert:
+            file: 01-assert.yaml
+        - apply:
+            file: 02-apps-crossplane.yaml
+        - assert:
+            file: 02-assert.yaml
+        - apply:
+            file: 03-apps-openfunction.yaml
+        - assert:
+            file: 03-assert.yaml
+        - apply:
+            file: 04-apps-external-secrets.yaml
+        - assert:
+            file: 04-assert.yaml
+        - apply:
+            file: 05-creds.yaml
+        - assert:
+            file: 05-assert.yaml
+        - apply:
+            file: 06-secrets.yaml
+        - assert:
+            file: 06-assert.yaml
+        - apply:
+            file: 07-dapr.yaml
+        - assert:
+            file: 07-assert.yaml
+        - apply:
+            file: 08-traefik.yaml
+        - assert:
+            file: 08-assert.yaml
+        - patch:
+            file: ../common/dynatrace.yaml
+        - assert:
+            file: ../common/assert-dynatrace.yaml
+    #   catch:
+    #     - get:
+    #         resource: managed
+    #     - describe:
+    #         resource: sqls
+    #         selector: crossplane.io/claim-namespace=$NAMESPACE

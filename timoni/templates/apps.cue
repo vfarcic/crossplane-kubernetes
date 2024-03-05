@@ -139,12 +139,14 @@ import "encoding/yaml"
                     spec: {
                         apiUrl: _apiUrl
                         oneAgent: {
-                            applicationMonitoring: { useCSIDriver: true }
+                            cloudNativeFullStack: { image: "" }
                         }
                         activeGate: {
                             capabilities: [
                                 { "kubernetes-monitoring" },
-                                { "routing" }
+                                { "routing" },
+                                { "metrics-ingest" },
+                                { "dynatrace-api" },
                             ]
                             image: ""
                             resources: {

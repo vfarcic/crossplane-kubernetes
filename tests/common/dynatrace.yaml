@@ -1,0 +1,11 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      dynatrace:
+        enabled: true
+        apiUrl: https://something.sprint.dynatracelabs.com/api

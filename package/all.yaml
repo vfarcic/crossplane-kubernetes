@@ -798,12 +798,14 @@ spec:
                 spec:
                   apiUrl: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}'
                   oneAgent:
-                    applicationMonitoring:
-                      useCSIDriver: true
+                    cloudNativeFullStack:
+                      image: ""
                   activeGate:
                     capabilities:
                       - kubernetes-monitoring
                       - routing
+                      - metrics-ingest
+                      - dynatrace-api
                     image: ""
                     resources:
                       requests:
@@ -1409,12 +1411,14 @@ spec:
                 spec:
                   apiUrl: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}'
                   oneAgent:
-                    applicationMonitoring:
-                      useCSIDriver: true
+                    cloudNativeFullStack:
+                      image: ""
                   activeGate:
                     capabilities:
                       - kubernetes-monitoring
                       - routing
+                      - metrics-ingest
+                      - dynatrace-api
                     image: ""
                     resources:
                       requests:
@@ -1977,12 +1981,14 @@ spec:
                 spec:
                   apiUrl: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}'
                   oneAgent:
-                    applicationMonitoring:
-                      useCSIDriver: true
+                    cloudNativeFullStack:
+                      image: ""
                   activeGate:
                     capabilities:
                       - kubernetes-monitoring
                       - routing
+                      - metrics-ingest
+                      - dynatrace-api
                     image: ""
                     resources:
                       requests:

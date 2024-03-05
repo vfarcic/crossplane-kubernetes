@@ -1,0 +1,110 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      dynatrace:
+        enabled: true
+        apiUrl: https://something.sprint.dynatracelabs.com/api
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      dynatrace:
+        enabled: true
+        apiUrl: https://something.sprint.dynatracelabs.com/api
+  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-dynatrace-operator'])]):
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-dynakube'])]):
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+  writeConnectionSecretToRef:
+    namespace: crossplane-system
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-dynatrace-operator']))
+    crossplane.io/external-name: dynatrace-operator
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+  name: (join('-', ['a-team', $cluster, 'app-dynatrace-operator']))
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: dynatrace-operator
+      repository: "https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable"
+      version: "0.15.0"
+    set:
+      - name: installCRD
+        value: "true"
+      - name: csidriver.enabled
+        value: "true"
+    namespace: dynatrace
+  providerConfigRef:
+    name: (join('-', ['a-team', $cluster]))
+  rollbackLimit: 3
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: (join('-', ['a-team', $cluster, 'app-dynakube']))
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-dynakube']))
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    manifest:
+      apiVersion: dynatrace.com/v1beta1
+      kind: DynaKube
+      metadata:
+        name: (join('-', ['a-team', $cluster]))
+        namespace: dynatrace
+        annotations:
+          feature.dynatrace.com/k8s-app-enabled: "true"
+      spec:
+        apiUrl: https://something.sprint.dynatracelabs.com/api
+        oneAgent:
+          cloudNativeFullStack:
+            image: ""
+        activeGate:
+          capabilities:
+            - kubernetes-monitoring
+            - routing
+            - metrics-ingest
+            - dynatrace-api
+          image: ""
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1.5Gi
+  managementPolicies:
+    - '*'
+  providerConfigRef:
+    name: (join('-', ['a-team', $cluster]))

@@ -1,0 +1,55 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: azure
+spec:
+  template: true
+  bindings:
+    - name: hyperscaler
+      value: google
+    - name: cluster
+      value: gke
+  steps:
+    - try:
+        - apply:
+            file: 00-install.yaml
+        - assert:
+            file: 00-assert.yaml
+        - apply:
+            file: 01-apps-crossplane.yaml
+        - assert:
+            file: 01-assert.yaml
+        - apply:
+            file: 02-apps-openfunction.yaml
+        - assert:
+            file: 02-assert.yaml
+        - apply:
+            file: 03-apps-external-secrets.yaml
+        - assert:
+            file: 03-assert.yaml
+        - apply:
+            file: 04-creds.yaml
+        - assert:
+            file: 04-assert.yaml
+        - apply:
+            file: 05-secrets.yaml
+        - assert:
+            file: 05-assert.yaml
+        - apply:
+            file: 06-dapr.yaml
+        - assert:
+            file: 06-assert.yaml
+        - apply:
+            file: 07-traefik.yaml
+        - assert:
+            file: 07-assert.yaml
+        - patch:
+            file: ../common/dynatrace.yaml
+        - assert:
+            file: ../common/assert-dynatrace.yaml
+    #   catch:
+    #     - get:
+    #         resource: managed
+    #     - describe:
+    #         resource: sqls
+    #         selector: crossplane.io/claim-namespace=$NAMESPACE
