@@ -31,10 +31,6 @@ spec:
       minSize: 5
     subnetIdSelector:
       matchControllerRef: true
-    tags:
-      crossplane-kind: nodegroup.eks.aws.upbound.io
-      crossplane-name: a-team-eks
-      crossplane-providerconfig: default
   providerConfigRef:
     name: default
 

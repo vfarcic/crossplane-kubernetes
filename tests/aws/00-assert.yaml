@@ -142,10 +142,6 @@ spec:
   deletionPolicy: Delete
   forProvider:
     region: us-east-1
-    tags:
-      crossplane-kind: internetgateway.ec2.aws.upbound.io
-      crossplane-name: a-team-eks
-      crossplane-providerconfig: default
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
@@ -298,10 +294,6 @@ spec:
   deletionPolicy: Delete
   forProvider:
     region: us-east-1
-    tags:
-      crossplane-kind: routetable.ec2.aws.upbound.io
-      crossplane-name: a-team-eks
-      crossplane-providerconfig: default
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
@@ -355,10 +347,6 @@ spec:
     name: a-team-eks
     description: Cluster communication with worker nodes
     region: us-east-1
-    tags:
-      crossplane-kind: securitygroup.ec2.aws.upbound.io
-      crossplane-name: a-team-eks
-      crossplane-providerconfig: default
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
@@ -387,9 +375,6 @@ spec:
     mapPublicIpOnLaunch: true
     region: us-east-1
     tags:
-      crossplane-kind: subnet.ec2.aws.upbound.io
-      crossplane-name: a-team-eks-1a
-      crossplane-providerconfig: default
       kubernetes.io/role/elb: "1"
     vpcIdSelector:
       matchControllerRef: true
@@ -419,9 +404,6 @@ spec:
     mapPublicIpOnLaunch: true
     region: us-east-1
     tags:
-      crossplane-kind: subnet.ec2.aws.upbound.io
-      crossplane-name: a-team-eks-1b
-      crossplane-providerconfig: default
       kubernetes.io/role/elb: "1"
     vpcIdSelector:
       matchControllerRef: true
@@ -451,9 +433,6 @@ spec:
     mapPublicIpOnLaunch: true
     region: us-east-1
     tags:
-      crossplane-kind: subnet.ec2.aws.upbound.io
-      crossplane-name: a-team-eks-1c
-      crossplane-providerconfig: default
       kubernetes.io/role/elb: "1"
     vpcIdSelector:
       matchControllerRef: true
@@ -479,10 +458,6 @@ spec:
     cidrBlock: 10.0.0.0/16
     enableDnsSupport: true
     region: us-east-1
-    tags:
-      crossplane-kind: vpc.ec2.aws.upbound.io
-      crossplane-name: a-team-eks
-      crossplane-providerconfig: default
   providerConfigRef:
     name: default
 ---
@@ -509,10 +484,6 @@ spec:
     clusterNameSelector:
       matchControllerRef: true
     region: us-east-1
-    tags:
-      crossplane-kind: addon.eks.aws.upbound.io
-      crossplane-name: a-team-eks-ebs
-      crossplane-providerconfig: default
   providerConfigRef:
     name: default
 ---
@@ -564,10 +535,6 @@ spec:
       matchControllerRef: true
       matchLabels:
         role: a-team-eks-controlplane
-    tags:
-      crossplane-kind: cluster.eks.aws.upbound.io
-      crossplane-name: a-team-eks
-      crossplane-providerconfig: default
     version: "1.29"
     vpcConfig:
     - endpointPrivateAccess: true
@@ -609,10 +576,6 @@ spec:
       minSize: 3
     subnetIdSelector:
       matchControllerRef: true
-    tags:
-      crossplane-kind: nodegroup.eks.aws.upbound.io
-      crossplane-name: a-team-eks
-      crossplane-providerconfig: default
       # TODO: Uncomment
     # taint:
     #   - effect: NO_EXECUTE
@@ -783,10 +746,6 @@ spec:
           "Action": ["sts:AssumeRole"]
         }]
       }
-    tags:
-      crossplane-kind: role.iam.aws.upbound.io
-      crossplane-name: a-team-eks-controlplane
-      crossplane-providerconfig: default
   providerConfigRef:
     name: default
 ---
@@ -817,10 +776,6 @@ spec:
           "Action": ["sts:AssumeRole"]
         }]
       }
-    tags:
-      crossplane-kind: role.iam.aws.upbound.io
-      crossplane-name: a-team-eks-nodegroup
-      crossplane-providerconfig: default
   providerConfigRef:
     name: default
 ---
