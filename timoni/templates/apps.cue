@@ -41,6 +41,7 @@ import "encoding/yaml"
     _version: string
     _template: #ReleaseTemplate & {
         _name:            "crossplane"
+        _chartName:       "crossplane"
         _chartVersion:    _version
         _chartRepository: "https://charts.crossplane.io/stable"
         _chartURL:        ""
@@ -61,6 +62,7 @@ import "encoding/yaml"
     _version: string
     _template: #ReleaseTemplate & {
         _name:            "dapr"
+        _chartName:       "dapr"
         _chartVersion:    _version
         _chartRepository: "https://dapr.github.io/helm-charts/"
         _chartURL:        ""
@@ -81,6 +83,7 @@ import "encoding/yaml"
     _version: string
     _template: #ReleaseTemplate & {
         _name:            "traefik"
+        _chartName:        "traefik"
         _chartVersion:    _version
         _chartRepository: "https://helm.traefik.io/traefik"
         _chartURL:        ""
@@ -98,13 +101,15 @@ import "encoding/yaml"
 }
 
 #AppDynatrace: {
-    _version: string
+    _operatorVersion: string
+    _dashboardVersion: string
     _apiUrl: "{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.apiUrl }}"
     _id:     "{{ $.observed.composite.resource.spec.id }}"
     _name:   "dynakube"
     _templateDynatrace: #ReleaseTemplate & {
         _name:            "dynatrace-operator"
-        _chartVersion:    _version
+        _chartName:       "dynatrace-operator"
+        _chartVersion:    _operatorVersion
         _chartRepository: "https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable"
         _chartURL:        ""
         _namespace:       "dynatrace"
@@ -168,6 +173,22 @@ import "encoding/yaml"
             }
         }   
     }
+    _templateDashboard: #ReleaseTemplate & {
+        _name:            "dynatrace-dashboard"
+        _chartName:       "kubernetes-cluster"
+        _chartVersion:    _dashboardVersion
+        _chartRepository: "https://katharinasick.github.io/crossplane-observability-demo-dynatrace"
+        _chartURL:        ""
+        _namespace:       "dynatrace"
+        _values: {
+            oauthCredentialsSecretName: "{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.oathCredentialsSecretName }}"
+            cluster: "{{ $.observed.composite.resource.spec.id }}-cluster"
+            dashboards: {
+                clusterOverview: enabled: true
+                crossplaneMetrics: enabled: false
+            }
+        }
+    }
     #FunctionGoTemplating & {
         step: "app-dynatrace"
         input: inline: template: """
@@ -176,6 +197,8 @@ import "encoding/yaml"
         \( yaml.Marshal(_templateDynatrace) )
         ---
         \( yaml.Marshal(_templateDynakube) )
+        ---
+        \( yaml.Marshal(_templateDashboard) )
         {{ end }}
         """
     }
@@ -185,6 +208,7 @@ import "encoding/yaml"
     _url: string
     _template: #ReleaseTemplate & {
         _name:            "openfunction"
+        _chartName:            "openfunction"
         _chartVersion:    ""
         _chartRepository: ""
         _chartURL:        _url
@@ -210,6 +234,7 @@ import "encoding/yaml"
     _version: string
     _template: #ReleaseTemplate & {
         _name:            "external-secrets"
+        _chartName:       "external-secrets"
         _chartVersion:    _version
         _chartRepository: "https://charts.external-secrets.io"
         _chartURL:        ""

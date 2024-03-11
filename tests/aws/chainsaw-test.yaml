@@ -57,3 +57,6 @@ spec:
     #     - describe:
     #         resource: sqls
     #         selector: crossplane.io/claim-namespace=$NAMESPACE
+    #     - describe:
+    #         resource: release
+    #         selector: crossplane.io/claim-namespace=$NAMESPACE

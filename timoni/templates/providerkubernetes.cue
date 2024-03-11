@@ -162,12 +162,14 @@ package templates
 #ReleaseTemplate: {
     _id:              "{{ $.observed.composite.resource.spec.id }}"
     _name:            string
+    _chartName:       string
     _chartVersion:    string
     _chartRepository: string
     _chartURL:        string
     _namespace:       string
     _rollbackLimit:   int | *3
     _set:             [...]
+    _values:          {...}
     apiVersion: "helm.crossplane.io/v1beta1"
     kind:       "Release"
     metadata: {
@@ -180,12 +182,13 @@ package templates
     spec: {
         forProvider: {
             chart: {
-                name:       _name
+                name:       _chartName
                 repository: _chartRepository
                 version:    _chartVersion
                 url:        _chartURL
             }
             set: _set
+            values: _values
             namespace: _namespace
         }
         rollbackLimit: 3

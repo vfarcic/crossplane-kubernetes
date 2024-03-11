@@ -9,3 +9,4 @@ spec:
       dynatrace:
         enabled: true
         apiUrl: https://something.sprint.dynatracelabs.com/api
+        oathCredentialsSecretName: my-oauth-creds

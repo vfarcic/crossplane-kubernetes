@@ -108,3 +108,34 @@ spec:
     - '*'
   providerConfigRef:
     name: (join('-', ['a-team', $cluster]))
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-dynatrace-dashboard']))
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+  name: (join('-', ['a-team', $cluster, 'app-dynatrace-dashboard']))
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: kubernetes-cluster
+      repository: https://katharinasick.github.io/crossplane-observability-demo-dynatrace
+      version: "0.2.0"
+    values:
+      oauthCredentialsSecretName: my-oauth-creds
+      cluster: (join('-', ['a-team', $cluster, 'cluster']))
+      dashboards:
+        crossplaneMetrics:
+          enabled: false
+        clusterOverview:
+          enabled: true
+    namespace: dynatrace
+  rollbackLimit: 3

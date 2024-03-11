@@ -638,6 +638,7 @@ spec:
                 version: 1.14.5
                 url: ""
               set: []
+              values: {}
               namespace: crossplane-system
             rollbackLimit: 3
             providerConfigRef:
@@ -672,6 +673,7 @@ spec:
               set:
                 - name: revisionController.enable
                   value: "true"
+              values: {}
               namespace: openfunction
             rollbackLimit: 3
             providerConfigRef:
@@ -704,6 +706,7 @@ spec:
                 version: 1.12.4
                 url: ""
               set: []
+              values: {}
               namespace: dapr-system
             rollbackLimit: 3
             providerConfigRef:
@@ -736,6 +739,7 @@ spec:
                 version: 26.0.0
                 url: ""
               set: []
+              values: {}
               namespace: traefik
             rollbackLimit: 3
             providerConfigRef:
@@ -772,6 +776,7 @@ spec:
                   value: "true"
                 - name: csidriver.enabled
                   value: "true"
+              values: {}
               namespace: dynatrace
             rollbackLimit: 3
             providerConfigRef:
@@ -817,6 +822,35 @@ spec:
             providerConfigRef:
               name: '{{ $.observed.composite.resource.spec.id }}'
 
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-dashboard'
+            annotations:
+              crossplane.io/external-name: dynatrace-dashboard
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-dashboard'
+          spec:
+            forProvider:
+              chart:
+                name: kubernetes-cluster
+                repository: https://katharinasick.github.io/crossplane-observability-demo-dynatrace
+                version: 0.2.0
+                url: ""
+              set: []
+              values:
+                oauthCredentialsSecretName: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.oathCredentialsSecretName }}'
+                cluster: '{{ $.observed.composite.resource.spec.id }}-cluster'
+                dashboards:
+                  clusterOverview:
+                    enabled: true
+                  crossplaneMetrics:
+                    enabled: false
+              namespace: dynatrace
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -846,6 +880,7 @@ spec:
               set:
                 - name: installCRDs
                   value: "true"
+              values: {}
               namespace: external-secrets
             rollbackLimit: 3
             providerConfigRef:
@@ -1251,6 +1286,7 @@ spec:
                 version: 1.14.5
                 url: ""
               set: []
+              values: {}
               namespace: crossplane-system
             rollbackLimit: 3
             providerConfigRef:
@@ -1285,6 +1321,7 @@ spec:
               set:
                 - name: revisionController.enable
                   value: "true"
+              values: {}
               namespace: openfunction
             rollbackLimit: 3
             providerConfigRef:
@@ -1317,6 +1354,7 @@ spec:
                 version: 1.12.4
                 url: ""
               set: []
+              values: {}
               namespace: dapr-system
             rollbackLimit: 3
             providerConfigRef:
@@ -1349,6 +1387,7 @@ spec:
                 version: 26.0.0
                 url: ""
               set: []
+              values: {}
               namespace: traefik
             rollbackLimit: 3
             providerConfigRef:
@@ -1385,6 +1424,7 @@ spec:
                   value: "true"
                 - name: csidriver.enabled
                   value: "true"
+              values: {}
               namespace: dynatrace
             rollbackLimit: 3
             providerConfigRef:
@@ -1430,6 +1470,35 @@ spec:
             providerConfigRef:
               name: '{{ $.observed.composite.resource.spec.id }}'
 
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-dashboard'
+            annotations:
+              crossplane.io/external-name: dynatrace-dashboard
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-dashboard'
+          spec:
+            forProvider:
+              chart:
+                name: kubernetes-cluster
+                repository: https://katharinasick.github.io/crossplane-observability-demo-dynatrace
+                version: 0.2.0
+                url: ""
+              set: []
+              values:
+                oauthCredentialsSecretName: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.oathCredentialsSecretName }}'
+                cluster: '{{ $.observed.composite.resource.spec.id }}-cluster'
+                dashboards:
+                  clusterOverview:
+                    enabled: true
+                  crossplaneMetrics:
+                    enabled: false
+              namespace: dynatrace
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -1459,6 +1528,7 @@ spec:
               set:
                 - name: installCRDs
                   value: "true"
+              values: {}
               namespace: external-secrets
             rollbackLimit: 3
             providerConfigRef:
@@ -1821,6 +1891,7 @@ spec:
                 version: 1.14.5
                 url: ""
               set: []
+              values: {}
               namespace: crossplane-system
             rollbackLimit: 3
             providerConfigRef:
@@ -1855,6 +1926,7 @@ spec:
               set:
                 - name: revisionController.enable
                   value: "true"
+              values: {}
               namespace: openfunction
             rollbackLimit: 3
             providerConfigRef:
@@ -1887,6 +1959,7 @@ spec:
                 version: 1.12.4
                 url: ""
               set: []
+              values: {}
               namespace: dapr-system
             rollbackLimit: 3
             providerConfigRef:
@@ -1919,6 +1992,7 @@ spec:
                 version: 26.0.0
                 url: ""
               set: []
+              values: {}
               namespace: traefik
             rollbackLimit: 3
             providerConfigRef:
@@ -1955,6 +2029,7 @@ spec:
                   value: "true"
                 - name: csidriver.enabled
                   value: "true"
+              values: {}
               namespace: dynatrace
             rollbackLimit: 3
             providerConfigRef:
@@ -2000,6 +2075,35 @@ spec:
             providerConfigRef:
               name: '{{ $.observed.composite.resource.spec.id }}'
 
+          ---
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: Release
+          metadata:
+            name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-dashboard'
+            annotations:
+              crossplane.io/external-name: dynatrace-dashboard
+              gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-dynatrace-dashboard'
+          spec:
+            forProvider:
+              chart:
+                name: kubernetes-cluster
+                repository: https://katharinasick.github.io/crossplane-observability-demo-dynatrace
+                version: 0.2.0
+                url: ""
+              set: []
+              values:
+                oauthCredentialsSecretName: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.oathCredentialsSecretName }}'
+                cluster: '{{ $.observed.composite.resource.spec.id }}-cluster'
+                dashboards:
+                  clusterOverview:
+                    enabled: true
+                  crossplaneMetrics:
+                    enabled: false
+              namespace: dynatrace
+            rollbackLimit: 3
+            providerConfigRef:
+              name: '{{ $.observed.composite.resource.spec.id }}'
+
           {{ end }}
       kind: GoTemplate
       source: Inline
@@ -2029,6 +2133,7 @@ spec:
               set:
                 - name: installCRDs
                   value: "true"
+              values: {}
               namespace: external-secrets
             rollbackLimit: 3
             providerConfigRef:

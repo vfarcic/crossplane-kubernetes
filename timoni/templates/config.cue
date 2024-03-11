@@ -12,13 +12,14 @@ import (
 		kind:       "CompositeCluster"
 	}
 	versions: {
-		traefik: 	     string
-		dynatrace: 	     string
-		crossplane:      string
-		dapr: 		     string
-		externalSecrets: string
-		cilium: 	     string
-		eks:  		     string
+		traefik: 	        string
+		dynatraceOperator: 	string
+		dynatraceDashboard: string
+		crossplane:         string
+		dapr: 		        string
+		externalSecrets:    string
+		cilium: 	        string
+		eks:  		        string
 	}
 	charts: {
 		openFunction: string

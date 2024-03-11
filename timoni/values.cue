@@ -5,17 +5,17 @@ package main
 
 values: {
 	versions: {
-		crossplane:      "1.14.5"
-		dapr:            "1.12.4"
-		traefik:		 "26.0.0"
-		dynatrace:       "0.15.0"
-		externalSecrets: "0.9.11"
-		cilium: 	     "1.14.2"
-		eks:			 "1.29"
+		crossplane:         "1.14.5"
+		dapr:               "1.12.4"
+		traefik:		    "26.0.0"
+		dynatraceOperator:  "0.15.0"
+		dynatraceDashboard: "0.2.0"
+		externalSecrets:    "0.9.11"
+		cilium: 	        "1.14.2"
+		eks:			    "1.29"
 	}
 	charts: {
 		openFunction: "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
-		// dynatrace:    "https://github.com/Dynatrace/dynatrace-operator/releases/download/v0.15.0/dynatrace-operator-0.15.0.tgz"
 	}
 	packages: {
 		providerKubernetes: "xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.11.0"
