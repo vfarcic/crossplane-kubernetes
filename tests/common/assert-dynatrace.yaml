@@ -3,6 +3,7 @@ apiVersion: devopstoolkitseries.com/v1alpha1
 kind: ClusterClaim
 metadata:
   name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
 spec:
   parameters:
     apps:
@@ -139,3 +140,5 @@ spec:
           enabled: true
     namespace: dynatrace
   rollbackLimit: 3
+  providerConfigRef:
+    name: (join('-', ['a-team', $cluster, 'local']))

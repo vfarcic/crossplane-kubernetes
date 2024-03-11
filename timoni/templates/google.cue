@@ -28,9 +28,10 @@ import (
 					resources: [
 						#GoogleCluster,
 						#GoogleNodePool,
-						#GoogleProviderConfigHelmLocal,
+						#GoogleProviderConfigHelmRemote,
+						#ProviderConfigHelmLocal,
 						#GoogleCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
-						#GoogleProviderConfigKubernetesLocal,
+						#GoogleProviderConfigKubernetesRemote,
 					]
 				}
 			},
@@ -158,7 +159,7 @@ import (
 	]
 }
 
-#GoogleProviderConfigLocal: {
+#GoogleProviderConfigRemote: {
 	name: string
     base: {
         apiVersion: string
@@ -189,15 +190,15 @@ import (
     readinessChecks: [{ type: "None" }]
 }
 
-#GoogleProviderConfigHelmLocal: {
-    #GoogleProviderConfigLocal & {
+#GoogleProviderConfigHelmRemote: {
+    #GoogleProviderConfigRemote & {
         name: "helm"
         base: apiVersion: "helm.crossplane.io/v1beta1"
     }
 }
 
-#GoogleProviderConfigKubernetesLocal: {
-    #GoogleProviderConfigLocal & {
+#GoogleProviderConfigKubernetesRemote: {
+    #GoogleProviderConfigRemote & {
         name: "kubernetes"
         base: apiVersion: "kubernetes.crossplane.io/v1alpha1"
     }

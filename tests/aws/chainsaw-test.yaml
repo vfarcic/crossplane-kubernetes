@@ -15,6 +15,8 @@ spec:
             file: 00-install.yaml
         - assert:
             file: 00-assert.yaml
+        - assert:
+            file: ../common/assert-install.yaml
         - apply:
             file: 01-update.yaml
         - assert:
@@ -22,31 +24,31 @@ spec:
         - apply:
             file: 02-apps-crossplane.yaml
         - assert:
-            file: 02-assert.yaml
+            file: ../common/assert-crossplane.yaml
         - apply:
             file: 03-apps-openfunction.yaml
         - assert:
-            file: 03-assert.yaml
+            file: ../common/assert-openfunction.yaml
         - apply:
             file: 04-apps-external-secrets.yaml
         - assert:
-            file: 04-assert.yaml
+            file: ../common/assert-external-secrets.yaml
         - apply:
             file: 05-creds.yaml
         - assert:
-            file: 05-assert.yaml
+            file: assert-creds.yaml
         - apply:
             file: 06-secrets.yaml
         - assert:
-            file: 06-assert.yaml
+            file: assert-secrets.yaml
         - apply:
             file: 07-dapr.yaml
         - assert:
-            file: 07-assert.yaml
+            file: ../common/assert-dapr.yaml
         - apply:
             file: 08-traefik.yaml
         - assert:
-            file: 08-assert.yaml
+            file: ../common/assert-traefik.yaml
         - patch:
             file: ../common/dynatrace.yaml
         - assert:

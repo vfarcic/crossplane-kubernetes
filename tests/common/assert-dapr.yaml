@@ -1,0 +1,50 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      dapr:
+        enabled: true
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      dapr:
+        enabled: true
+  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-dapr'])]):
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-dapr']))
+    crossplane.io/external-name: dapr
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+  name: (join('-', ['a-team', $cluster, 'app-dapr']))
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: dapr
+      repository: https://dapr.github.io/helm-charts/
+      version: 1.12.4
+    namespace: dapr-system
+  providerConfigRef:
+    name: (join('-', ['a-team', $cluster]))
+  rollbackLimit: 3

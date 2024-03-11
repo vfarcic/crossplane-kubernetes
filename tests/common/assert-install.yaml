@@ -1,0 +1,8 @@
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: (join('-', ['a-team', $cluster, 'local']))
+spec:
+  credentials:
+    source: InjectedIdentity

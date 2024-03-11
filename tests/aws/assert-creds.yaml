@@ -1,0 +1,64 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  parameters:
+    creds:
+      name: (join('-', [$hyperscaler, 'creds']))
+      namespace: crossplane-system
+      keys:
+        - access-key-id
+        - secret-access-key
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    creds:
+      name: (join('-', [$hyperscaler, 'creds']))
+      namespace: crossplane-system
+      keys:
+        - access-key-id
+        - secret-access-key
+  (resourceRefs[?name == join('-', ['a-team', $cluster, 'creds'])]):
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'creds']))
+    crossplane.io/external-name: (join('-', [$hyperscaler, 'creds']))
+  name: (join('-', ['a-team', $cluster, 'creds']))
+spec:
+  references:
+  - patchesFrom:
+      apiVersion: v1
+      kind: Secret
+      name: (join('-', [$hyperscaler, 'creds']))
+      namespace: crossplane-system
+      fieldPath: data.access-key-id
+    toFieldPath: data.access-key-id
+  - patchesFrom:
+      apiVersion: v1
+      kind: Secret
+      name: (join('-', [$hyperscaler, 'creds']))
+      namespace: crossplane-system
+      fieldPath: data.secret-access-key
+    toFieldPath: data.secret-access-key
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: (join('-', [$hyperscaler, 'creds']))
+        namespace: crossplane-system
+  providerConfigRef:
+    name: a-team-eks

@@ -174,12 +174,13 @@ import "encoding/yaml"
         }   
     }
     _templateDashboard: #ReleaseTemplate & {
-        _name:            "dynatrace-dashboard"
-        _chartName:       "kubernetes-cluster"
-        _chartVersion:    _dashboardVersion
-        _chartRepository: "https://katharinasick.github.io/crossplane-observability-demo-dynatrace"
-        _chartURL:        ""
-        _namespace:       "dynatrace"
+        _name:               "dynatrace-dashboard"
+        _chartName:          "kubernetes-cluster"
+        _chartVersion:       _dashboardVersion
+        _chartRepository:    "https://katharinasick.github.io/crossplane-observability-demo-dynatrace"
+        _chartURL:           ""
+        _namespace:          "dynatrace"
+        _providerConfigName: "{{ $.observed.composite.resource.spec.id }}-local"
         _values: {
             oauthCredentialsSecretName: "{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.oathCredentialsSecretName }}"
             cluster: "{{ $.observed.composite.resource.spec.id }}-cluster"

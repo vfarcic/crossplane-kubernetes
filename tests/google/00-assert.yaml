@@ -53,6 +53,9 @@ spec:
     kind: ProviderConfig
     name: a-team-gke
   - apiVersion: helm.crossplane.io/v1beta1
+    kind: ProviderConfig
+    name: a-team-gke-local
+  - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
     name: a-team-gke-cilium
   - apiVersion: kubernetes.crossplane.io/v1alpha1

@@ -42,7 +42,7 @@ package templates
 //     }]
 // }
 
-#ProviderConfigLocal: {
+#ProviderConfigRemote: {
     name: string
     base: {
         apiVersion: string
@@ -80,16 +80,53 @@ package templates
     }]
 }
 
-#ProviderConfigKubernetesLocal: {
-    #ProviderConfigLocal & {
+#ProviderConfigLocal: {
+    name: string
+    base: {
+        apiVersion: string
+        kind:       "ProviderConfig"
+        spec: {
+            credentials: {
+                source: "InjectedIdentity"
+            }
+        }
+    }
+    patches: [{
+        fromFieldPath: "spec.id"
+        toFieldPath:   "metadata.name"
+        transforms: [{
+            string: {
+                fmt: "%s-local"
+                type: "Format"
+            }
+            type: "string"
+        }]
+    }, {
+        fromFieldPath: "metadata.annotations"
+        toFieldPath:   "metadata.annotations"
+    }]
+    readinessChecks: [{
+        type: "None"
+    }]
+}
+
+#ProviderConfigKubernetesRemote: {
+    #ProviderConfigRemote & {
         name: "kubernetes"
         base: apiVersion: "kubernetes.crossplane.io/v1alpha1"
     }
 }
 
+#ProviderConfigHelmRemote: {
+    #ProviderConfigRemote & {
+        name: "helm"
+        base: apiVersion: "helm.crossplane.io/v1beta1"
+    }
+}
+
 #ProviderConfigHelmLocal: {
     #ProviderConfigLocal & {
-        name: "helm"
+        name: "helm-local"
         base: apiVersion: "helm.crossplane.io/v1beta1"
     }
 }
@@ -160,16 +197,17 @@ package templates
 }
 
 #ReleaseTemplate: {
-    _id:              "{{ $.observed.composite.resource.spec.id }}"
-    _name:            string
-    _chartName:       string
-    _chartVersion:    string
-    _chartRepository: string
-    _chartURL:        string
-    _namespace:       string
-    _rollbackLimit:   int | *3
-    _set:             [...]
-    _values:          {...}
+    _id:                 "{{ $.observed.composite.resource.spec.id }}"
+    _name:               string
+    _chartName:          string
+    _chartVersion:       string
+    _chartRepository:    string
+    _chartURL:           string
+    _namespace:          string
+    _rollbackLimit:      int | *3
+    _providerConfigName: string | *_id
+    _set:                [...]
+    _values:             {...}
     apiVersion: "helm.crossplane.io/v1beta1"
     kind:       "Release"
     metadata: {
@@ -192,7 +230,7 @@ package templates
             namespace: _namespace
         }
         rollbackLimit: 3
-        providerConfigRef: name: _id
+        providerConfigRef: name: _providerConfigName
         rollbackLimit: _rollbackLimit
     }
 }

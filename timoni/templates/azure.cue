@@ -30,9 +30,10 @@ import (
 					resources: [
 						#AzureResourceGroup,
 						#AzureKubernetesCluster,
+						#ProviderConfigHelmRemote,
 						#ProviderConfigHelmLocal,
 						#AzureCilium & { base: spec: forProvider: chart: version: _config.versions.cilium },
-						#ProviderConfigKubernetesLocal,
+						#ProviderConfigKubernetesRemote,
 						// #ProviderConfig & { _composeConfig: name: "azure" },
 					]
 				}

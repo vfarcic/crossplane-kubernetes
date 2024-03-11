@@ -590,6 +590,25 @@ spec:
         readinessChecks:
         - type: None
       - base:
+          apiVersion: helm.crossplane.io/v1beta1
+          kind: ProviderConfig
+          spec:
+            credentials:
+              source: InjectedIdentity
+        name: helm-local
+        patches:
+        - fromFieldPath: spec.id
+          toFieldPath: metadata.name
+          transforms:
+          - string:
+              fmt: '%s-local'
+              type: Format
+            type: string
+        - fromFieldPath: metadata.annotations
+          toFieldPath: metadata.annotations
+        readinessChecks:
+        - type: None
+      - base:
           apiVersion: kubernetes.crossplane.io/v1alpha1
           kind: ProviderConfig
           spec:
@@ -849,7 +868,7 @@ spec:
               namespace: dynatrace
             rollbackLimit: 3
             providerConfigRef:
-              name: '{{ $.observed.composite.resource.spec.id }}'
+              name: '{{ $.observed.composite.resource.spec.id }}-local'
 
           {{ end }}
       kind: GoTemplate
@@ -1189,6 +1208,25 @@ spec:
         - type: None
       - base:
           apiVersion: helm.crossplane.io/v1beta1
+          kind: ProviderConfig
+          spec:
+            credentials:
+              source: InjectedIdentity
+        name: helm-local
+        patches:
+        - fromFieldPath: spec.id
+          toFieldPath: metadata.name
+          transforms:
+          - string:
+              fmt: '%s-local'
+              type: Format
+            type: string
+        - fromFieldPath: metadata.annotations
+          toFieldPath: metadata.annotations
+        readinessChecks:
+        - type: None
+      - base:
+          apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           spec:
             forProvider:
@@ -1497,7 +1535,7 @@ spec:
               namespace: dynatrace
             rollbackLimit: 3
             providerConfigRef:
-              name: '{{ $.observed.composite.resource.spec.id }}'
+              name: '{{ $.observed.composite.resource.spec.id }}-local'
 
           {{ end }}
       kind: GoTemplate
@@ -1813,6 +1851,25 @@ spec:
         - type: None
       - base:
           apiVersion: helm.crossplane.io/v1beta1
+          kind: ProviderConfig
+          spec:
+            credentials:
+              source: InjectedIdentity
+        name: helm-local
+        patches:
+        - fromFieldPath: spec.id
+          toFieldPath: metadata.name
+          transforms:
+          - string:
+              fmt: '%s-local'
+              type: Format
+            type: string
+        - fromFieldPath: metadata.annotations
+          toFieldPath: metadata.annotations
+        readinessChecks:
+        - type: None
+      - base:
+          apiVersion: helm.crossplane.io/v1beta1
           kind: Release
           spec:
             forProvider:
@@ -2102,7 +2159,7 @@ spec:
               namespace: dynatrace
             rollbackLimit: 3
             providerConfigRef:
-              name: '{{ $.observed.composite.resource.spec.id }}'
+              name: '{{ $.observed.composite.resource.spec.id }}-local'
 
           {{ end }}
       kind: GoTemplate

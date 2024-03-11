@@ -52,6 +52,7 @@ import (
 						#AwsRouteTableAssociation1b,
 						#AwsRouteTableAssociation1c,
 						#AwsAddonEbs,
+						#ProviderConfigHelmRemote,
 						#ProviderConfigHelmLocal,
 						// TODO: kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
 						// TODO: Uncomment
@@ -86,7 +87,7 @@ import (
 						// 		}]
 						// 	}
 						// },
-						#ProviderConfigKubernetesLocal,
+						#ProviderConfigKubernetesRemote,
 					]
 				}
 			},

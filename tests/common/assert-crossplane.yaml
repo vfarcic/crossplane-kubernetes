@@ -1,0 +1,39 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      crossplane:
+        enabled: true
+  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-crossplane'])]):
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-crossplane']))
+    crossplane.io/external-name: crossplane
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+  name: (join('-', ['a-team', $cluster, 'app-crossplane']))
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: crossplane
+      repository: https://charts.crossplane.io/stable
+      version: 1.14.5
+    namespace: crossplane-system
+  providerConfigRef:
+    name: (join('-', ['a-team', $cluster]))
+  rollbackLimit: 3

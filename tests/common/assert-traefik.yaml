@@ -1,0 +1,50 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      traefik:
+        enabled: true
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      traefik:
+        enabled: true
+  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-traefik'])]):
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-traefik']))
+    crossplane.io/external-name: traefik
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+  name: (join('-', ['a-team', $cluster, 'app-traefik']))
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 26.0.0
+    namespace: traefik
+  providerConfigRef:
+    name: (join('-', ['a-team', $cluster]))
+  rollbackLimit: 3

@@ -1,0 +1,55 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  parameters:
+    creds:
+      name: gcp-creds
+      namespace: crossplane-system
+      keys:
+        - google-creds
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    creds:
+      name: gcp-creds
+      namespace: crossplane-system
+      keys:
+        - google-creds
+  (resourceRefs[?name == join('-', ['a-team', $cluster, 'creds'])]):
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'creds']))
+    crossplane.io/external-name: gcp-creds
+  name: (join('-', ['a-team', $cluster, 'creds']))
+spec:
+  references:
+  - patchesFrom:
+      apiVersion: v1
+      kind: Secret
+      name: gcp-creds
+      namespace: crossplane-system
+      fieldPath: data.google-creds
+    toFieldPath: data.google-creds
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: gcp-creds
+        namespace: crossplane-system
+  providerConfigRef:
+    name: a-team-gke
