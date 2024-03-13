@@ -129,7 +129,7 @@ spec:
     chart:
       name: kubernetes-cluster
       repository: https://katharinasick.github.io/crossplane-observability-demo-dynatrace
-      version: "0.2.1"
+      version: "0.2.2"
     values:
       oauthCredentialsSecretName: my-oauth-creds
       cluster: (join('-', ['a-team', $cluster, 'cluster']))
