@@ -9,7 +9,7 @@ values: {
 		dapr:               "1.12.4"
 		traefik:		    "26.0.0"
 		dynatraceOperator:  "0.15.0"
-		dynatraceDashboard: "0.2.0"
+		dynatraceDashboard: "0.2.1"
 		externalSecrets:    "0.9.11"
 		cilium: 	        "1.14.2"
 		eks:			    "1.29"
