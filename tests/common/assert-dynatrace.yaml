@@ -132,7 +132,7 @@ spec:
       version: "0.2.2"
     values:
       oauthCredentialsSecretName: my-oauth-creds
-      cluster: (join('-', ['a-team', $cluster, 'cluster']))
+      cluster: (join('-', ['a-team', $cluster]))
       dashboards:
         crossplaneMetrics:
           enabled: false

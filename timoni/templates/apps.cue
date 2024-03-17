@@ -183,7 +183,7 @@ import "encoding/yaml"
         _providerConfigName: "{{ $.observed.composite.resource.spec.id }}-local"
         _values: {
             oauthCredentialsSecretName: "{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.oathCredentialsSecretName }}"
-            cluster: "{{ $.observed.composite.resource.spec.id }}-cluster"
+            cluster: "{{ $.observed.composite.resource.spec.id }}"
             dashboards: {
                 clusterOverview: enabled: true
                 crossplaneMetrics: enabled: false
