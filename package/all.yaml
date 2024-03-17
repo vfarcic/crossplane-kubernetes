@@ -859,7 +859,7 @@ spec:
               set: []
               values:
                 oauthCredentialsSecretName: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.oathCredentialsSecretName }}'
-                cluster: '{{ $.observed.composite.resource.spec.id }}-cluster'
+                cluster: '{{ $.observed.composite.resource.spec.id }}'
                 dashboards:
                   clusterOverview:
                     enabled: true
@@ -1526,7 +1526,7 @@ spec:
               set: []
               values:
                 oauthCredentialsSecretName: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.oathCredentialsSecretName }}'
-                cluster: '{{ $.observed.composite.resource.spec.id }}-cluster'
+                cluster: '{{ $.observed.composite.resource.spec.id }}'
                 dashboards:
                   clusterOverview:
                     enabled: true
@@ -2150,7 +2150,7 @@ spec:
               set: []
               values:
                 oauthCredentialsSecretName: '{{ $.observed.composite.resource.spec.parameters.apps.dynatrace.oathCredentialsSecretName }}'
-                cluster: '{{ $.observed.composite.resource.spec.id }}-cluster'
+                cluster: '{{ $.observed.composite.resource.spec.id }}'
                 dashboards:
                   clusterOverview:
                     enabled: true
