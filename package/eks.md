@@ -71,6 +71,6 @@ kubectl --namespace infra delete \
 
 kubectl get managed
 
-# Wait until all the resources are deleted (ignore `object` and
+# Wait until all the resources are deleted (ignore `object` and
 #   `release` resources)
 ```
