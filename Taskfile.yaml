@@ -35,7 +35,8 @@ tasks:
     desc: Combines `cluster-create`, `test-watch` (without the watcher), and `cluster-destroy` tasks.
     cmds:
       - task: cluster-create
-      - task: test-watch
+      - task: package-generate-apply
+      - chainsaw test
       - defer: { task: cluster-destroy }
   test-watch:
     desc: Runs tests in the watch mode assuming that the cluster is already created and everything is installed.
