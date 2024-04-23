@@ -61,6 +61,90 @@
         }
       }
     },
+    "just@1.25.2": {
+      "last_modified": "2024-04-19T17:36:04-04:00",
+      "resolved": "github:NixOS/nixpkgs/92d295f588631b0db2da509f381b4fb1e74173c5#just",
+      "source": "devbox-search",
+      "version": "1.25.2",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/z65fyiw9sgg9ywxb16kzgjn4335bkdgk-just-1.25.2",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/igxiip2bywwgk97bcfmz8rfhcwalnabp-just-1.25.2-man",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/4v3vhnbgwvar7qbr4iy00gqqf1zfrrsq-just-1.25.2-doc"
+            }
+          ],
+          "store_path": "/nix/store/z65fyiw9sgg9ywxb16kzgjn4335bkdgk-just-1.25.2"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ya5l2p4s8122gal35impls0hxqvgikq7-just-1.25.2",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/qwqvkd7sdfv0y8ja6yrszh41ddb1lbab-just-1.25.2-man",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/wgnh87vfdmnvs7wav321sg2frpdrxi8w-just-1.25.2-doc"
+            }
+          ],
+          "store_path": "/nix/store/ya5l2p4s8122gal35impls0hxqvgikq7-just-1.25.2"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/hkh658l8gszli0fcbn0c27fidwcx6skc-just-1.25.2",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/rq5p2xipbhqhm0321plymlxvdh4qwyhy-just-1.25.2-man",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/mrirhr3b4jmlyrj4hmmidby83bc65dll-just-1.25.2-doc"
+            }
+          ],
+          "store_path": "/nix/store/hkh658l8gszli0fcbn0c27fidwcx6skc-just-1.25.2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ap71wavjciyyfqsr7j0dz5b7k36r1w1w-just-1.25.2",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/h4a4dx6mjdmhbxfp3ykl2zqdmqs9zjfz-just-1.25.2-man",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/n9a0w5jclm4rh85c5ckpxxg5qqlcpban-just-1.25.2-doc"
+            }
+          ],
+          "store_path": "/nix/store/ap71wavjciyyfqsr7j0dz5b7k36r1w1w-just-1.25.2"
+        }
+      }
+    },
     "kind@0.22.0": {
       "last_modified": "2024-02-26T19:46:43Z",
       "resolved": "github:NixOS/nixpkgs/548a86b335d7ecd8b57ec617781f5e652ab0c38e#kind",
@@ -141,6 +225,54 @@
         }
       }
     },
+    "kyverno-chainsaw@0.1.9": {
+      "last_modified": "2024-04-19T17:36:04-04:00",
+      "resolved": "github:NixOS/nixpkgs/92d295f588631b0db2da509f381b4fb1e74173c5#kyverno-chainsaw",
+      "source": "devbox-search",
+      "version": "0.1.9",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/b8ripjiyhn8vqgbdnmgvwfi6s09if536-kyverno-chainsaw-0.1.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/b8ripjiyhn8vqgbdnmgvwfi6s09if536-kyverno-chainsaw-0.1.9"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/a6ssd3cy24k7ms5ns86j8rxk90w6b41v-kyverno-chainsaw-0.1.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/a6ssd3cy24k7ms5ns86j8rxk90w6b41v-kyverno-chainsaw-0.1.9"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/1v8503c2ads4bldp2vf2hj69yi85x13y-kyverno-chainsaw-0.1.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/1v8503c2ads4bldp2vf2hj69yi85x13y-kyverno-chainsaw-0.1.9"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/5lji7ci2w6i1kmy2vc633sfg6dsawi63-kyverno-chainsaw-0.1.9",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/5lji7ci2w6i1kmy2vc633sfg6dsawi63-kyverno-chainsaw-0.1.9"
+        }
+      }
+    },
     "timoni@0.17.0": {
       "last_modified": "2024-02-26T19:46:43Z",
       "resolved": "github:NixOS/nixpkgs/548a86b335d7ecd8b57ec617781f5e652ab0c38e#timoni",
@@ -178,6 +310,54 @@
         },
         "x86_64-linux": {
           "store_path": "/nix/store/imdy2aiwpxfqb7bl5kp4hawbgm4n2igc-upbound-0.24.1"
+        }
+      }
+    },
+    "watchexec@1.25.1": {
+      "last_modified": "2024-04-19T17:36:04-04:00",
+      "resolved": "github:NixOS/nixpkgs/92d295f588631b0db2da509f381b4fb1e74173c5#watchexec",
+      "source": "devbox-search",
+      "version": "1.25.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/1ig7ihi19k72dzhncar24hvsqdq89ljc-watchexec-1.25.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/1ig7ihi19k72dzhncar24hvsqdq89ljc-watchexec-1.25.1"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/yhmf7bncqv54mddcsz6dabhsrb99ligi-watchexec-1.25.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/yhmf7bncqv54mddcsz6dabhsrb99ligi-watchexec-1.25.1"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/w1hqixznmxj4cdaypal1m14n3yixviv9-watchexec-1.25.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/w1hqixznmxj4cdaypal1m14n3yixviv9-watchexec-1.25.1"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/bjdqqwdjgv4rgb45k31rxar0syzjcqwh-watchexec-1.25.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/bjdqqwdjgv4rgb45k31rxar0syzjcqwh-watchexec-1.25.1"
         }
       }
     },

@@ -24,6 +24,11 @@ tasks:
       - up xpkg push --package package/kubernetes.xpkg xpkg.upbound.io/$UP_ACCOUNT/dot-kubernetes:$VERSION
       - rm package/kubernetes.xpkg
       - yq --inplace ".spec.package = \"xpkg.upbound.io/devops-toolkit/dot-kubernetes:$VERSION\"" config.yaml
+  package-generate-apply:
+    desc: Combines `package-generate` and `package-apply` tasks.
+    cmds:
+      - task: package-generate
+      - task: package-apply
 
   # Test
   test:
@@ -34,17 +39,8 @@ tasks:
       - defer: { task: cluster-destroy }
   test-watch:
     desc: Runs tests in the watch mode assuming that the cluster is already created and everything is installed.
-    deps:
-      - task: package-generate
     cmds:
-      - task: package-apply
-      - chainsaw test
-    watch: true
-    sources:
-      - timoni/**/*.cue
-      - tests/**/*.yaml
-    generates:
-      - package/all.yaml
+      - watchexec -w timoni -w tests "task package-generate-apply && chainsaw test"
   test-once:
     desc: Runs tests once assuming that the cluster is already created and everything is installed.
     deps:
