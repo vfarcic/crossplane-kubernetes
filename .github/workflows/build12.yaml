@@ -12,7 +12,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - name: Install Devbox
-        uses: jetpack-io/devbox-install-action@v0.6.0
+        uses: jetpack-io/devbox-install-action@v0.10.0
       - name: Test
         run: devbox run test
       - name: Publish
