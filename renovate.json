@@ -1,6 +1,17 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ]
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended"
+    ],
+    "crossplane": {
+        "fileMatch": ["providers/.+\\.yaml$"]
+    },
+    "packageRules": [
+        {
+            "matchManagers": ["crossplane"],
+            "matchFileNames": ["providers/**"],
+            "groupName": "providers"
+        }
+    ]
 }
+ 
