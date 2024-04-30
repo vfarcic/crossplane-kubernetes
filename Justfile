@@ -40,9 +40,7 @@ test-watch: package-generate package-apply
   watchexec -w timoni -w tests "just package-generate-apply && chainsaw test"
 
 # Creates a kind cluster, installs Crossplane, providers, and packages, waits until they are healthy, and runs tests.
-cluster-create: package-generate _cluster-create-kind _helm-repo
-  helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --wait
-  for provider in `ls -1 providers | grep -v config`; do kubectl apply --filename providers/$provider; done
+cluster-create: package-generate _cluster-create-kind
   just package-apply
   sleep 60
   kubectl wait --for=condition=healthy provider.pkg.crossplane.io --all --timeout={{timeout}}
@@ -55,7 +53,7 @@ cluster-destroy:
 # Creates a kind cluster
 _cluster-create-kind:
   -kind create cluster
-
-_helm-repo:
   -helm repo add crossplane-stable https://charts.crossplane.io/stable
   -helm repo update
+  helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --wait
+  for provider in `ls -1 providers | grep -v config`; do kubectl apply --filename providers/$provider; done
