@@ -3,7 +3,7 @@
 ```bash
 devbox shell
 
-task package-generate
+just package-generate
 
 exit
 ```
@@ -13,13 +13,13 @@ exit
 ```bash
 devbox shell
 
-task cluster-create
+just cluster-create
 
-task test-watch
+just test-watch
 
 # Stop the watcher with `ctrl+c`
 
-task cluster-destroy
+just cluster-destroy
 
 exit
 ```
@@ -38,7 +38,7 @@ export UP_TOKEN=[...]
 # Replace `[...]` with the version of the package (e.g., `v0.5.0`)
 export VERSION=[...]
 
-task package-publish
+just package-publish
 
 exit
 ```
