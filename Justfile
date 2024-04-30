@@ -26,8 +26,13 @@ package-publish: package-generate
 # Combines `package-generate` and `package-apply`.
 package-generate-apply: package-generate package-apply
 
+# Create a cluster, runs tests, and destroys the cluster.
+test: cluster-create package-generate-apply
+  chainsaw test
+  just cluster-destroy
+
 # Runs tests once assuming that the cluster is already created and everything is installed.
-test: package-generate package-apply
+test-once: package-generate package-apply
   chainsaw test
 
 # Runs tests in the watch mode assuming that the cluster is already created and everything is installed.
