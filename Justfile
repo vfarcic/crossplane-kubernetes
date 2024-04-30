@@ -26,16 +26,13 @@ package-publish: package-generate
 # Combines `package-generate` and `package-apply`.
 package-generate-apply: package-generate package-apply
 
-# Combines `cluster-create`, `test-watch` (without the watcher), and `cluster-destroy` tasks.
-test: cluster-create test-watch cluster-destroy
+# Runs tests once assuming that the cluster is already created and everything is installed.
+test: package-generate package-apply
+  chainsaw test
 
 # Runs tests in the watch mode assuming that the cluster is already created and everything is installed.
 test-watch: package-generate package-apply
   watchexec -w timoni -w tests "just package-generate-apply && chainsaw test"
-
-# Runs tests once assuming that the cluster is already created and everything is installed.
-test-once: package-generate package-apply
-  chainsaw test
 
 # Creates a kind cluster, installs Crossplane, providers, and packages, waits until they are healthy, and runs tests.
 cluster-create: package-generate _cluster-create-kind
