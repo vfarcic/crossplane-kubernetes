@@ -32,11 +32,11 @@ test: cluster-create package-generate-apply
   just cluster-destroy
 
 # Runs tests once assuming that the cluster is already created and everything is installed.
-test-once: package-generate package-apply
+test-once: package-generate-apply
   chainsaw test
 
 # Runs tests in the watch mode assuming that the cluster is already created and everything is installed.
-test-watch: package-generate package-apply
+test-watch:
   watchexec -w timoni -w tests "just package-generate-apply && chainsaw test"
 
 # Creates a kind cluster, installs Crossplane, providers, and packages, waits until they are healthy, and runs tests.
