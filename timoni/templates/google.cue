@@ -36,6 +36,7 @@ import (
 				}
 			},
 			{ #AppCrossplane & { _version: _config.versions.crossplane } },
+			{ #AppArgoCD & { _version: _config.versions.argocd } },
 			{ #AppOpenFunction & { _url: _config.charts.openFunction } },
 			{ #AppDapr & { _version: _config.versions.dapr } },
 			{ #AppTraefik & { _version: _config.versions.traefik } },

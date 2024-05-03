@@ -64,6 +64,16 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                      argocd:
+                        type: object
+                        description: Install Argo CD
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                          host:
+                            type: string
+                            default: ""
                       openfunction:
                         type: object
                         description: Install OpenFunction

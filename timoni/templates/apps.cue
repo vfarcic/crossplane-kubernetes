@@ -58,6 +58,56 @@ import "encoding/yaml"
     }
 }
 
+#AppArgoCD: {
+    _version: string
+    #FunctionGoTemplating & {
+        step: "app-argo-cd"
+        input: inline: template: """
+        {{ if .observed.composite.resource.spec.parameters.apps.argocd.enabled }}
+        ---
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          name: '{{ $.observed.composite.resource.spec.id }}-app-argo-cd'
+          annotations:
+            crossplane.io/external-name: argo-cd
+            gotemplating.fn.crossplane.io/composition-resource-name: '{{ $.observed.composite.resource.spec.id }}-app-argo-cd'
+        spec:
+          forProvider:
+            chart:
+              name: argo-cd
+              repository: https://argoproj.github.io/argo-helm
+              version: \( _version )
+              url: ""
+            set: []
+            values:
+              configs:
+                secret:
+                  argocdServerAdminPassword: $2a$10$m3eTlEdRen0nS86c5Zph5u/bDFQMcWZYdG3NVdiyaACCqoxLJaz16
+                  argocdServerAdminPasswordMtime: "2021-11-08T15:04:05Z"
+                cm:
+                  application.resourceTrackingMethod: annotation
+                  timeout.reconciliation: 60s
+                params:
+                  server.insecure: true
+              server:
+                {{ if $.observed.composite.resource.spec.parameters.apps.traefik.enabled }}
+                ingress:
+                  enabled: true
+                  ingressClassName: traefik
+                  hostname: {{ $.observed.composite.resource.spec.parameters.apps.argocd.host }}
+                {{ end }}
+                extraArgs:
+                  - --insecure
+            namespace: argocd
+          rollbackLimit: 3
+          providerConfigRef:
+            name: '{{ $.observed.composite.resource.spec.id }}'
+        {{ end }}
+        """
+    }
+}
+
 #AppDapr: {
     _version: string
     _template: #ReleaseTemplate & {

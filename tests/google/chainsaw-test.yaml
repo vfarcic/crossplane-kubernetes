@@ -49,6 +49,10 @@ spec:
             file: ../common/dynatrace.yaml
         - assert:
             file: ../common/assert-dynatrace.yaml
+        - patch:
+            file: ../common/argo-cd.yaml
+        - assert:
+            file: ../common/assert-argo-cd.yaml
     #   catch:
     #     - get:
     #         resource: managed

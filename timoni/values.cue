@@ -6,6 +6,7 @@ package main
 values: {
 	versions: {
 		crossplane:         "1.14.5"
+		argocd:         "3.35.4"
 		dapr:               "1.12.4"
 		traefik:            "26.0.0"
 		dynatraceOperator:  "0.15.0"

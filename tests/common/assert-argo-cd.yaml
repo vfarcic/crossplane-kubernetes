@@ -1,0 +1,67 @@
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  parameters:
+    apps:
+      argocd:
+        enabled: true
+---
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeCluster
+metadata:
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      argocd:
+        enabled: true
+  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-argo-cd'])]):
+  - apiVersion: helm.crossplane.io/v1beta1
+    kind: Release
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-argo-cd']))
+    crossplane.io/external-name: argo-cd
+  labels:
+    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
+  name: (join('-', ['a-team', $cluster, 'app-argo-cd']))
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    chart:
+      name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 3.35.4
+    values:
+      configs:
+        secret:
+          argocdServerAdminPassword: "$2a$10$m3eTlEdRen0nS86c5Zph5u/bDFQMcWZYdG3NVdiyaACCqoxLJaz16"
+          argocdServerAdminPasswordMtime: "2021-11-08T15:04:05Z"
+        cm:
+          application.resourceTrackingMethod: annotation
+          timeout.reconciliation: 60s
+        params:
+          "server.insecure": true
+      server:
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          hostname: argocd.acme.com
+        extraArgs:
+        - --insecure
+    namespace: argocd
+  providerConfigRef:
+    name: (join('-', ['a-team', $cluster]))

@@ -16,6 +16,7 @@ import (
 		dynatraceOperator: 	string
 		dynatraceDashboard: string
 		crossplane:         string
+		argocd: 	        string
 		dapr: 		        string
 		externalSecrets:    string
 		cilium: 	        string
