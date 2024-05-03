@@ -57,12 +57,12 @@ spec:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
-      catch:
-        - get:
-            resource: managed
-        - describe:
-            resource: compositecluster
-            selector: crossplane.io/claim-namespace=$NAMESPACE
+    #   catch:
+    #     - get:
+    #         resource: managed
+    #     - describe:
+    #         resource: compositecluster
+    #         selector: crossplane.io/claim-namespace=$NAMESPACE
     #     - describe:
     #         resource: release
     #         selector: crossplane.io/claim-namespace=$NAMESPACE

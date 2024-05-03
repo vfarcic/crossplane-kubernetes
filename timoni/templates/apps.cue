@@ -127,7 +127,7 @@ import "encoding/yaml"
                 source:
                   repoURL: {{ $.observed.composite.resource.spec.parameters.apps.argocd.repoURL }}
                   targetRevision: HEAD
-                  path: apps
+                  path: {{ $.observed.composite.resource.spec.parameters.apps.argocd.sourcePath }}
                 destination:
                   server: https://kubernetes.default.svc
                   namespace: {{ $.observed.composite.resource.spec.parameters.apps.argocd.destinationNamespace }}

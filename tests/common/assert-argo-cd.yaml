@@ -92,10 +92,10 @@ spec:
         source:
           repoURL: https://github.com/vfarcic/my-repo
           targetRevision: HEAD
-          path: apps
+          path: my-path
         destination:
           server: https://kubernetes.default.svc
-          namespace: production
+          namespace: my-namespace
         syncPolicy:
           automated:
             selfHeal: true

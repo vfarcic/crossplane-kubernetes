@@ -80,6 +80,9 @@ spec:
                           destinationNamespace:
                             type: string
                             default: argo-cd
+                          sourcePath:
+                            type: string
+                            default: .
                       openfunction:
                         type: object
                         description: Install OpenFunction
