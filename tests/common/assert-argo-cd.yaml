@@ -23,6 +23,9 @@ spec:
   (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-argo-cd'])]):
   - apiVersion: helm.crossplane.io/v1beta1
     kind: Release
+  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-argo-cd-app'])]):
+  - apiVersion: kubernetes.crossplane.io/v1alpha2
+    kind: Object
 ---
 apiVersion: helm.crossplane.io/v1beta1
 kind: Release
@@ -46,6 +49,8 @@ spec:
       repository: https://argoproj.github.io/argo-helm
       version: 3.35.4
     values:
+      global:
+        domain: argocd.acme.com
       configs:
         secret:
           argocdServerAdminPassword: "$2a$10$m3eTlEdRen0nS86c5Zph5u/bDFQMcWZYdG3NVdiyaACCqoxLJaz16"
@@ -59,9 +64,42 @@ spec:
         ingress:
           enabled: true
           ingressClassName: traefik
-          hostname: argocd.acme.com
         extraArgs:
         - --insecure
     namespace: argocd
+  providerConfigRef:
+    name: (join('-', ['a-team', $cluster]))
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-argo-cd-app']))
+    crossplane.io/external-name: app-argo-cd-app
+  name: (join('-', ['a-team', $cluster, 'app-argo-cd-app']))
+spec:
+  forProvider:
+    manifest:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: apps
+        namespace: argocd
+        finalizers:
+          - resources-finalizer.argocd.argoproj.io
+      spec:
+        project: default
+        source:
+          repoURL: https://github.com/vfarcic/my-repo
+          targetRevision: HEAD
+          path: apps
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: production
+        syncPolicy:
+          automated:
+            selfHeal: true
+            prune: true
+            allowEmpty: true
   providerConfigRef:
     name: (join('-', ['a-team', $cluster]))

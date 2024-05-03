@@ -9,3 +9,5 @@ spec:
       argocd:
         enabled: true
         host: argocd.acme.com
+        repoURL: https://github.com/vfarcic/my-repo
+        destinationNamespace: production

@@ -81,6 +81,8 @@ import "encoding/yaml"
               url: ""
             set: []
             values:
+              global:
+                domain: {{ $.observed.composite.resource.spec.parameters.apps.argocd.host }}
               configs:
                 secret:
                   argocdServerAdminPassword: $2a$10$m3eTlEdRen0nS86c5Zph5u/bDFQMcWZYdG3NVdiyaACCqoxLJaz16
@@ -95,12 +97,45 @@ import "encoding/yaml"
                 ingress:
                   enabled: true
                   ingressClassName: traefik
-                  hostname: {{ $.observed.composite.resource.spec.parameters.apps.argocd.host }}
                 {{ end }}
                 extraArgs:
                   - --insecure
             namespace: argocd
           rollbackLimit: 3
+          providerConfigRef:
+            name: '{{ $.observed.composite.resource.spec.id }}'
+        ---
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        metadata:
+          name: {{ $.observed.composite.resource.spec.id }}-app-argo-cd-app
+          annotations:
+            crossplane.io/external-name: app-argo-cd-app
+            gotemplating.fn.crossplane.io/composition-resource-name: {{ $.observed.composite.resource.spec.id }}-app-argo-cd-app
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Application
+              metadata:
+                name: apps
+                namespace: argocd
+                finalizers:
+                  - resources-finalizer.argocd.argoproj.io
+              spec:
+                project: default
+                source:
+                  repoURL: {{ $.observed.composite.resource.spec.parameters.apps.argocd.repoURL }}
+                  targetRevision: HEAD
+                  path: apps
+                destination:
+                  server: https://kubernetes.default.svc
+                  namespace: {{ $.observed.composite.resource.spec.parameters.apps.argocd.destinationNamespace }}
+                syncPolicy:
+                  automated:
+                    selfHeal: true
+                    prune: true
+                    allowEmpty: true
           providerConfigRef:
             name: '{{ $.observed.composite.resource.spec.id }}'
         {{ end }}
@@ -221,7 +256,7 @@ import "encoding/yaml"
             providerConfigRef: {
                 name: _id
             }
-        }   
+        }
     }
     _templateDashboard: #ReleaseTemplate & {
         _name:               "dynatrace-dashboard"

@@ -73,7 +73,13 @@ spec:
                             default: false
                           host:
                             type: string
-                            default: ""
+                            default: acme.com
+                          repoURL:
+                            type: string
+                            default: https://github.com/vfarcic/SOMETHING
+                          destinationNamespace:
+                            type: string
+                            default: argo-cd
                       openfunction:
                         type: object
                         description: Install OpenFunction
