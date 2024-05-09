@@ -89,54 +89,6 @@
         }
       }
     },
-    "google-cloud-sdk@467.0.0": {
-      "last_modified": "2024-04-19T17:36:04-04:00",
-      "resolved": "github:NixOS/nixpkgs/92d295f588631b0db2da509f381b4fb1e74173c5#google-cloud-sdk",
-      "source": "devbox-search",
-      "version": "467.0.0",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/rcgpjzwm11fy37ff03g4qm9lyak8by3q-google-cloud-sdk-467.0.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/rcgpjzwm11fy37ff03g4qm9lyak8by3q-google-cloud-sdk-467.0.0"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/d3g4xrjxpz7p4zm6gc3lgfbgqwidqk92-google-cloud-sdk-467.0.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/d3g4xrjxpz7p4zm6gc3lgfbgqwidqk92-google-cloud-sdk-467.0.0"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/px0rjif67b8k9lgs9pczbl7v21fxavrg-google-cloud-sdk-467.0.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/px0rjif67b8k9lgs9pczbl7v21fxavrg-google-cloud-sdk-467.0.0"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/0wxgc7yl52c5pzda9f7r7hp1fnha4s03-google-cloud-sdk-467.0.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/0wxgc7yl52c5pzda9f7r7hp1fnha4s03-google-cloud-sdk-467.0.0"
-        }
-      }
-    },
     "gum@0.13.0": {
       "last_modified": "2024-04-19T17:36:04-04:00",
       "resolved": "github:NixOS/nixpkgs/92d295f588631b0db2da509f381b4fb1e74173c5#gum",
@@ -506,26 +458,6 @@
         },
         "x86_64-linux": {
           "store_path": "/nix/store/fqyfxm43pp2dfaw5qx17ss77zm7kp5nd-kubernetes-helm-3.14.1"
-        }
-      }
-    },
-    "kuttl@0.15.0": {
-      "last_modified": "2024-02-26T19:46:43Z",
-      "resolved": "github:NixOS/nixpkgs/548a86b335d7ecd8b57ec617781f5e652ab0c38e#kuttl",
-      "source": "devbox-search",
-      "version": "0.15.0",
-      "systems": {
-        "aarch64-darwin": {
-          "store_path": "/nix/store/mwkilgxdr8ls03qamkab76vyw6lmjql7-kuttl-0.15.0"
-        },
-        "aarch64-linux": {
-          "store_path": "/nix/store/9hd0s54whwws66nn18vr8d6m6x2hhv9f-kuttl-0.15.0"
-        },
-        "x86_64-darwin": {
-          "store_path": "/nix/store/djnx6iw7d52h9wjs8dypxfsdrqrs3c27-kuttl-0.15.0"
-        },
-        "x86_64-linux": {
-          "store_path": "/nix/store/0cwpsdz70z1xfwqnjrmbij9h9cng34bb-kuttl-0.15.0"
         }
       }
     },
