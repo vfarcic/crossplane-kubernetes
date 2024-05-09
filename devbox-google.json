@@ -12,6 +12,8 @@
     "jq@1.7.1",
     "gum@0.13.0",
     "yq-go@4.43.1",
+    "path:gcloud#google-cloud-sdk",
+    "google-cloud-sdk@467.0.0",
     "crossplane-cli@1.15.2",
     "viddy@0.4.0",
     "kcl-cli@0.8.7"
