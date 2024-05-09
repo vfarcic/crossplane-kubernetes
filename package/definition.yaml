@@ -3,7 +3,7 @@ kind: CompositeResourceDefinition
 metadata:
   name: compositeclusters.devopstoolkitseries.com
   labels:
-    idp: "true"
+    idp: 'true'
 spec:
   connectionSecretKeys:
   - kubeconfig
@@ -51,8 +51,8 @@ spec:
                     items:
                       type: string
                     default:
-                      - dev
-                      - production
+                    - dev
+                    - production
                   apps:
                     type: object
                     description: List of apps that should be installed in the cluster
@@ -82,7 +82,7 @@ spec:
                             default: argo-cd
                           sourcePath:
                             type: string
-                            default: .
+                            default: '.'
                       openfunction:
                         type: object
                         description: Install OpenFunction
@@ -187,8 +187,8 @@ spec:
                 required:
                 - nodeSize
             required:
-              - id
-              - parameters
+            - id
+            - parameters
           status:
             type: object
             properties:
@@ -207,10 +207,10 @@ spec:
     additionalPrinterColumns:
     - name: clusterName
       type: string
-      jsonPath: ".status.clusterName"
+      jsonPath: '.status.clusterName'
     - name: controlPlane
       type: string
-      jsonPath: ".status.controlPlaneStatus"
+      jsonPath: '.status.controlPlaneStatus'
     - name: nodePool
       type: string
-      jsonPath: ".status.nodePoolStatus"
+      jsonPath: '.status.nodePoolStatus'

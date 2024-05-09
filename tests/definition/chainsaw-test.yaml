@@ -1,0 +1,12 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: definition
+spec:
+  steps:
+    - try:
+        - apply:
+            file: ../../package/definition.yaml
+        - assert:
+            file: assert.yaml
+
