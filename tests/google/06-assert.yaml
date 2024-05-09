@@ -127,7 +127,7 @@ spec:
     name: a-team-gke-secret-push-secret
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
-    name: a-team-gke-secret-store
+    name: a-team-gke-app-secret-store
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
@@ -135,7 +135,6 @@ apiVersion: helm.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: a-team-gke-app-dapr
     crossplane.io/external-name: dapr
   labels:
     crossplane.io/claim-name: a-team-gke

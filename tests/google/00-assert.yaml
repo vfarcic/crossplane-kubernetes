@@ -13,6 +13,7 @@ spec:
   parameters:
     minNodeCount: 1
     nodeSize: medium
+    version: "1.20.1"
     namespaces:
       - dev
       - staging
@@ -20,6 +21,10 @@ spec:
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
+status:
+  clusterName: a-team-gke
+  controlPlaneStatus: ReconcileError
+  nodePoolStatus: ReconcileError
 ---
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: CompositeCluster
@@ -42,6 +47,7 @@ spec:
   parameters:
     minNodeCount: 1
     nodeSize: medium
+    version: "1.20.1"
   resourceRefs:
   - apiVersion: container.gcp.upbound.io/v1beta1
     kind: Cluster
@@ -77,7 +83,6 @@ apiVersion: container.gcp.upbound.io/v1beta1
 kind: Cluster
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: gkecluster
     crossplane.io/external-name: a-team-gke
   labels:
     crossplane.io/claim-name: a-team-gke
@@ -90,19 +95,21 @@ metadata:
 spec:
   deletionPolicy: Delete
   forProvider:
+    deletionProtection: false
     initialNodeCount: 1
     location: us-east1
     removeDefaultNodePool: true
+    minMasterVersion : "1.20.1"
   providerConfigRef:
     name: default
   writeConnectionSecretToRef:
     name: a-team-gke-cluster
+    namespace: ($namespace)
 ---
 apiVersion: container.gcp.upbound.io/v1beta1
 kind: NodePool
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: nodepool
     crossplane.io/external-name: a-team-gke
   labels:
     crossplane.io/claim-name: a-team-gke
@@ -115,8 +122,9 @@ metadata:
 spec:
   deletionPolicy: Delete
   forProvider:
+    version: "1.20.1"
     autoscaling:
-      - maxNodeCount: 3
+      - maxNodeCount: 10
         minNodeCount: 1
     clusterSelector:
       matchControllerRef: true
@@ -178,8 +186,6 @@ spec:
 apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
-  annotations:
-    crossplane.io/composition-resource-name: a-team-gke-ns-dev
   labels:
     crossplane.io/claim-name: a-team-gke
   ownerReferences:
@@ -203,8 +209,6 @@ spec:
 apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
-  annotations:
-    crossplane.io/composition-resource-name: a-team-gke-ns-production
   labels:
     crossplane.io/claim-name: a-team-gke
   ownerReferences:
@@ -228,8 +232,6 @@ spec:
 apiVersion: kubernetes.crossplane.io/v1alpha2
 kind: Object
 metadata:
-  annotations:
-    crossplane.io/composition-resource-name: a-team-gke-ns-staging
   labels:
     crossplane.io/claim-name: a-team-gke
   ownerReferences:
@@ -254,8 +256,7 @@ apiVersion: helm.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: cilium
-    crossplane.io/external-name: a-team-gke-cilium
+    crossplane.io/external-name: cilium
   labels:
     crossplane.io/claim-name: a-team-gke
   name: a-team-gke-cilium

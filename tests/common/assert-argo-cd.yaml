@@ -75,7 +75,7 @@ kind: Object
 metadata:
   annotations:
     crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-argo-cd-app']))
-    crossplane.io/external-name: app-argo-cd-app
+    crossplane.io/external-name: argo-cd-app
   name: (join('-', ['a-team', $cluster, 'app-argo-cd-app']))
 spec:
   forProvider:

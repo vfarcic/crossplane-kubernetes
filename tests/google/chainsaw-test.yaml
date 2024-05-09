@@ -1,7 +1,7 @@
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  name: azure
+  name: google
 spec:
   template: true
   bindings:
@@ -53,9 +53,9 @@ spec:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
-    #   catch:
-    #     - get:
-    #         resource: managed
-    #     - describe:
-    #         resource: sqls
-    #         selector: crossplane.io/claim-namespace=$NAMESPACE
+      catch:
+        - get:
+            resource: managed
+        - describe:
+            resource: compositecluster
+            selector: crossplane.io/claim-namespace=$NAMESPACE

@@ -11,7 +11,6 @@ spec:
   parameters:
     nodeSize: medium
     minNodeCount: 1
-    version: "1.20.1"
     namespaces:
       - dev
       - staging

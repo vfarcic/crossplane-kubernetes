@@ -6,14 +6,12 @@ default:
 
 # Generates package files.
 package-generate:
-  timoni build dot-kubernetes timoni > package/all.yaml
-  head -n -1 package/all.yaml > package/all.yaml.tmp
-  mv package/all.yaml.tmp package/all.yaml
+  kcl run kcl/compositions.k > package/compositions.yaml
 
 # Applies Compositions and Composite Resource Definition.
 package-apply:
   kubectl apply --filename package/definition.yaml && sleep 1
-  kubectl apply --filename package/all.yaml
+  kubectl apply --filename package/compositions.yaml
 
 # Builds and pushes the package.
 package-publish: package-generate
@@ -37,7 +35,7 @@ test-once: package-generate-apply
 
 # Runs tests in the watch mode assuming that the cluster is already created and everything is installed.
 test-watch:
-  watchexec -w timoni -w tests "just test-once"
+  watchexec -w kcl -w tests "just test-once"
 
 # Creates a kind cluster, installs Crossplane, providers, and packages, waits until they are healthy, and runs tests.
 cluster-create: package-generate _cluster-create-kind
@@ -46,9 +44,35 @@ cluster-create: package-generate _cluster-create-kind
   kubectl wait --for=condition=healthy provider.pkg.crossplane.io --all --timeout={{timeout}}
   kubectl wait --for=condition=healthy function.pkg.crossplane.io --all --timeout={{timeout}}
 
+# Executes `cluster-create` and sets it up to use Google Cloud.
+cluster-create-google: cluster-create
+  rm .env
+  gcloud auth login
+  export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+  echo "export USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> .env
+  export PROJECT_ID=dot-$(date +%Y%m%d%H%M%S)
+  echo "export PROJECT_ID=$PROJECT_ID" >> .env
+  gcloud projects create $PROJECT_ID
+  echo "## Open https://console.cloud.google.com/marketplace/product/google/container.googleapis.com?project=$PROJECT_ID in a browser and *ENABLE* the API." | gum format
+  gum input --placeholder "Press the enter key to continue."
+  SA_NAME=devops-toolkit
+  SA="${SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
+  gcloud iam service-accounts create $SA_NAME --project $PROJECT_ID
+  gcloud projects add-iam-policy-binding --role roles/admin $PROJECT_ID --member serviceAccount:$SA
+  gcloud iam service-accounts keys create gcp-creds.json --project $PROJECT_ID --iam-account $SA
+  kubectl --namespace crossplane-system create secret generic gcp-creds --from-file creds=./gcp-creds.json
+  yq --inplace ".spec.projectID = \"$PROJECT_ID\"" providers/provider-config-google.yaml
+  kubectl apply --filename providers/provider-config-google.yaml
+  echo "## Execute `source .env` to set up the environment variables."
+
 # Destroys the cluster
 cluster-destroy:
   kind delete cluster
+
+# Removes Google Cloud project and executes `cluster-destroy`.
+cluster-destroy-google:
+  gcloud projects delete --quiet
+  just cluster-destroy
 
 # Creates a kind cluster
 _cluster-create-kind:

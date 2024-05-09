@@ -52,11 +52,10 @@ spec:
       name: dynatrace-operator
       repository: "https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable"
       version: "0.15.0"
-    set:
-      - name: installCRD
-        value: "true"
-      - name: csidriver.enabled
-        value: "true"
+    values:
+      installCRD: true
+      csidriver:
+        enabled: true
     namespace: dynatrace
   providerConfigRef:
     name: (join('-', ['a-team', $cluster]))

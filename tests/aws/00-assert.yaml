@@ -771,7 +771,7 @@ metadata:
 spec:
   deletionPolicy: Delete
   forProvider:
-    assumeRolePolicy: |-
+    assumeRolePolicy: |
       {
         "Version": "2012-10-17",
         "Statement": [{

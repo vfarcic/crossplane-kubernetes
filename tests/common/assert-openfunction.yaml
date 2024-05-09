@@ -43,9 +43,9 @@ spec:
   forProvider:
     chart:
       url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
-    set:
-    - name: revisionController.enable
-      value: "true"
+    values:
+      revisionController:
+        enable: true
     namespace: openfunction
   providerConfigRef:
     name: (join('-', ['a-team', $cluster]))
