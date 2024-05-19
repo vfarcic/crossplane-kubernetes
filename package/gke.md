@@ -49,8 +49,6 @@ kubectl apply \
 kubectl apply \
     --filename ../providers/provider-helm-incluster.yaml
 
-kubectl apply --filename ../providers/google.yaml
-
 kubectl apply --filename ../config.yaml
 
 kubectl get pkgrev
