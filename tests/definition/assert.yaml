@@ -1,9 +1,6 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  finalizers:
-  - offered.apiextensions.crossplane.io
-  - defined.apiextensions.crossplane.io
   labels:
     idp: "true"
   name: compositeclusters.devopstoolkitseries.com
