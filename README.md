@@ -1,25 +1,6 @@
-## Generate manifests
+# Demo Manifests and Code Used in DevOps Toolkit Videos
 
-```bash
-devbox shell
-
-just package-generate
-
-exit
-```
-
-## Run Tests
-
-```bash
-devbox shell
-
-just cluster-create
-
-just test-watch
-
-# Stop the watcher with `ctrl+c`
-
-just cluster-destroy
+[![From Makefile to Justfile (or Taskfile): Recipe Runner Replacement](https://img.youtube.com/vi/hgNN2wOE7lc/0.jpg)](https://youtu.be/hgNN2wOE7lc)oy
 
 exit
 ```
