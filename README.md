@@ -2,6 +2,8 @@
 
 [![From Makefile to Justfile (or Taskfile): Recipe Runner Replacement](https://img.youtube.com/vi/hgNN2wOE7lc/0.jpg)](https://youtu.be/hgNN2wOE7lc)oy
 
+## Generate manifests
+
 ```bash
 devbox shell
 
