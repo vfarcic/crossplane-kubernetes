@@ -9,6 +9,10 @@ spec:
       value: azure
     - name: cluster
       value: aks
+    - name: clusterApi
+      value: containerservice.azure.upbound.io/v1beta1
+    - name: clusterKind
+      value: KubernetesCluster
   steps:
     - try:
         - apply:
@@ -53,9 +57,90 @@ spec:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
+        - patch:
+            file: ../common/usage.yaml
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: ns-dev
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: ns-production
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: cilium
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: crossplane
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: argo-cd
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: argo-cd-app
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: openfunction
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: dapr
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: traefik
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: dynatrace-operator
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: dynakube
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: dynatrace-dashboard
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: external-secrets
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: secret-store
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: secret-push-secret
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: creds
       catch:
-        - get:
-            resource: managed
         - describe:
-            resource: compositecluster
+            apiVersion: devopstoolkitseries.com/v1alpha1
+            kind: compositecluster
             selector: crossplane.io/claim-namespace=$NAMESPACE

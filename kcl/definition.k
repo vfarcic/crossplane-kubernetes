@@ -48,6 +48,16 @@ spec = {
                                         items.type = "string"
                                         default = ["dev", "production"]
                                     }
+                                    usage = {
+                                        description = "Whether Crossplane `Usage` (currently alpha feature) is enabled."
+                                        type = "object"
+                                        properties = {
+                                            enabled = {
+                                                type = "boolean"
+                                                default = False
+                                            }
+                                        }
+                                    }
                                     apps = {
                                         type = "object"
                                         description = "List of apps that should be installed in the cluster"

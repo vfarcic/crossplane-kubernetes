@@ -16,10 +16,6 @@ spec:
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
-# status:
-#   clusterName: a-team-aks
-#   controlPlaneStatus: ReconcileError
-#   nodePoolStatus: ReconcileError
 ---
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: CompositeCluster

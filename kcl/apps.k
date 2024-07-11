@@ -21,6 +21,34 @@ _metadata = lambda suffix: str -> any {
     }
 }
 
+schema usage:
+    _nameSuffix: str
+    _kind: str = "Object"
+    apiVersion = "apiextensions.crossplane.io/v1alpha1"
+    kind = "Usage"
+    metadata = {
+        name = oxr.spec.id + "-" + _nameSuffix + "-usage"
+        annotations = {
+            "crossplane.io/external-name" = oxr.spec.id + "-" + _nameSuffix + "-usage"
+            "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-" + _nameSuffix + "-usage"
+        }
+    }
+    spec = {
+        of = {
+            apiVersion = "CLUSTER_API_VERSION"
+            kind = "CLUSTER_KIND"
+            resourceRef.name = oxr.spec.id
+        }
+        by = {
+            if _kind == "Object":
+                apiVersion = "kubernetes.crossplane.io/v1alpha2"
+            elif _kind == "Release":
+                apiVersion = "helm.crossplane.io/v1beta1"
+            kind = _kind
+            resourceRef.name = oxr.spec.id + "-" + _nameSuffix
+        }
+    }
+
 schema chart:
     _name: str
     _chartName?: str
@@ -173,6 +201,8 @@ _items = [
                 providerConfigRef.name = oxr.spec.id
             }
         }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "cilium", _kind = "Release" }
 
     {
         apiVersion = "kubernetes.crossplane.io/v1alpha1"
@@ -206,6 +236,8 @@ _items = [
             _chartVersion = crossplane
             _namespace = "crossplane-system"
         }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "crossplane", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.argocd?.enabled:
         chart {
@@ -267,6 +299,9 @@ _items = [
                 }
             }
         }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "argo-cd", _kind = "Release" }
+            usage { _nameSuffix = "argo-cd-app" }
 
     if oxr.spec.parameters?.apps?.openfunction?.enabled:
         chart {
@@ -277,6 +312,8 @@ _items = [
                 revisionController.enable = True
             }
         }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "openfunction", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.dapr?.enabled:
         chart {
@@ -285,6 +322,8 @@ _items = [
             _chartVersion = dapr
             _namespace = "dapr-system"
         }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "dapr", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.traefik?.enabled:
         chart {
@@ -293,6 +332,8 @@ _items = [
             _chartVersion = traefik
             _namespace = "traefik"
         }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "traefik", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.dynatrace?.enabled:
         chart {
@@ -358,6 +399,10 @@ _items = [
             }
             _providerConfigRefName = oxr.spec.id + "-local"
         }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "dynatrace-operator", _kind = "Release" }
+            usage { _nameSuffix = "dynakube" }
+            usage { _nameSuffix = "dynatrace-dashboard", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {
@@ -369,6 +414,8 @@ _items = [
                 installCRDs = True
             }
         }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "external-secrets", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
         object {
@@ -418,6 +465,8 @@ _items = [
                     toFieldPath = "spec.provider.gcpsm.projectID"
                 }]
         }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "secret-store" }
 
 ]
 
@@ -451,12 +500,16 @@ if oxr.spec.parameters?.apps?.externalSecrets?.secrets:
                         creationPolicy = "Owner"
                         template.type = _secret.type
                     }
-                    dataFrom = [{ extract.key = _secret.fromSecret}]
+                    dataFrom = [{ extract.key = _secret.fromSecret }]
                 }
             }
             providerConfigRef.name = oxr.spec.id
         }
-    } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets]
+    } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
+    if oxr.spec.parameters?.usage?.enabled:
+        _items += [ usage {
+            _nameSuffix = "secret-" + _secret.toSecret
+        } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
 
 if oxr.spec.parameters?.namespaces:
     _items += [{
@@ -477,42 +530,50 @@ if oxr.spec.parameters?.namespaces:
             }
             providerConfigRef.name = oxr.spec.id
         }
-    } for _namespace in oxr.spec.parameters.namespaces]
+    } for _namespace in oxr.spec.parameters.namespaces ]
+    if oxr.spec.parameters?.usage?.enabled:
+        _items += [ usage {
+            _nameSuffix = "ns-" + _namespace
+        } for _namespace in oxr.spec.parameters.namespaces ]
 
 if oxr.spec.parameters?.creds:
-    _items += [{
-        apiVersion = "kubernetes.crossplane.io/v1alpha2"
-        kind = "Object"
-        metadata = {
-            name = oxr.spec.id + "-creds"
-            annotations = {
-                "crossplane.io/external-name" = oxr.spec.parameters.creds.name
-                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-creds"
-            }
-        }
-        spec = {
-            references = [{
-                patchesFrom = {
-                    apiVersion = "v1"
-                    kind = "Secret"
-                    name: oxr.spec.parameters.creds.name
-                    namespace: oxr.spec.parameters.creds.namespace
-                    fieldPath: "data." + _credReference
+    _items += [
+        {
+            apiVersion = "kubernetes.crossplane.io/v1alpha2"
+            kind = "Object"
+            metadata = {
+                name = oxr.spec.id + "-creds"
+                annotations = {
+                    "crossplane.io/external-name" = oxr.spec.parameters.creds.name
+                    "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-creds"
                 }
-                toFieldPath: "data." + _credReference
-            } for _credReference in oxr.spec.parameters.creds.keys]
-            forProvider = {
-                manifest = {
-                    apiVersion = "v1"
-                    kind = "Secret"
-                    metadata = {
-                        name = oxr.spec.parameters.creds.name
-                        namespace = oxr.spec.parameters.creds.namespace
+            }
+            spec = {
+                references = [{
+                    patchesFrom = {
+                        apiVersion = "v1"
+                        kind = "Secret"
+                        name: oxr.spec.parameters.creds.name
+                        namespace: oxr.spec.parameters.creds.namespace
+                        fieldPath: "data." + _credReference
+                    }
+                    toFieldPath: "data." + _credReference
+                } for _credReference in oxr.spec.parameters.creds.keys]
+                forProvider = {
+                    manifest = {
+                        apiVersion = "v1"
+                        kind = "Secret"
+                        metadata = {
+                            name = oxr.spec.parameters.creds.name
+                            namespace = oxr.spec.parameters.creds.namespace
+                        }
                     }
                 }
+                providerConfigRef.name = oxr.spec.id
             }
-            providerConfigRef.name = oxr.spec.id
         }
-    }]
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "creds" }
+    ]
 
 items = _items

@@ -14,5 +14,4 @@ spec:
     version: "1.20.1"
     namespaces:
       - dev
-      - staging
       - production

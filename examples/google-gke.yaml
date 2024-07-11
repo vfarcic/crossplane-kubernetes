@@ -13,5 +13,4 @@ spec:
     minNodeCount: 1
     namespaces:
       - dev
-      - staging
       - production

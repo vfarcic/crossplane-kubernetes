@@ -204,6 +204,13 @@ spec:
                   version:
                     description: The Kubernetes version for the cluster.
                     type: string
+                  usage:
+                    description: Whether Crossplane `Usage` (currently alpha feature) is enabled.
+                    type: object
+                    properties:
+                      enabled:
+                        default: false
+                        type: boolean
                 required:
                 - nodeSize
                 type: object

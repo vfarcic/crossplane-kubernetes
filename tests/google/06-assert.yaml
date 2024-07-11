@@ -15,7 +15,6 @@ spec:
     nodeSize: medium
     namespaces:
       - dev
-      - staging
       - production
     apps:
       crossplane:
@@ -119,9 +118,6 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name: a-team-gke-ns-production
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name: a-team-gke-ns-staging
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name: a-team-gke-secret-push-secret

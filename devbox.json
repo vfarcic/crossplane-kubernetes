@@ -7,7 +7,7 @@
     "upbound@0.24.1",
     "kubernetes-helm@3.14.1",
     "watchexec@1.25.1",
-    "kyverno-chainsaw@0.1.9",
+    "kyverno-chainsaw@0.2.5",
     "just@1.25.2",
     "jq@1.7.1",
     "gum@0.13.0",

@@ -16,15 +16,12 @@ spec:
     version: "1.20.1"
     namespaces:
       - dev
-      - staging
       - production
   resourceRef:
     apiVersion: devopstoolkitseries.com/v1alpha1
     kind: CompositeCluster
 status:
   clusterName: a-team-gke
-  controlPlaneStatus: ReconcileError
-  nodePoolStatus: ReconcileError
 ---
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: CompositeCluster
@@ -73,9 +70,6 @@ spec:
   - apiVersion: kubernetes.crossplane.io/v1alpha2
     kind: Object
     name: a-team-gke-ns-production
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name: a-team-gke-ns-staging
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
@@ -224,29 +218,6 @@ spec:
       kind: Namespace
       metadata:
         name: production
-  managementPolicies:
-  - '*'
-  providerConfigRef:
-    name: a-team-gke
----
-apiVersion: kubernetes.crossplane.io/v1alpha2
-kind: Object
-metadata:
-  labels:
-    crossplane.io/claim-name: a-team-gke
-  ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
-spec:
-  deletionPolicy: Delete
-  forProvider:
-    manifest:
-      apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: staging
   managementPolicies:
   - '*'
   providerConfigRef:

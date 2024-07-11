@@ -9,6 +9,10 @@ spec:
       value: google
     - name: cluster
       value: gke
+    - name: clusterApi
+      value: container.gcp.upbound.io/v1beta1
+    - name: clusterKind
+      value: Cluster
   steps:
     - try:
         - apply:
@@ -53,9 +57,21 @@ spec:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
-      catch:
-        - get:
-            resource: managed
-        - describe:
-            resource: compositecluster
-            selector: crossplane.io/claim-namespace=$NAMESPACE
+        - patch:
+            file: ../common/usage.yaml
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: ns-dev
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: ns-production
+    #   catch:
+    #     - get:
+    #         resource: managed
+    #     - describe:
+    #         resource: compositecluster
+    #         selector: crossplane.io/claim-namespace=$NAMESPACE
