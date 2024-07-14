@@ -60,16 +60,6 @@ spec:
         - patch:
             file: ../common/usage.yaml
         - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: ns-dev
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: ns-production
-        - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName

@@ -57,18 +57,6 @@ spec:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
-        - patch:
-            file: ../common/usage.yaml
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: ns-dev
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: ns-production
     #   catch:
     #     - get:
     #         resource: managed

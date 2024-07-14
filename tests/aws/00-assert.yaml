@@ -803,8 +803,6 @@ spec:
       kind: Namespace
       metadata:
         name: dev
-  managementPolicies:
-  - '*'
   providerConfigRef:
     name: a-team-eks
 ---
@@ -828,8 +826,6 @@ spec:
       kind: Namespace
       metadata:
         name: production
-  managementPolicies:
-  - '*'
   providerConfigRef:
     name: a-team-eks
 ---

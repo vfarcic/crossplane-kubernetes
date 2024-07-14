@@ -531,10 +531,6 @@ if oxr.spec.parameters?.namespaces:
             providerConfigRef.name = oxr.spec.id
         }
     } for _namespace in oxr.spec.parameters.namespaces ]
-    if oxr.spec.parameters?.usage?.enabled:
-        _items += [ usage {
-            _nameSuffix = "ns-" + _namespace
-        } for _namespace in oxr.spec.parameters.namespaces ]
 
 if oxr.spec.parameters?.creds:
     _items += [
