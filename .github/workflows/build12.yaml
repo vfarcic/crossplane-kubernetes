@@ -13,6 +13,9 @@ jobs:
           fetch-depth: 0
       - name: Install Devbox
         uses: jetpack-io/devbox-install-action@v0.11.0
+        with:
+          enable-cache: true
+          project-path: .github/workflows
       - name: Test
         run: devbox run test
       - name: Publish
