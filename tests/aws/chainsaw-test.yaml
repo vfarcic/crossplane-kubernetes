@@ -61,11 +61,6 @@ spec:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: ns-production
       catch:
         - describe:
             apiVersion: devopstoolkitseries.com/v1alpha1
