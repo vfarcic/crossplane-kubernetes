@@ -140,7 +140,7 @@ spec:
               }
               spec = {
                   of = {
-                      apiVersion = "container.gcp.upbound.io/v1beta1"
+                      apiVersion = "container.gcp.upbound.io/v1beta2"
                       kind = "Cluster"
                       resourceRef.name = oxr.spec.id
                   }
