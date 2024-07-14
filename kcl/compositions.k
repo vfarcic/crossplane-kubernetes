@@ -50,7 +50,7 @@ schema composition:
     composition {
         _cluster = "gke"
         _provider = "google"
-        _clusterApiVersion = "container.gcp.upbound.io/v1beta1"
+        _clusterApiVersion = "container.gcp.upbound.io/v1beta2"
         _clusterKind = "Cluster"
         _source = file.read("kcl/google.k")
     }

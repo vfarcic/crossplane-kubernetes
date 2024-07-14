@@ -1,9 +1,9 @@
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: ClusterClaim
 metadata:
-  name: a-team-gke
+  name: a-team
 spec:
-  id: a-team-gke
+  id: a-team
   compositionSelector:
     matchLabels:
       provider: google
@@ -14,3 +14,6 @@ spec:
     namespaces:
       - dev
       - production
+    usage:
+      # Usage is still in `alpha` and needs to be enabled by add `--set args='{"--enable-usages"}'` to `helm install`.
+      enabled: true

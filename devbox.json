@@ -14,12 +14,13 @@
     "yq-go@4.43.1",
     "crossplane-cli@1.15.2",
     "viddy@0.4.0",
-    "kcl-cli@0.8.7"
+    "kcl-cli@0.8.7",
+    "path:gcloud#google-cloud-sdk"
   ],
   "shell": {
     "init_hook": [
-      "alias cat='bat --paging never --theme DarkNeon --style plain'",
-      "PS1='➜ '"
+      "if [ -n \"$ZSH_VERSION\" ]; then export SHELL_NAME=zsh; elif [ -n \"$BASH_VERSION\" ]; then export SHELL_NAME=bash;fi",
+      "source <(just --completions $SHELL_NAME)"
     ],
     "scripts": {
       "cluster-create":  ["just cluster-create"],

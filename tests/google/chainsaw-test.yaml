@@ -10,7 +10,7 @@ spec:
     - name: cluster
       value: gke
     - name: clusterApi
-      value: container.gcp.upbound.io/v1beta1
+      value: container.gcp.upbound.io/v1beta2
     - name: clusterKind
       value: Cluster
   steps:
