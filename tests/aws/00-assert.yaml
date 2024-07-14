@@ -796,7 +796,7 @@ metadata:
     controller: true
     kind: CompositeCluster
 spec:
-  deletionPolicy: Delete
+  deletionPolicy: Orphan
   forProvider:
     manifest:
       apiVersion: v1
@@ -819,7 +819,7 @@ metadata:
     controller: true
     kind: CompositeCluster
 spec:
-  deletionPolicy: Delete
+  deletionPolicy: Orphan
   forProvider:
     manifest:
       apiVersion: v1

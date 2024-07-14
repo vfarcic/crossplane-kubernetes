@@ -528,6 +528,7 @@ if oxr.spec.parameters?.namespaces:
                 kind = "Namespace"
                 metadata.name = _namespace
             }
+            deletionPolicy = "Orphan"
             providerConfigRef.name = oxr.spec.id
         }
     } for _namespace in oxr.spec.parameters.namespaces ]
