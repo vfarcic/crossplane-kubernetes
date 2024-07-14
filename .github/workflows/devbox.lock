@@ -1,54 +1,6 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "bat@0.24.0": {
-      "last_modified": "2024-07-07T16:08:25Z",
-      "resolved": "github:NixOS/nixpkgs/ab82a9612aa45284d4adf69ee81871a389669a9e#bat",
-      "source": "devbox-search",
-      "version": "0.24.0",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/s5dv7makjjkdcqsszq8yf1v50gwgf93l-bat-0.24.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/s5dv7makjjkdcqsszq8yf1v50gwgf93l-bat-0.24.0"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/k3i0hakrs2cd07gw2a8j8ygyzy53rb0y-bat-0.24.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/k3i0hakrs2cd07gw2a8j8ygyzy53rb0y-bat-0.24.0"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/lsdsfw2a5368jr0p7hnnaxdyjh5w23pj-bat-0.24.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/lsdsfw2a5368jr0p7hnnaxdyjh5w23pj-bat-0.24.0"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/pksmaq6x2c6bsn4m7yhj6xhkmfs6bf77-bat-0.24.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/pksmaq6x2c6bsn4m7yhj6xhkmfs6bf77-bat-0.24.0"
-        }
-      }
-    },
     "crossplane-cli@1.15.2": {
       "last_modified": "2024-05-29T10:04:41Z",
       "resolved": "github:NixOS/nixpkgs/ac82a513e55582291805d6f09d35b6d8b60637a1#crossplane-cli",
@@ -94,54 +46,6 @@
             }
           ],
           "store_path": "/nix/store/vbr0zq0r2ljisldp169awm1iybplnsgk-crossplane-cli-1.15.2"
-        }
-      }
-    },
-    "gh@2.44.1": {
-      "last_modified": "2024-02-24T23:06:34Z",
-      "resolved": "github:NixOS/nixpkgs/9a9dae8f6319600fa9aebde37f340975cab4b8c0#gh",
-      "source": "devbox-search",
-      "version": "2.44.1",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/lkpb81lblxbdlzdgn681irmynw55jbg8-gh-2.44.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/lkpb81lblxbdlzdgn681irmynw55jbg8-gh-2.44.1"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/fwh9lm5qmbz2fv5qlphj6y1dfcdjqcq0-gh-2.44.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/fwh9lm5qmbz2fv5qlphj6y1dfcdjqcq0-gh-2.44.1"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/3qkb48sgf3zf40h9f5sr0kibpk1w27xp-gh-2.44.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/3qkb48sgf3zf40h9f5sr0kibpk1w27xp-gh-2.44.1"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/z93n28s3f4izj97pnikh7y7y2zg61qwd-gh-2.44.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/z93n28s3f4izj97pnikh7y7y2zg61qwd-gh-2.44.1"
         }
       }
     },
@@ -730,54 +634,6 @@
             }
           ],
           "store_path": "/nix/store/imdy2aiwpxfqb7bl5kp4hawbgm4n2igc-upbound-0.24.1"
-        }
-      }
-    },
-    "watchexec@1.25.1": {
-      "last_modified": "2024-04-19T21:36:04Z",
-      "resolved": "github:NixOS/nixpkgs/92d295f588631b0db2da509f381b4fb1e74173c5#watchexec",
-      "source": "devbox-search",
-      "version": "1.25.1",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/1ig7ihi19k72dzhncar24hvsqdq89ljc-watchexec-1.25.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/1ig7ihi19k72dzhncar24hvsqdq89ljc-watchexec-1.25.1"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/yhmf7bncqv54mddcsz6dabhsrb99ligi-watchexec-1.25.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/yhmf7bncqv54mddcsz6dabhsrb99ligi-watchexec-1.25.1"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/w1hqixznmxj4cdaypal1m14n3yixviv9-watchexec-1.25.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/w1hqixznmxj4cdaypal1m14n3yixviv9-watchexec-1.25.1"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/bjdqqwdjgv4rgb45k31rxar0syzjcqwh-watchexec-1.25.1",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/bjdqqwdjgv4rgb45k31rxar0syzjcqwh-watchexec-1.25.1"
         }
       }
     },

@@ -17,13 +17,13 @@ jobs:
           enable-cache: true
           project-path: .github/workflows
       - name: Test
-        run: devbox run test
+        run: devbox --config .github/workflows run test
       - name: Publish
         run: |
           export UP_TOKEN=${{ secrets.UP_TOKEN }}
           export UP_ACCOUNT=${{ secrets.UP_ACCOUNT }}
           export VERSION=v0.12.${{ github.run_number }}
-          devbox run package-publish
+          devbox --config .github/workflows run package-publish
       - name: Commit changes
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
