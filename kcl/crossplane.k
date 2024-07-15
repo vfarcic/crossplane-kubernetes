@@ -26,7 +26,7 @@ spec = {
         version = ">=v0.33.0"
     }, {
         provider = "xpkg.upbound.io/upbound/provider-gcp-container"
-        version = ">=v0.33.0"
+        version = ">=v1.5.0"
     }, {
         function = "xpkg.upbound.io/crossplane-contrib/function-auto-ready"
         version = ">=v0.2.1"

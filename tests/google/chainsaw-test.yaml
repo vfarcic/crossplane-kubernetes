@@ -58,8 +58,7 @@ spec:
         - assert:
             file: ../common/assert-argo-cd.yaml
     #   catch:
-    #     - get:
-    #         resource: managed
     #     - describe:
-    #         resource: compositecluster
+    #         apiVersion: devopstoolkitseries.com/v1alpha1
+    #         kind: compositecluster
     #         selector: crossplane.io/claim-namespace=$NAMESPACE

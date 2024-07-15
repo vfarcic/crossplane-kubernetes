@@ -12,7 +12,7 @@ _metadata = lambda suffix: str -> any {
 }
 
 items = [{
-    apiVersion = "container.gcp.upbound.io/v1beta1"
+    apiVersion = "container.gcp.upbound.io/v1beta2"
     kind = "Cluster"
     metadata = _metadata("cluster")
     spec = {
@@ -22,14 +22,10 @@ items = [{
             minMasterVersion = oxr.spec.parameters.version
             initialNodeCount = 1
             removeDefaultNodePool = True
-            clusterAutoscaling = [{
-                autoProvisioningDefaults = [{
-                    management = [{
-                        autoRepair = True
-                        autoUpgrade = True
-                    }]
-                }]
-            }]
+            clusterAutoscaling.autoProvisioningDefaults.management = {
+                autoRepair = True
+                autoUpgrade = True
+            }
         }
         writeConnectionSecretToRef = {
             name = oxr.spec.id + "-cluster"
@@ -37,7 +33,7 @@ items = [{
         }
     }
 }, {
-    apiVersion = "container.gcp.upbound.io/v1beta1"
+    apiVersion = "container.gcp.upbound.io/v1beta2"
     kind = "NodePool"
     metadata = _metadata("nodepool")
     spec.forProvider = {
@@ -45,7 +41,7 @@ items = [{
         initialNodeCount = oxr.spec.parameters.minNodeCount
         nodeLocations = ["us-east1-b", "us-east1-c", "us-east1-d"]
         clusterSelector.matchControllerRef = True
-        nodeConfig = [{
+        nodeConfig = {
             if oxr.spec.parameters.nodeSize == "small":
                 machineType = "e2-standard-2"
             elif oxr.spec.parameters.nodeSize == "medium":
@@ -58,12 +54,15 @@ items = [{
                 value = "true"
                 effect = "NO_EXECUTE"
             }]
-        }]
-        autoscaling = [{
+        }
+        autoscaling = {
             minNodeCount = oxr.spec.parameters.minNodeCount
             maxNodeCount = 10
-        }]
-        management = [{ autoRepair = True, autoUpgrade = True }]
+        }
+        management = {
+            autoRepair = True
+            autoUpgrade = True
+        }
     }
 }, {
     **oxr

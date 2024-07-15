@@ -46,10 +46,10 @@ spec:
     nodeSize: medium
     version: "1.20.1"
   resourceRefs:
-  - apiVersion: container.gcp.upbound.io/v1beta1
+  - apiVersion: container.gcp.upbound.io/v1beta2
     kind: Cluster
     name: a-team-gke
-  - apiVersion: container.gcp.upbound.io/v1beta1
+  - apiVersion: container.gcp.upbound.io/v1beta2
     kind: NodePool
     name: a-team-gke
   - apiVersion: helm.crossplane.io/v1beta1
@@ -73,7 +73,7 @@ spec:
   writeConnectionSecretToRef:
     namespace: crossplane-system
 ---
-apiVersion: container.gcp.upbound.io/v1beta1
+apiVersion: container.gcp.upbound.io/v1beta2
 kind: Cluster
 metadata:
   annotations:
@@ -94,13 +94,18 @@ spec:
     location: us-east1
     removeDefaultNodePool: true
     minMasterVersion : "1.20.1"
+    clusterAutoscaling:
+      autoProvisioningDefaults:
+        management:
+          autoRepair: true
+          autoUpgrade: true
   providerConfigRef:
     name: default
   writeConnectionSecretToRef:
     name: a-team-gke-cluster
     namespace: ($namespace)
 ---
-apiVersion: container.gcp.upbound.io/v1beta1
+apiVersion: container.gcp.upbound.io/v1beta2
 kind: NodePool
 metadata:
   annotations:
@@ -118,22 +123,22 @@ spec:
   forProvider:
     version: "1.20.1"
     autoscaling:
-      - maxNodeCount: 10
-        minNodeCount: 1
+      maxNodeCount: 10
+      minNodeCount: 1
     clusterSelector:
       matchControllerRef: true
     initialNodeCount: 1
     management:
-      - autoRepair: true
-        autoUpgrade: true
+      autoRepair: true
+      autoUpgrade: true
     nodeConfig:
-      - machineType: e2-standard-4
-        oauthScopes:
-          - https://www.googleapis.com/auth/cloud-platform
-        taint:
-          - effect: NO_EXECUTE
-            key: node.cilium.io/agent-not-ready
-            value: "true"
+      machineType: e2-standard-4
+      oauthScopes:
+        - https://www.googleapis.com/auth/cloud-platform
+      taint:
+        - effect: NO_EXECUTE
+          key: node.cilium.io/agent-not-ready
+          value: "true"
   providerConfigRef:
     name: default
 ---

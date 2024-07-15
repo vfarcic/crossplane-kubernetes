@@ -82,10 +82,10 @@ spec:
       keys:
         - google-creds
   resourceRefs:
-  - apiVersion: container.gcp.upbound.io/v1beta1
+  - apiVersion: container.gcp.upbound.io/v1beta2
     kind: Cluster
     name: a-team-gke
-  - apiVersion: container.gcp.upbound.io/v1beta1
+  - apiVersion: container.gcp.upbound.io/v1beta2
     kind: NodePool
     name: a-team-gke
   - apiVersion: helm.crossplane.io/v1beta1
