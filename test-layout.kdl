@@ -1,0 +1,48 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="Do" focus=true {
+        floating_panes {
+            pane {
+                name "cluster"
+                command "just"
+                args "cluster-create"
+                close_on_exit true
+                x "20%"
+                y "20%"
+                width "60%"
+                height "60%"
+                focus true
+            }
+        }
+        pane {
+            name "test-watch"
+            command "just"
+            args "test-watch"
+            start_suspended true
+            size "70%"
+        }
+        pane {
+            name "get-managed"
+            command "viddy"
+            args "kubectl" "get" "managed"
+            start_suspended true
+            size "30%"
+        }
+    }
+    tab name="Done" {
+        pane {
+            name "cluster-destroy"
+            command "just"
+            args "cluster-destroy"
+            start_suspended true
+        }
+    }
+}

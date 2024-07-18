@@ -15,7 +15,8 @@
     "crossplane-cli@1.15.2",
     "viddy@0.4.0",
     "kcl-cli@0.8.7",
-    "path:gcloud#google-cloud-sdk"
+    "path:gcloud#google-cloud-sdk",
+    "zellij@0.40.1"
   ],
   "shell": {
     "init_hook": [
@@ -27,7 +28,8 @@
       "cluster-destroy": ["just cluster-destroy"],
       "package-publish": ["just package-publish"],
       "test":            ["just test"],
-      "test-watch":      ["just test-watch"]
+      "test-watch":      ["just test-watch"],
+      "test-env":        ["zellij --session crossplane-gh --layout test-layout.kdl"]
     }
   }
 }
