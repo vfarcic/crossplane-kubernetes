@@ -124,7 +124,7 @@ _items = [
         metadata = {
             name = oxr.spec.id
             annotations = {
-                "krm.kcl.dev/default_ready": "True"
+                "krm.kcl.dev/ready": "True"
                 "crossplane.io/external-name" = oxr.spec.id
                 "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm"
             }
@@ -157,7 +157,7 @@ _items = [
         metadata = {
             name = oxr.spec.id + "-local"
             annotations = {
-                "krm.kcl.dev/default_ready": "True"
+                "krm.kcl.dev/ready": "True"
                 "crossplane.io/external-name" = oxr.spec.id
                 "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm-local"
             }
@@ -219,7 +219,7 @@ _items = [
         metadata = {
             name = oxr.spec.id
             annotations = {
-                "krm.kcl.dev/default_ready": "True"
+                "krm.kcl.dev/ready": "True"
                 "crossplane.io/external-name" = oxr.spec.id
                 "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-kubernetes"
             }
