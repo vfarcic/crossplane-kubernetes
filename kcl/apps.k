@@ -131,15 +131,16 @@ _items = [
                 }
                 source = "Secret"
             }
-            identity = {
-                type = "GoogleApplicationCredentials"
-                source = "Secret"
-                secretRef = {
-                    name = "gcp-creds"
-                    namespace = "crossplane-system"
-                    key = "creds"
+            if oxr.spec.compositionSelector.matchLabels.provider == "google":
+                identity = {
+                    type = "GoogleApplicationCredentials"
+                    source = "Secret"
+                    secretRef = {
+                        name = "gcp-creds"
+                        namespace = "crossplane-system"
+                        key = "creds"
+                    }
                 }
-            }
         }
     }
 
@@ -217,15 +218,16 @@ _items = [
                 }
                 source: "Secret"
             }
-            identity = {
-                type = "GoogleApplicationCredentials"
-                source = "Secret"
-                secretRef = {
-                    name = "gcp-creds"
-                    namespace = "crossplane-system"
-                    key = "creds"
+            if oxr.spec.compositionSelector.matchLabels.provider == "google":
+                identity = {
+                    type = "GoogleApplicationCredentials"
+                    source = "Secret"
+                    secretRef = {
+                        name = "gcp-creds"
+                        namespace = "crossplane-system"
+                        key = "creds"
+                    }
                 }
-            }
         }
     }
 
