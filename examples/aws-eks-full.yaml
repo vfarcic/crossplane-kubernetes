@@ -11,9 +11,6 @@ spec:
   parameters:
     nodeSize: medium
     minNodeCount: 1
-    namespaces:
-      - dev
-      - production
     apps:
       traefik:
         enabled: true
@@ -21,3 +18,8 @@ spec:
         enabled: true
         host: argocd.44.194.69.17.nip.io
         repoURL: https://github.com/vfarcic/crossplane-kubernetes-gitops
+      dapr:
+        enabled: true
+    namespaces:
+      - dev
+      - production

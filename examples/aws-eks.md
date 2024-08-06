@@ -100,22 +100,33 @@ echo "https://marketplace.upbound.io/configurations/devops-toolkit/dot-kubernete
 aws eks update-kubeconfig --region us-east-1 --name a-team \
     --kubeconfig kubeconfig.yaml
 
-kubectl get namespaces
+kubectl --kubeconfig kubeconfig.yaml get namespaces
+
+chmod +x examples/get-traefik-eks.sh
+
+export INGRESS_IP=$(./examples/get-traefik-eks.sh)
 ```
 
 ## Complete Cluster
 
 ```sh
-chmod +x examples/get-traefik-eks.sh
-
-export INGRESS_IP=$(./examples/get-traefik-eks.sh)
+cat examples/aws-eks-full.yaml
 
 yq --inplace \
     ".spec.parameters.apps.argocd.host = \"argocd.$INGRESS_IP.nip.io\"" \
     examples/aws-eks-full.yaml
 
-cat examples/aws-eks-full.yaml
+kubectl --namespace a-team apply \
+    --filename examples/aws-eks-full.yaml
+
+crossplane beta trace clusterclaim a-team --namespace a-team
+
+kubectl --kubeconfig kubeconfig.yaml get namespaces
+
+echo "http://argocd.$INGRESS_IP.nip.io"
 ```
+
+> Open the URL from the output in a browser
 
 ## Destroy
 

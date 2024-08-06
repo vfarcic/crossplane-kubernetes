@@ -121,7 +121,14 @@ _items = [
     {
         apiVersion = "helm.crossplane.io/v1beta1"
         kind = "ProviderConfig"
-        metadata = _metadata("config-helm")
+        metadata = {
+            name = oxr.spec.id
+            annotations = {
+                "krm.kcl.dev/default_ready": "True"
+                "crossplane.io/external-name" = oxr.spec.id
+                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm"
+            }
+        }
         spec = {
             credentials = {
                 secretRef = {
@@ -142,9 +149,6 @@ _items = [
                     }
                 }
         }
-        readinessChecks = [
-            { type = "None" }
-        ]
     }
 
     {
@@ -153,14 +157,12 @@ _items = [
         metadata = {
             name = oxr.spec.id + "-local"
             annotations = {
+                "krm.kcl.dev/default_ready": "True"
                 "crossplane.io/external-name" = oxr.spec.id
                 "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm-local"
             }
         }
         spec.credentials.source = "InjectedIdentity"
-        readinessChecks = [
-            { type = "None" }
-        ]
     }
 
     if oxr.spec.compositionSelector.matchLabels.provider != "aws":
@@ -214,7 +216,14 @@ _items = [
     {
         apiVersion = "kubernetes.crossplane.io/v1alpha1"
         kind = "ProviderConfig"
-        metadata = _metadata("config-kubernetes")
+        metadata = {
+            name = oxr.spec.id
+            annotations = {
+                "krm.kcl.dev/default_ready": "True"
+                "crossplane.io/external-name" = oxr.spec.id
+                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-kubernetes"
+            }
+        }
         spec = {
             credentials = {
                 secretRef = {
@@ -235,9 +244,6 @@ _items = [
                     }
                 }
         }
-        readinessChecks = [
-            { type = "None" }
-        ]
     }
 
     if oxr.spec.parameters?.apps?.crossplane?.enabled:
