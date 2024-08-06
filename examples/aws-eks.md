@@ -73,7 +73,7 @@ gh repo create $GITHUB_USER/crossplane-kubernetes-gitops --public
 ```sh
 kubectl --namespace a-team apply --filename examples/aws-eks.yaml
 
-crossplane beta trace clusterclaim ateam --namespace a-team
+crossplane beta trace clusterclaim a-team --namespace a-team
 ```
 
 > Wait until all the resources are `Available`.

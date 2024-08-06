@@ -1384,7 +1384,6 @@ spec:
                   else:
                       name = oxr.spec.id
                   annotations = {
-                      "crossplane.io/external-name" = oxr.spec.id
                       "krm.kcl.dev/composition-resource-name" = suffix
                   }
                   if role != "":
@@ -1571,7 +1570,6 @@ spec:
               metadata = {
                   name = oxr.spec.id + "-" + _zone.suffix
                   annotations = {
-                      "crossplane.io/external-name" = oxr.spec.id
                       "krm.kcl.dev/composition-resource-name" = "subnet-nodepool-" + _zone.suffix
                   }
                   labels = {
@@ -1627,7 +1625,6 @@ spec:
               metadata = {
                   name = oxr.spec.id + "-" + _role.name
                   annotations = {
-                      "crossplane.io/external-name" = oxr.spec.id + "-" + _role.name
                       "krm.kcl.dev/composition-resource-name" = "iamrole-" + _role.name
                   }
                   labels.role = oxr.spec.id + "-" + _role.name

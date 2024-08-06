@@ -10,7 +10,6 @@ _metadata = lambda name: str, suffix: str, role: str -> any {
         else:
             name = oxr.spec.id
         annotations = {
-            "crossplane.io/external-name" = oxr.spec.id
             "krm.kcl.dev/composition-resource-name" = suffix
         }
         if role != "":
@@ -197,7 +196,6 @@ _items += [{
     metadata = {
         name = oxr.spec.id + "-" + _zone.suffix
         annotations = {
-            "crossplane.io/external-name" = oxr.spec.id
             "krm.kcl.dev/composition-resource-name" = "subnet-nodepool-" + _zone.suffix
         }
         labels = {
@@ -253,7 +251,6 @@ _items += [{
     metadata = {
         name = oxr.spec.id + "-" + _role.name
         annotations = {
-            "crossplane.io/external-name" = oxr.spec.id + "-" + _role.name
             "krm.kcl.dev/composition-resource-name" = "iamrole-" + _role.name
         }
         labels.role = oxr.spec.id + "-" + _role.name
