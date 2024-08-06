@@ -141,6 +141,8 @@ kubectl get managed
 
 ```sh
 kind delete cluster
+
+gh repo view $GITHUB_USER/crossplane-kubernetes-gitops --web
 ```
 
-FIXME: Delete the repo
+> Delete the repo
