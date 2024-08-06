@@ -225,7 +225,14 @@ spec:
               {
                   apiVersion = "helm.crossplane.io/v1beta1"
                   kind = "ProviderConfig"
-                  metadata = _metadata("config-helm")
+                  metadata = {
+                      name = oxr.spec.id
+                      annotations = {
+                          "krm.kcl.dev/ready": "True"
+                          "crossplane.io/external-name" = oxr.spec.id
+                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm"
+                      }
+                  }
                   spec = {
                       credentials = {
                           secretRef = {
@@ -254,8 +261,9 @@ spec:
                   metadata = {
                       name = oxr.spec.id + "-local"
                       annotations = {
+                          "krm.kcl.dev/ready": "True"
                           "crossplane.io/external-name" = oxr.spec.id
-                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "config-helm-local"
+                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm-local"
                       }
                   }
                   spec.credentials.source = "InjectedIdentity"
@@ -312,7 +320,14 @@ spec:
               {
                   apiVersion = "kubernetes.crossplane.io/v1alpha1"
                   kind = "ProviderConfig"
-                  metadata = _metadata("config-kubernetes")
+                  metadata = {
+                      name = oxr.spec.id
+                      annotations = {
+                          "krm.kcl.dev/ready": "True"
+                          "crossplane.io/external-name" = oxr.spec.id
+                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-kubernetes"
+                      }
+                  }
                   spec = {
                       credentials = {
                           secretRef = {
@@ -895,7 +910,14 @@ spec:
               {
                   apiVersion = "helm.crossplane.io/v1beta1"
                   kind = "ProviderConfig"
-                  metadata = _metadata("config-helm")
+                  metadata = {
+                      name = oxr.spec.id
+                      annotations = {
+                          "krm.kcl.dev/ready": "True"
+                          "crossplane.io/external-name" = oxr.spec.id
+                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm"
+                      }
+                  }
                   spec = {
                       credentials = {
                           secretRef = {
@@ -924,8 +946,9 @@ spec:
                   metadata = {
                       name = oxr.spec.id + "-local"
                       annotations = {
+                          "krm.kcl.dev/ready": "True"
                           "crossplane.io/external-name" = oxr.spec.id
-                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "config-helm-local"
+                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm-local"
                       }
                   }
                   spec.credentials.source = "InjectedIdentity"
@@ -982,7 +1005,14 @@ spec:
               {
                   apiVersion = "kubernetes.crossplane.io/v1alpha1"
                   kind = "ProviderConfig"
-                  metadata = _metadata("config-kubernetes")
+                  metadata = {
+                      name = oxr.spec.id
+                      annotations = {
+                          "krm.kcl.dev/ready": "True"
+                          "crossplane.io/external-name" = oxr.spec.id
+                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-kubernetes"
+                      }
+                  }
                   spec = {
                       credentials = {
                           secretRef = {
@@ -1778,7 +1808,14 @@ spec:
               {
                   apiVersion = "helm.crossplane.io/v1beta1"
                   kind = "ProviderConfig"
-                  metadata = _metadata("config-helm")
+                  metadata = {
+                      name = oxr.spec.id
+                      annotations = {
+                          "krm.kcl.dev/ready": "True"
+                          "crossplane.io/external-name" = oxr.spec.id
+                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm"
+                      }
+                  }
                   spec = {
                       credentials = {
                           secretRef = {
@@ -1807,8 +1844,9 @@ spec:
                   metadata = {
                       name = oxr.spec.id + "-local"
                       annotations = {
+                          "krm.kcl.dev/ready": "True"
                           "crossplane.io/external-name" = oxr.spec.id
-                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "config-helm-local"
+                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm-local"
                       }
                   }
                   spec.credentials.source = "InjectedIdentity"
@@ -1865,7 +1903,14 @@ spec:
               {
                   apiVersion = "kubernetes.crossplane.io/v1alpha1"
                   kind = "ProviderConfig"
-                  metadata = _metadata("config-kubernetes")
+                  metadata = {
+                      name = oxr.spec.id
+                      annotations = {
+                          "krm.kcl.dev/ready": "True"
+                          "crossplane.io/external-name" = oxr.spec.id
+                          "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-kubernetes"
+                      }
+                  }
                   spec = {
                       credentials = {
                           secretRef = {
