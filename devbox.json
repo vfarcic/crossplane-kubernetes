@@ -16,7 +16,8 @@
     "viddy@0.4.0",
     "kcl-cli@0.8.7",
     "path:gcloud#google-cloud-sdk",
-    "zellij@0.40.1"
+    "zellij@0.40.1",
+    "teller@2.0.7"
   ],
   "shell": {
     "init_hook": [

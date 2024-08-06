@@ -1,8 +1,12 @@
-project: dot
 providers:
-  google_secretmanager:
-    env:
-      UP_ACCOUNT:
-        path: projects/vfarcic/secrets/upbound-account/versions/1
-      UP_TOKEN:
-        path: projects/vfarcic/secrets/upbound-token/versions/1
+  google_secrets_manager:
+    kind: google_secretmanager
+    maps:
+      - id: secrets
+        path: projects/vfarcic
+        keys:
+          upbound-account: UP_ACCOUNT
+          upbound-token: UP_TOKEN
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          github-user: GITHUB_USER
