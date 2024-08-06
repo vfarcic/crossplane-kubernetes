@@ -535,6 +535,7 @@ spec:
   deletionPolicy: Delete
   forProvider:
     region: us-east-1
+    bootstrapSelfManagedAddons: true
     roleArnSelector:
       matchControllerRef: true
       matchLabels:
