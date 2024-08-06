@@ -539,7 +539,7 @@ spec:
       matchControllerRef: true
       matchLabels:
         role: a-team-eks-controlplane
-    version: "1.29"
+    version: "1.30"
     vpcConfig:
     - endpointPrivateAccess: true
       endpointPublicAccess: true

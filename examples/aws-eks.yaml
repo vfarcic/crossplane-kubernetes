@@ -1,9 +1,9 @@
 apiVersion: devopstoolkitseries.com/v1alpha1
 kind: ClusterClaim
 metadata:
-  name: ateam
+  name: a-team
 spec:
-  id: ateam
+  id: a-team
   compositionSelector:
     matchLabels:
       provider: aws
