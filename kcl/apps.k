@@ -142,6 +142,9 @@ _items = [
                     }
                 }
         }
+        readinessChecks = [
+            { type = "None" }
+        ]
     }
 
     {
@@ -151,10 +154,13 @@ _items = [
             name = oxr.spec.id + "-local"
             annotations = {
                 "crossplane.io/external-name" = oxr.spec.id
-                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "config-helm-local"
+                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm-local"
             }
         }
         spec.credentials.source = "InjectedIdentity"
+        readinessChecks = [
+            { type = "None" }
+        ]
     }
 
     if oxr.spec.compositionSelector.matchLabels.provider != "aws":
@@ -229,6 +235,9 @@ _items = [
                     }
                 }
         }
+        readinessChecks = [
+            { type = "None" }
+        ]
     }
 
     if oxr.spec.parameters?.apps?.crossplane?.enabled:

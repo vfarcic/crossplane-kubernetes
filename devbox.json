@@ -17,7 +17,8 @@
     "kcl-cli@0.8.7",
     "path:gcloud#google-cloud-sdk",
     "zellij@0.40.1",
-    "teller@2.0.7"
+    "teller@2.0.7",
+    "awscli2@2.17.13"
   ],
   "shell": {
     "init_hook": [

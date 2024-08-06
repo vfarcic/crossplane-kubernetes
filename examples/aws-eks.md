@@ -29,7 +29,7 @@ gum spin --spinner dot \
     -- sleep 60
 
 gum spin --spinner dot \
-    --title "Waiting for Crossplane providers to be deployed..." \
+    --title "Waiting for Crossplane providers to be healthy..." \
     -- kubectl wait \
     --for=condition=healthy provider.pkg.crossplane.io --all \
     --timeout 5m
@@ -66,6 +66,10 @@ kubectl create namespace a-team
 export GITHUB_USER=[...]
 
 gh repo create $GITHUB_USER/crossplane-kubernetes-gitops --public
+
+yq --inplace \
+    ".spec.parameters.apps.argocd.repoURL = \"https://github.com/$GITHUB_USER/crossplane-kubernetes-gitops\"" \
+    examples/aws-eks-full.yaml
 ```
 
 ## Simple Cluster
@@ -90,10 +94,25 @@ echo "https://marketplace.upbound.io/configurations/devops-toolkit/dot-kubernete
 
 > Open the URL from the output in a browser
 
+## Simple Cluster (cont.)
+
+```sh
+aws eks update-kubeconfig --region us-east-1 --name a-team \
+    --kubeconfig kubeconfig.yaml
+
+kubectl get namespaces
+```
+
 ## Complete Cluster
 
 ```sh
-yq --inplace "" examples/aws-eks-full.yaml
+chmod +x examples/get-traefik-eks.sh
+
+export INGRESS_IP=$(./examples/get-traefik-eks.sh)
+
+yq --inplace \
+    ".spec.parameters.apps.argocd.host = \"argocd.$INGRESS_IP.nip.io\"" \
+    examples/aws-eks-full.yaml
 
 cat examples/aws-eks-full.yaml
 ```
