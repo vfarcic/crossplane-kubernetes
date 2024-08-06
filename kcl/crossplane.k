@@ -14,13 +14,13 @@ spec = {
     crossplane.version = ">=v1.14.0"
     dependsOn = [{
         provider = "xpkg.upbound.io/upbound/provider-aws-eks"
-        version = ">=v1.0.0"
+        version = "=v1.9.1"
     }, {
         provider = "xpkg.upbound.io/upbound/provider-aws-iam"
-        version = ">=v1.0.0"
+        version = "=v1.9.1"
     }, {
         provider = "xpkg.upbound.io/upbound/provider-aws-ec2"
-        version = ">=v1.0.0"
+        version = "=v1.9.1"
     }, {
         provider = "xpkg.upbound.io/upbound/provider-azure-containerservice"
         version = ">=v0.33.0"
