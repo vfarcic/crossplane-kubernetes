@@ -32,7 +32,7 @@ spec = {
         version = ">=v0.2.1"
     }, {
         function = "xpkg.upbound.io/crossplane-contrib/function-kcl"
-        version = ">=v0.7.2"
+        version = "v0.9.0"
     # }, {
     #     function = "xpkg.upbound.io/crossplane-contrib/provider-helm"
     #     version = ">=v0.14.0"
