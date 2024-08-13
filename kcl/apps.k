@@ -29,6 +29,7 @@ schema usage:
     metadata = {
         name = oxr.spec.id + "-" + _nameSuffix + "-usage"
         annotations = {
+            "krm.kcl.dev/ready": "True"
             "crossplane.io/external-name" = oxr.spec.id + "-" + _nameSuffix + "-usage"
             "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-" + _nameSuffix + "-usage"
         }

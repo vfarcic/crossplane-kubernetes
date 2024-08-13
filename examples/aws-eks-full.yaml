@@ -18,10 +18,10 @@ spec:
         enabled: true
       argocd:
         enabled: true
-        host: argocd.44.194.69.17.nip.io
+        host: argocd.44.212.104.168.nip.io
         repoURL: https://github.com/vfarcic/crossplane-kubernetes-gitops
       dapr:
         enabled: true
     namespaces:
-      - dev
-      - production
+    - dev
+    - production
