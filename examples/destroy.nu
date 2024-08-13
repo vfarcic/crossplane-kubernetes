@@ -15,7 +15,7 @@ mut counter = 999; loop {
 
 kind delete cluster
 
-let github_user = open examples/settings.yaml
+let github_user = open settings.yaml
     | get github.user
 
 start $"https://github.com/($github_user)/crossplane-kubernetes-gitops"

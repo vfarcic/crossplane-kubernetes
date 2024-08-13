@@ -6,9 +6,9 @@ kind create cluster
 
 let hyperscaler = [aws]
     | input list $"(ansi green_bold)Which Hyperscaler do you want to use?(ansi yellow_bold)"
-open examples/settings.yaml
+open settings.yaml
     | upsert hyperscaler $hyperscaler
-    | save examples/settings.yaml --force
+    | save settings.yaml --force
 
 ansi reset
 
@@ -82,9 +82,9 @@ if GITHUB_USER in $env {
     )
     $github_user = $value
 }
-open examples/settings.yaml
+open settings.yaml
     | upsert github.user $github_user
-    | save examples/settings.yaml --force
+    | save settings.yaml --force
 
 (
     gh repo create $"($github_user)/crossplane-kubernetes-gitops"
