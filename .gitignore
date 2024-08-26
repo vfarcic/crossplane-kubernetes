@@ -6,3 +6,4 @@
 /gke_gcloud_auth_plugin_cache
 /azure-creds.json
 /.task
+/.kclvm
