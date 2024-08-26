@@ -1,0 +1,19 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: a-team
+spec:
+  id: a-team
+  compositionSelector:
+    matchLabels:
+      provider: azure
+      cluster: aks
+  parameters:
+    nodeSize: medium
+    minNodeCount: 1
+    namespaces:
+      - dev
+      - production
+    usage:
+      # Usage is still in `alpha` and needs to be enabled by add `--set args='{"--enable-usages"}'` to `helm install`.
+      enabled: true

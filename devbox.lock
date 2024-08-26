@@ -65,6 +65,70 @@
         }
       }
     },
+    "azure-cli@2.63.0": {
+      "last_modified": "2024-08-21T20:16:49Z",
+      "resolved": "github:NixOS/nixpkgs/36a9aeaaa17a2d4348498275f9fe530cd4f9e519#azure-cli",
+      "source": "devbox-search",
+      "version": "2.63.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/s8pkyh71arw9cwp23705x5k6b41px3ln-python3.12-azure-cli-2.63.0",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/rx5r3hh2brpjbx97dnzn479364gccch4-python3.12-azure-cli-2.63.0-dist"
+            }
+          ],
+          "store_path": "/nix/store/s8pkyh71arw9cwp23705x5k6b41px3ln-python3.12-azure-cli-2.63.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/kxcxh1i80p8ipfd99xjqa83ww918xvv3-python3.12-azure-cli-2.63.0",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/izxw6fp1afqay3ydkk9qfy56n0n44gsd-python3.12-azure-cli-2.63.0-dist"
+            }
+          ],
+          "store_path": "/nix/store/kxcxh1i80p8ipfd99xjqa83ww918xvv3-python3.12-azure-cli-2.63.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/1dx07akxnp1ya7grp07d3m2vwwdczryh-python3.12-azure-cli-2.63.0",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/8avbjkcwz33960w2bi7b938p5j55j0xs-python3.12-azure-cli-2.63.0-dist"
+            }
+          ],
+          "store_path": "/nix/store/1dx07akxnp1ya7grp07d3m2vwwdczryh-python3.12-azure-cli-2.63.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/dcmpff4splby5bbiv7v8qdx6vcm2kvjv-python3.12-azure-cli-2.63.0",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/iw5ij2j6gvpb5r0b2jrzwr5awrhfm0rr-python3.12-azure-cli-2.63.0-dist"
+            }
+          ],
+          "store_path": "/nix/store/dcmpff4splby5bbiv7v8qdx6vcm2kvjv-python3.12-azure-cli-2.63.0"
+        }
+      }
+    },
     "bat@0.24.0": {
       "last_modified": "2024-02-26T19:46:43Z",
       "resolved": "github:NixOS/nixpkgs/548a86b335d7ecd8b57ec617781f5e652ab0c38e#bat",
