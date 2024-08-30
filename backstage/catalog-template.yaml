@@ -1,0 +1,25 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: crossplane-kubernetes
+  title: Crossplane Kubernetes
+  description: Create and Manage Kubernetes Clusters
+spec:
+  owner: vfarcic/crossplane-kubernetes
+  type: service
+  parameters:
+  - title: Service Definition
+    properties:
+      name:
+        type: string
+      version:
+        type: string
+      nodeSize:
+        type: string
+        enum:
+        - small
+        - medium
+        - large
+      minNodeCount:
+        type: integer
+        default: 1

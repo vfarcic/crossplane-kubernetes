@@ -32,8 +32,8 @@ spec:
                 type: string
                 description: ID of this Cluster that other objects can refer.
               parameters:
-                type: object
                 description: Parameters used to customize the cluster
+                type: object
                 properties:
                   version:
                     description: The Kubernetes version for the cluster.
@@ -48,11 +48,11 @@ spec:
                   namespaces:
                     description: List of Namespaces that should be created in the cluster
                     type: array
-                    items:
-                      type: string
                     default:
                     - dev
                     - production
+                    items:
+                      type: string
                   usage:
                     description: Whether Crossplane `Usage` (currently alpha feature) is enabled.
                     type: object
@@ -65,15 +65,15 @@ spec:
                     description: List of apps that should be installed in the cluster
                     properties:
                       crossplane:
-                        type: object
                         description: Install Crossplane
+                        type: object
                         properties:
                           enabled:
                             type: boolean
                             default: false
                       argocd:
-                        type: object
                         description: Install Argo CD
+                        type: object
                         properties:
                           enabled:
                             type: boolean
@@ -91,96 +91,96 @@ spec:
                             type: string
                             default: '.'
                       openfunction:
-                        type: object
                         description: Install OpenFunction
+                        type: object
                         properties:
                           enabled:
                             type: boolean
                             default: false
                       dapr:
-                        type: object
                         description: Install Dapr. Do not enable it if OpenFunction is enabled since it comes with Dapr.
+                        type: object
                         properties:
                           enabled:
                             type: boolean
                             default: false
                       traefik:
-                        type: object
                         description: Install Traefik.
+                        type: object
                         properties:
                           enabled:
                             type: boolean
                             default: false
                       dynatrace:
-                        type: object
                         description: Install Dynatrace operator. A secret `dynatrace` with tokens musts exist in the `dynatrace` Namespace.
+                        type: object
                         properties:
                           enabled:
                             type: boolean
                             default: false
                           apiUrl:
-                            type: string
                             description: The URL of the Dynatrace API
+                            type: string
                           oathCredentialsSecretName:
                             description: The name of the secret with the OAuth credentials for the Dynatrace API.
                             type: string
                       externalSecrets:
-                        type: object
                         description: Install External Secrets Operator (ESO)
+                        type: object
                         properties:
                           enabled:
                             type: boolean
                             default: false
                           store:
-                            type: boolean
                             description: Whether to create secret store. If `true`, `creds` field needs to be set as well.
+                            type: boolean
                           googleCredentialsKey:
-                            type: string
                             description: The key with Google credentials in the secret. Works only with clusters in Google Cloud.
+                            type: string
                           awsAccessKeyIDKey:
+                            description: The key with Access Key ID in the secret. Works only with clusters in AWS.
                             type: string
                             default: accessKeyID
-                            description: The key with Access Key ID in the secret. Works only with clusters in AWS.
                           awsSecretAccessKeyKey:
+                            description: The key with Secret Access Key in the secret. Works only with clusters in AWS.
                             type: string
                             default: secretAccessKey
-                            description: The key with Secret Access Key in the secret. Works only with clusters in AWS.
                           azureVaultUrl:
-                            type: string
                             description: The URL of Azure Vault. Works only with clusters in Azure.
+                            type: string
                           secrets:
-                            type: array
                             description: List of secrets to be created from the secret store. The `store` parameter must be set to `true` for this feature to work.
+                            type: array
                             items:
                               type: object
                               properties:
                                 fromSecret:
-                                  type: string
                                   description: The name or the key of secret in the external secret store
+                                  type: string
                                 toSecret:
-                                  type: string
                                   description: The name of the secret
+                                  type: string
                                 toNamespace:
-                                  type: string
                                   description: The namespace of the secret
-                                type:
                                   type: string
+                                type:
                                   description: The type of the secret
+                                  type: string
                                   default: Opaque
                               required:
                               - fromSecret
                               - toSecret
                               - toNamespace
                   creds:
-                    type: object
                     description: The secret with hyperscaler credentials.
+                    type: object
                     properties:
                       name:
-                        type: string
                         description: The name of the secret
-                      namespace:
                         type: string
+                      namespace:
                         description: The namespace of the secret
+                        type: string
                         default: crossplane-system
                       keys:
                         description: The keys in the secret

@@ -1,0 +1,204 @@
+root = {
+    type = "object"
+    description = "Parameters used to customize the cluster"
+    properties = {
+        version = {
+            description = "The Kubernetes version for the cluster."
+            type = "string"
+        }
+        nodeSize = {
+            description = "The size of the nodes; small, medium, large."
+            type = "string"
+        }
+        minNodeCount = {
+            description = "The minimum number of nodes."
+            type = "integer"
+            default = 1
+        }
+        namespaces = {
+            description = "List of Namespaces that should be created in the cluster"
+            type = "array"
+            itemsType = "string"
+            defaultArray = "dev,production"
+        }
+    }
+}
+
+usage = {
+    description = "Whether Crossplane `Usage` (currently alpha feature) is enabled."
+    type = "object"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+}
+
+appCrossplane = {
+    type = "object"
+    description = "Install Crossplane"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+}
+
+appArgocd = {
+    type = "object"
+    description = "Install Argo CD"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+        host = {
+            type = "string"
+            default = "acme.com"
+        }
+        repoURL = {
+            type = "string"
+            default = "https://github.com/vfarcic/SOMETHING"
+        }
+        destinationNamespace = {
+            type = "string"
+            default = "argo-cd"
+        }
+        sourcePath = {
+            type = "string"
+            default = "."
+        }
+    }
+}
+
+appOpenfunction = {
+    type = "object"
+    description = "Install OpenFunction"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+}
+
+appDapr = {
+    type = "object"
+    description = "Install Dapr. Do not enable it if OpenFunction is enabled since it comes with Dapr."
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+}
+
+appTraefik = {
+    type = "object"
+    description = "Install Traefik."
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+}
+
+appDynatrace = {
+    type = "object"
+    description = "Install Dynatrace operator. A secret `dynatrace` with tokens musts exist in the `dynatrace` Namespace."
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+        apiUrl = {
+            type = "string"
+            description = "The URL of the Dynatrace API"
+        }
+        oathCredentialsSecretName = {
+            description = "The name of the secret with the OAuth credentials for the Dynatrace API."
+            type = "string"
+        }
+    }
+}
+
+appExternalSecrets = {
+    type = "object"
+    description = "Install External Secrets Operator (ESO)"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+        store = {
+            type = "boolean"
+            description = "Whether to create secret store. If `true`, `creds` field needs to be set as well."
+        }
+        googleCredentialsKey = {
+            type = "string"
+            description = "The key with Google credentials in the secret. Works only with clusters in Google Cloud."
+        }
+        awsAccessKeyIDKey = {
+            type = "string"
+            default = "accessKeyID"
+            description = "The key with Access Key ID in the secret. Works only with clusters in AWS."
+        }
+        awsSecretAccessKeyKey = {
+            type = "string"
+            default = "secretAccessKey"
+            description = "The key with Secret Access Key in the secret. Works only with clusters in AWS."
+        }
+        azureVaultUrl = {
+            type = "string"
+            description = "The URL of Azure Vault. Works only with clusters in Azure."
+        }
+    }
+}
+
+appExternalSecretsSecrets = {
+    type = "array"
+    description = "List of secrets to be created from the secret store. The `store` parameter must be set to `true` for this feature to work."
+    properties = {
+        fromSecret = {
+            type = "string"
+            description = "The name or the key of secret in the external secret store"
+        }
+        toSecret = {
+            type = "string"
+            description = "The name of the secret"
+        }
+        toNamespace = {
+            type = "string"
+            description = "The namespace of the secret"
+        }
+        type = {
+            type = "string"
+            description = "The type of the secret"
+            default = "Opaque"
+        }
+    }
+}
+
+creds = {
+    type = "object"
+    description = "The secret with hyperscaler credentials."
+    properties = {
+        name = {
+            type = "string"
+            description = "The name of the secret"
+        }
+        namespace = {
+            type = "string"
+            description = "The namespace of the secret"
+            default = "crossplane-system"
+        }
+        keys = {
+            description = "The keys in the secret"
+            type = "array"
+            itemsType = "string"
+        }
+    }
+}
