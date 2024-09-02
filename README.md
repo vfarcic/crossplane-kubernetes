@@ -1,6 +1,6 @@
 # Demo Manifests and Code Used in DevOps Toolkit Videos
 
-[![From Makefile to Justfile (or Taskfile): Recipe Runner Replacement](https://img.youtube.com/vi/hgNN2wOE7lc/0.jpg)](https://youtu.be/hgNN2wOE7lc)
+[![Master Terminal Multiplexing with Zellij in Minutes!](https://img.youtube.com/vi/ZndhImXIGlg/0.jpg)](https://youtu.be/ZndhImXIGlg)e/hgNN2wOE7lc)
 
 ## Generate manifests
 
