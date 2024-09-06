@@ -9,6 +9,8 @@ root = {
         nodeSize = {
             description = "The size of the nodes; small, medium, large."
             type = "string"
+            enum = ["small", "medium", "large"]
+            default = "small"
         }
         minNodeCount = {
             description = "The minimum number of nodes."
@@ -22,6 +24,7 @@ root = {
             defaultArray = "dev,production"
         }
     }
+    required = ["nodeSize"]
 }
 
 usage = {
@@ -33,6 +36,7 @@ usage = {
             default = False
         }
     }
+    required = []
 }
 
 appCrossplane = {
@@ -44,6 +48,7 @@ appCrossplane = {
             default = False
         }
     }
+    required = []
 }
 
 appArgocd = {
@@ -71,6 +76,7 @@ appArgocd = {
             default = "."
         }
     }
+    required = []
 }
 
 appOpenfunction = {
@@ -82,6 +88,7 @@ appOpenfunction = {
             default = False
         }
     }
+    required = []
 }
 
 appDapr = {
@@ -93,6 +100,7 @@ appDapr = {
             default = False
         }
     }
+    required = []
 }
 
 appTraefik = {
@@ -104,6 +112,7 @@ appTraefik = {
             default = False
         }
     }
+    required = []
 }
 
 appDynatrace = {
@@ -123,6 +132,7 @@ appDynatrace = {
             type = "string"
         }
     }
+    required = []
 }
 
 appExternalSecrets = {
@@ -156,6 +166,7 @@ appExternalSecrets = {
             description = "The URL of Azure Vault. Works only with clusters in Azure."
         }
     }
+    required = []
 }
 
 appExternalSecretsSecrets = {
@@ -180,6 +191,7 @@ appExternalSecretsSecrets = {
             default = "Opaque"
         }
     }
+    required = ["fromSecret", "toSecret", "toNamespace"]
 }
 
 creds = {
@@ -201,4 +213,5 @@ creds = {
             itemsType = "string"
         }
     }
+    required = ["name", "namespace", "keys"]
 }

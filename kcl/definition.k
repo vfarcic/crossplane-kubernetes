@@ -1,5 +1,14 @@
 import .data
 
+_data = lambda _data: any -> any {
+    {
+        description = _data.description
+        type = _data.type
+        properties = _properties(_data.properties)
+        required = _data.required
+    }
+}
+
 _properties = lambda properties: any -> any {
     {
         key = {
@@ -14,7 +23,6 @@ _properties = lambda properties: any -> any {
         } for key, value in properties
     }
 }
-
 
 apiVersion = "apiextensions.crossplane.io/v1"
 kind = "CompositeResourceDefinition"
@@ -43,74 +51,36 @@ spec = {
                                 type = "string"
                                 description = "ID of this Cluster that other objects can refer."
                             }
-                            parameters = {
-                                description = data.root.description
-                                type = data.root.type
-                                properties = _properties(data.root.properties)
-                                properties.usage = {
-                                    description = data.usage.description
-                                    type = data.usage.type
-                                    properties = _properties(data.usage.properties)
-                                }
-                                properties.apps = {
-                                    type = "object"
-                                    description = "List of apps that should be installed in the cluster"
-                                    properties = {
-                                        crossplane = {
-                                            description = data.appCrossplane.description
-                                            type = data.appCrossplane.type
-                                            properties = _properties(data.appCrossplane.properties)
-                                        }
-                                        argocd = {
-                                            description = data.appArgocd.description
-                                            type = data.appArgocd.type
-                                            properties = _properties(data.appArgocd.properties)
-                                        }
-                                        openfunction = {
-                                            description = data.appOpenfunction.description
-                                            type = data.appOpenfunction.type
-                                            properties = _properties(data.appOpenfunction.properties)
-                                        }
-                                        dapr = {
-                                            description = data.appDapr.description
-                                            type = data.appDapr.type
-                                            properties = _properties(data.appDapr.properties)
-                                        }
-                                        traefik = {
-                                            description = data.appTraefik.description
-                                            type = data.appTraefik.type
-                                            properties = _properties(data.appTraefik.properties)
-                                        }
-                                        dynatrace = {
-                                            description = data.appDynatrace.description
-                                            type = data.appDynatrace.type
-                                            properties = _properties(data.appDynatrace.properties)
-                                        }
-                                        externalSecrets = {
-                                            description = data.appExternalSecrets.description
-                                            type = data.appExternalSecrets.type
-                                            properties = _properties(data.appExternalSecrets.properties)
-                                            properties.secrets = {
-                                                description = data.appExternalSecretsSecrets.description
-                                                type = data.appExternalSecretsSecrets.type
-                                                items = {
-                                                    type = "object"
-                                                    properties = _properties(data.appExternalSecretsSecrets.properties)
-                                                    required = ["fromSecret", "toSecret", "toNamespace"]
-                                                }
+                            parameters = _data(data.root)
+                            parameters.properties.usage = _data(data.usage)
+                            parameters.properties.apps = {
+                                type = "object"
+                                description = "List of apps that should be installed in the cluster"
+                                properties = {
+                                    crossplane = _data(data.appCrossplane)
+                                    argocd = _data(data.appArgocd)
+                                    openfunction = _data(data.appOpenfunction)
+                                    dapr = _data(data.appDapr)
+                                    traefik = _data(data.appTraefik)
+                                    dynatrace = _data(data.appDynatrace)
+                                    externalSecrets = {
+                                        description = data.appExternalSecrets.description
+                                        type = data.appExternalSecrets.type
+                                        properties = _properties(data.appExternalSecrets.properties)
+                                        properties.secrets = {
+                                            description = data.appExternalSecretsSecrets.description
+                                            type = data.appExternalSecretsSecrets.type
+                                            items = {
+                                                type = "object"
+                                                properties = _properties(data.appExternalSecretsSecrets.properties)
+                                                required = data.appExternalSecretsSecrets.required
                                             }
                                         }
                                     }
+                                }
 
-                                }
-                                properties.creds = {
-                                    description = data.creds.description
-                                    type = data.creds.type
-                                    properties = _properties(data.creds.properties)
-                                    required = ["name", "namespace", "keys"]
-                                }
-                                required = ["nodeSize"]
                             }
+                            parameters.properties.creds = _data(data.creds)
                         }
                         required = ["id", "parameters"]
                     }

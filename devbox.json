@@ -14,7 +14,7 @@
     "yq-go@4.43.1",
     "crossplane-cli@1.15.2",
     "viddy@0.4.0",
-    "kcl-cli@0.8.7",
+    "kcl-cli@0.8.9",
     "path:gcloud#google-cloud-sdk",
     "zellij@0.40.1",
     "teller@2.0.7",

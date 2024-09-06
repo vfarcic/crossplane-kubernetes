@@ -9,6 +9,7 @@ package-generate:
   kcl run kcl/crossplane.k > package/crossplane.yaml
   kcl run kcl/definition.k > package/definition.yaml
   kcl run kcl/compositions.k > package/compositions.yaml
+  kcl run kcl/backstage-template.k > backstage/crossplane-kubernetes.yaml
 
 # Applies Compositions and Composite Resource Definition.
 package-apply:

@@ -41,6 +41,7 @@ spec:
                   nodeSize:
                     description: The size of the nodes; small, medium, large.
                     type: string
+                    default: small
                   minNodeCount:
                     description: The minimum number of nodes.
                     type: integer
@@ -60,6 +61,7 @@ spec:
                       enabled:
                         type: boolean
                         default: false
+                    required: []
                   apps:
                     type: object
                     description: List of apps that should be installed in the cluster
@@ -71,6 +73,7 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                        required: []
                       argocd:
                         description: Install Argo CD
                         type: object
@@ -90,6 +93,7 @@ spec:
                           sourcePath:
                             type: string
                             default: '.'
+                        required: []
                       openfunction:
                         description: Install OpenFunction
                         type: object
@@ -97,6 +101,7 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                        required: []
                       dapr:
                         description: Install Dapr. Do not enable it if OpenFunction is enabled since it comes with Dapr.
                         type: object
@@ -104,6 +109,7 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                        required: []
                       traefik:
                         description: Install Traefik.
                         type: object
@@ -111,6 +117,7 @@ spec:
                           enabled:
                             type: boolean
                             default: false
+                        required: []
                       dynatrace:
                         description: Install Dynatrace operator. A secret `dynatrace` with tokens musts exist in the `dynatrace` Namespace.
                         type: object
@@ -124,6 +131,7 @@ spec:
                           oathCredentialsSecretName:
                             description: The name of the secret with the OAuth credentials for the Dynatrace API.
                             type: string
+                        required: []
                       externalSecrets:
                         description: Install External Secrets Operator (ESO)
                         type: object
