@@ -167,3 +167,7 @@ spec:
       gitCommitMessage: Kubernetes cluster
       title: Kubernetes cluster manifest ${{ parameters.name }}
       description: This pull request creates the cluster-claim-${{ parameters.name }}.yaml Kubernetes cluster manifest
+  output:
+    links:
+    - title: Pull Request
+      url: ${{ steps['create-pull-request'].output.remoteUrl }}

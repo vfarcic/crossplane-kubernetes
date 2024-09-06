@@ -131,14 +131,14 @@ spec = {
             description: "This pull request creates the cluster-claim-$[[ parameters.name ]].yaml Kubernetes cluster manifest".replace("[[", "{{").replace("]]", "}}")
         }
     }]
-    # output = {
-    #     links = [{
-    #         title = "Repository"
-    #         url = "${{ steps['publish'].output.remoteUrl }}"
+    output = {
+        links = [{
+            title = "Pull Request"
+            url = "$[[ steps['create-pull-request'].output.remoteUrl ]]".replace("[[", "{{").replace("]]", "}}")
     #     }, {
     #         title = "Open in catalog"
     #         icon = "catalog"
     #         entityRef = "${{ steps['register'].output.entityRef }}"
-    #     }]
-    # }
+        }]
+    }
 }
