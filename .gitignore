@@ -7,3 +7,4 @@
 /azure-creds.json
 /.task
 /.kclvm
+/.env
