@@ -4,4 +4,4 @@ kind: Function
 metadata:
   name: crossplane-contrib-function-kcl
 spec:
-  package: xpkg.upbound.io/crossplane-contrib/function-kcl:v0.10.8
+  package: xpkg.upbound.io/crossplane-contrib/function-kcl:v0.10.9
