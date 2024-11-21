@@ -4,5 +4,5 @@ kind: Provider
 metadata:
   name: provider-gcp-container
 spec:
-  package: xpkg.upbound.io/upbound/provider-gcp-container:v1.9.0
+  package: xpkg.upbound.io/upbound/provider-gcp-container:v1.10.0
 ---
