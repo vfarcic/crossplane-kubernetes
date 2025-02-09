@@ -5,7 +5,7 @@
     "upbound@0.37.0",
     "kubernetes-helm@3.17.0",
     "kyverno-chainsaw@0.2.12",
-    "just@1.25.2",
+    "just@1.39.0",
     "jq@1.7.1",
     "gum@0.15.1",
     "yq-go@4.43.1",
