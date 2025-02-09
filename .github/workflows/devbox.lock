@@ -541,51 +541,51 @@
         }
       }
     },
-    "kyverno-chainsaw@0.2.5": {
-      "last_modified": "2024-07-07T16:08:25Z",
-      "resolved": "github:NixOS/nixpkgs/ab82a9612aa45284d4adf69ee81871a389669a9e#kyverno-chainsaw",
+    "kyverno-chainsaw@0.2.12": {
+      "last_modified": "2025-01-19T08:16:51Z",
+      "resolved": "github:NixOS/nixpkgs/50165c4f7eb48ce82bd063e1fb8047a0f515f8ce#kyverno-chainsaw",
       "source": "devbox-search",
-      "version": "0.2.5",
+      "version": "0.2.12",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/31cdmlp5mih539314lwxq44arzzzxhb3-kyverno-chainsaw-0.2.5",
+              "path": "/nix/store/v1vh5z91ypsyyb0abh5rqxd5hidhyj0f-kyverno-chainsaw-0.2.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/31cdmlp5mih539314lwxq44arzzzxhb3-kyverno-chainsaw-0.2.5"
+          "store_path": "/nix/store/v1vh5z91ypsyyb0abh5rqxd5hidhyj0f-kyverno-chainsaw-0.2.12"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ny9vfpznq4vg04a0sjf3g1h8alrc7rd3-kyverno-chainsaw-0.2.5",
+              "path": "/nix/store/8jmh6faqwbx5g2wyj8czvl5n14gfpxx9-kyverno-chainsaw-0.2.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/ny9vfpznq4vg04a0sjf3g1h8alrc7rd3-kyverno-chainsaw-0.2.5"
+          "store_path": "/nix/store/8jmh6faqwbx5g2wyj8czvl5n14gfpxx9-kyverno-chainsaw-0.2.12"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/iylxcnrm2hak9z3khir29radj7m2az70-kyverno-chainsaw-0.2.5",
+              "path": "/nix/store/mfi7c8ky8kwy1pj37hpamkwr2m6px461-kyverno-chainsaw-0.2.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/iylxcnrm2hak9z3khir29radj7m2az70-kyverno-chainsaw-0.2.5"
+          "store_path": "/nix/store/mfi7c8ky8kwy1pj37hpamkwr2m6px461-kyverno-chainsaw-0.2.12"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/mbcx1lql6g40bp8sim2vq87hlgdam5ba-kyverno-chainsaw-0.2.5",
+              "path": "/nix/store/q9znv398daff24b5hr7x5qgx9iyf6ip8-kyverno-chainsaw-0.2.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/mbcx1lql6g40bp8sim2vq87hlgdam5ba-kyverno-chainsaw-0.2.5"
+          "store_path": "/nix/store/q9znv398daff24b5hr7x5qgx9iyf6ip8-kyverno-chainsaw-0.2.12"
         }
       }
     },
