@@ -1,6 +1,6 @@
 {
   "packages": [
-    "kind@0.22.0",
+    "kind@0.26.0",
     "kubectl@1.32.1",
     "upbound@0.24.1",
     "kubernetes-helm@3.14.1",
