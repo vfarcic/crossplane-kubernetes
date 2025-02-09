@@ -4,7 +4,7 @@
     "kubectl@1.29.2",
     "upbound@0.24.1",
     "kubernetes-helm@3.14.1",
-    "kyverno-chainsaw@0.2.5",
+    "kyverno-chainsaw@0.2.12",
     "just@1.25.2",
     "jq@1.7.1",
     "gum@0.13.0",
