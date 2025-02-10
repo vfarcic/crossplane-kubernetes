@@ -16,7 +16,6 @@
     "viddy@1.3.0",
     "kcl-cli@0.8.9",
     "path:gcloud#google-cloud-sdk",
-    "zellij@0.41.2",
     "teller@2.0.7",
     "awscli2@2.23.11",
     "nushell@0.102.0",
@@ -33,7 +32,6 @@
       "package-publish": ["just package-publish"],
       "test":            ["just test"],
       "test-watch":      ["just test-watch"],
-      "test-env":        ["zellij --session crossplane-gh --layout test-layout.kdl"]
     }
   }
 }
