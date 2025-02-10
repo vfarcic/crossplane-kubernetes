@@ -24,6 +24,9 @@ _items = [{
     spec.forProvider: {
         region = "us-east-1"
         computeConfig = [{ enabled = True }]
+        storageConfig = [{
+            blockStorage = [{ enabled = True }]
+        }]
         bootstrapSelfManagedAddons = True
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version

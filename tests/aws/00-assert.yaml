@@ -505,6 +505,9 @@ spec:
     region: us-east-1
     computeConfig:
     - enabled: true
+    storageConfig:
+    - blockStorage:
+      - enabled: true
     bootstrapSelfManagedAddons: true
     roleArnSelector:
       matchControllerRef: true
