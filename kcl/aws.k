@@ -30,7 +30,7 @@ _items = [{
         kubernetesNetworkConfig = [{
             elasticLoadBalancing = [{ enabled = True }]
         }]
-        bootstrapSelfManagedAddons = True
+        bootstrapSelfManagedAddons = False
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version
         else:

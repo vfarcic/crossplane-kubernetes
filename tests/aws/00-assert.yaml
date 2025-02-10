@@ -511,7 +511,7 @@ spec:
     kubernetesNetworkConfig:
     - elasticLoadBalancing:
       - enabled: true
-    bootstrapSelfManagedAddons: true
+    bootstrapSelfManagedAddons: false
     roleArnSelector:
       matchControllerRef: true
       matchLabels:
