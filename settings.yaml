@@ -1,3 +1,4 @@
 hyperscaler: aws
 github:
   user: vfarcic
+cluster: eks
