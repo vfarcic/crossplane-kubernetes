@@ -4,9 +4,9 @@ do --ignore-errors {
 
     kubectl --namespace a-team delete --filename examples/aws-eks.yaml
 
-}
+    kubectl delete release a-team-app-traefik
 
-kubectl delete release a-team-app-traefik
+}
 
 mut counter = 999; loop {
     $counter = ( kubectl get managed | detect columns | length )

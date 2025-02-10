@@ -508,6 +508,9 @@ spec:
     storageConfig:
     - blockStorage:
       - enabled: true
+    kubernetesNetworkConfig:
+    - elasticLoadBalancing:
+      - enabled: true
     bootstrapSelfManagedAddons: true
     roleArnSelector:
       matchControllerRef: true

@@ -27,6 +27,9 @@ _items = [{
         storageConfig = [{
             blockStorage = [{ enabled = True }]
         }]
+        kubernetesNetworkConfig = [{
+            elasticLoadBalancing = [{ enabled = True }]
+        }]
         bootstrapSelfManagedAddons = True
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version
