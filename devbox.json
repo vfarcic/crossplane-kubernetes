@@ -31,7 +31,7 @@
       "cluster-destroy": ["just cluster-destroy"],
       "package-publish": ["just package-publish"],
       "test":            ["just test"],
-      "test-watch":      ["just test-watch"],
+      "test-watch":      ["just test-watch"]
     }
   }
 }
