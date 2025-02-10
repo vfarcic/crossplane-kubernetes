@@ -24,11 +24,11 @@ do --ignore-errors {
     let github_user = open settings.yaml
         | get github.user
 
-    start $"https://github.com/($github_user)/crossplane-kubernetes-gitops"
+    # start $"https://github.com/($github_user)/crossplane-kubernetes-gitops"
+
+#     print $"
+#     (ansi green_bold)Delete the repository and press the enter key to continue.(ansi reset)
+# "
+#     input
     
 }
-
-print $"
-(ansi green_bold)Delete the repository and press the enter key to continue.(ansi reset)
-"
-input
