@@ -1,4 +1,4 @@
-# Google GKE Example
+# AWS EKS Example
 
 ## Setup
 
@@ -8,8 +8,6 @@
 
 ```sh
 devbox shell
-
-nu
 
 chmod +x examples/setup.nu
 

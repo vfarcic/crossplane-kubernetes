@@ -23,6 +23,7 @@ _items = [{
     metadata = _metadata("", "ekscluster", "")
     spec.forProvider: {
         region = "us-east-1"
+        computeConfig = [{ enabled = True }]
         bootstrapSelfManagedAddons = True
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version
@@ -50,34 +51,6 @@ _items = [{
         writeConnectionSecretToRef = {
             name = oxr.spec.id + "-cluster"
             namespace = oxr.spec.claimRef.namespace
-        }
-    }
-}, {
-    apiVersion = "eks.aws.upbound.io/v1beta1"
-    kind = "NodeGroup"
-    metadata = _metadata("", "eksnodegroup", "")
-    spec = {
-        forProvider = {
-            region = "us-east-1"
-            clusterNameSelector.matchControllerRef = True
-            nodeRoleArnSelector = {
-                matchControllerRef = True
-                matchLabels.role = oxr.spec.id + "-nodegroup"
-            }
-            subnetIdSelector.matchControllerRef = True
-            scalingConfig = [{
-                minSize = 1
-                maxSize = 10
-                desiredSize = 1
-                minSize = oxr.spec.parameters.minNodeCount
-                desiredSize = oxr.spec.parameters.minNodeCount
-            }]
-            if oxr.spec.parameters.nodeSize == "small":
-                instanceTypes = ["t3.small"]
-            elif oxr.spec.parameters.nodeSize == "medium":
-                instanceTypes = ["t3.medium"]
-            else:
-                instanceTypes = ["t3.large"]
         }
     }
 }, {
@@ -151,21 +124,10 @@ _items = [{
         vpcIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion = "eks.aws.upbound.io/v1beta1"
-    kind = "Addon"
-    metadata = _metadata("ebs", "addonEbs", "")
-    spec.forProvider = {
-        addonName = "aws-ebs-csi-driver"
-        region = "us-east-1"
-        clusterNameSelector.matchControllerRef = True
-    }
-}, {
     **oxr
     status.clusterName = oxr.spec.id
     if oxr.spec.id + "-cluster" in ocds:
         status.controlPlaneStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
-    if oxr.spec.id + "-node-group" in ocds:
-        status.nodePoolStatus = ocds[oxr.spec.id + "-node-group"].Resource.status.conditions[0].reason
 }]
 
 _zones = [
