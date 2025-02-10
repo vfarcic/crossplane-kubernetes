@@ -4,9 +4,9 @@ def main [--gitopsrepo: string] {
 
     touch .env
 
-    kind create cluster
-
     let hyperscaler = get-hyperscaler
+
+    kind create cluster
 
     (
         helm upgrade --install crossplane crossplane
