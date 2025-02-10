@@ -31,6 +31,9 @@ _items = [{
             elasticLoadBalancing = [{ enabled = True }]
         }]
         bootstrapSelfManagedAddons = False
+        accessConfig = [{
+            authenticationMode = "API"
+        }]
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version
         else:
