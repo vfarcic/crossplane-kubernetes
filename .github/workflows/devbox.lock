@@ -313,51 +313,51 @@
         }
       }
     },
-    "kcl-cli@0.8.7": {
-      "last_modified": "2024-05-03T15:42:32Z",
-      "resolved": "github:NixOS/nixpkgs/5fd8536a9a5932d4ae8de52b7dc08d92041237fc#kcl-cli",
+    "kcl-cli@0.8.9": {
+      "last_modified": "2024-06-12T20:55:33Z",
+      "resolved": "github:NixOS/nixpkgs/a9858885e197f984d92d7fe64e9fff6b2e488d40#kcl-cli",
       "source": "devbox-search",
-      "version": "0.8.7",
+      "version": "0.8.9",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/5w4iwdxas8p7l0fl0yp70jhsbmi1n1gg-kcl-cli-0.8.7",
+              "path": "/nix/store/ry8c4a6x9nbbsmaj2lj1irlgmcs7smdl-kcl-cli-0.8.9",
               "default": true
             }
           ],
-          "store_path": "/nix/store/5w4iwdxas8p7l0fl0yp70jhsbmi1n1gg-kcl-cli-0.8.7"
+          "store_path": "/nix/store/ry8c4a6x9nbbsmaj2lj1irlgmcs7smdl-kcl-cli-0.8.9"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/i935ryvdhylpsmpfqzhkzxqbiz8vqp2f-kcl-cli-0.8.7",
+              "path": "/nix/store/58ifnm27y99m1w0rgpzmhrbcmxndk523-kcl-cli-0.8.9",
               "default": true
             }
           ],
-          "store_path": "/nix/store/i935ryvdhylpsmpfqzhkzxqbiz8vqp2f-kcl-cli-0.8.7"
+          "store_path": "/nix/store/58ifnm27y99m1w0rgpzmhrbcmxndk523-kcl-cli-0.8.9"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/l3vl5najx3p6kw70x68r843zxv7d83br-kcl-cli-0.8.7",
+              "path": "/nix/store/2pkcszc6208v05wl3q3l00mkv4am7v2l-kcl-cli-0.8.9",
               "default": true
             }
           ],
-          "store_path": "/nix/store/l3vl5najx3p6kw70x68r843zxv7d83br-kcl-cli-0.8.7"
+          "store_path": "/nix/store/2pkcszc6208v05wl3q3l00mkv4am7v2l-kcl-cli-0.8.9"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/l7j2ic66hvnr5aarcz88cv4icgigza7n-kcl-cli-0.8.7",
+              "path": "/nix/store/dvj111276zx6mimvcpfars11gwq071nl-kcl-cli-0.8.9",
               "default": true
             }
           ],
-          "store_path": "/nix/store/l7j2ic66hvnr5aarcz88cv4icgigza7n-kcl-cli-0.8.7"
+          "store_path": "/nix/store/dvj111276zx6mimvcpfars11gwq071nl-kcl-cli-0.8.9"
         }
       }
     },
