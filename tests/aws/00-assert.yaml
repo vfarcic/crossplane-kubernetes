@@ -513,7 +513,7 @@ spec:
       - enabled: true
     bootstrapSelfManagedAddons: false
     accessConfig:
-    - authenticationMode: API
+    - authenticationMode: API_AND_CONFIG_MAP
     roleArnSelector:
       matchControllerRef: true
       matchLabels:
