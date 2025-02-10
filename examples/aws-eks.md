@@ -43,10 +43,8 @@ crossplane beta trace clusterclaim a-team --namespace a-team
 ## Simple Cluster (cont.)
 
 ```sh
-(
-    aws eks update-kubeconfig --region us-east-1 --name a-team
-        --kubeconfig kubeconfig.yaml
-)
+aws eks update-kubeconfig --region us-east-1 --name a-team \
+    --kubeconfig kubeconfig.yaml
 
 kubectl --kubeconfig kubeconfig.yaml get namespaces
 

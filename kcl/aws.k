@@ -32,7 +32,7 @@ _items = [{
         }]
         bootstrapSelfManagedAddons = False
         accessConfig = [{
-            authenticationMode = "API"
+            authenticationMode = "API_AND_CONFIG_MAP"
         }]
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version

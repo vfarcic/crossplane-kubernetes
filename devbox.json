@@ -17,9 +17,9 @@
     "kcl-cli@0.8.9",
     "path:gcloud#google-cloud-sdk",
     "teller@2.0.7",
+    "azure-cli@2.68.0",
     "awscli2@2.23.11",
-    "nushell@0.102.0",
-    "azure-cli@2.68.0"
+    "nushell@0.102.0"
   ],
   "shell": {
     "init_hook": [
