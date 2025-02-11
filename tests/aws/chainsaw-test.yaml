@@ -22,6 +22,10 @@ spec:
         - assert:
             file: ../common/assert-install.yaml
         - apply:
+            file: 01-update.yaml
+        - assert:
+            file: 01-assert.yaml
+        - apply:
             file: 02-apps-crossplane.yaml
         - assert:
             file: ../common/assert-crossplane.yaml

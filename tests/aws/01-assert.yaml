@@ -1,0 +1,36 @@
+---
+apiVersion: eks.aws.upbound.io/v1beta1
+kind: NodeGroup
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: eksnodegroup
+    crossplane.io/external-name: a-team-eks
+  labels:
+    crossplane.io/claim-name: a-team-eks
+  name: a-team-eks
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    clusterNameSelector:
+      matchControllerRef: true
+    instanceTypes:
+    - t3.small
+    nodeRoleArnSelector:
+      matchControllerRef: true
+      matchLabels:
+        role: a-team-eks-nodegroup
+    region: us-east-1
+    scalingConfig:
+    - desiredSize: 5
+      maxSize: 10
+      minSize: 5
+    subnetIdSelector:
+      matchControllerRef: true
+  providerConfigRef:
+    name: default
+

@@ -79,10 +79,16 @@ spec:
     kind: VPC
     name: a-team-eks
   - apiVersion: eks.aws.upbound.io/v1beta1
+    kind: Addon
+    name: a-team-eks-ebs
+  - apiVersion: eks.aws.upbound.io/v1beta1
     kind: ClusterAuth
     name: a-team-eks
   - apiVersion: eks.aws.upbound.io/v1beta1
     kind: Cluster
+    name: a-team-eks
+  - apiVersion: eks.aws.upbound.io/v1beta1
+    kind: NodeGroup
     name: a-team-eks
   - apiVersion: helm.crossplane.io/v1beta1
     kind: ProviderConfig
@@ -460,6 +466,32 @@ spec:
     name: default
 ---
 apiVersion: eks.aws.upbound.io/v1beta1
+kind: Addon
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: addonEbs
+  labels:
+    crossplane.io/claim-name: a-team-eks
+  name: a-team-eks-ebs
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    addonName: aws-ebs-csi-driver
+    clusterName: a-team-eks
+    clusterNameRef:
+      name: a-team-eks
+    clusterNameSelector:
+      matchControllerRef: true
+    region: us-east-1
+  providerConfigRef:
+    name: default
+---
+apiVersion: eks.aws.upbound.io/v1beta1
 kind: ClusterAuth
 metadata:
   annotations:
@@ -503,17 +535,7 @@ spec:
   deletionPolicy: Delete
   forProvider:
     region: us-east-1
-    computeConfig:
-    - enabled: true
-    storageConfig:
-    - blockStorage:
-      - enabled: true
-    kubernetesNetworkConfig:
-    - elasticLoadBalancing:
-      - enabled: true
-    bootstrapSelfManagedAddons: false
-    accessConfig:
-    - authenticationMode: API_AND_CONFIG_MAP
+    bootstrapSelfManagedAddons: true
     roleArnSelector:
       matchControllerRef: true
       matchLabels:
@@ -524,6 +546,46 @@ spec:
       endpointPublicAccess: true
       subnetIdSelector:
         matchControllerRef: true
+  providerConfigRef:
+    name: default
+---
+apiVersion: eks.aws.upbound.io/v1beta1
+kind: NodeGroup
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: eksnodegroup
+    crossplane.io/external-name: a-team-eks
+  labels:
+    crossplane.io/claim-name: a-team-eks
+  name: a-team-eks
+  ownerReferences:
+  - apiVersion: devopstoolkitseries.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: CompositeCluster
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    clusterNameSelector:
+      matchControllerRef: true
+    instanceTypes:
+    - t3.medium
+    nodeRoleArnSelector:
+      matchControllerRef: true
+      matchLabels:
+        role: a-team-eks-nodegroup
+    region: us-east-1
+    scalingConfig:
+    - desiredSize: 3
+      maxSize: 10
+      minSize: 3
+    subnetIdSelector:
+      matchControllerRef: true
+      # TODO: Uncomment
+    # taint:
+    #   - effect: NO_EXECUTE
+    #     key: node.cilium.io/agent-not-ready
+    #     value: "true"
   providerConfigRef:
     name: default
 ---
