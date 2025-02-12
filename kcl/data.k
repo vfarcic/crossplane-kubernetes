@@ -115,25 +115,6 @@ appTraefik = {
     required = []
 }
 
-appDynatrace = {
-    type = "object"
-    description = "Install Dynatrace operator. A secret `dynatrace` with tokens musts exist in the `dynatrace` Namespace."
-    properties = {
-        enabled = {
-            type = "boolean"
-            default = False
-        }
-        apiUrl = {
-            type = "string"
-            description = "The URL of the Dynatrace API"
-        }
-        oathCredentialsSecretName = {
-            description = "The name of the secret with the OAuth credentials for the Dynatrace API."
-            type = "string"
-        }
-    }
-    required = []
-}
 
 appExternalSecrets = {
     type = "object"

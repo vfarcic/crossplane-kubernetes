@@ -62,7 +62,6 @@ spec = {
                                     openfunction = _data(data.appOpenfunction)
                                     dapr = _data(data.appDapr)
                                     traefik = _data(data.appTraefik)
-                                    dynatrace = _data(data.appDynatrace)
                                     externalSecrets = {
                                         description = data.appExternalSecrets.description
                                         type = data.appExternalSecrets.type

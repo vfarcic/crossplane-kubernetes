@@ -106,8 +106,6 @@ spec:
           argocd = "3.35.4"
           dapr = "1.12.4"
           traefik = "26.0.0"
-          dynatraceOperator = "0.15.0"
-          dynatraceDashboard = "0.2.2"
           externalSecrets = "0.9.11"
           cilium = "1.14.2"
           openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
@@ -457,75 +455,6 @@ spec:
                   if oxr.spec.parameters?.usage?.enabled:
                       usage { _nameSuffix = "traefik", _kind = "Release" }
 
-              if oxr.spec.parameters?.apps?.dynatrace?.enabled:
-                  chart {
-                      _name = "dynatrace-operator"
-                      _chartRepository = "https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable"
-                      _chartVersion = dynatraceOperator
-                      _namespace = "dynatrace"
-                      _values = {
-                          installCRD = True
-                          csidriver.enabled = True
-                      }
-                  }
-                  object {
-                      _name = "dynakube"
-                      _manifest = {
-                          apiVersion = "dynatrace.com/v1beta1"
-                          kind = "DynaKube"
-                          metadata = {
-                              name = oxr.spec.id
-                              namespace = "dynatrace"
-                              annotations = {
-                                  "feature.dynatrace.com/k8s-app-enabled" = "true"
-                              }
-                          }
-                          spec = {
-                              apiUrl = oxr.spec.parameters.apps.dynatrace.apiUrl
-                              oneAgent.cloudNativeFullStack.image = ""
-                              activeGate = {
-                                  capabilities = [
-                                      "kubernetes-monitoring"
-                                      "routing"
-                                      "metrics-ingest"
-                                      "dynatrace-api"
-                                  ]
-                                  image = ""
-                                  resources = {
-                                      requests = {
-                                          cpu = "500m"
-                                          memory = "512Mi"
-                                      }
-                                      limits = {
-                                          cpu = "1000m"
-                                          memory = "1.5Gi"
-                                      }
-                                  }
-                              }
-                          }
-                      }
-                  }
-                  chart {
-                      _name = "dynatrace-dashboard"
-                      _chartName = "kubernetes-cluster"
-                      _chartRepository = "https://katharinasick.github.io/crossplane-observability-demo-dynatrace"
-                      _chartVersion = dynatraceDashboard
-                      _namespace = "dynatrace"
-                      _values = {
-                          oauthCredentialsSecretName = oxr.spec.parameters.apps.dynatrace.oathCredentialsSecretName
-                          cluster = oxr.spec.id
-                          dashboards = {
-                              clusterOverview.enabled = True
-                              crossplaneMetrics.enabled = False
-                          }
-                      }
-                      _providerConfigRefName = oxr.spec.id + "-local"
-                  }
-                  if oxr.spec.parameters?.usage?.enabled:
-                      usage { _nameSuffix = "dynatrace-operator", _kind = "Release" }
-                      usage { _nameSuffix = "dynakube" }
-                      usage { _nameSuffix = "dynatrace-dashboard", _kind = "Release" }
-
               if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
                   chart {
                       _name = "external-secrets"
@@ -792,8 +721,6 @@ spec:
           argocd = "3.35.4"
           dapr = "1.12.4"
           traefik = "26.0.0"
-          dynatraceOperator = "0.15.0"
-          dynatraceDashboard = "0.2.2"
           externalSecrets = "0.9.11"
           cilium = "1.14.2"
           openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
@@ -1142,75 +1069,6 @@ spec:
                   }
                   if oxr.spec.parameters?.usage?.enabled:
                       usage { _nameSuffix = "traefik", _kind = "Release" }
-
-              if oxr.spec.parameters?.apps?.dynatrace?.enabled:
-                  chart {
-                      _name = "dynatrace-operator"
-                      _chartRepository = "https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable"
-                      _chartVersion = dynatraceOperator
-                      _namespace = "dynatrace"
-                      _values = {
-                          installCRD = True
-                          csidriver.enabled = True
-                      }
-                  }
-                  object {
-                      _name = "dynakube"
-                      _manifest = {
-                          apiVersion = "dynatrace.com/v1beta1"
-                          kind = "DynaKube"
-                          metadata = {
-                              name = oxr.spec.id
-                              namespace = "dynatrace"
-                              annotations = {
-                                  "feature.dynatrace.com/k8s-app-enabled" = "true"
-                              }
-                          }
-                          spec = {
-                              apiUrl = oxr.spec.parameters.apps.dynatrace.apiUrl
-                              oneAgent.cloudNativeFullStack.image = ""
-                              activeGate = {
-                                  capabilities = [
-                                      "kubernetes-monitoring"
-                                      "routing"
-                                      "metrics-ingest"
-                                      "dynatrace-api"
-                                  ]
-                                  image = ""
-                                  resources = {
-                                      requests = {
-                                          cpu = "500m"
-                                          memory = "512Mi"
-                                      }
-                                      limits = {
-                                          cpu = "1000m"
-                                          memory = "1.5Gi"
-                                      }
-                                  }
-                              }
-                          }
-                      }
-                  }
-                  chart {
-                      _name = "dynatrace-dashboard"
-                      _chartName = "kubernetes-cluster"
-                      _chartRepository = "https://katharinasick.github.io/crossplane-observability-demo-dynatrace"
-                      _chartVersion = dynatraceDashboard
-                      _namespace = "dynatrace"
-                      _values = {
-                          oauthCredentialsSecretName = oxr.spec.parameters.apps.dynatrace.oathCredentialsSecretName
-                          cluster = oxr.spec.id
-                          dashboards = {
-                              clusterOverview.enabled = True
-                              crossplaneMetrics.enabled = False
-                          }
-                      }
-                      _providerConfigRefName = oxr.spec.id + "-local"
-                  }
-                  if oxr.spec.parameters?.usage?.enabled:
-                      usage { _nameSuffix = "dynatrace-operator", _kind = "Release" }
-                      usage { _nameSuffix = "dynakube" }
-                      usage { _nameSuffix = "dynatrace-dashboard", _kind = "Release" }
 
               if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
                   chart {
@@ -1691,8 +1549,6 @@ spec:
           argocd = "3.35.4"
           dapr = "1.12.4"
           traefik = "26.0.0"
-          dynatraceOperator = "0.15.0"
-          dynatraceDashboard = "0.2.2"
           externalSecrets = "0.9.11"
           cilium = "1.14.2"
           openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
@@ -2041,75 +1897,6 @@ spec:
                   }
                   if oxr.spec.parameters?.usage?.enabled:
                       usage { _nameSuffix = "traefik", _kind = "Release" }
-
-              if oxr.spec.parameters?.apps?.dynatrace?.enabled:
-                  chart {
-                      _name = "dynatrace-operator"
-                      _chartRepository = "https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable"
-                      _chartVersion = dynatraceOperator
-                      _namespace = "dynatrace"
-                      _values = {
-                          installCRD = True
-                          csidriver.enabled = True
-                      }
-                  }
-                  object {
-                      _name = "dynakube"
-                      _manifest = {
-                          apiVersion = "dynatrace.com/v1beta1"
-                          kind = "DynaKube"
-                          metadata = {
-                              name = oxr.spec.id
-                              namespace = "dynatrace"
-                              annotations = {
-                                  "feature.dynatrace.com/k8s-app-enabled" = "true"
-                              }
-                          }
-                          spec = {
-                              apiUrl = oxr.spec.parameters.apps.dynatrace.apiUrl
-                              oneAgent.cloudNativeFullStack.image = ""
-                              activeGate = {
-                                  capabilities = [
-                                      "kubernetes-monitoring"
-                                      "routing"
-                                      "metrics-ingest"
-                                      "dynatrace-api"
-                                  ]
-                                  image = ""
-                                  resources = {
-                                      requests = {
-                                          cpu = "500m"
-                                          memory = "512Mi"
-                                      }
-                                      limits = {
-                                          cpu = "1000m"
-                                          memory = "1.5Gi"
-                                      }
-                                  }
-                              }
-                          }
-                      }
-                  }
-                  chart {
-                      _name = "dynatrace-dashboard"
-                      _chartName = "kubernetes-cluster"
-                      _chartRepository = "https://katharinasick.github.io/crossplane-observability-demo-dynatrace"
-                      _chartVersion = dynatraceDashboard
-                      _namespace = "dynatrace"
-                      _values = {
-                          oauthCredentialsSecretName = oxr.spec.parameters.apps.dynatrace.oathCredentialsSecretName
-                          cluster = oxr.spec.id
-                          dashboards = {
-                              clusterOverview.enabled = True
-                              crossplaneMetrics.enabled = False
-                          }
-                      }
-                      _providerConfigRefName = oxr.spec.id + "-local"
-                  }
-                  if oxr.spec.parameters?.usage?.enabled:
-                      usage { _nameSuffix = "dynatrace-operator", _kind = "Release" }
-                      usage { _nameSuffix = "dynakube" }
-                      usage { _nameSuffix = "dynatrace-dashboard", _kind = "Release" }
 
               if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
                   chart {

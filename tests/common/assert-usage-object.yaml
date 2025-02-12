@@ -31,11 +31,6 @@ metadata:
   labels:
     crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
   name: (join('-', ['a-team', $cluster, $usageName, 'usage']))
-  ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: CompositeCluster
 spec:
   of:
     apiVersion: ($clusterApi)

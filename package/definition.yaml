@@ -118,20 +118,6 @@ spec:
                             type: boolean
                             default: false
                         required: []
-                      dynatrace:
-                        description: Install Dynatrace operator. A secret `dynatrace` with tokens musts exist in the `dynatrace` Namespace.
-                        type: object
-                        properties:
-                          enabled:
-                            type: boolean
-                            default: false
-                          apiUrl:
-                            description: The URL of the Dynatrace API
-                            type: string
-                          oathCredentialsSecretName:
-                            description: The name of the secret with the OAuth credentials for the Dynatrace API.
-                            type: string
-                        required: []
                       externalSecrets:
                         description: Install External Secrets Operator (ESO)
                         type: object

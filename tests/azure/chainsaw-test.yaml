@@ -50,10 +50,6 @@ spec:
         - assert:
             file: ../common/assert-traefik.yaml
         - patch:
-            file: ../common/dynatrace.yaml
-        - assert:
-            file: ../common/assert-dynatrace.yaml
-        - patch:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
@@ -94,21 +90,6 @@ spec:
             bindings:
               - name: usageName
                 value: traefik
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: dynatrace-operator
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: dynakube
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: dynatrace-dashboard
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
