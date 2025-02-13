@@ -20,9 +20,10 @@ jobs:
         run: devbox --config .github/workflows run test
       - name: Publish
         run: |
+          GOBIN=$PWD go install github.com/maykonlsf/semver-cli/cmd/semver@latest
           export UP_TOKEN=${{ secrets.UP_TOKEN }}
           export UP_ACCOUNT=${{ secrets.UP_ACCOUNT }}
-          export VERSION=v0.12.${{ github.run_number }}
+          export VERSION=$(./semver up release)
           devbox --config .github/workflows run package-publish
       - name: Commit changes
         run: |
