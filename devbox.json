@@ -5,7 +5,7 @@
     "kubectl@1.32.2",
     "bat@0.25.0",
     "upbound@0.38.1",
-    "kubernetes-helm@3.17.1",
+    "kubernetes-helm@3.17.2",
     "watchexec@2.3.0",
     "kyverno-chainsaw@0.2.12",
     "just@1.39.0",
