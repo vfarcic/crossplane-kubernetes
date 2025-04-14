@@ -9,7 +9,7 @@
     "jq@1.7.1",
     "gum@0.16.0",
     "yq-go@4.45.1",
-    "crossplane-cli@1.19.0",
+    "crossplane-cli@1.19.1",
     "kcl-cli@0.8.9"
   ],
   "shell": {
