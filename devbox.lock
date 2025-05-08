@@ -1,67 +1,67 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "awscli2@2.25.5": {
-      "last_modified": "2025-04-17T05:47:26Z",
-      "resolved": "github:NixOS/nixpkgs/ebe4301cbd8f81c4f8d3244b3632338bbeb6d49c#awscli2",
+    "awscli2@2.27.2": {
+      "last_modified": "2025-05-06T08:06:31Z",
+      "resolved": "github:NixOS/nixpkgs/1cb1c02a6b1b7cf67e3d7731cbbf327a53da9679#awscli2",
       "source": "devbox-search",
-      "version": "2.25.5",
+      "version": "2.27.2",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/f19mqfqnkfdivnbrs9hb7958gg2ndchr-awscli2-2.25.5",
+              "path": "/nix/store/rkvabcgrxi338cy7j41j0vlz4fbw2zzl-awscli2-2.27.2",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/fzirrn1939qw34hxw3gs4wf6j6r9lin3-awscli2-2.25.5-dist"
+              "path": "/nix/store/h6ja06pxzlz24108mi2h7f4ja2ramnsa-awscli2-2.27.2-dist"
             }
           ],
-          "store_path": "/nix/store/f19mqfqnkfdivnbrs9hb7958gg2ndchr-awscli2-2.25.5"
+          "store_path": "/nix/store/rkvabcgrxi338cy7j41j0vlz4fbw2zzl-awscli2-2.27.2"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/bqi2akxys2qw0z9s6mnffrgzb2wh4wi7-awscli2-2.25.5",
+              "path": "/nix/store/zn1g3i6sy98kay8r8ivhwgaaz8xf2gfh-awscli2-2.27.2",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/0gra9jf2rpzgpkkd3dlm26xd14w39p5l-awscli2-2.25.5-dist"
+              "path": "/nix/store/ljbcfw83lqijfkvaqdl6bqsc7nqrl9px-awscli2-2.27.2-dist"
             }
           ],
-          "store_path": "/nix/store/bqi2akxys2qw0z9s6mnffrgzb2wh4wi7-awscli2-2.25.5"
+          "store_path": "/nix/store/zn1g3i6sy98kay8r8ivhwgaaz8xf2gfh-awscli2-2.27.2"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/hhmma6x9qndpq4gvn3y08vhj5jcc1fgq-awscli2-2.25.5",
+              "path": "/nix/store/h1viahm50a0aj1bkpp4klw4vk32i0i7x-awscli2-2.27.2",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/x89xk75vgbig2607szg6ly9r2z6fdcrk-awscli2-2.25.5-dist"
+              "path": "/nix/store/795zgrffyj78ldixfqrdhx78697mlf6v-awscli2-2.27.2-dist"
             }
           ],
-          "store_path": "/nix/store/hhmma6x9qndpq4gvn3y08vhj5jcc1fgq-awscli2-2.25.5"
+          "store_path": "/nix/store/h1viahm50a0aj1bkpp4klw4vk32i0i7x-awscli2-2.27.2"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/blxfyf81afmimcmikfips2zckj2imjyq-awscli2-2.25.5",
+              "path": "/nix/store/48gb87iri9spjgq072zsk5khq065ss84-awscli2-2.27.2",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/mnx29v04qfm2lh1ri5r6y39afcl1156b-awscli2-2.25.5-dist"
+              "path": "/nix/store/n86davssz7df910sfhvxl624i69c0vxv-awscli2-2.27.2-dist"
             }
           ],
-          "store_path": "/nix/store/blxfyf81afmimcmikfips2zckj2imjyq-awscli2-2.25.5"
+          "store_path": "/nix/store/48gb87iri9spjgq072zsk5khq065ss84-awscli2-2.27.2"
         }
       }
     },
