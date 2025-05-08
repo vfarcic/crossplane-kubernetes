@@ -4,5 +4,5 @@ kind: Provider
 metadata:
   name: provider-azure-containerservice
 spec:
-  package: xpkg.upbound.io/upbound/provider-azure-containerservice:v1.11.4
+  package: xpkg.upbound.io/upbound/provider-azure-containerservice:v1.12.0
 ---
