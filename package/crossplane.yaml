@@ -12,17 +12,17 @@ spec:
   crossplane:
     version: '>=v1.14.0'
   dependsOn:
-  - provider: xpkg.upbound.io/upbound/provider-aws-eks
+  - provider: xpkg.crossplane.io/crossplane-contrib/provider-aws-eks
     version: '>=v1.0.0'
-  - provider: xpkg.upbound.io/upbound/provider-aws-iam
+  - provider: xpkg.crossplane.io/crossplane-contrib/provider-aws-iam
     version: '>=v1.0.0'
-  - provider: xpkg.upbound.io/upbound/provider-aws-ec2
+  - provider: xpkg.crossplane.io/crossplane-contrib/provider-aws-ec2
     version: '>=v1.0.0'
-  - provider: xpkg.upbound.io/upbound/provider-azure-containerservice
+  - provider: xpkg.crossplane.io/crossplane-contrib/provider-azure-containerservice
     version: '>=v1.0.0'
-  - provider: xpkg.upbound.io/upbound/provider-gcp-container
+  - provider: xpkg.crossplane.io/crossplane-contrib/provider-gcp-container
     version: '>=v1.0.0'
-  - function: xpkg.upbound.io/crossplane-contrib/function-auto-ready
+  - function: xpkg.crossplane.io/crossplane-contrib/function-auto-ready
     version: '>=v0.2.1'
-  - function: xpkg.upbound.io/crossplane-contrib/function-kcl
+  - function: xpkg.crossplane.io/crossplane-contrib/function-kcl
     version: '>=v0.10.3'

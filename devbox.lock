@@ -273,6 +273,82 @@
         }
       }
     },
+    "git@2.49.0": {
+      "last_modified": "2025-04-17T05:47:26Z",
+      "resolved": "github:NixOS/nixpkgs/ebe4301cbd8f81c4f8d3244b3632338bbeb6d49c#git",
+      "source": "devbox-search",
+      "version": "2.49.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/s5b9rm8fjxggjak0yl2dkxzswfpzl8p8-git-2.49.0",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/2hygrabh741w0ynwcb6gy2922cx4fnj3-git-2.49.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/s5b9rm8fjxggjak0yl2dkxzswfpzl8p8-git-2.49.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/rs24n34brzvcmgld6mgfg0dd7ynv26pp-git-2.49.0",
+              "default": true
+            },
+            {
+              "name": "debug",
+              "path": "/nix/store/wgki5jsxgg6lxqh98jgbj9dnwv7f68cw-git-2.49.0-debug"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/3h7fnw0qhy92c8iyrv2i64r6wywsnjsa-git-2.49.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/rs24n34brzvcmgld6mgfg0dd7ynv26pp-git-2.49.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/0zv7h6mzrxk0sarvis22imr9nmnmqlpg-git-2.49.0",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/yiy6g5pi9jvp2nzgd4ncfwbhs13nwwz1-git-2.49.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/0zv7h6mzrxk0sarvis22imr9nmnmqlpg-git-2.49.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/z8z1mhfnvw40dwljqazxv0343sv5ds2g-git-2.49.0",
+              "default": true
+            },
+            {
+              "name": "debug",
+              "path": "/nix/store/w547h0xwq9489xnqg1ddqlh1v71xvng8-git-2.49.0-debug"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/rjjf5h1qcwgdxs9w23h6p0bhavgaknyh-git-2.49.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/z8z1mhfnvw40dwljqazxv0343sv5ds2g-git-2.49.0"
+        }
+      }
+    },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "last_modified": "2025-04-13T09:22:33Z",
+      "resolved": "github:NixOS/nixpkgs/18dd725c29603f582cf1900e0d25f9f1063dbf11?lastModified=1744536153&narHash=sha256-awS2zRgF4uTwrOKwwiJcByDzDOdo3Q1rPZbiHQg%2FN38%3D"
+    },
     "gum@0.16.0": {
       "last_modified": "2025-05-06T08:06:31Z",
       "resolved": "github:NixOS/nixpkgs/1cb1c02a6b1b7cf67e3d7731cbbf327a53da9679#gum",
