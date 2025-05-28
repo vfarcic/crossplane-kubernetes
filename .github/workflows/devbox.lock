@@ -1,51 +1,51 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "crossplane-cli@1.19.1": {
-      "last_modified": "2025-03-31T17:23:37Z",
-      "resolved": "github:NixOS/nixpkgs/3eeaa42ef4c19447b48d1c676fe59077dfd0846e#crossplane-cli",
+    "crossplane-cli@1.20.0": {
+      "last_modified": "2025-05-24T21:46:02Z",
+      "resolved": "github:NixOS/nixpkgs/edb3633f9100d9277d1c9af245a4e9337a980c07#crossplane-cli",
       "source": "devbox-search",
-      "version": "1.19.1",
+      "version": "1.20.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/fi31rz4flakngx66f8y7djid3ffmkc2r-crossplane-cli-1.19.1",
+              "path": "/nix/store/qp92q8nijc35f1fhqqw6lbpfj2h2bqz8-crossplane-cli-1.20.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/fi31rz4flakngx66f8y7djid3ffmkc2r-crossplane-cli-1.19.1"
+          "store_path": "/nix/store/qp92q8nijc35f1fhqqw6lbpfj2h2bqz8-crossplane-cli-1.20.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/v3gnwmqykl00gi659gqydgr34jarnzdi-crossplane-cli-1.19.1",
+              "path": "/nix/store/v877870zdg4wh6q4dqhkic1vlvdd088y-crossplane-cli-1.20.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/v3gnwmqykl00gi659gqydgr34jarnzdi-crossplane-cli-1.19.1"
+          "store_path": "/nix/store/v877870zdg4wh6q4dqhkic1vlvdd088y-crossplane-cli-1.20.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/54w7khlgpzvjnwlqq5xq77lass2010fs-crossplane-cli-1.19.1",
+              "path": "/nix/store/h66dvlv0nfw9i163kbd7l25pbqjz66yr-crossplane-cli-1.20.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/54w7khlgpzvjnwlqq5xq77lass2010fs-crossplane-cli-1.19.1"
+          "store_path": "/nix/store/h66dvlv0nfw9i163kbd7l25pbqjz66yr-crossplane-cli-1.20.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/zmfwm3czsaszcaasvlcxi61mwhdwg166-crossplane-cli-1.19.1",
+              "path": "/nix/store/qmdm9gg6v740jnf30ral05mdmaz5x9cf-crossplane-cli-1.20.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/zmfwm3czsaszcaasvlcxi61mwhdwg166-crossplane-cli-1.19.1"
+          "store_path": "/nix/store/qmdm9gg6v740jnf30ral05mdmaz5x9cf-crossplane-cli-1.20.0"
         }
       }
     },
