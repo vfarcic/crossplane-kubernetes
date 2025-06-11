@@ -19,7 +19,7 @@
     "teller@2.0.7",
     "azure-cli@2.73.0",
     "awscli2@2.27.2",
-    "nushell@0.104.0",
+    "nushell@0.104.1",
     "git@2.49.0"
   ],
   "shell": {
