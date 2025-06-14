@@ -3,7 +3,7 @@
     "kind@0.27.0",
     "kubectl@1.33.1",
     "upbound@0.39.0",
-    "kubernetes-helm@3.17.3",
+    "kubernetes-helm@3.18.2",
     "kyverno-chainsaw@0.2.12",
     "just@1.40.0",
     "jq@1.7.1",
