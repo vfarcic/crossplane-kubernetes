@@ -1081,51 +1081,51 @@
         }
       }
     },
-    "watchexec@2.3.1": {
-      "last_modified": "2025-05-16T20:19:48Z",
-      "resolved": "github:NixOS/nixpkgs/12a55407652e04dcf2309436eb06fef0d3713ef3#watchexec",
+    "watchexec@2.3.2": {
+      "last_modified": "2025-06-05T08:10:37Z",
+      "resolved": "github:NixOS/nixpkgs/ec62ae342c340d24289735e31eb9155261cd5fe7#watchexec",
       "source": "devbox-search",
-      "version": "2.3.1",
+      "version": "2.3.2",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/jnym7b7mkqp954axgpr5nq1lgs0pqjak-watchexec-2.3.1",
+              "path": "/nix/store/h00xs711s683frk7ahjm96mxdh0vimhl-watchexec-2.3.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/jnym7b7mkqp954axgpr5nq1lgs0pqjak-watchexec-2.3.1"
+          "store_path": "/nix/store/h00xs711s683frk7ahjm96mxdh0vimhl-watchexec-2.3.2"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/y7qxvpimc2yb9iv7mxfnw68yzrnbsjff-watchexec-2.3.1",
+              "path": "/nix/store/jfqwdpv61lyncc5976pjgl352gx8ymdm-watchexec-2.3.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/y7qxvpimc2yb9iv7mxfnw68yzrnbsjff-watchexec-2.3.1"
+          "store_path": "/nix/store/jfqwdpv61lyncc5976pjgl352gx8ymdm-watchexec-2.3.2"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/y7ijz67ibp25zs108slscdlaqgqg02fc-watchexec-2.3.1",
+              "path": "/nix/store/lhas1n4ilv4vmhfmk57x47wnvkw538fq-watchexec-2.3.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/y7ijz67ibp25zs108slscdlaqgqg02fc-watchexec-2.3.1"
+          "store_path": "/nix/store/lhas1n4ilv4vmhfmk57x47wnvkw538fq-watchexec-2.3.2"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/mf5w61chzs3s4nhgsqpnq1kfhnmv8wx8-watchexec-2.3.1",
+              "path": "/nix/store/6k8983fxhjidg0154wjcsc6p5hala7vv-watchexec-2.3.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/mf5w61chzs3s4nhgsqpnq1kfhnmv8wx8-watchexec-2.3.1"
+          "store_path": "/nix/store/6k8983fxhjidg0154wjcsc6p5hala7vv-watchexec-2.3.2"
         }
       }
     },
