@@ -349,51 +349,51 @@
       "last_modified": "2025-04-13T09:22:33Z",
       "resolved": "github:NixOS/nixpkgs/18dd725c29603f582cf1900e0d25f9f1063dbf11?lastModified=1744536153&narHash=sha256-awS2zRgF4uTwrOKwwiJcByDzDOdo3Q1rPZbiHQg%2FN38%3D"
     },
-    "gum@0.16.0": {
-      "last_modified": "2025-05-06T08:06:31Z",
-      "resolved": "github:NixOS/nixpkgs/1cb1c02a6b1b7cf67e3d7731cbbf327a53da9679#gum",
+    "gum@0.16.1": {
+      "last_modified": "2025-06-17T01:11:27Z",
+      "resolved": "github:NixOS/nixpkgs/c539ae8d21e49776966d714f82fba33b1fca78bc#gum",
       "source": "devbox-search",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/8pyjhiwin98a1bcg2l51lv98bz0jw7wq-gum-0.16.0",
+              "path": "/nix/store/k3hfaznp6m5zm7436gki029amjycscfs-gum-0.16.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/8pyjhiwin98a1bcg2l51lv98bz0jw7wq-gum-0.16.0"
+          "store_path": "/nix/store/k3hfaznp6m5zm7436gki029amjycscfs-gum-0.16.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/7p2733wiqszssqzbrf70rwyjdpjgwfyi-gum-0.16.0",
+              "path": "/nix/store/aaf6hhl897a6l2xv9jwgjsr5gwj000wl-gum-0.16.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/7p2733wiqszssqzbrf70rwyjdpjgwfyi-gum-0.16.0"
+          "store_path": "/nix/store/aaf6hhl897a6l2xv9jwgjsr5gwj000wl-gum-0.16.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/3hfzhy6kp19x03l360mf5k2k8imjg14a-gum-0.16.0",
+              "path": "/nix/store/djbqwg8la91xj8qnjp0nv1brqnvv69q5-gum-0.16.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/3hfzhy6kp19x03l360mf5k2k8imjg14a-gum-0.16.0"
+          "store_path": "/nix/store/djbqwg8la91xj8qnjp0nv1brqnvv69q5-gum-0.16.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ihpsbiw0s8lz6z50b29i8zwjk18w25zs-gum-0.16.0",
+              "path": "/nix/store/lyqs0m9rf0laldm1gfa439nd3pxpxsby-gum-0.16.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/ihpsbiw0s8lz6z50b29i8zwjk18w25zs-gum-0.16.0"
+          "store_path": "/nix/store/lyqs0m9rf0laldm1gfa439nd3pxpxsby-gum-0.16.1"
         }
       }
     },
