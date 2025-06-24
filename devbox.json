@@ -9,7 +9,7 @@
     "watchexec@2.3.2",
     "kyverno-chainsaw@0.2.12",
     "just@1.40.0",
-    "jq@1.7.1",
+    "jq@1.8.0",
     "gum@0.16.1",
     "yq-go@4.45.4",
     "crossplane-cli@1.20.0",
