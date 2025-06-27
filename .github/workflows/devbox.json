@@ -1,7 +1,7 @@
 {
   "packages": [
     "kind@0.29.0",
-    "kubectl@1.33.1",
+    "kubectl@1.33.2",
     "upbound@0.39.0",
     "kubernetes-helm@3.18.3",
     "kyverno-chainsaw@0.2.12",
