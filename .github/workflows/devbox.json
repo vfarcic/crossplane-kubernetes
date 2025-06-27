@@ -7,7 +7,7 @@
     "kyverno-chainsaw@0.2.12",
     "just@1.40.0",
     "jq@1.8.0",
-    "gum@0.16.1",
+    "gum@0.16.2",
     "yq-go@4.45.4",
     "crossplane-cli@1.20.0",
     "kcl-cli@0.8.9"
