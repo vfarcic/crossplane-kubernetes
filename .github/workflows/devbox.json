@@ -6,7 +6,7 @@
     "kubernetes-helm@3.18.4",
     "kyverno-chainsaw@0.2.12",
     "just@1.40.0",
-    "jq@1.8.0",
+    "jq@1.8.1",
     "gum@0.16.2",
     "yq-go@4.46.1",
     "crossplane-cli@1.20.0",
