@@ -8,7 +8,7 @@
     "kubernetes-helm@3.18.4",
     "watchexec@2.3.2",
     "kyverno-chainsaw@0.2.12",
-    "just@1.42.3",
+    "just@1.42.4",
     "jq@1.8.1",
     "gum@0.16.2",
     "yq-go@4.47.1",
