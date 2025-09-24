@@ -20,7 +20,7 @@
     "azure-cli@2.75.0",
     "awscli2@2.28.1",
     "nushell@0.106.1",
-    "git@2.50.1"
+    "git@2.51.0"
   ],
   "shell": {
     "init_hook": [
