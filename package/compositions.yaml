@@ -692,7 +692,7 @@ spec:
                               vmSize = "Standard_D4_v2"
                           minCount = oxr.spec.parameters.minNodeCount
                           maxCount = 10
-                          enableAutoScaling = True
+                          autoScalingEnabled = True
                       }]
                       identity = [{type = "SystemAssigned"}]
                       networkProfile = [{networkPlugin = "none"}]
@@ -702,12 +702,13 @@ spec:
                       namespace = oxr.spec.claimRef.namespace
                   }
               }
-          }, {
-              **oxr
-              status.clusterName = oxr.spec.id
-              if oxr.spec.id + "-cluster" in ocds:
-                  status.controlPlaneStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
-                  status.nodePoolStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
+          # TODO: Uncomment and fix
+          # }, {
+          #     **oxr
+          #     status.clusterName = oxr.spec.id
+          #     if oxr.spec.id + "-cluster" in ocds:
+          #         status.controlPlaneStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
+          #         status.nodePoolStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
           }]
   - step: apps
     functionRef:

@@ -23,12 +23,20 @@ roleRef:
 
 ---
 
-apiVersion: pkg.crossplane.io/v1alpha1
-kind: ControllerConfig
+---
+apiVersion: pkg.crossplane.io/v1beta1
+kind: DeploymentRuntimeConfig
 metadata:
   name: crossplane-provider-helm
 spec:
-  serviceAccountName: crossplane-provider-helm
+  deploymentTemplate:
+    spec:
+      selector: {}
+      template:
+        spec:
+          containers:
+            - name: package-runtime
+          serviceAccountName: crossplane-provider-helm
 
 ---
 
@@ -38,5 +46,5 @@ metadata:
   name: crossplane-provider-helm
 spec:
   package: xpkg.crossplane.io/crossplane-contrib/provider-helm:v1.0.0
-  controllerConfigRef:
+  runtimeConfigRef:
     name: crossplane-provider-helm

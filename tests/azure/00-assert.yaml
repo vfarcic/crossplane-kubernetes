@@ -111,7 +111,7 @@ spec:
   deletionPolicy: Delete
   forProvider:
     defaultNodePool:
-      - enableAutoScaling: true
+      - autoScalingEnabled: true
         maxCount: 10
         minCount: 1
         name: a-team-aks
