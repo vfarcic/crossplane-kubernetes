@@ -12,7 +12,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - name: Install Devbox
-        uses: jetpack-io/devbox-install-action@v0.13.0
+        uses: jetpack-io/devbox-install-action@v0.14.0
         with:
           enable-cache: true
           project-path: .github/workflows
