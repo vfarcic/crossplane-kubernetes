@@ -11,6 +11,16 @@
             "matchManagers": ["crossplane"],
             "matchFileNames": ["providers/**"],
             "groupName": "providers"
+        },
+        {
+            "matchFileNames": [
+                "devbox.json",
+                "devbox-google.json",
+                "devbox.lock",
+                ".github/workflows/devbox.json"
+            ],
+            "automerge": true,
+            "commitMessageSuffix": " [skip ci]"
         }
     ]
 }
