@@ -2,7 +2,7 @@
   "packages": [
     "kind@0.30.0",
     "gh@2.83.1",
-    "kubectl@1.34.1",
+    "kubectl@1.34.2",
     "bat@0.26.0",
     "upbound@0.40.3",
     "kubernetes-helm@3.19.1",
