@@ -21,6 +21,11 @@
             ],
             "automerge": true,
             "commitMessageSuffix": " [skip ci]"
+        },
+        {
+            "matchManagers": ["github-actions"],
+            "automerge": true,
+            "commitMessageSuffix": " [skip ci]"
         }
     ]
 }
