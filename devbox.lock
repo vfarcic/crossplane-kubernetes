@@ -129,51 +129,51 @@
         }
       }
     },
-    "bat@0.26.0": {
-      "last_modified": "2025-10-22T20:59:19Z",
-      "resolved": "github:NixOS/nixpkgs/01b6809f7f9d1183a2b3e081f0a1e6f8f415cb09#bat",
+    "bat@0.26.1": {
+      "last_modified": "2025-12-03T03:51:48Z",
+      "resolved": "github:NixOS/nixpkgs/cadcc8de247676e4751c9d4a935acb2c0b059113#bat",
       "source": "devbox-search",
-      "version": "0.26.0",
+      "version": "0.26.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/m1s1wqd7nswi7jnlg146g0m3rsvsg9a7-bat-0.26.0",
+              "path": "/nix/store/wwxcmvd195g5bfzbz5k25z1cx5hm8w65-bat-0.26.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/m1s1wqd7nswi7jnlg146g0m3rsvsg9a7-bat-0.26.0"
+          "store_path": "/nix/store/wwxcmvd195g5bfzbz5k25z1cx5hm8w65-bat-0.26.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/0am602vqa4zyl5m75na8gl47dk66zzid-bat-0.26.0",
+              "path": "/nix/store/7n9nclr7b0nr2z83dqssryf0as8931w3-bat-0.26.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/0am602vqa4zyl5m75na8gl47dk66zzid-bat-0.26.0"
+          "store_path": "/nix/store/7n9nclr7b0nr2z83dqssryf0as8931w3-bat-0.26.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/7f6piwxyq7g8lw0d61bzy9nvmq1lsxv7-bat-0.26.0",
+              "path": "/nix/store/199xfy9ra365pxifc00xq62f1rgfnd60-bat-0.26.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/7f6piwxyq7g8lw0d61bzy9nvmq1lsxv7-bat-0.26.0"
+          "store_path": "/nix/store/199xfy9ra365pxifc00xq62f1rgfnd60-bat-0.26.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vsih714glpw1gdr86yrif87pf0cvj9ha-bat-0.26.0",
+              "path": "/nix/store/01wp2vgd70ssmk4fmkc2lh98jkyxnxvv-bat-0.26.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vsih714glpw1gdr86yrif87pf0cvj9ha-bat-0.26.0"
+          "store_path": "/nix/store/01wp2vgd70ssmk4fmkc2lh98jkyxnxvv-bat-0.26.1"
         }
       }
     },
