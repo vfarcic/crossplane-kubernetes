@@ -18,7 +18,7 @@
     "path:gcloud#google-cloud-sdk",
     "teller@2.0.7",
     "azure-cli@2.81.0",
-    "awscli2@2.31.39",
+    "awscli2@2.32.15",
     "nushell@0.108.0",
     "git@2.51.2"
   ],
