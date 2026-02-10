@@ -1,15 +1,17 @@
 apiVersion: devopstoolkitseries.com/v2
 kind: Cluster
 metadata:
-  name: a-team-eks
+  name: a-team-gpu
 spec:
-  id: a-team-eks
+  id: a-team-gpu
   crossplane:
     compositionSelector:
       matchLabels:
         provider: aws
         cluster: eks
   parameters:
-    version: "1.30"
-    nodeSize: medium
-    minNodeCount: 3
+    nodeSize: small
+    minNodeCount: 1
+    gpu:
+      enabled: true
+      nodeSize: small

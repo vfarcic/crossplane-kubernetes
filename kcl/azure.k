@@ -26,7 +26,8 @@ items = [{
     spec = {
         forProvider: {
             resourceGroupName = oxr.spec.id
-            kubernetesVersion = oxr.spec.parameters.version
+            if oxr.spec.parameters.version:
+                kubernetesVersion = oxr.spec.parameters.version
             location = "eastus"
             dnsPrefix = "dot"
             defaultNodePool = {

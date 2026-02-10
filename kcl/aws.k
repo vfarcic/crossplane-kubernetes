@@ -1,5 +1,3 @@
-version = "1.30"
-
 oxr = option("params").oxr
 ocds = option("params").ocds
 
@@ -26,8 +24,6 @@ _items = [{
         bootstrapSelfManagedAddons = True
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version
-        else:
-            version = version
         roleArnSelector = {
             matchControllerRef = True
             matchLabels.role = oxr.spec.id + "-controlplane"
@@ -266,5 +262,44 @@ _items += [{
 }
 """
 } for _role in _roles]
+
+_gpu_node_size = oxr.spec.parameters?.gpu?.nodeSize or "small"
+
+if oxr.spec.parameters?.gpu?.enabled:
+    _items += [{
+        apiVersion = "eks.aws.m.upbound.io/v1beta1"
+        kind = "NodeGroup"
+        metadata = _metadata("gpu", "eksnodegroup-gpu", "")
+        spec = {
+            forProvider = {
+                region = "us-east-1"
+                clusterNameSelector.matchControllerRef = True
+                nodeRoleArnSelector = {
+                    matchControllerRef = True
+                    matchLabels.role = oxr.spec.id + "-nodegroup"
+                }
+                subnetIdSelector.matchControllerRef = True
+                scalingConfig = {
+                    minSize = 1
+                    maxSize = 10
+                    desiredSize = 1
+                }
+                if _gpu_node_size == "small":
+                    instanceTypes = ["g5.xlarge"]
+                elif _gpu_node_size == "medium":
+                    instanceTypes = ["g5.2xlarge"]
+                else:
+                    instanceTypes = ["g5.12xlarge"]
+                labels = {
+                    gpu = "true"
+                }
+                taint = [{
+                    effect = "NO_SCHEDULE"
+                    key = "nvidia.com/gpu"
+                    value = "true"
+                }]
+            }
+        }
+    }]
 
 items = _items

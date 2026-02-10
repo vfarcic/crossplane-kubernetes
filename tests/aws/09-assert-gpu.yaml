@@ -1,0 +1,15 @@
+---
+apiVersion: eks.aws.m.upbound.io/v1beta1
+kind: NodeGroup
+metadata:
+  name: a-team-eks-gpu
+spec:
+  forProvider:
+    instanceTypes:
+    - g5.xlarge
+    labels:
+      gpu: "true"
+    taint:
+    - effect: NO_SCHEDULE
+      key: nvidia.com/gpu
+      value: "true"

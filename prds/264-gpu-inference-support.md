@@ -67,29 +67,34 @@ No inference serving framework is included — that is a separate concern. This 
 - [x] Verify existing test suite passes after migration
 
 ### 3. AWS GPU Node Pool
-- [ ] RED: Chainsaw test asserts AWS GPU NodeGroup is created
-- [ ] GREEN: Implement conditional GPU NodeGroup in `aws.k`
-- [ ] Manual validation: create minimal GPU cluster in AWS (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU NodeGroup reaches Ready, destroy
+- [x] RED: Chainsaw test asserts AWS GPU NodeGroup is created
+- [x] GREEN: Implement conditional GPU NodeGroup in `aws.k`
+- [ ] Manual validation: create minimal GPU cluster in AWS with NVIDIA GPU Operator, verify GPU NodeGroup reaches Ready and `nvidia.com/gpu` is allocatable, destroy
 
-### 4. Azure GPU Node Pool
+### 4. NVIDIA GPU Operator
+- [ ] RED: Chainsaw test asserts NVIDIA GPU Operator Helm release is created
+- [ ] GREEN: Implement NVIDIA GPU Operator in `apps.k` with `appNvidia` schema in `data.k`
+
+### 5. AWS GPU + NVIDIA Manual Validation
+- [ ] Create GPU cluster in AWS with `gpu.enabled: true` and `apps.nvidia.enabled: true`
+- [ ] Verify GPU NodeGroup reaches Ready and NVIDIA device plugin exposes `nvidia.com/gpu` on nodes
+- [ ] Destroy cluster
+
+### 6. Azure GPU Node Pool
 - [ ] RED: Chainsaw test asserts Azure GPU KubernetesClusterNodePool is created
 - [ ] GREEN: Implement conditional GPU node pool in `azure.k`
 - [ ] Manual validation: create minimal GPU cluster in Azure (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU node pool reaches Ready, destroy
 
-### 5. Google GPU Node Pool
+### 7. Google GPU Node Pool
 - [ ] RED: Chainsaw test asserts Google GPU NodePool with guest accelerators is created
 - [ ] GREEN: Implement conditional GPU NodePool in `google.k`
 - [ ] Manual validation: create minimal GPU cluster in GCP (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU NodePool reaches Ready, destroy
 
-### 6. NVIDIA GPU Operator
-- [ ] RED: Chainsaw test asserts NVIDIA GPU Operator Helm release is created
-- [ ] GREEN: Implement NVIDIA GPU Operator in `apps.k` with `appNvidia` schema in `data.k`
-
-### 7. Backstage & Examples
+### 8. Backstage & Examples
 - [ ] Update `backstage-template.k` with GPU and NVIDIA parameters
 - [ ] Add example Cluster with GPU configuration
 
-### 8. Renovate for Dependency Management
+### 9. Renovate for Dependency Management
 - [ ] Add `renovate.json` with custom regex managers for `providers/*.yaml` and `kcl/crossplane.k`
 - [ ] Ensure Renovate can auto-detect and update Crossplane provider package versions
 - [ ] Validate Renovate PRs don't break KCL generation pipeline
@@ -109,6 +114,8 @@ No inference serving framework is included — that is a separate concern. This 
 | 2026-02-10 | GCP `taint` field stays as list (not map) in `.m` API | Unlike `vpcConfig`/`scalingConfig`/`defaultNodePool` which flattened to maps, `taint` is `type: array` — nodes can have multiple taints | `google.k` keeps `taint = [{...}]` syntax; test assertions use list format |
 | 2026-02-10 | `.m` API schema changes: `deletionPolicy` → `managementPolicies`, `providerConfigRef.kind` required | `.m` namespace-scoped MRs removed `deletionPolicy` (use `managementPolicies` instead), and require `providerConfigRef.kind` to distinguish `ProviderConfig` vs `ClusterProviderConfig` | All KCL source and test assertions updated; `deletionPolicy: Orphan` → `managementPolicies: [Create, Update, Observe]` |
 | 2026-02-10 | `crossplane.io/claim-name` label replaced by `crossplane.io/composite` | Crossplane v2 has no claims; the old label was a bug (GitHub issue #6363, fixed in PR #6541) | All test assertions updated to use `crossplane.io/composite` |
+| 2026-02-10 | Remove hardcoded Kubernetes version default from all providers | All three cloud providers support omitting version (defaults to latest); hardcoding pins clusters to stale versions | `aws.k` removed `version = "1.30"` fallback, `google.k` and `azure.k` now conditionally set version only when user specifies it |
+| 2026-02-10 | Reorganize milestones: NVIDIA before Azure/Google | NVIDIA GPU Operator is needed to validate GPUs are actually usable (exposes `nvidia.com/gpu`); testing Azure/Google without it only validates node pool creation, not GPU functionality | Milestone order: AWS → NVIDIA → AWS manual validation → Azure → Google |
 
 ## Risks
 

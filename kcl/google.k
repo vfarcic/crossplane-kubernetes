@@ -19,7 +19,8 @@ items = [{
         forProvider = {
             deletionProtection = False
             location = "us-east1"
-            minMasterVersion = oxr.spec.parameters.version
+            if oxr.spec.parameters.version:
+                minMasterVersion = oxr.spec.parameters.version
             initialNodeCount = 1
             removeDefaultNodePool = True
             clusterAutoscaling.autoProvisioningDefaults.management = {
@@ -36,7 +37,8 @@ items = [{
     kind = "NodePool"
     metadata = _metadata("nodepool")
     spec.forProvider = {
-        version = oxr.spec.parameters.version
+        if oxr.spec.parameters.version:
+            version = oxr.spec.parameters.version
         initialNodeCount = oxr.spec.parameters.minNodeCount
         nodeLocations = ["us-east1-b", "us-east1-c", "us-east1-d"]
         clusterSelector.matchControllerRef = True
