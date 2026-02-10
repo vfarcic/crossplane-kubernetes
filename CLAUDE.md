@@ -30,6 +30,10 @@ Tests use **Kyverno Chainsaw** (`chainsaw test`). Test suites are per cloud prov
 - `just test-once > tmp/test-output.txt 2>&1`
 - `chainsaw test > tmp/chainsaw-output.txt 2>&1`
 
+### TDD Workflow
+
+Always follow incremental TDD when implementing PRD milestones. Each feature slice gets its own RED/GREEN cycle: write one failing test, implement just enough to make it pass, then move to the next slice. Never batch all tests or all implementation together.
+
 ### Publishing
 
 Requires `UP_ACCOUNT`, `UP_TOKEN`, and `VERSION` env vars. Run `just package-publish`.

@@ -54,13 +54,32 @@ No inference serving framework is included — that is a separate concern. This 
 
 ## Milestones
 
+### 0. Baseline
 - [x] Existing test suite passes (baseline verified, pre-existing issues fixed)
-- [ ] Chainsaw tests written for GPU node pools and NVIDIA operator (RED — tests fail)
-- [ ] KCL schemas, XRD definition, and compositions implemented (GREEN — tests pass)
-- [ ] GPU node pools created correctly for all three providers (AWS, Azure, Google)
-- [ ] NVIDIA GPU Operator deployed as optional Helm release
-- [ ] Backstage template updated with GPU and NVIDIA parameters
-- [ ] Example ClusterClaim with GPU configuration added
+
+### 1. GPU Schema & XRD
+- [ ] RED: Chainsaw test asserts `gpu` fields exist in XRD
+- [ ] GREEN: Add `gpu` schema to `data.k`, wire into `definition.k`
+
+### 2. AWS GPU Node Pool
+- [ ] RED: Chainsaw test asserts AWS GPU NodeGroup is created
+- [ ] GREEN: Implement conditional GPU NodeGroup in `aws.k`
+
+### 3. Azure GPU Node Pool
+- [ ] RED: Chainsaw test asserts Azure GPU KubernetesClusterNodePool is created
+- [ ] GREEN: Implement conditional GPU node pool in `azure.k`
+
+### 4. Google GPU Node Pool
+- [ ] RED: Chainsaw test asserts Google GPU NodePool with guest accelerators is created
+- [ ] GREEN: Implement conditional GPU NodePool in `google.k`
+
+### 5. NVIDIA GPU Operator
+- [ ] RED: Chainsaw test asserts NVIDIA GPU Operator Helm release is created
+- [ ] GREEN: Implement NVIDIA GPU Operator in `apps.k` with `appNvidia` schema in `data.k`
+
+### 6. Backstage & Examples
+- [ ] Update `backstage-template.k` with GPU and NVIDIA parameters
+- [ ] Add example ClusterClaim with GPU configuration
 
 ## Risks
 
