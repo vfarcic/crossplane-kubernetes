@@ -69,14 +69,17 @@ No inference serving framework is included — that is a separate concern. This 
 ### 3. AWS GPU Node Pool
 - [ ] RED: Chainsaw test asserts AWS GPU NodeGroup is created
 - [ ] GREEN: Implement conditional GPU NodeGroup in `aws.k`
+- [ ] Manual validation: create minimal GPU cluster in AWS (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU NodeGroup reaches Ready, destroy
 
 ### 4. Azure GPU Node Pool
 - [ ] RED: Chainsaw test asserts Azure GPU KubernetesClusterNodePool is created
 - [ ] GREEN: Implement conditional GPU node pool in `azure.k`
+- [ ] Manual validation: create minimal GPU cluster in Azure (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU node pool reaches Ready, destroy
 
 ### 5. Google GPU Node Pool
 - [ ] RED: Chainsaw test asserts Google GPU NodePool with guest accelerators is created
 - [ ] GREEN: Implement conditional GPU NodePool in `google.k`
+- [ ] Manual validation: create minimal GPU cluster in GCP (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU NodePool reaches Ready, destroy
 
 ### 6. NVIDIA GPU Operator
 - [ ] RED: Chainsaw test asserts NVIDIA GPU Operator Helm release is created
