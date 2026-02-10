@@ -149,6 +149,13 @@ spec:
                             default: false
                             type: boolean
                         type: object
+                      nvidia:
+                        description: Install NVIDIA GPU Operator
+                        properties:
+                          enabled:
+                            default: false
+                            type: boolean
+                        type: object
                     type: object
                   creds:
                     description: The secret with hyperscaler credentials.
@@ -186,9 +193,27 @@ spec:
                   nodeSize:
                     description: The size of the nodes; small, medium, large.
                     type: string
+                    enum:
+                      - small
+                      - medium
+                      - large
                   version:
                     description: The Kubernetes version for the cluster.
                     type: string
+                  gpu:
+                    description: GPU node pool configuration for AI/ML workloads
+                    type: object
+                    properties:
+                      enabled:
+                        default: false
+                        type: boolean
+                      nodeSize:
+                        description: "The size of the GPU nodes; small, medium, large."
+                        type: string
+                        enum:
+                          - small
+                          - medium
+                          - large
                   usage:
                     description: Whether Crossplane `Usage` (currently alpha feature) is enabled.
                     type: object

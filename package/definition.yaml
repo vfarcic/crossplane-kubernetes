@@ -42,6 +42,10 @@ spec:
                     description: The size of the nodes; small, medium, large.
                     type: string
                     default: small
+                    enum:
+                    - small
+                    - medium
+                    - large
                   minNodeCount:
                     description: The minimum number of nodes.
                     type: integer
@@ -54,6 +58,21 @@ spec:
                     - production
                     items:
                       type: string
+                  gpu:
+                    description: GPU node pool configuration for AI/ML workloads
+                    type: object
+                    properties:
+                      enabled:
+                        type: boolean
+                        default: false
+                      nodeSize:
+                        description: The size of the GPU nodes; small, medium, large.
+                        type: string
+                        enum:
+                        - small
+                        - medium
+                        - large
+                    required: []
                   usage:
                     description: Whether Crossplane `Usage` (currently alpha feature) is enabled.
                     type: object
@@ -112,6 +131,14 @@ spec:
                         required: []
                       traefik:
                         description: Install Traefik.
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
+                      nvidia:
+                        description: Install NVIDIA GPU Operator
                         type: object
                         properties:
                           enabled:

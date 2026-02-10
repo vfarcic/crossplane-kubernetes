@@ -58,8 +58,8 @@ No inference serving framework is included — that is a separate concern. This 
 - [x] Existing test suite passes (baseline verified, pre-existing issues fixed)
 
 ### 1. GPU Schema & XRD
-- [ ] RED: Chainsaw test asserts `gpu` fields exist in XRD
-- [ ] GREEN: Add `gpu` schema to `data.k`, wire into `definition.k`
+- [x] RED: Chainsaw test asserts `gpu` fields exist in XRD
+- [x] GREEN: Add `gpu` schema to `data.k`, wire into `definition.k`
 
 ### 2. AWS GPU Node Pool
 - [ ] RED: Chainsaw test asserts AWS GPU NodeGroup is created

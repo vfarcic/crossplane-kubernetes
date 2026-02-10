@@ -20,6 +20,8 @@ _properties = lambda properties: any -> any {
                 default = value["default"]
             if "itemsType" in value:
                 items.type = value["itemsType"]
+            if "enum" in value:
+                enum = value["enum"]
         } for key, value in properties
     }
 }
@@ -52,6 +54,7 @@ spec = {
                                 description = "ID of this Cluster that other objects can refer."
                             }
                             parameters = _data(data.root)
+                            parameters.properties.gpu = _data(data.gpu)
                             parameters.properties.usage = _data(data.usage)
                             parameters.properties.apps = {
                                 type = "object"
@@ -62,6 +65,7 @@ spec = {
                                     openfunction = _data(data.appOpenfunction)
                                     dapr = _data(data.appDapr)
                                     traefik = _data(data.appTraefik)
+                                    nvidia = _data(data.appNvidia)
                                     externalSecrets = {
                                         description = data.appExternalSecrets.description
                                         type = data.appExternalSecrets.type

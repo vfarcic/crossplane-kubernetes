@@ -175,6 +175,35 @@ appExternalSecretsSecrets = {
     required = ["fromSecret", "toSecret", "toNamespace"]
 }
 
+gpu = {
+    type = "object"
+    description = "GPU node pool configuration for AI/ML workloads"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+        nodeSize = {
+            description = "The size of the GPU nodes; small, medium, large."
+            type = "string"
+            enum = ["small", "medium", "large"]
+        }
+    }
+    required = []
+}
+
+appNvidia = {
+    type = "object"
+    description = "Install NVIDIA GPU Operator"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
+}
+
 creds = {
     type = "object"
     description = "The secret with hyperscaler credentials."
