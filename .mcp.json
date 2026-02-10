@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "dot-ai": {
+      "type": "http",
+      "url": "${DOT_AI_URL:-https://dot-ai.devopstoolkit.ai}",
+      "headers": {
+        "Authorization": "Bearer ${DOT_AI_AUTH_TOKEN}"
+      }
+    },
+    "coderabbitai": {
+      "command": "npx",
+      "args": ["coderabbitai-mcp@latest"],
+      "env": {
+        "GITHUB_PAT": "${GITHUB_TOKEN}"
+      }
+    }
+  }
+}

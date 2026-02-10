@@ -826,8 +826,8 @@
       }
     },
     "kyverno-chainsaw@0.2.14": {
-      "last_modified": "2025-12-11T04:04:52Z",
-      "resolved": "github:NixOS/nixpkgs/5d6bdbddb4695a62f0d00a3620b37a15275a5093#kyverno-chainsaw",
+      "last_modified": "2026-01-23T17:20:52Z",
+      "resolved": "github:NixOS/nixpkgs/a1bab9e494f5f4939442a57a58d0449a109593fe#kyverno-chainsaw",
       "source": "devbox-search",
       "version": "0.2.14",
       "systems": {
@@ -835,41 +835,41 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/l9vpbmhz1w0syy9na013hzxnh55jz3hr-kyverno-chainsaw-0.2.14",
+              "path": "/nix/store/bdq5h9wqyg7xa6xwjy0qip8apcb4az7d-kyverno-chainsaw-0.2.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/l9vpbmhz1w0syy9na013hzxnh55jz3hr-kyverno-chainsaw-0.2.14"
+          "store_path": "/nix/store/bdq5h9wqyg7xa6xwjy0qip8apcb4az7d-kyverno-chainsaw-0.2.14"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/gsbc8202yi2sy5qapbrw1fkmn1g50x0q-kyverno-chainsaw-0.2.14",
+              "path": "/nix/store/qjysl6aj6916fqbpg9f8wfxv4h9sf17p-kyverno-chainsaw-0.2.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/gsbc8202yi2sy5qapbrw1fkmn1g50x0q-kyverno-chainsaw-0.2.14"
+          "store_path": "/nix/store/qjysl6aj6916fqbpg9f8wfxv4h9sf17p-kyverno-chainsaw-0.2.14"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/a9nk94ickkk84rv62hivw9jhp77nj7cq-kyverno-chainsaw-0.2.14",
+              "path": "/nix/store/zrncsm3n3xqfcsdkf2dhifnxz2m7b1ix-kyverno-chainsaw-0.2.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/a9nk94ickkk84rv62hivw9jhp77nj7cq-kyverno-chainsaw-0.2.14"
+          "store_path": "/nix/store/zrncsm3n3xqfcsdkf2dhifnxz2m7b1ix-kyverno-chainsaw-0.2.14"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/600jjg70dd4sj1rn56qgxnmvnbrd5rh1-kyverno-chainsaw-0.2.14",
+              "path": "/nix/store/mf7gpbgdfxnvdc4x670901fyakpk64vx-kyverno-chainsaw-0.2.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/600jjg70dd4sj1rn56qgxnmvnbrd5rh1-kyverno-chainsaw-0.2.14"
+          "store_path": "/nix/store/mf7gpbgdfxnvdc4x670901fyakpk64vx-kyverno-chainsaw-0.2.14"
         }
       }
     },
@@ -921,54 +921,6 @@
         }
       }
     },
-    "teller@2.0.7": {
-      "last_modified": "2024-07-07T07:43:47Z",
-      "resolved": "github:NixOS/nixpkgs/b60793b86201040d9dee019a05089a9150d08b5b#teller",
-      "source": "devbox-search",
-      "version": "2.0.7",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/r4226bx64i0cf7mfxandg7zzglqxszcq-teller-2.0.7",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/r4226bx64i0cf7mfxandg7zzglqxszcq-teller-2.0.7"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/sdwqxb2g7lic74k6ma7i9kwx60sh4rv5-teller-2.0.7",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/sdwqxb2g7lic74k6ma7i9kwx60sh4rv5-teller-2.0.7"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/a05mzmc0fiy3x1js8rmycwpsfial800m-teller-2.0.7",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/a05mzmc0fiy3x1js8rmycwpsfial800m-teller-2.0.7"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/cpfzq372gajzfrahrawc0w955zn17js3-teller-2.0.7",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/cpfzq372gajzfrahrawc0w955zn17js3-teller-2.0.7"
-        }
-      }
-    },
     "upbound@0.40.3": {
       "last_modified": "2025-09-18T16:33:27Z",
       "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#upbound",
@@ -1014,6 +966,54 @@
             }
           ],
           "store_path": "/nix/store/di8hlphb52nd11cgia3nllnig0rvahba-upbound-0.40.3"
+        }
+      }
+    },
+    "vals@0.42.6": {
+      "last_modified": "2025-12-31T03:27:36Z",
+      "resolved": "github:NixOS/nixpkgs/f665af0cdb70ed27e1bd8f9fdfecaf451260fc55#vals",
+      "source": "devbox-search",
+      "version": "0.42.6",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/b7wxjafb4il13b9lr0nd8k9lda5miy9g-vals-0.42.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/b7wxjafb4il13b9lr0nd8k9lda5miy9g-vals-0.42.6"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/byp1xkjbmrclcs9gh5244y3vraj9s9lg-vals-0.42.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/byp1xkjbmrclcs9gh5244y3vraj9s9lg-vals-0.42.6"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/b3iqdxczbgps4lpshffkmk1g7braymyy-vals-0.42.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/b3iqdxczbgps4lpshffkmk1g7braymyy-vals-0.42.6"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ralcwln869c2v7sr5ldw64dh30nixilv-vals-0.42.6",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ralcwln869c2v7sr5ldw64dh30nixilv-vals-0.42.6"
         }
       }
     },
