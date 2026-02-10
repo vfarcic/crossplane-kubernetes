@@ -10,7 +10,7 @@ spec:
     - name: cluster
       value: gke
     - name: clusterApi
-      value: container.gcp.upbound.io/v1beta2
+      value: container.gcp.m.upbound.io/v1beta1
     - name: clusterKind
       value: Cluster
   steps:
@@ -55,6 +55,6 @@ spec:
             file: ../common/assert-argo-cd.yaml
     #   catch:
     #     - describe:
-    #         apiVersion: devopstoolkitseries.com/v1alpha1
+    #         apiVersion: devopstoolkitseries.com/v2
     #         kind: compositecluster
-    #         selector: crossplane.io/claim-namespace=$NAMESPACE
+    #         selector: crossplane.io/compositespace=$NAMESPACE

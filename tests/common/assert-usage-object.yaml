@@ -1,6 +1,6 @@
 ---
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+apiVersion: devopstoolkitseries.com/v2
+kind: Cluster
 metadata:
   name: (join('-', ['a-team', $cluster]))
   namespace: ($namespace)
@@ -8,28 +8,16 @@ spec:
   parameters:
     usage:
       enabled: true
----
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: CompositeCluster
-metadata:
-  labels:
-    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
-spec:
-  parameters:
-    usage:
-      enabled: true
-  (resourceRefs[?name == join('-', ['a-team', $cluster, $usageName, 'usage'])]):
-  - apiVersion: apiextensions.crossplane.io/v1alpha1
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, $usageName, 'usage'])]):
+  - apiVersion: protection.crossplane.io/v1beta1
     kind: Usage
 ---
-apiVersion: apiextensions.crossplane.io/v1alpha1
+apiVersion: protection.crossplane.io/v1beta1
 kind: Usage
 metadata:
   annotations:
     crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, $usageName, 'usage']))
     crossplane.io/external-name: (join('-', ['a-team', $cluster, $usageName, 'usage']))
-  labels:
-    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
   name: (join('-', ['a-team', $cluster, $usageName, 'usage']))
 spec:
   of:
@@ -38,7 +26,7 @@ spec:
     resourceRef:
       name: (join('-', ['a-team', $cluster]))
   by:
-    apiVersion: kubernetes.crossplane.io/v1alpha2
+    apiVersion: kubernetes.m.crossplane.io/v1alpha1
     kind: Object
     resourceRef:
       name: (join('-', ['a-team', $cluster, $usageName]))

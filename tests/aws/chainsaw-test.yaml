@@ -10,7 +10,7 @@ spec:
     - name: cluster
       value: eks
     - name: clusterApi
-      value: eks.aws.upbound.io/v1beta1
+      value: eks.aws.m.upbound.io/v1beta1
     - name: clusterKind
       value: Cluster
   steps:
@@ -59,6 +59,6 @@ spec:
             file: ../common/assert-argo-cd.yaml
     #   catch:
     #     - describe:
-    #         apiVersion: devopstoolkitseries.com/v1alpha1
-    #         kind: compositecluster
-    #         selector: crossplane.io/claim-namespace=$NAMESPACE
+    #         apiVersion: devopstoolkitseries.com/v2
+    #         kind: cluster
+    #         selector: crossplane.io/compositespace=$NAMESPACE

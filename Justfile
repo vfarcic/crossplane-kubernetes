@@ -82,5 +82,5 @@ _cluster-create-kind:
   -kind create cluster
   -helm repo add crossplane-stable https://charts.crossplane.io/stable
   -helm repo update
-  helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --wait
+  helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --set 'provider.defaultActivations={}' --wait
   for provider in `ls -1 providers | grep -v config`; do kubectl apply --filename providers/$provider; done

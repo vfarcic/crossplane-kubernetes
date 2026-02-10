@@ -12,7 +12,7 @@ _metadata = lambda suffix: str -> any {
 }
 
 items = [{
-    apiVersion = "azure.upbound.io/v1beta1"
+    apiVersion = "azure.m.upbound.io/v1beta1"
     kind = "ResourceGroup"
     metadata = _metadata("resource-group")
     spec = {
@@ -20,7 +20,7 @@ items = [{
         initProvider = {}
     }
 }, {
-    apiVersion = "containerservice.azure.upbound.io/v1beta1"
+    apiVersion = "containerservice.azure.m.upbound.io/v1beta1"
     kind = "KubernetesCluster"
     metadata = _metadata("cluster")
     spec = {
@@ -29,7 +29,7 @@ items = [{
             kubernetesVersion = oxr.spec.parameters.version
             location = "eastus"
             dnsPrefix = "dot"
-            defaultNodePool = [{
+            defaultNodePool = {
                 name = oxr.spec.id
                 if oxr.spec.parameters.nodeSize == "small":
                     vmSize = "Standard_D2_v2"
@@ -40,13 +40,12 @@ items = [{
                 minCount = oxr.spec.parameters.minNodeCount
                 maxCount = 10
                 autoScalingEnabled = True
-            }]
-            identity = [{type = "SystemAssigned"}]
-            networkProfile = [{networkPlugin = "none"}]
+            }
+            identity = {type = "SystemAssigned"}
+            networkProfile = {networkPlugin = "none"}
         }
         writeConnectionSecretToRef = {
             name = oxr.spec.id + "-cluster"
-            namespace = oxr.spec.claimRef.namespace
         }
     }
 # TODO: Uncomment and fix

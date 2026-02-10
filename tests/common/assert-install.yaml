@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.crossplane.io/v1beta1
+apiVersion: helm.m.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: (join('-', ['a-team', $cluster, 'local']))

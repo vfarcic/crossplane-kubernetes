@@ -1,6 +1,6 @@
 ---
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+apiVersion: devopstoolkitseries.com/v2
+kind: Cluster
 metadata:
   name: (join('-', ['a-team', $cluster]))
   namespace: ($namespace)
@@ -9,40 +9,26 @@ spec:
     apps:
       argocd:
         enabled: true
----
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: CompositeCluster
-metadata:
-  labels:
-    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
-spec:
-  parameters:
-    apps:
-      argocd:
-        enabled: true
-  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-argo-cd'])]):
-  - apiVersion: helm.crossplane.io/v1beta1
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-argo-cd'])]):
+  - apiVersion: helm.m.crossplane.io/v1beta1
     kind: Release
-  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-argo-cd-app'])]):
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-argo-cd-app'])]):
+  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
     kind: Object
 ---
-apiVersion: helm.crossplane.io/v1beta1
+apiVersion: helm.m.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
     crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-argo-cd']))
     crossplane.io/external-name: argo-cd
-  labels:
-    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
   name: (join('-', ['a-team', $cluster, 'app-argo-cd']))
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     chart:
       name: argo-cd
@@ -68,9 +54,10 @@ spec:
         - --insecure
     namespace: argocd
   providerConfigRef:
+    kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha2
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: Object
 metadata:
   annotations:
@@ -102,4 +89,5 @@ spec:
             prune: true
             allowEmpty: true
   providerConfigRef:
+    kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))

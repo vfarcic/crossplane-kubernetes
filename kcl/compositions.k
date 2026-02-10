@@ -17,8 +17,8 @@ schema composition:
     }
     spec = {
         compositeTypeRef = {
-            apiVersion = "devopstoolkitseries.com/v1alpha1"
-            kind = "CompositeCluster"
+            apiVersion = "devopstoolkitseries.com/v2"
+            kind = "Cluster"
         }
         mode = "Pipeline"
         pipeline = [
@@ -43,14 +43,13 @@ schema composition:
                 functionRef.name = "crossplane-contrib-function-auto-ready"
             }
         ]
-        writeConnectionSecretsToNamespace = "crossplane-system"
     }
         
 [
     composition {
         _cluster = "gke"
         _provider = "google"
-        _clusterApiVersion = "container.gcp.upbound.io/v1beta2"
+        _clusterApiVersion = "container.gcp.m.upbound.io/v1beta1"
         _clusterKind = "Cluster"
         _source = file.read("kcl/google.k")
     }
@@ -58,7 +57,7 @@ schema composition:
     composition {
         _cluster = "aks"
         _provider = "azure"
-        _clusterApiVersion = "containerservice.azure.upbound.io/v1beta1"
+        _clusterApiVersion = "containerservice.azure.m.upbound.io/v1beta1"
         _clusterKind = "KubernetesCluster"
         _source = file.read("kcl/azure.k")
     }
@@ -66,7 +65,7 @@ schema composition:
     composition {
         _cluster = "eks"
         _provider = "aws"
-        _clusterApiVersion = "eks.aws.upbound.io/v1beta1"
+        _clusterApiVersion = "eks.aws.m.upbound.io/v1beta1"
         _clusterKind = "Cluster"
         _source = file.read("kcl/aws.k")
     }

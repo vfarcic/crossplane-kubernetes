@@ -116,8 +116,8 @@ spec = {
         action = "fs:rename"
         name = "Rename files"
         input.files = [{
-            from = "manifests/cluster-claim.yaml"
-            to = "manifests/cluster-claim-$[[ parameters.name ]].yaml".replace("[[", "{{").replace("]]", "}}")
+            from = "manifests/cluster.yaml"
+            to = "manifests/cluster-$[[ parameters.name ]].yaml".replace("[[", "{{").replace("]]", "}}")
         }]
     }, {
         id = "create-pull-request"
@@ -128,7 +128,7 @@ spec = {
             branchName = "cluster-$[[ parameters.name ]]".replace("[[", "{{").replace("]]", "}}")
             gitCommitMessage = "Kubernetes cluster"
             title = "Kubernetes cluster manifest $[[ parameters.name ]]".replace("[[", "{{").replace("]]", "}}")
-            description: "This pull request creates the cluster-claim-$[[ parameters.name ]].yaml Kubernetes cluster manifest".replace("[[", "{{").replace("]]", "}}")
+            description: "This pull request creates the cluster-$[[ parameters.name ]].yaml Kubernetes cluster manifest".replace("[[", "{{").replace("]]", "}}")
         }
     }]
     output = {

@@ -156,8 +156,8 @@ spec:
     name: Rename files
     input:
       files:
-      - from: manifests/cluster-claim.yaml
-        to: manifests/cluster-claim-${{ parameters.name }}.yaml
+      - from: manifests/cluster.yaml
+        to: manifests/cluster-${{ parameters.name }}.yaml
   - id: create-pull-request
     action: publish:github:pull-request
     name: Create a pull request
@@ -166,7 +166,7 @@ spec:
       branchName: cluster-${{ parameters.name }}
       gitCommitMessage: Kubernetes cluster
       title: Kubernetes cluster manifest ${{ parameters.name }}
-      description: This pull request creates the cluster-claim-${{ parameters.name }}.yaml Kubernetes cluster manifest
+      description: This pull request creates the cluster-${{ parameters.name }}.yaml Kubernetes cluster manifest
   output:
     links:
     - title: Pull Request

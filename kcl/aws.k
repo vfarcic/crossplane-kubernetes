@@ -18,7 +18,7 @@ _metadata = lambda name: str, suffix: str, role: str -> any {
 }
 
 _items = [{
-    apiVersion = "eks.aws.upbound.io/v1beta1"
+    apiVersion = "eks.aws.m.upbound.io/v1beta1"
     kind = "Cluster"
     metadata = _metadata("", "ekscluster", "")
     spec.forProvider: {
@@ -32,14 +32,14 @@ _items = [{
             matchControllerRef = True
             matchLabels.role = oxr.spec.id + "-controlplane"
         }
-        vpcConfig = [{
+        vpcConfig = {
             endpointPrivateAccess = True
             endpointPublicAccess = True
             subnetIdSelector.matchControllerRef = True
-        }]
+        }
     }
 }, {
-    apiVersion = "eks.aws.upbound.io/v1beta1"
+    apiVersion = "eks.aws.m.upbound.io/v1beta1"
     kind = "ClusterAuth"
     metadata = _metadata("", "clusterAuth", "")
     spec = {
@@ -49,11 +49,10 @@ _items = [{
         }
         writeConnectionSecretToRef = {
             name = oxr.spec.id + "-cluster"
-            namespace = oxr.spec.claimRef.namespace
         }
     }
 }, {
-    apiVersion = "eks.aws.upbound.io/v1beta1"
+    apiVersion = "eks.aws.m.upbound.io/v1beta1"
     kind = "NodeGroup"
     metadata = _metadata("", "eksnodegroup", "")
     spec = {
@@ -65,13 +64,13 @@ _items = [{
                 matchLabels.role = oxr.spec.id + "-nodegroup"
             }
             subnetIdSelector.matchControllerRef = True
-            scalingConfig = [{
+            scalingConfig = {
                 minSize = 1
                 maxSize = 10
                 desiredSize = 1
                 minSize = oxr.spec.parameters.minNodeCount
                 desiredSize = oxr.spec.parameters.minNodeCount
-            }]
+            }
             if oxr.spec.parameters.nodeSize == "small":
                 instanceTypes = ["t3.small"]
             elif oxr.spec.parameters.nodeSize == "medium":
@@ -81,7 +80,7 @@ _items = [{
         }
     }
 }, {
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "VPC"
     metadata = _metadata("", "vpc-nodepool", "")
     spec = {
@@ -92,7 +91,7 @@ _items = [{
         }
     }
 }, {
-    apiVersion: "ec2.aws.upbound.io/v1beta1"
+    apiVersion: "ec2.aws.m.upbound.io/v1beta1"
     kind: "SecurityGroup"
     metadata = _metadata("", "sg-nodepool", "")
     spec.forProvider: {
@@ -102,7 +101,7 @@ _items = [{
         vpcIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "SecurityGroupRule"
     metadata = _metadata("", "securityGroupRule", "")
     spec.forProvider: {
@@ -116,7 +115,7 @@ _items = [{
         securityGroupIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "InternetGateway"
     metadata = _metadata("", "gateway", "")
     spec.forProvider = {
@@ -124,7 +123,7 @@ _items = [{
         vpcIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "RouteTable"
     metadata = _metadata("", "routeTable", "")
     spec.forProvider: {
@@ -132,7 +131,7 @@ _items = [{
         vpcIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion: "ec2.aws.upbound.io/v1beta1"
+    apiVersion: "ec2.aws.m.upbound.io/v1beta1"
     kind: "Route"
     metadata = _metadata("", "route", "")
     spec.forProvider: {
@@ -142,7 +141,7 @@ _items = [{
         gatewayIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion: "ec2.aws.upbound.io/v1beta1"
+    apiVersion: "ec2.aws.m.upbound.io/v1beta1"
     kind: "MainRouteTableAssociation"
     metadata = _metadata("", "mainRouteTableAssociation", "")
     spec.forProvider: {
@@ -151,7 +150,7 @@ _items = [{
         vpcIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion = "eks.aws.upbound.io/v1beta1"
+    apiVersion = "eks.aws.m.upbound.io/v1beta1"
     kind = "Addon"
     metadata = _metadata("ebs", "addonEbs", "")
     spec.forProvider = {
@@ -175,7 +174,7 @@ _zones = [
 ]
 
 _items += [{
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "RouteTableAssociation"
     metadata = _metadata(_zone.suffix, "routeTableAssociation" + _zone.suffix, "")
     spec.forProvider: {
@@ -192,7 +191,7 @@ _items += [{
 } for _zone in _zones]
 
 _items += [{
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "Subnet"
     metadata = {
         name = oxr.spec.id + "-" + _zone.suffix
@@ -227,7 +226,7 @@ _rpas = [
 ]
 
 _items += [{
-    apiVersion = "iam.aws.upbound.io/v1beta1"
+    apiVersion = "iam.aws.m.upbound.io/v1beta1"
     kind = "RolePolicyAttachment"
     metadata = _metadata(_rpa.name, "iamattachment-" + _rpa.name, "")
     spec = {
@@ -247,7 +246,7 @@ _roles = [
 ]
 
 _items += [{
-    apiVersion = "iam.aws.upbound.io/v1beta1"
+    apiVersion = "iam.aws.m.upbound.io/v1beta1"
     kind = "Role"
     metadata = {
         name = oxr.spec.id + "-" + _role.name

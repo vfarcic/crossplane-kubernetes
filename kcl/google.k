@@ -12,7 +12,7 @@ _metadata = lambda suffix: str -> any {
 }
 
 items = [{
-    apiVersion = "container.gcp.upbound.io/v1beta2"
+    apiVersion = "container.gcp.m.upbound.io/v1beta1"
     kind = "Cluster"
     metadata = _metadata("cluster")
     spec = {
@@ -29,11 +29,10 @@ items = [{
         }
         writeConnectionSecretToRef = {
             name = oxr.spec.id + "-cluster"
-            namespace = oxr.spec.claimRef.namespace
         }
     }
 }, {
-    apiVersion = "container.gcp.upbound.io/v1beta2"
+    apiVersion = "container.gcp.m.upbound.io/v1beta1"
     kind = "NodePool"
     metadata = _metadata("nodepool")
     spec.forProvider = {

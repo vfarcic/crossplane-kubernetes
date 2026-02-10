@@ -26,20 +26,19 @@ _properties = lambda properties: any -> any {
     }
 }
 
-apiVersion = "apiextensions.crossplane.io/v1"
+apiVersion = "apiextensions.crossplane.io/v2"
 kind = "CompositeResourceDefinition"
 metadata = {
-    name = "compositeclusters.devopstoolkitseries.com"
+    name = "clusters.devopstoolkitseries.com"
     labels.idp = "true"
 }
 spec = {
-    connectionSecretKeys = ["kubeconfig", "value"]
     defaultCompositionRef = {name = "cluster-aws"}
     group = "devopstoolkitseries.com"
-    names = {kind = "CompositeCluster", plural = "compositeclusters"}
-    claimNames = {kind = "ClusterClaim", plural = "clusterclaims"}
+    scope = "Namespaced"
+    names = {kind = "Cluster", plural = "clusters"}
     versions = [{
-        name = "v1alpha1"
+        name = "v2"
         served = True
         referenceable = True
         $schema = {

@@ -10,7 +10,7 @@ spec:
     - name: cluster
       value: aks
     - name: clusterApi
-      value: containerservice.azure.upbound.io/v1beta1
+      value: containerservice.azure.m.upbound.io/v1beta1
     - name: clusterKind
       value: KubernetesCluster
   steps:
@@ -112,6 +112,6 @@ spec:
                 value: creds
       catch:
         - describe:
-            apiVersion: devopstoolkitseries.com/v1alpha1
+            apiVersion: devopstoolkitseries.com/v2
             kind: compositecluster
-            selector: crossplane.io/claim-namespace=$NAMESPACE
+            selector: crossplane.io/compositespace=$NAMESPACE

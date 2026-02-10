@@ -34,7 +34,7 @@ No inference serving framework is included — that is a separate concern. This 
 
 ## Success Criteria
 
-- Users can create a ClusterClaim with `gpu.enabled: true` and get a working GPU node pool
+- Users can create a cluster resource with `gpu.enabled: true` and get a working GPU node pool
 - Users can enable the NVIDIA GPU Operator via `apps.nvidia.enabled: true`
 - GPU node pool is correctly configured per cloud provider (instance types, labels, taints)
 - All existing tests continue to pass (no regressions)
@@ -50,7 +50,7 @@ No inference serving framework is included — that is a separate concern. This 
 - `kcl/azure.k` — conditional GPU KubernetesClusterNodePool
 - `kcl/backstage-template.k` — expose GPU + NVIDIA params in Backstage UI
 - `tests/` — new test steps and assertions per provider + common nvidia assertion
-- `examples/` — example ClusterClaim with GPU enabled
+- `examples/` — example Cluster with GPU enabled
 
 ## Milestones
 
@@ -61,25 +61,51 @@ No inference serving framework is included — that is a separate concern. This 
 - [x] RED: Chainsaw test asserts `gpu` fields exist in XRD
 - [x] GREEN: Add `gpu` schema to `data.k`, wire into `definition.k`
 
-### 2. AWS GPU Node Pool
+### 2. Transition to Namespace-Scoped Resources
+- [x] Migrate XRD from `ClusterClaim`/`CompositeCluster` to namespace-scoped `.m` resources (Crossplane v2 pattern)
+- [x] Update all existing tests to use the new resource kinds
+- [x] Verify existing test suite passes after migration
+
+### 3. AWS GPU Node Pool
 - [ ] RED: Chainsaw test asserts AWS GPU NodeGroup is created
 - [ ] GREEN: Implement conditional GPU NodeGroup in `aws.k`
 
-### 3. Azure GPU Node Pool
+### 4. Azure GPU Node Pool
 - [ ] RED: Chainsaw test asserts Azure GPU KubernetesClusterNodePool is created
 - [ ] GREEN: Implement conditional GPU node pool in `azure.k`
 
-### 4. Google GPU Node Pool
+### 5. Google GPU Node Pool
 - [ ] RED: Chainsaw test asserts Google GPU NodePool with guest accelerators is created
 - [ ] GREEN: Implement conditional GPU NodePool in `google.k`
 
-### 5. NVIDIA GPU Operator
+### 6. NVIDIA GPU Operator
 - [ ] RED: Chainsaw test asserts NVIDIA GPU Operator Helm release is created
 - [ ] GREEN: Implement NVIDIA GPU Operator in `apps.k` with `appNvidia` schema in `data.k`
 
-### 6. Backstage & Examples
+### 7. Backstage & Examples
 - [ ] Update `backstage-template.k` with GPU and NVIDIA parameters
-- [ ] Add example ClusterClaim with GPU configuration
+- [ ] Add example Cluster with GPU configuration
+
+### 8. Renovate for Dependency Management
+- [ ] Add `renovate.json` with custom regex managers for `providers/*.yaml` and `kcl/crossplane.k`
+- [ ] Ensure Renovate can auto-detect and update Crossplane provider package versions
+- [ ] Validate Renovate PRs don't break KCL generation pipeline
+
+## Decision Log
+
+| Date | Decision | Rationale | Impact |
+|------|----------|-----------|--------|
+| 2026-02-10 | Migrate to Crossplane v2 namespace-scoped XRDs (`scope: Namespaced`) | Crossplane v2 eliminates claim/composite distinction; namespace-scoped XRs are the new default pattern | XRD apiVersion → `v2`, kind → `Cluster`, removed `claimNames`/`connectionSecretKeys`, Crossplane-managed fields move under `spec.crossplane.*` |
+| 2026-02-10 | Switch all managed resources to `.m` namespace-scoped APIs | Crossplane v2 rejects cluster-scoped composed resources under namespace-scoped XRs (`cannot apply cluster scoped composed resource for a namespaced composite resource`) | All KCL compositions and test assertions must reference `.m` API groups (e.g., `eks.aws.m.upbound.io/v1beta1` instead of `eks.aws.upbound.io/v1beta1`) |
+| 2026-02-10 | Replace `oxr.spec.claimRef.namespace` with `oxr.metadata.namespace` | Namespace-scoped XRs have namespace directly in metadata, no claimRef | 5 occurrences in KCL composition functions (`apps.k`, `aws.k`, `google.k`, `azure.k`) |
+| 2026-02-10 | Replace `oxr.spec.compositionSelector` with `oxr.spec.crossplane.compositionSelector` | Crossplane v2 moves Crossplane-managed fields under `spec.crossplane.*` | All KCL functions referencing compositionSelector (12 occurrences in `apps.k`) |
+| 2026-02-10 | Bump provider dependency versions to `>=v2.3.0` | `.m` namespace-scoped APIs require provider v2.x packages | `kcl/crossplane.k` dependency constraints updated |
+| 2026-02-10 | Add Renovate for automated dependency updates | Provider versions are hardcoded in `providers/*.yaml` and `kcl/crossplane.k`; manual tracking is error-prone | New Milestone 8; separate from GPU work but identified as a gap during v2 migration |
+| 2026-02-10 | Bump CRD API version to `devopstoolkitseries.com/v2` | Breaking change (ClusterClaim → namespace-scoped Cluster) warrants major version bump; keeps API version in sync with package version | XRD version name `v1alpha1` → `v2`, all test/example files updated, `.semver.yaml` set to `v2.0.0` |
+| 2026-02-10 | Add ManagedResourceActivationPolicy for namespace-scoped resources only | Halves CRD count (294 → 147 active) by deactivating cluster-scoped MRDs; reduces API server overhead | New `providers/managed-resource-activation-policy.yaml`, Helm install uses `provider.defaultActivations={}` |
+| 2026-02-10 | GCP `taint` field stays as list (not map) in `.m` API | Unlike `vpcConfig`/`scalingConfig`/`defaultNodePool` which flattened to maps, `taint` is `type: array` — nodes can have multiple taints | `google.k` keeps `taint = [{...}]` syntax; test assertions use list format |
+| 2026-02-10 | `.m` API schema changes: `deletionPolicy` → `managementPolicies`, `providerConfigRef.kind` required | `.m` namespace-scoped MRs removed `deletionPolicy` (use `managementPolicies` instead), and require `providerConfigRef.kind` to distinguish `ProviderConfig` vs `ClusterProviderConfig` | All KCL source and test assertions updated; `deletionPolicy: Orphan` → `managementPolicies: [Create, Update, Observe]` |
+| 2026-02-10 | `crossplane.io/claim-name` label replaced by `crossplane.io/composite` | Crossplane v2 has no claims; the old label was a bug (GitHub issue #6363, fixed in PR #6541) | All test assertions updated to use `crossplane.io/composite` |
 
 ## Risks
 
@@ -87,3 +113,4 @@ No inference serving framework is included — that is a separate concern. This 
 - **vLLM Helm chart values**: Not applicable — no inference framework in this PRD
 - **Azure GPU node pool API**: `KubernetesClusterNodePool` resource field names need verification against Upbound provider CRDs
 - **GKE guest accelerator syntax**: The `guestAccelerator` field format may vary by Upbound provider version
+- **`.m` API version differences**: Some `.m` APIs use different versions than their cluster-scoped counterparts (e.g., GCP `v1beta2` → `v1beta1`, Kubernetes Object `v1alpha2` → `v1alpha1`); schema fields may differ between versions

@@ -1,171 +1,145 @@
 ---
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+apiVersion: devopstoolkitseries.com/v2
+kind: Cluster
 metadata:
-  name: a-team-eks
+  namespace: ($namespace)
 spec:
-  compositionRef:
-    name: cluster-aws
-  compositionSelector:
-    matchLabels:
-      cluster: eks
-      provider: aws
+  crossplane:
+    compositionRef:
+      name: cluster-aws
+    compositionSelector:
+      matchLabels:
+        cluster: eks
+        provider: aws
+    resourceRefs:
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: InternetGateway
+      name: a-team-eks
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: MainRouteTableAssociation
+      name: a-team-eks
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: RouteTableAssociation
+      name: a-team-eks-1a
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: RouteTableAssociation
+      name: a-team-eks-1b
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: RouteTableAssociation
+      name: a-team-eks-1c
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: RouteTable
+      name: a-team-eks
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: Route
+      name: a-team-eks
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: SecurityGroupRule
+      name: a-team-eks
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: SecurityGroup
+      name: a-team-eks
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: Subnet
+      name: a-team-eks-1a
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: Subnet
+      name: a-team-eks-1b
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: Subnet
+      name: a-team-eks-1c
+    - apiVersion: ec2.aws.m.upbound.io/v1beta1
+      kind: VPC
+      name: a-team-eks
+    - apiVersion: eks.aws.m.upbound.io/v1beta1
+      kind: Addon
+      name: a-team-eks-ebs
+    - apiVersion: eks.aws.m.upbound.io/v1beta1
+      kind: ClusterAuth
+      name: a-team-eks
+    - apiVersion: eks.aws.m.upbound.io/v1beta1
+      kind: Cluster
+      name: a-team-eks
+    - apiVersion: eks.aws.m.upbound.io/v1beta1
+      kind: NodeGroup
+      name: a-team-eks
+    - apiVersion: helm.m.crossplane.io/v1beta1
+      kind: ProviderConfig
+      name: a-team-eks
+    - apiVersion: helm.m.crossplane.io/v1beta1
+      kind: ProviderConfig
+      name: a-team-eks-local
+    - apiVersion: iam.aws.m.upbound.io/v1beta1
+      kind: RolePolicyAttachment
+      name: a-team-eks-cni
+    - apiVersion: iam.aws.m.upbound.io/v1beta1
+      kind: RolePolicyAttachment
+      name: a-team-eks-controlplane
+    - apiVersion: iam.aws.m.upbound.io/v1beta1
+      kind: RolePolicyAttachment
+      name: a-team-eks-registry
+    - apiVersion: iam.aws.m.upbound.io/v1beta1
+      kind: RolePolicyAttachment
+      name: a-team-eks-service
+    - apiVersion: iam.aws.m.upbound.io/v1beta1
+      kind: RolePolicyAttachment
+      name: a-team-eks-worker
+    - apiVersion: iam.aws.m.upbound.io/v1beta1
+      kind: Role
+      name: a-team-eks-controlplane
+    - apiVersion: iam.aws.m.upbound.io/v1beta1
+      kind: Role
+      name: a-team-eks-nodegroup
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: Object
+      name: a-team-eks-ns-dev
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: Object
+      name: a-team-eks-ns-production
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: ProviderConfig
+      name: a-team-eks
   id: a-team-eks
   parameters:
     minNodeCount: 3
     nodeSize: medium
-  resourceRef:
-    apiVersion: devopstoolkitseries.com/v1alpha1
-    kind: CompositeCluster
 ---
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: CompositeCluster
-metadata:
-  labels:
-    crossplane.io/claim-name: a-team-eks
-spec:
-  claimRef:
-    apiVersion: devopstoolkitseries.com/v1alpha1
-    kind: ClusterClaim
-    name: a-team-eks
-  compositionRef:
-    name: cluster-aws
-  compositionSelector:
-    matchLabels:
-      cluster: eks
-      provider: aws
-  id: a-team-eks
-  parameters:
-    minNodeCount: 3
-    nodeSize: medium
-  resourceRefs:
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: InternetGateway
-    name: a-team-eks
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: MainRouteTableAssociation
-    name: a-team-eks
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: RouteTableAssociation
-    name: a-team-eks-1a
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: RouteTableAssociation
-    name: a-team-eks-1b
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: RouteTableAssociation
-    name: a-team-eks-1c
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: RouteTable
-    name: a-team-eks
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: Route
-    name: a-team-eks
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: SecurityGroupRule
-    name: a-team-eks
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: SecurityGroup
-    name: a-team-eks
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: Subnet
-    name: a-team-eks-1a
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: Subnet
-    name: a-team-eks-1b
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: Subnet
-    name: a-team-eks-1c
-  - apiVersion: ec2.aws.upbound.io/v1beta1
-    kind: VPC
-    name: a-team-eks
-  - apiVersion: eks.aws.upbound.io/v1beta1
-    kind: Addon
-    name: a-team-eks-ebs
-  - apiVersion: eks.aws.upbound.io/v1beta1
-    kind: ClusterAuth
-    name: a-team-eks
-  - apiVersion: eks.aws.upbound.io/v1beta1
-    kind: Cluster
-    name: a-team-eks
-  - apiVersion: eks.aws.upbound.io/v1beta1
-    kind: NodeGroup
-    name: a-team-eks
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: ProviderConfig
-    name: a-team-eks
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: ProviderConfig
-    name: a-team-eks-local
-  - apiVersion: iam.aws.upbound.io/v1beta1
-    kind: RolePolicyAttachment
-    name: a-team-eks-cni
-  - apiVersion: iam.aws.upbound.io/v1beta1
-    kind: RolePolicyAttachment
-    name: a-team-eks-controlplane
-  - apiVersion: iam.aws.upbound.io/v1beta1
-    kind: RolePolicyAttachment
-    name: a-team-eks-registry
-  - apiVersion: iam.aws.upbound.io/v1beta1
-    kind: RolePolicyAttachment
-    name: a-team-eks-service
-  - apiVersion: iam.aws.upbound.io/v1beta1
-    kind: RolePolicyAttachment
-    name: a-team-eks-worker
-  - apiVersion: iam.aws.upbound.io/v1beta1
-    kind: Role
-    name: a-team-eks-controlplane
-  - apiVersion: iam.aws.upbound.io/v1beta1
-    kind: Role
-    name: a-team-eks-nodegroup
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: ProviderConfig
-    name: a-team-eks
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name: a-team-eks-ns-dev
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name: a-team-eks-ns-production
-  writeConnectionSecretToRef:
-    namespace: crossplane-system
----
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: InternetGateway
 metadata:
   annotations:
     crossplane.io/composition-resource-name: gateway
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     region: us-east-1
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: MainRouteTableAssociation
 metadata:
   annotations:
     crossplane.io/composition-resource-name: mainRouteTableAssociation
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     region: us-east-1
     routeTableIdSelector:
@@ -173,23 +147,23 @@ spec:
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: Route
 metadata:
   annotations:
     crossplane.io/composition-resource-name: route
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     destinationCidrBlock: 0.0.0.0/0
     gatewayIdSelector:
@@ -198,23 +172,23 @@ spec:
     routeTableIdSelector:
       matchControllerRef: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: RouteTableAssociation
 metadata:
   annotations:
     crossplane.io/composition-resource-name: routeTableAssociation1a
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks-1a
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     region: us-east-1
     routeTableIdSelector:
@@ -225,23 +199,23 @@ spec:
         access: public
         zone: us-east-1a
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: RouteTableAssociation
 metadata:
   annotations:
     crossplane.io/composition-resource-name: routeTableAssociation1b
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks-1b
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     region: us-east-1
     routeTableIdSelector:
@@ -252,23 +226,23 @@ spec:
         access: public
         zone: us-east-1b
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: RouteTableAssociation
 metadata:
   annotations:
     crossplane.io/composition-resource-name: routeTableAssociation1c
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks-1c
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     region: us-east-1
     routeTableIdSelector:
@@ -279,45 +253,45 @@ spec:
         access: public
         zone: us-east-1c
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: RouteTable
 metadata:
   annotations:
     crossplane.io/composition-resource-name: routeTable
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     region: us-east-1
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: SecurityGroupRule
 metadata:
   annotations:
     crossplane.io/composition-resource-name: securityGroupRule
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     cidrBlocks:
     - 0.0.0.0/0
@@ -330,23 +304,23 @@ spec:
     toPort: 0
     type: egress
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: SecurityGroup
 metadata:
   annotations:
     crossplane.io/composition-resource-name: sg-nodepool
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     name: a-team-eks
     description: Cluster communication with worker nodes
@@ -354,25 +328,25 @@ spec:
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: Subnet
 metadata:
   annotations:
     crossplane.io/composition-resource-name: subnet-nodepool-1a
   labels:
     access: public
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
     zone: us-east-1a
   name: a-team-eks-1a
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     availabilityZone: us-east-1a
     cidrBlock: 10.0.0.0/24
@@ -383,25 +357,25 @@ spec:
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: Subnet
 metadata:
   annotations:
     crossplane.io/composition-resource-name: subnet-nodepool-1b
   labels:
     access: public
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
     zone: us-east-1b
   name: a-team-eks-1b
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     availabilityZone: us-east-1b
     cidrBlock: 10.0.1.0/24
@@ -412,25 +386,25 @@ spec:
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: Subnet
 metadata:
   annotations:
     crossplane.io/composition-resource-name: subnet-nodepool-1c
   labels:
     access: public
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
     zone: us-east-1c
   name: a-team-eks-1c
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     availabilityZone: us-east-1c
     cidrBlock: 10.0.2.0/24
@@ -441,98 +415,95 @@ spec:
     vpcIdSelector:
       matchControllerRef: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: ec2.aws.upbound.io/v1beta1
+apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: VPC
 metadata:
   annotations:
     crossplane.io/composition-resource-name: vpc-nodepool
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     cidrBlock: 10.0.0.0/16
     enableDnsSupport: true
     region: us-east-1
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: eks.aws.upbound.io/v1beta1
+apiVersion: eks.aws.m.upbound.io/v1beta1
 kind: Addon
 metadata:
   annotations:
     crossplane.io/composition-resource-name: addonEbs
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks-ebs
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     addonName: aws-ebs-csi-driver
-    clusterName: a-team-eks
-    clusterNameRef:
-      name: a-team-eks
     clusterNameSelector:
       matchControllerRef: true
     region: us-east-1
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: eks.aws.upbound.io/v1beta1
+apiVersion: eks.aws.m.upbound.io/v1beta1
 kind: ClusterAuth
 metadata:
   annotations:
     crossplane.io/composition-resource-name: clusterAuth
     crossplane.io/external-name: a-team-eks
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     clusterNameSelector:
       matchControllerRef: true
     refreshPeriod: 10m0s
     region: us-east-1
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
   writeConnectionSecretToRef:
     name: a-team-eks-cluster
 ---
-apiVersion: eks.aws.upbound.io/v1beta1
+apiVersion: eks.aws.m.upbound.io/v1beta1
 kind: Cluster
 metadata:
   annotations:
     crossplane.io/composition-resource-name: ekscluster
     crossplane.io/external-name: a-team-eks
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     region: us-east-1
     bootstrapSelfManagedAddons: true
@@ -542,29 +513,29 @@ spec:
         role: a-team-eks-controlplane
     version: "1.30"
     vpcConfig:
-    - endpointPrivateAccess: true
+      endpointPrivateAccess: true
       endpointPublicAccess: true
       subnetIdSelector:
         matchControllerRef: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: eks.aws.upbound.io/v1beta1
+apiVersion: eks.aws.m.upbound.io/v1beta1
 kind: NodeGroup
 metadata:
   annotations:
     crossplane.io/composition-resource-name: eksnodegroup
     crossplane.io/external-name: a-team-eks
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     clusterNameSelector:
       matchControllerRef: true
@@ -576,7 +547,7 @@ spec:
         role: a-team-eks-nodegroup
     region: us-east-1
     scalingConfig:
-    - desiredSize: 3
+      desiredSize: 3
       maxSize: 10
       minSize: 3
     subnetIdSelector:
@@ -587,23 +558,23 @@ spec:
     #     key: node.cilium.io/agent-not-ready
     #     value: "true"
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: iam.aws.upbound.io/v1beta1
+apiVersion: iam.aws.m.upbound.io/v1beta1
 kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-controlplane
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks-controlplane
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     policyArn: arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
     role: a-team-eks-controlplane
@@ -614,23 +585,23 @@ spec:
       matchLabels:
         role: a-team-eks-controlplane
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: iam.aws.upbound.io/v1beta1
+apiVersion: iam.aws.m.upbound.io/v1beta1
 kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-service
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks-service
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     policyArn: arn:aws:iam::aws:policy/AmazonEKSServicePolicy
     role: a-team-eks-controlplane
@@ -641,23 +612,23 @@ spec:
       matchLabels:
         role: a-team-eks-controlplane
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: iam.aws.upbound.io/v1beta1
+apiVersion: iam.aws.m.upbound.io/v1beta1
 kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-worker
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks-worker
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     policyArn: arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
     role: a-team-eks-nodegroup
@@ -668,23 +639,23 @@ spec:
       matchLabels:
         role: a-team-eks-nodegroup
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: iam.aws.upbound.io/v1beta1
+apiVersion: iam.aws.m.upbound.io/v1beta1
 kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-cni
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks-cni
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     policyArn: arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
     role: a-team-eks-nodegroup
@@ -695,23 +666,23 @@ spec:
       matchLabels:
         role: a-team-eks-nodegroup
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: iam.aws.upbound.io/v1beta1
+apiVersion: iam.aws.m.upbound.io/v1beta1
 kind: RolePolicyAttachment
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamattachment-registry
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   name: a-team-eks-registry
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     policyArn: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
     role: a-team-eks-nodegroup
@@ -722,25 +693,25 @@ spec:
       matchLabels:
         role: a-team-eks-nodegroup
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: iam.aws.upbound.io/v1beta1
+apiVersion: iam.aws.m.upbound.io/v1beta1
 kind: Role
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamrole-controlplane
     crossplane.io/external-name: a-team-eks-controlplane
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
     role: a-team-eks-controlplane
   name: a-team-eks-controlplane
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     assumeRolePolicy: |-
       {
@@ -752,25 +723,25 @@ spec:
         }]
       }
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: iam.aws.upbound.io/v1beta1
+apiVersion: iam.aws.m.upbound.io/v1beta1
 kind: Role
 metadata:
   annotations:
     crossplane.io/composition-resource-name: iamrole-nodegroup
     crossplane.io/external-name: a-team-eks-nodegroup
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
     role: a-team-eks-nodegroup
   name: a-team-eks-nodegroup
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     assumeRolePolicy: |
       {
@@ -782,22 +753,26 @@ spec:
         }]
       }
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha2
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: Object
 metadata:
   annotations:
     crossplane.io/composition-resource-name: a-team-eks-ns-dev
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Orphan
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   forProvider:
     manifest:
       apiVersion: v1
@@ -805,22 +780,26 @@ spec:
       metadata:
         name: dev
   providerConfigRef:
+    kind: ProviderConfig
     name: a-team-eks
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha2
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: Object
 metadata:
   annotations:
     crossplane.io/composition-resource-name: a-team-eks-ns-production
   labels:
-    crossplane.io/claim-name: a-team-eks
+    crossplane.io/composite: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Orphan
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   forProvider:
     manifest:
       apiVersion: v1
@@ -828,9 +807,10 @@ spec:
       metadata:
         name: production
   providerConfigRef:
+    kind: ProviderConfig
     name: a-team-eks
 ---
-apiVersion: helm.crossplane.io/v1beta1
+apiVersion: helm.m.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: a-team-eks
@@ -842,20 +822,20 @@ spec:
       name: a-team-eks-cluster
   # TODO: Uncomment
 # ---
-# apiVersion: helm.crossplane.io/v1beta1
+# apiVersion: helm.m.crossplane.io/v1beta1
 # kind: Release
 # metadata:
 #   annotations:
 #     crossplane.io/composition-resource-name: cilium
 #     crossplane.io/external-name: a-team-eks-cilium
 #   labels:
-#     crossplane.io/claim-name: a-team-eks
+#     crossplane.io/composite: a-team-eks
 #   name: a-team-eks-cilium
 #   ownerReferences:
-#   - apiVersion: devopstoolkitseries.com/v1alpha1
+#   - apiVersion: devopstoolkitseries.com/v2
 #     blockOwnerDeletion: true
 #     controller: true
-#     kind: CompositeCluster
+#     kind: Cluster
 # spec:
 #   deletionPolicy: Delete
 #   forProvider:
@@ -877,7 +857,7 @@ spec:
 #     name: a-team-eks
 #   rollbackLimit: 3
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: ProviderConfig
 metadata:
   name: a-team-eks

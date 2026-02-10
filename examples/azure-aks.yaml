@@ -1,13 +1,14 @@
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+apiVersion: devopstoolkitseries.com/v2
+kind: Cluster
 metadata:
   name: a-team
 spec:
   id: a-team
-  compositionSelector:
-    matchLabels:
-      provider: azure
-      cluster: aks
+  crossplane:
+    compositionSelector:
+      matchLabels:
+        provider: azure
+        cluster: aks
   parameters:
     nodeSize: medium
     minNodeCount: 1

@@ -1,14 +1,15 @@
 ---
 apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+kind: Cluster
 metadata:
   name: ${{ values.name }}
   namespace: ${{ values.namespace }}
 spec:
   id: ${{ values.name }}
-  compositionSelector:
-    matchLabels:
-      provider: ${{ values.provider }}
+  crossplane:
+    compositionSelector:
+      matchLabels:
+        provider: ${{ values.provider }}
   parameters:
     version: ${{ values.version }}
     nodeSize: ${{ values.nodeSize }}

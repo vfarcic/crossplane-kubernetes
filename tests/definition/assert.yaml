@@ -1,24 +1,17 @@
-apiVersion: apiextensions.crossplane.io/v1
+apiVersion: apiextensions.crossplane.io/v2
 kind: CompositeResourceDefinition
 metadata:
   labels:
     idp: "true"
-  name: compositeclusters.devopstoolkitseries.com
+  name: clusters.devopstoolkitseries.com
 spec:
-  claimNames:
-    kind: ClusterClaim
-    plural: clusterclaims
-  connectionSecretKeys:
-  - kubeconfig
-  - value
-  defaultCompositeDeletePolicy: Background
+  scope: Namespaced
   defaultCompositionRef:
     name: cluster-aws
-  defaultCompositionUpdatePolicy: Automatic
   group: devopstoolkitseries.com
   names:
-    kind: CompositeCluster
-    plural: compositeclusters
+    kind: Cluster
+    plural: clusters
   versions:
   - additionalPrinterColumns:
     - jsonPath: .status.clusterName
@@ -30,7 +23,7 @@ spec:
     - jsonPath: .status.nodePoolStatus
       name: nodePool
       type: string
-    name: v1alpha1
+    name: v2
     referenceable: true
     schema:
       openAPIV3Schema:

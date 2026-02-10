@@ -1,6 +1,6 @@
 ---
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+apiVersion: devopstoolkitseries.com/v2
+kind: Cluster
 metadata:
   name: (join('-', ['a-team', $cluster]))
   namespace: ($namespace)
@@ -9,37 +9,23 @@ spec:
     apps:
       openfunction:
         enabled: true
----
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: CompositeCluster
-metadata:
-  labels:
-    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
-spec:
-  parameters:
-    apps:
-      openfunction:
-        enabled: true
-  (resourceRefs[?name == join('-', ['a-team', $cluster, 'app-openfunction'])]):
-  - apiVersion: helm.crossplane.io/v1beta1
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-openfunction'])]):
+  - apiVersion: helm.m.crossplane.io/v1beta1
     kind: Release
 ---
-apiVersion: helm.crossplane.io/v1beta1
+apiVersion: helm.m.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
     crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-openfunction']))
     crossplane.io/external-name: openfunction
-  labels:
-    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
   name: (join('-', ['a-team', $cluster, 'app-openfunction']))
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     chart:
       url: https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz
@@ -48,4 +34,5 @@ spec:
         enable: true
     namespace: openfunction
   providerConfigRef:
+    kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))

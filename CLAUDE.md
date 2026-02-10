@@ -60,7 +60,7 @@ Each Composition uses Crossplane Pipeline mode with three steps:
 ### Key KCL Files
 
 - `data.k` — Schema definitions for cluster parameters (nodeSize, version, minNodeCount, namespaces) and app configuration
-- `definition.k` — XRD defining the `CompositeCluster` / `ClusterClaim` API
+- `definition.k` — XRD defining the namespace-scoped `Cluster` API (Crossplane v2)
 - `compositions.k` — Composition template that reads provider-specific KCL files and injects them as inline KCLRun sources
 - `aws.k` / `azure.k` / `google.k` — Provider-specific infrastructure resources
 - `apps.k` — Application deployment logic (uses `CLUSTER_API_VERSION` and `CLUSTER_KIND` placeholders replaced at generation time)
@@ -68,8 +68,7 @@ Each Composition uses Crossplane Pipeline mode with three steps:
 ### Crossplane Custom API
 
 - **API Group**: `devopstoolkitseries.com/v1alpha1`
-- **Composite Resource**: `CompositeCluster`
-- **Claim**: `ClusterClaim`
+- **Resource**: `Cluster` (namespace-scoped, Crossplane v2)
 - **Provider selection**: `spec.compositionSelector.matchLabels.provider` (aws/azure/google)
 
 ### Providers and Functions
