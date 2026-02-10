@@ -2,7 +2,7 @@
 
 **Issue**: #264
 **Priority**: High
-**Status**: Planning
+**Status**: In Progress
 
 ## Problem
 
@@ -54,7 +54,7 @@ No inference serving framework is included — that is a separate concern. This 
 
 ## Milestones
 
-- [ ] Existing test suite passes (baseline verified, pre-existing issues fixed)
+- [x] Existing test suite passes (baseline verified, pre-existing issues fixed)
 - [ ] Chainsaw tests written for GPU node pools and NVIDIA operator (RED — tests fail)
 - [ ] KCL schemas, XRD definition, and compositions implemented (GREEN — tests pass)
 - [ ] GPU node pools created correctly for all three providers (AWS, Azure, Google)

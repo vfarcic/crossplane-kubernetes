@@ -25,6 +25,11 @@ Enter dev environment first: `devbox shell`
 
 Tests use **Kyverno Chainsaw** (`chainsaw test`). Test suites are per cloud provider in `tests/{aws,azure,google}/`. Configuration is in `.chainsaw.yaml` (5m global timeout, 2m assert timeout).
 
+**Always redirect test/long-running command output to `./tmp/`** to avoid wasting tokens. Use `>` redirection (not `tee`). After the command finishes, read just the tail of the output file to check results. Only read the full file if tests failed.
+- `just test > tmp/test-output.txt 2>&1`
+- `just test-once > tmp/test-output.txt 2>&1`
+- `chainsaw test > tmp/chainsaw-output.txt 2>&1`
+
 ### Publishing
 
 Requires `UP_ACCOUNT`, `UP_TOKEN`, and `VERSION` env vars. Run `just package-publish`.
