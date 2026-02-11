@@ -1,9 +1,10 @@
-crossplane = "1.14.5"
-argocd = "3.35.4"
-dapr = "1.12.4"
-traefik = "26.0.0"
-externalSecrets = "0.9.11"
-cilium = "1.14.2"
+crossplane = "2.1.4"
+argocd = "9.4.1"
+dapr = "1.16.8"
+traefik = "39.0.0"
+externalSecrets = "2.0.0"
+cilium = "1.19.0"
+nvidiaGpuOperator = "v25.10.1"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
 
 oxr = option("params").oxr
@@ -363,6 +364,16 @@ _items = [
         }
         if oxr.spec.parameters?.usage?.enabled:
             usage { _nameSuffix = "external-secrets", _kind = "Release" }
+
+    if oxr.spec.parameters?.apps?.nvidia?.enabled:
+        chart {
+            _name = "gpu-operator"
+            _chartRepository = "https://helm.ngc.nvidia.com/nvidia"
+            _chartVersion = nvidiaGpuOperator
+            _namespace = "gpu-operator"
+        }
+        if oxr.spec.parameters?.usage?.enabled:
+            usage { _nameSuffix = "gpu-operator", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
         object {

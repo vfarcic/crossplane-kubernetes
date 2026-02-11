@@ -218,7 +218,7 @@ spec:
     chart:
       name: cilium
       repository: https://helm.cilium.io
-      version: 1.14.2
+      version: 1.19.0
     set:
       - name: nodeinit.enabled
         value: "true"

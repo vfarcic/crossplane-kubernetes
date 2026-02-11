@@ -61,6 +61,10 @@ spec:
             file: 09-gpu.yaml
         - assert:
             file: 09-assert-gpu.yaml
+        - apply:
+            file: 10-nvidia.yaml
+        - assert:
+            file: ../common/assert-nvidia.yaml
     #   catch:
     #     - describe:
     #         apiVersion: devopstoolkitseries.com/v2

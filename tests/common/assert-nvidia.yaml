@@ -7,9 +7,9 @@ metadata:
 spec:
   parameters:
     apps:
-      dapr:
+      nvidia:
         enabled: true
-  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-dapr'])]):
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-gpu-operator'])]):
   - apiVersion: helm.m.crossplane.io/v1beta1
     kind: Release
 ---
@@ -17,9 +17,9 @@ apiVersion: helm.m.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-dapr']))
-    crossplane.io/external-name: dapr
-  name: (join('-', ['a-team', $cluster, 'app-dapr']))
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-gpu-operator']))
+    crossplane.io/external-name: gpu-operator
+  name: (join('-', ['a-team', $cluster, 'app-gpu-operator']))
   ownerReferences:
   - apiVersion: devopstoolkitseries.com/v2
     blockOwnerDeletion: true
@@ -28,10 +28,10 @@ metadata:
 spec:
   forProvider:
     chart:
-      name: dapr
-      repository: https://dapr.github.io/helm-charts/
-      version: 1.16.8
-    namespace: dapr-system
+      name: gpu-operator
+      repository: https://helm.ngc.nvidia.com/nvidia
+      version: v25.10.1
+    namespace: gpu-operator
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))

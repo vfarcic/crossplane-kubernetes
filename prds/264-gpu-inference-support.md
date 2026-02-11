@@ -72,8 +72,8 @@ No inference serving framework is included — that is a separate concern. This 
 - [ ] Manual validation: create minimal GPU cluster in AWS with NVIDIA GPU Operator, verify GPU NodeGroup reaches Ready and `nvidia.com/gpu` is allocatable, destroy
 
 ### 4. NVIDIA GPU Operator
-- [ ] RED: Chainsaw test asserts NVIDIA GPU Operator Helm release is created
-- [ ] GREEN: Implement NVIDIA GPU Operator in `apps.k` with `appNvidia` schema in `data.k`
+- [x] RED: Chainsaw test asserts NVIDIA GPU Operator Helm release is created
+- [x] GREEN: Implement NVIDIA GPU Operator in `apps.k` with `appNvidia` schema in `data.k`
 
 ### 5. AWS GPU + NVIDIA Manual Validation
 - [ ] Create GPU cluster in AWS with `gpu.enabled: true` and `apps.nvidia.enabled: true`
@@ -116,6 +116,7 @@ No inference serving framework is included — that is a separate concern. This 
 | 2026-02-10 | `crossplane.io/claim-name` label replaced by `crossplane.io/composite` | Crossplane v2 has no claims; the old label was a bug (GitHub issue #6363, fixed in PR #6541) | All test assertions updated to use `crossplane.io/composite` |
 | 2026-02-10 | Remove hardcoded Kubernetes version default from all providers | All three cloud providers support omitting version (defaults to latest); hardcoding pins clusters to stale versions | `aws.k` removed `version = "1.30"` fallback, `google.k` and `azure.k` now conditionally set version only when user specifies it |
 | 2026-02-10 | Reorganize milestones: NVIDIA before Azure/Google | NVIDIA GPU Operator is needed to validate GPUs are actually usable (exposes `nvidia.com/gpu`); testing Azure/Google without it only validates node pool creation, not GPU functionality | Milestone order: AWS → NVIDIA → AWS manual validation → Azure → Google |
+| 2026-02-10 | Bump all Helm chart dependency versions to latest stable | Versions were significantly outdated (some 2+ major versions behind); updated Crossplane 1.14.5→2.1.4, Argo CD 3.35.4→9.4.1, Dapr 1.12.4→1.16.8, Traefik 26.0.0→39.0.0, External Secrets 0.9.11→2.0.0, Cilium 1.14.2→1.19.0 | `kcl/apps.k` version constants and 9 test assertion files updated; all tests pass |
 
 ## Risks
 

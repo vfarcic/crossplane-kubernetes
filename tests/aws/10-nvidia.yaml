@@ -1,0 +1,10 @@
+---
+apiVersion: devopstoolkitseries.com/v2
+kind: Cluster
+metadata:
+  name: a-team-eks
+spec:
+  parameters:
+    apps:
+      nvidia:
+        enabled: true

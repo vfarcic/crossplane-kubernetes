@@ -29,7 +29,7 @@ spec:
     chart:
       name: crossplane
       repository: https://charts.crossplane.io/stable
-      version: 1.14.5
+      version: 2.1.4
     namespace: crossplane-system
   providerConfigRef:
     kind: ProviderConfig

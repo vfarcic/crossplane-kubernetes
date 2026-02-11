@@ -33,7 +33,7 @@ spec:
     chart:
       name: argo-cd
       repository: https://argoproj.github.io/argo-helm
-      version: 3.35.4
+      version: 9.4.1
     values:
       global:
         domain: argocd.acme.com

@@ -30,7 +30,7 @@ spec:
     chart:
       name: traefik
       repository: https://helm.traefik.io/traefik
-      version: 26.0.0
+      version: 39.0.0
     namespace: traefik
   providerConfigRef:
     kind: ProviderConfig
