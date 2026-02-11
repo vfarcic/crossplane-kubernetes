@@ -279,6 +279,7 @@ if oxr.spec.parameters?.gpu?.enabled:
                     matchLabels.role = oxr.spec.id + "-nodegroup"
                 }
                 subnetIdSelector.matchControllerRef = True
+                amiType = "AL2023_x86_64_NVIDIA"
                 scalingConfig = {
                     minSize = 1
                     maxSize = 10

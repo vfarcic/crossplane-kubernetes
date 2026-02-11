@@ -150,6 +150,10 @@ spec:
   providerConfigRef:
     kind: ProviderConfig
     name: a-team-aks
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   rollbackLimit: 3
 ---
 apiVersion: kubernetes.m.crossplane.io/v1alpha1

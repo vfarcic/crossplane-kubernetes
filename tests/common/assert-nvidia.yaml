@@ -32,7 +32,14 @@ spec:
       repository: https://helm.ngc.nvidia.com/nvidia
       version: v25.10.1
     namespace: gpu-operator
+    values:
+      driver:
+        enabled: false
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   rollbackLimit: 3

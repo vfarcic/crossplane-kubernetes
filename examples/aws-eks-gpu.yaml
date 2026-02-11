@@ -15,3 +15,6 @@ spec:
     gpu:
       enabled: true
       nodeSize: small
+    apps:
+      nvidia:
+        enabled: true

@@ -5,6 +5,7 @@ metadata:
   name: a-team-eks-gpu
 spec:
   forProvider:
+    amiType: AL2023_x86_64_NVIDIA
     instanceTypes:
     - g5.xlarge
     labels:

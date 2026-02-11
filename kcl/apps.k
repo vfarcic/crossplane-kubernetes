@@ -85,6 +85,7 @@ schema chart:
                 values = _values
             namespace = _namespace
         }
+        managementPolicies = ["Create", "Update", "Observe"]
         rollbackLimit = 3
         if _providerConfigRefName:
             providerConfigRef = {name = _providerConfigRefName, kind = "ProviderConfig"}
@@ -371,6 +372,9 @@ _items = [
             _chartRepository = "https://helm.ngc.nvidia.com/nvidia"
             _chartVersion = nvidiaGpuOperator
             _namespace = "gpu-operator"
+            _values = {
+                driver.enabled = False
+            }
         }
         if oxr.spec.parameters?.usage?.enabled:
             usage { _nameSuffix = "gpu-operator", _kind = "Release" }

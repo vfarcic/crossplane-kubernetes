@@ -476,6 +476,9 @@ spec:
                       _chartRepository = "https://helm.ngc.nvidia.com/nvidia"
                       _chartVersion = nvidiaGpuOperator
                       _namespace = "gpu-operator"
+                      _values = {
+                          driver.enabled = False
+                      }
                   }
                   if oxr.spec.parameters?.usage?.enabled:
                       usage { _nameSuffix = "gpu-operator", _kind = "Release" }
@@ -1102,6 +1105,9 @@ spec:
                       _chartRepository = "https://helm.ngc.nvidia.com/nvidia"
                       _chartVersion = nvidiaGpuOperator
                       _namespace = "gpu-operator"
+                      _values = {
+                          driver.enabled = False
+                      }
                   }
                   if oxr.spec.parameters?.usage?.enabled:
                       usage { _nameSuffix = "gpu-operator", _kind = "Release" }
@@ -1569,6 +1575,7 @@ spec:
                               matchLabels.role = oxr.spec.id + "-nodegroup"
                           }
                           subnetIdSelector.matchControllerRef = True
+                          amiType = "AL2023_x86_64_NVIDIA"
                           scalingConfig = {
                               minSize = 1
                               maxSize = 10
@@ -1974,6 +1981,9 @@ spec:
                       _chartRepository = "https://helm.ngc.nvidia.com/nvidia"
                       _chartVersion = nvidiaGpuOperator
                       _namespace = "gpu-operator"
+                      _values = {
+                          driver.enabled = False
+                      }
                   }
                   if oxr.spec.parameters?.usage?.enabled:
                       usage { _nameSuffix = "gpu-operator", _kind = "Release" }

@@ -194,7 +194,7 @@ gpu = {
 
 appNvidia = {
     type = "object"
-    description = "Install NVIDIA GPU Operator"
+    description = "Install NVIDIA GPU Operator for GPU driver and device plugin management. Required for AWS (EKS) and Azure (AKS). Optional for Google (GKE) where drivers and device plugin are pre-installed."
     properties = {
         enabled = {
             type = "boolean"

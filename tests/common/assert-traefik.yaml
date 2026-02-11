@@ -35,4 +35,8 @@ spec:
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   rollbackLimit: 3

@@ -105,4 +105,8 @@ spec:
   providerConfigRef:
     kind: ProviderConfig
     name: a-team-aks
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   rollbackLimit: 3

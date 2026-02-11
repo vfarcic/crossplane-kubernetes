@@ -241,4 +241,8 @@ spec:
   providerConfigRef:
     kind: ProviderConfig
     name: a-team-gke
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   rollbackLimit: 3
