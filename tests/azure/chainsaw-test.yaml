@@ -49,6 +49,10 @@ spec:
             file: 07-traefik.yaml
         - assert:
             file: ../common/assert-traefik.yaml
+        - apply:
+            file: 08-gpu.yaml
+        - assert:
+            file: 08-assert-gpu.yaml
         - patch:
             file: ../common/argo-cd.yaml
         - assert:

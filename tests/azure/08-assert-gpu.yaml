@@ -1,0 +1,12 @@
+---
+apiVersion: containerservice.azure.m.upbound.io/v1beta1
+kind: KubernetesClusterNodePool
+metadata:
+  name: a-team-aks-gpu
+spec:
+  forProvider:
+    vmSize: Standard_NC4as_T4_v3
+    nodeLabels:
+      gpu: "true"
+    nodeTaints:
+    - nvidia.com/gpu=true:NoSchedule

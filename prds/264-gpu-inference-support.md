@@ -81,8 +81,8 @@ No inference serving framework is included — that is a separate concern. This 
 - [x] Destroy cluster
 
 ### 6. Azure GPU Node Pool
-- [ ] RED: Chainsaw test asserts Azure GPU KubernetesClusterNodePool is created
-- [ ] GREEN: Implement conditional GPU node pool in `azure.k`
+- [x] RED: Chainsaw test asserts Azure GPU KubernetesClusterNodePool is created
+- [x] GREEN: Implement conditional GPU node pool in `azure.k`
 - [ ] Manual validation: create minimal GPU cluster in Azure (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU node pool reaches Ready, destroy
 
 ### 7. Google GPU Node Pool
