@@ -72,7 +72,7 @@ Create a cluster with a GPU node pool for AI/ML workloads:
 ```sh
 kubectl --namespace a-team apply --filename examples/azure-aks-gpu.yaml
 
-crossplane beta trace cluster.devopstoolkitseries.com ateamgpu --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai ateamgpu --namespace a-team
 ```
 
 > Wait until all the resources are `Available`.

@@ -67,7 +67,7 @@ Each Composition uses Crossplane Pipeline mode with three steps:
 
 ### Crossplane Custom API
 
-- **API Group**: `devopstoolkitseries.com/v1alpha1`
+- **API Group**: `devopstoolkit.ai/v1alpha1`
 - **Resource**: `Cluster` (namespace-scoped, Crossplane v2)
 - **Provider selection**: `spec.compositionSelector.matchLabels.provider` (aws/azure/google)
 

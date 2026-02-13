@@ -118,7 +118,8 @@ spec:
         - script:
             timeout: 2m
             content: |
-              kubectl delete cluster.devopstoolkitseries.com --all -n $NAMESPACE --timeout=60s || true
+              kubectl delete cluster.devopstoolkit.ai --all -n $NAMESPACE --timeout=60s || true
               sleep 5
               kubectl patch providerconfig.helm.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
               kubectl patch providerconfig.kubernetes.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl patch usage.protection.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true

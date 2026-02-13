@@ -86,15 +86,21 @@ No inference serving framework is included — that is a separate concern. This 
 - [x] Manual validation: create minimal GPU cluster in Azure (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU node pool reaches Ready, destroy
 
 ### 7. Google GPU Node Pool
-- [ ] RED: Chainsaw test asserts Google GPU NodePool with guest accelerators is created
-- [ ] GREEN: Implement conditional GPU NodePool in `google.k`
+- [x] RED: Chainsaw test asserts Google GPU NodePool with guest accelerators is created
+- [x] GREEN: Implement conditional GPU NodePool in `google.k`
 - [ ] Manual validation: create minimal GPU cluster in GCP (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU NodePool reaches Ready, destroy
 
 ### 8. Backstage & Examples
 - [ ] Update `backstage-template.k` with GPU and NVIDIA parameters
 - [ ] Add example Cluster with GPU configuration
 
-### 9. Renovate for Dependency Management
+### 9. API Domain Migration
+- [x] Change XRD API group from `devopstoolkitseries.com` to `devopstoolkit.ai` in `kcl/definition.k` and `kcl/compositions.k`
+- [x] Update all test files, examples, and Backstage templates to use `devopstoolkit.ai/v2`
+- [x] Regenerate `package/` via `just package-generate`
+- [x] Verify all tests pass after migration
+
+### 10. Renovate for Dependency Management
 - [ ] Add `renovate.json` with custom regex managers for `providers/*.yaml` and `kcl/crossplane.k`
 - [ ] Ensure Renovate can auto-detect and update Crossplane provider package versions
 - [ ] Validate Renovate PRs don't break KCL generation pipeline
@@ -109,7 +115,7 @@ No inference serving framework is included — that is a separate concern. This 
 | 2026-02-10 | Replace `oxr.spec.compositionSelector` with `oxr.spec.crossplane.compositionSelector` | Crossplane v2 moves Crossplane-managed fields under `spec.crossplane.*` | All KCL functions referencing compositionSelector (12 occurrences in `apps.k`) |
 | 2026-02-10 | Bump provider dependency versions to `>=v2.3.0` | `.m` namespace-scoped APIs require provider v2.x packages | `kcl/crossplane.k` dependency constraints updated |
 | 2026-02-10 | Add Renovate for automated dependency updates | Provider versions are hardcoded in `providers/*.yaml` and `kcl/crossplane.k`; manual tracking is error-prone | New Milestone 8; separate from GPU work but identified as a gap during v2 migration |
-| 2026-02-10 | Bump CRD API version to `devopstoolkitseries.com/v2` | Breaking change (ClusterClaim → namespace-scoped Cluster) warrants major version bump; keeps API version in sync with package version | XRD version name `v1alpha1` → `v2`, all test/example files updated, `.semver.yaml` set to `v2.0.0` |
+| 2026-02-10 | Bump CRD API version to `devopstoolkit.ai/v2` | Breaking change (ClusterClaim → namespace-scoped Cluster) warrants major version bump; keeps API version in sync with package version | XRD version name `v1alpha1` → `v2`, all test/example files updated, `.semver.yaml` set to `v2.0.0` |
 | 2026-02-10 | Add ManagedResourceActivationPolicy for namespace-scoped resources only | Halves CRD count (294 → 147 active) by deactivating cluster-scoped MRDs; reduces API server overhead | New `providers/managed-resource-activation-policy.yaml`, Helm install uses `provider.defaultActivations={}` |
 | 2026-02-10 | GCP `taint` field stays as list (not map) in `.m` API | Unlike `vpcConfig`/`scalingConfig`/`defaultNodePool` which flattened to maps, `taint` is `type: array` — nodes can have multiple taints | `google.k` keeps `taint = [{...}]` syntax; test assertions use list format |
 | 2026-02-10 | `.m` API schema changes: `deletionPolicy` → `managementPolicies`, `providerConfigRef.kind` required | `.m` namespace-scoped MRs removed `deletionPolicy` (use `managementPolicies` instead), and require `providerConfigRef.kind` to distinguish `ProviderConfig` vs `ClusterProviderConfig` | All KCL source and test assertions updated; `deletionPolicy: Orphan` → `managementPolicies: [Create, Update, Observe]` |
@@ -120,6 +126,7 @@ No inference serving framework is included — that is a separate concern. This 
 | 2026-02-11 | Remove `spec.id`, use `oxr.metadata.name` | In Crossplane v2 namespace-scoped resources, `metadata.name` already serves as identity; redundant `spec.id` caused AKS node pool naming failures (hyphens not allowed) | All KCL files updated (`oxr.spec.id` → `oxr.metadata.name`), `id` removed from XRD schema, all tests/examples updated |
 | 2026-02-11 | AKS node pool names must be alphanumeric only | Azure rejects hyphens in `agentPoolProfile.name`; default pool uses `nodepool1`, GPU pool external name uses `gpu` | `azure.k` default node pool name hardcoded to `nodepool1`, GPU pool `crossplane.io/external-name` set to `gpu` |
 | 2026-02-11 | Add Chainsaw test cleanup scripts to patch ProviderConfig finalizers | `in-use.crossplane.io` finalizer on ProviderConfigs blocks namespace deletion during test cleanup; Crossplane Usage controller doesn't remove finalizer fast enough during parallel garbage collection | All 3 provider chainsaw tests add cleanup step: delete Cluster, sleep, patch out finalizers |
+| 2026-02-13 | Change API group domain from `devopstoolkit.ai` to `devopstoolkit.ai` | Rebranding — new domain is shorter and more aligned with the project's AI/ML focus | All KCL source files (`definition.k`, `compositions.k`), all test files, examples, Backstage templates, and `CLAUDE.md` must replace `devopstoolkit.ai` with `devopstoolkit.ai`; API version stays `v2` |
 | 2026-02-11 | GPU device plugin must be deployed on AWS and Azure; GKE auto-installs it | EKS `AL2023_x86_64_NVIDIA` AMI pre-installs NVIDIA drivers but NOT the device plugin (`nvidia.com/gpu` does not appear without GPU Operator). AKS also installs drivers only. GKE is the only provider that auto-installs both drivers and device plugin. | AWS GPU NodeGroup uses `amiType: AL2023_x86_64_NVIDIA` (faster GPU Operator startup — skips driver install); `apps.nvidia` (GPU Operator) is required for AWS and Azure, optional for GKE |
 
 ## Risks

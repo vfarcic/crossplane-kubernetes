@@ -1,5 +1,5 @@
 ---
-apiVersion: devopstoolkitseries.com/v1alpha1
+apiVersion: devopstoolkit.ai/v1alpha1
 kind: Cluster
 metadata:
   name: ${{ values.name }}

@@ -9,7 +9,7 @@ metadata:
     crossplane.io/composite: a-team-eks
   name: a-team-eks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v2
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
     kind: Cluster

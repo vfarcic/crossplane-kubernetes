@@ -29,12 +29,12 @@ _properties = lambda properties: any -> any {
 apiVersion = "apiextensions.crossplane.io/v2"
 kind = "CompositeResourceDefinition"
 metadata = {
-    name = "clusters.devopstoolkitseries.com"
+    name = "clusters.devopstoolkit.ai"
     labels.idp = "true"
 }
 spec = {
     defaultCompositionRef = {name = "cluster-aws"}
-    group = "devopstoolkitseries.com"
+    group = "devopstoolkit.ai"
     scope = "Namespaced"
     names = {kind = "Cluster", plural = "clusters"}
     versions = [{

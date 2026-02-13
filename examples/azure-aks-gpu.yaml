@@ -1,4 +1,4 @@
-apiVersion: devopstoolkitseries.com/v2
+apiVersion: devopstoolkit.ai/v2
 kind: Cluster
 metadata:
   name: ateamgpu

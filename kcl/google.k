@@ -11,7 +11,7 @@ _metadata = lambda suffix: str -> any {
     }
 }
 
-items = [{
+_items = [{
     apiVersion = "container.gcp.m.upbound.io/v1beta1"
     kind = "Cluster"
     metadata = _metadata("cluster")
@@ -74,3 +74,62 @@ items = [{
     if oxr.metadata.name + "-nodepool" in ocds:
         status.nodePoolStatus = ocds[oxr.metadata.name + "-nodepool"].Resource.status.conditions[0].reason
 }]
+
+_gpu_node_size = oxr.spec.parameters?.gpu?.nodeSize or "small"
+
+if oxr.spec.parameters?.gpu?.enabled:
+    _items += [{
+        apiVersion = "container.gcp.m.upbound.io/v1beta1"
+        kind = "NodePool"
+        metadata = {
+            name = oxr.metadata.name + "-gpu"
+            annotations = {
+                "crossplane.io/external-name" = oxr.metadata.name + "-gpu"
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-gpu"
+            }
+        }
+        spec.forProvider = {
+            clusterSelector.matchControllerRef = True
+            nodeLocations = ["us-east1-b", "us-east1-c", "us-east1-d"]
+            initialNodeCount = 1
+            nodeConfig = {
+                if _gpu_node_size == "small":
+                    machineType = "n1-standard-4"
+                    guestAccelerator = [{
+                        type = "nvidia-tesla-t4"
+                        count = 1
+                    }]
+                elif _gpu_node_size == "medium":
+                    machineType = "n1-standard-8"
+                    guestAccelerator = [{
+                        type = "nvidia-tesla-t4"
+                        count = 1
+                    }]
+                else:
+                    machineType = "a2-highgpu-1g"
+                    guestAccelerator = [{
+                        type = "nvidia-tesla-a100"
+                        count = 1
+                    }]
+                oauthScopes = ["https://www.googleapis.com/auth/cloud-platform"]
+                labels = {
+                    gpu = "true"
+                }
+                taint = [{
+                    key = "nvidia.com/gpu"
+                    value = "true"
+                    effect = "NO_SCHEDULE"
+                }]
+            }
+            autoscaling = {
+                minNodeCount = 1
+                maxNodeCount = 10
+            }
+            management = {
+                autoRepair = True
+                autoUpgrade = True
+            }
+        }
+    }]
+
+items = _items

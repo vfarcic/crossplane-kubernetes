@@ -1,4 +1,4 @@
-apiVersion: devopstoolkitseries.com/v2
+apiVersion: devopstoolkit.ai/v2
 kind: Cluster
 metadata:
   name: (join('-', ['a-team', $cluster]))
@@ -20,7 +20,7 @@ metadata:
     crossplane.io/external-name: crossplane
   name: (join('-', ['a-team', $cluster, 'app-crossplane']))
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v2
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
     kind: Cluster

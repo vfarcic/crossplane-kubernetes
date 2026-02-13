@@ -1,5 +1,5 @@
 ---
-apiVersion: devopstoolkitseries.com/v2
+apiVersion: devopstoolkit.ai/v2
 kind: Cluster
 metadata:
   name: (join('-', ['a-team', $cluster]))
@@ -13,7 +13,7 @@ spec:
         - access-key-id
         - secret-access-key
 ---
-apiVersion: devopstoolkitseries.com/v2
+apiVersion: devopstoolkit.ai/v2
 kind: Cluster
 metadata:
   namespace: ($namespace)

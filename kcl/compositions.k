@@ -17,7 +17,7 @@ schema composition:
     }
     spec = {
         compositeTypeRef = {
-            apiVersion = "devopstoolkitseries.com/v2"
+            apiVersion = "devopstoolkit.ai/v2"
             kind = "Cluster"
         }
         mode = "Pipeline"

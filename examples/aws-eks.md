@@ -19,7 +19,7 @@ chmod +x examples/setup.nu
 ```sh
 kubectl --namespace a-team apply --filename examples/aws-eks.yaml
 
-crossplane beta trace cluster.devopstoolkitseries.com a-team --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai a-team --namespace a-team
 ```
 
 ## Package
@@ -35,7 +35,7 @@ start "https://marketplace.upbound.io/configurations/devops-toolkit/dot-kubernet
 > Open the URL from the output in a browser
 
 ```sh
-crossplane beta trace cluster.devopstoolkitseries.com a-team --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai a-team --namespace a-team
 ```
 
 > Wait until all the resources are `Available`.
@@ -60,7 +60,7 @@ cat examples/aws-eks-full.yaml
 
 kubectl --namespace a-team apply --filename examples/aws-eks-full.yaml
 
-crossplane beta trace cluster.devopstoolkitseries.com a-team --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai a-team --namespace a-team
 
 kubectl --kubeconfig kubeconfig.yaml get namespaces
 
@@ -76,7 +76,7 @@ Create a cluster with a GPU node pool for AI/ML workloads:
 ```sh
 kubectl --namespace a-team apply --filename examples/aws-eks-gpu.yaml
 
-crossplane beta trace cluster.devopstoolkitseries.com a-team-gpu --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai a-team-gpu --namespace a-team
 ```
 
 > Wait until all the resources are `Available`.

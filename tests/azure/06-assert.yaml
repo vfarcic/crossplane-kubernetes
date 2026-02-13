@@ -1,5 +1,5 @@
 ---
-apiVersion: devopstoolkitseries.com/v2
+apiVersion: devopstoolkit.ai/v2
 kind: Cluster
 metadata:
   namespace: ($namespace)
@@ -90,7 +90,7 @@ metadata:
     crossplane.io/composite: a-team-aks
   name: a-team-aks-app-dapr
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v2
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
     kind: Cluster

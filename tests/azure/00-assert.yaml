@@ -1,4 +1,4 @@
-apiVersion: devopstoolkitseries.com/v2
+apiVersion: devopstoolkit.ai/v2
 kind: Cluster
 metadata:
   namespace: ($namespace)
@@ -53,7 +53,7 @@ metadata:
     crossplane.io/composite: a-team-aks
   name: a-team-aks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v2
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
     kind: Cluster
@@ -77,7 +77,7 @@ metadata:
     crossplane.io/composite: a-team-aks
   name: a-team-aks
   ownerReferences:
-    - apiVersion: devopstoolkitseries.com/v2
+    - apiVersion: devopstoolkit.ai/v2
       blockOwnerDeletion: true
       controller: true
       kind: Cluster
@@ -87,7 +87,7 @@ spec:
       autoScalingEnabled: true
       maxCount: 10
       minCount: 1
-      name: a-team-aks
+      name: nodepool1
       vmSize: Standard_D3_v2
     dnsPrefix: dot
     identity:
@@ -126,7 +126,7 @@ metadata:
     crossplane.io/composite: a-team-aks
   name: a-team-aks-cilium
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v2
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
     kind: Cluster
@@ -172,7 +172,7 @@ metadata:
   labels:
     crossplane.io/composite: a-team-aks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v2
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
     kind: Cluster
@@ -199,7 +199,7 @@ metadata:
   labels:
     crossplane.io/composite: a-team-aks
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v2
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
     kind: Cluster

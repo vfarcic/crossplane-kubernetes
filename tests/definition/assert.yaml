@@ -3,12 +3,12 @@ kind: CompositeResourceDefinition
 metadata:
   labels:
     idp: "true"
-  name: clusters.devopstoolkitseries.com
+  name: clusters.devopstoolkit.ai
 spec:
   scope: Namespaced
   defaultCompositionRef:
     name: cluster-aws
-  group: devopstoolkitseries.com
+  group: devopstoolkit.ai
   names:
     kind: Cluster
     plural: clusters
