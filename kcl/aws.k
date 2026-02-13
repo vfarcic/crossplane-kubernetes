@@ -4,14 +4,14 @@ ocds = option("params").ocds
 _metadata = lambda name: str, suffix: str, role: str -> any {
     {
         if name != "":
-            name = oxr.spec.id + "-" + name
+            name = oxr.metadata.name + "-" + name
         else:
-            name = oxr.spec.id
+            name = oxr.metadata.name
         annotations = {
             "krm.kcl.dev/composition-resource-name" = suffix
         }
         if role != "":
-            labels.role = oxr.spec.id + "-" + role
+            labels.role = oxr.metadata.name + "-" + role
     }
 }
 
@@ -26,7 +26,7 @@ _items = [{
             version = oxr.spec.parameters.version
         roleArnSelector = {
             matchControllerRef = True
-            matchLabels.role = oxr.spec.id + "-controlplane"
+            matchLabels.role = oxr.metadata.name + "-controlplane"
         }
         vpcConfig = {
             endpointPrivateAccess = True
@@ -44,7 +44,7 @@ _items = [{
             clusterNameSelector.matchControllerRef = True
         }
         writeConnectionSecretToRef = {
-            name = oxr.spec.id + "-cluster"
+            name = oxr.metadata.name + "-cluster"
         }
     }
 }, {
@@ -57,7 +57,7 @@ _items = [{
             clusterNameSelector.matchControllerRef = True
             nodeRoleArnSelector = {
                 matchControllerRef = True
-                matchLabels.role = oxr.spec.id + "-nodegroup"
+                matchLabels.role = oxr.metadata.name + "-nodegroup"
             }
             subnetIdSelector.matchControllerRef = True
             scalingConfig = {
@@ -91,7 +91,7 @@ _items = [{
     kind: "SecurityGroup"
     metadata = _metadata("", "sg-nodepool", "")
     spec.forProvider: {
-        name = oxr.spec.id
+        name = oxr.metadata.name
         description = "Cluster communication with worker nodes"
         region = "us-east-1"
         vpcIdSelector.matchControllerRef = True
@@ -156,11 +156,11 @@ _items = [{
     }
 }, {
     **oxr
-    status.clusterName = oxr.spec.id
-    if oxr.spec.id + "-cluster" in ocds:
-        status.controlPlaneStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
-    if oxr.spec.id + "-node-group" in ocds:
-        status.nodePoolStatus = ocds[oxr.spec.id + "-node-group"].Resource.status.conditions[0].reason
+    status.clusterName = oxr.metadata.name
+    if oxr.metadata.name + "-cluster" in ocds:
+        status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+    if oxr.metadata.name + "-node-group" in ocds:
+        status.nodePoolStatus = ocds[oxr.metadata.name + "-node-group"].Resource.status.conditions[0].reason
 }]
 
 _zones = [
@@ -190,7 +190,7 @@ _items += [{
     apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "Subnet"
     metadata = {
-        name = oxr.spec.id + "-" + _zone.suffix
+        name = oxr.metadata.name + "-" + _zone.suffix
         annotations = {
             "krm.kcl.dev/composition-resource-name" = "subnet-nodepool-" + _zone.suffix
         }
@@ -230,7 +230,7 @@ _items += [{
             policyArn = _rpa.policyArn
             roleSelector = {
                 matchControllerRef = True
-                matchLabels.role = oxr.spec.id + "-" + _rpa.role
+                matchLabels.role = oxr.metadata.name + "-" + _rpa.role
             }
         }
     }
@@ -245,11 +245,11 @@ _items += [{
     apiVersion = "iam.aws.m.upbound.io/v1beta1"
     kind = "Role"
     metadata = {
-        name = oxr.spec.id + "-" + _role.name
+        name = oxr.metadata.name + "-" + _role.name
         annotations = {
             "krm.kcl.dev/composition-resource-name" = "iamrole-" + _role.name
         }
-        labels.role = oxr.spec.id + "-" + _role.name
+        labels.role = oxr.metadata.name + "-" + _role.name
     }
     spec.forProvider.assumeRolePolicy = """\
 {
@@ -276,7 +276,7 @@ if oxr.spec.parameters?.gpu?.enabled:
                 clusterNameSelector.matchControllerRef = True
                 nodeRoleArnSelector = {
                     matchControllerRef = True
-                    matchLabels.role = oxr.spec.id + "-nodegroup"
+                    matchLabels.role = oxr.metadata.name + "-nodegroup"
                 }
                 subnetIdSelector.matchControllerRef = True
                 amiType = "AL2023_x86_64_NVIDIA"

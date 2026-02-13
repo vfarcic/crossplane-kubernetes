@@ -9,7 +9,6 @@ spec:
       matchLabels:
         provider: aws
         cluster: eks
-  id: a-team-eks
   parameters:
     nodeSize: medium
     minNodeCount: 3

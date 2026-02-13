@@ -48,10 +48,6 @@ spec = {
                     spec = {
                         type = "object"
                         properties = {
-                            id = {
-                                type = "string"
-                                description = "ID of this Cluster that other objects can refer."
-                            }
                             parameters = _data(data.root)
                             parameters.properties.gpu = _data(data.gpu)
                             parameters.properties.usage = _data(data.usage)
@@ -84,7 +80,7 @@ spec = {
                             }
                             parameters.properties.creds = _data(data.creds)
                         }
-                        required = ["id", "parameters"]
+                        required = ["parameters"]
                     }
                     status = {
                         type = "object"

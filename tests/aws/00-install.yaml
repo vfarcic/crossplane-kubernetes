@@ -3,7 +3,6 @@ kind: Cluster
 metadata:
   name: a-team-eks
 spec:
-  id: a-team-eks
   crossplane:
     compositionSelector:
       matchLabels:

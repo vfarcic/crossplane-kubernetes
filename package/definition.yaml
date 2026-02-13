@@ -23,9 +23,6 @@ spec:
           spec:
             type: object
             properties:
-              id:
-                type: string
-                description: ID of this Cluster that other objects can refer.
               parameters:
                 description: Parameters used to customize the cluster
                 type: object
@@ -210,7 +207,6 @@ spec:
                 required:
                 - nodeSize
             required:
-            - id
             - parameters
           status:
             type: object

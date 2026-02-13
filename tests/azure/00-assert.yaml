@@ -39,7 +39,6 @@ spec:
     - apiVersion: kubernetes.m.crossplane.io/v1alpha1
       kind: ProviderConfig
       name: a-team-aks
-  id: a-team-aks
   parameters:
     minNodeCount: 1
     nodeSize: medium

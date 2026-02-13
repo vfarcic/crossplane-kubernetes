@@ -3,10 +3,10 @@ ocds = option("params").ocds
 
 _metadata = lambda suffix: str -> any {
     {
-        name = oxr.spec.id
+        name = oxr.metadata.name
         annotations = {
-            "crossplane.io/external-name" = oxr.spec.id
-            "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-" + suffix
+            "crossplane.io/external-name" = oxr.metadata.name
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-" + suffix
         }
     }
 }
@@ -25,13 +25,13 @@ _items = [{
     metadata = _metadata("cluster")
     spec = {
         forProvider: {
-            resourceGroupName = oxr.spec.id
+            resourceGroupName = oxr.metadata.name
             if oxr.spec.parameters.version:
                 kubernetesVersion = oxr.spec.parameters.version
             location = "eastus"
             dnsPrefix = "dot"
             defaultNodePool = {
-                name = oxr.spec.id
+                name = "nodepool1"
                 if oxr.spec.parameters.nodeSize == "small":
                     vmSize = "Standard_D2_v2"
                 elif oxr.spec.parameters.nodeSize == "medium":
@@ -46,16 +46,16 @@ _items = [{
             networkProfile = {networkPlugin = "none"}
         }
         writeConnectionSecretToRef = {
-            name = oxr.spec.id + "-cluster"
+            name = oxr.metadata.name + "-cluster"
         }
     }
 # TODO: Uncomment and fix
 # }, {
 #     **oxr
-#     status.clusterName = oxr.spec.id
-#     if oxr.spec.id + "-cluster" in ocds:
-#         status.controlPlaneStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
-#         status.nodePoolStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
+#     status.clusterName = oxr.metadata.name
+#     if oxr.metadata.name + "-cluster" in ocds:
+#         status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+#         status.nodePoolStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
 }]
 
 _gpu_node_size = oxr.spec.parameters?.gpu?.nodeSize or "small"
@@ -65,10 +65,10 @@ if oxr.spec.parameters?.gpu?.enabled:
         apiVersion = "containerservice.azure.m.upbound.io/v1beta1"
         kind = "KubernetesClusterNodePool"
         metadata = {
-            name = oxr.spec.id + "-gpu"
+            name = oxr.metadata.name + "-gpu"
             annotations = {
-                "crossplane.io/external-name" = oxr.spec.id + "-gpu"
-                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-gpu"
+                "crossplane.io/external-name" = "gpu"
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-gpu"
             }
         }
         spec = {

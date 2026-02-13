@@ -83,7 +83,7 @@ No inference serving framework is included — that is a separate concern. This 
 ### 6. Azure GPU Node Pool
 - [x] RED: Chainsaw test asserts Azure GPU KubernetesClusterNodePool is created
 - [x] GREEN: Implement conditional GPU node pool in `azure.k`
-- [ ] Manual validation: create minimal GPU cluster in Azure (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU node pool reaches Ready, destroy
+- [x] Manual validation: create minimal GPU cluster in Azure (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU node pool reaches Ready, destroy
 
 ### 7. Google GPU Node Pool
 - [ ] RED: Chainsaw test asserts Google GPU NodePool with guest accelerators is created
@@ -117,6 +117,9 @@ No inference serving framework is included — that is a separate concern. This 
 | 2026-02-10 | Remove hardcoded Kubernetes version default from all providers | All three cloud providers support omitting version (defaults to latest); hardcoding pins clusters to stale versions | `aws.k` removed `version = "1.30"` fallback, `google.k` and `azure.k` now conditionally set version only when user specifies it |
 | 2026-02-10 | Reorganize milestones: NVIDIA before Azure/Google | NVIDIA GPU Operator is needed to validate GPUs are actually usable (exposes `nvidia.com/gpu`); testing Azure/Google without it only validates node pool creation, not GPU functionality | Milestone order: AWS → NVIDIA → AWS manual validation → Azure → Google |
 | 2026-02-10 | Bump all Helm chart dependency versions to latest stable | Versions were significantly outdated (some 2+ major versions behind); updated Crossplane 1.14.5→2.1.4, Argo CD 3.35.4→9.4.1, Dapr 1.12.4→1.16.8, Traefik 26.0.0→39.0.0, External Secrets 0.9.11→2.0.0, Cilium 1.14.2→1.19.0 | `kcl/apps.k` version constants and 9 test assertion files updated; all tests pass |
+| 2026-02-11 | Remove `spec.id`, use `oxr.metadata.name` | In Crossplane v2 namespace-scoped resources, `metadata.name` already serves as identity; redundant `spec.id` caused AKS node pool naming failures (hyphens not allowed) | All KCL files updated (`oxr.spec.id` → `oxr.metadata.name`), `id` removed from XRD schema, all tests/examples updated |
+| 2026-02-11 | AKS node pool names must be alphanumeric only | Azure rejects hyphens in `agentPoolProfile.name`; default pool uses `nodepool1`, GPU pool external name uses `gpu` | `azure.k` default node pool name hardcoded to `nodepool1`, GPU pool `crossplane.io/external-name` set to `gpu` |
+| 2026-02-11 | Add Chainsaw test cleanup scripts to patch ProviderConfig finalizers | `in-use.crossplane.io` finalizer on ProviderConfigs blocks namespace deletion during test cleanup; Crossplane Usage controller doesn't remove finalizer fast enough during parallel garbage collection | All 3 provider chainsaw tests add cleanup step: delete Cluster, sleep, patch out finalizers |
 | 2026-02-11 | GPU device plugin must be deployed on AWS and Azure; GKE auto-installs it | EKS `AL2023_x86_64_NVIDIA` AMI pre-installs NVIDIA drivers but NOT the device plugin (`nvidia.com/gpu` does not appear without GPU Operator). AKS also installs drivers only. GKE is the only provider that auto-installs both drivers and device plugin. | AWS GPU NodeGroup uses `amiType: AL2023_x86_64_NVIDIA` (faster GPU Operator startup — skips driver install); `apps.nvidia` (GPU Operator) is required for AWS and Azure, optional for GKE |
 
 ## Risks

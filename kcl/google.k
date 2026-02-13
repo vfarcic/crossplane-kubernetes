@@ -3,10 +3,10 @@ ocds = option("params").ocds
 
 _metadata = lambda suffix: str -> any {
     {
-        name = oxr.spec.id
+        name = oxr.metadata.name
         annotations = {
-            "crossplane.io/external-name" = oxr.spec.id
-            "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-" + suffix
+            "crossplane.io/external-name" = oxr.metadata.name
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-" + suffix
         }
     }
 }
@@ -29,7 +29,7 @@ items = [{
             }
         }
         writeConnectionSecretToRef = {
-            name = oxr.spec.id + "-cluster"
+            name = oxr.metadata.name + "-cluster"
         }
     }
 }, {
@@ -67,10 +67,10 @@ items = [{
     }
 }, {
     **oxr
-    status.clusterName = oxr.spec.id
-    if oxr.spec.id + "-cluster" in ocds:
-        status.controlPlaneStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
-        status.field1 = ocds[oxr.spec.id + "-cluster"].Resource.status.atProvider.clusterIpv4Cidr
-    if oxr.spec.id + "-nodepool" in ocds:
-        status.nodePoolStatus = ocds[oxr.spec.id + "-nodepool"].Resource.status.conditions[0].reason
+    status.clusterName = oxr.metadata.name
+    if oxr.metadata.name + "-cluster" in ocds:
+        status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+        status.field1 = ocds[oxr.metadata.name + "-cluster"].Resource.status.atProvider.clusterIpv4Cidr
+    if oxr.metadata.name + "-nodepool" in ocds:
+        status.nodePoolStatus = ocds[oxr.metadata.name + "-nodepool"].Resource.status.conditions[0].reason
 }]

@@ -1,7 +1,7 @@
 apiVersion: devopstoolkitseries.com/v2
 kind: Cluster
 metadata:
-  name: a-team-aks
+  name: ateamgpu
 spec:
   crossplane:
     compositionSelector:
@@ -9,13 +9,11 @@ spec:
         provider: azure
         cluster: aks
   parameters:
-    nodeSize: medium
+    nodeSize: small
     minNodeCount: 1
-    version: 1.26.6
+    gpu:
+      enabled: true
+      nodeSize: small
     apps:
-      crossplane:
-        enabled: true
-      openfunction:
-        enabled: true
-      externalSecrets:
+      nvidia:
         enabled: true

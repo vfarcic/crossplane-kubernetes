@@ -3,7 +3,6 @@ kind: Cluster
 metadata:
   name: a-team-gpu
 spec:
-  id: a-team-gpu
   crossplane:
     compositionSelector:
       matchLabels:

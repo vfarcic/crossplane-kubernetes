@@ -4,7 +4,6 @@ metadata:
   name: a-team-gke
   namespace: ($namespace)
 spec:
-  id: a-team-gke
   crossplane:
     compositionSelector:
       matchLabels:

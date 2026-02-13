@@ -99,7 +99,6 @@ spec:
     - apiVersion: kubernetes.m.crossplane.io/v1alpha1
       kind: ProviderConfig
       name: a-team-eks
-  id: a-team-eks
   parameters:
     minNodeCount: 3
     nodeSize: medium

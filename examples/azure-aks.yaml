@@ -3,7 +3,6 @@ kind: Cluster
 metadata:
   name: a-team
 spec:
-  id: a-team
   crossplane:
     compositionSelector:
       matchLabels:
