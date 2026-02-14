@@ -111,7 +111,7 @@ spec:
                   }
                   spec.forProvider = {
                       clusterSelector.matchControllerRef = True
-                      nodeLocations = ["us-east1-b", "us-east1-c", "us-east1-d"]
+                      nodeLocations = ["us-east1-c", "us-east1-d"]
                       initialNodeCount = 1
                       nodeConfig = {
                           if _gpu_node_size == "small":
@@ -136,11 +136,6 @@ spec:
                           labels = {
                               gpu = "true"
                           }
-                          taint = [{
-                              key = "nvidia.com/gpu"
-                              value = "true"
-                              effect = "NO_SCHEDULE"
-                          }]
                       }
                       autoscaling = {
                           minNodeCount = 1
@@ -361,11 +356,13 @@ spec:
                                           if oxr.metadata.name + "-nodepool" in ocds:
                                               value = oxr.status.field1
                                       },
+                                      {name = "authentication.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.install.enabled", value = "true"}
                                   if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "azure":
                                       {name = "aksbyocni.enabled", value = "true"}
                                       {name = "nodeinit.enabled", value = "true"}
+                                      {name = "authentication.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.install.enabled", value = "true"}
                               ]
@@ -1028,11 +1025,13 @@ spec:
                                           if oxr.metadata.name + "-nodepool" in ocds:
                                               value = oxr.status.field1
                                       },
+                                      {name = "authentication.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.install.enabled", value = "true"}
                                   if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "azure":
                                       {name = "aksbyocni.enabled", value = "true"}
                                       {name = "nodeinit.enabled", value = "true"}
+                                      {name = "authentication.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.install.enabled", value = "true"}
                               ]
@@ -1905,11 +1904,13 @@ spec:
                                           if oxr.metadata.name + "-nodepool" in ocds:
                                               value = oxr.status.field1
                                       },
+                                      {name = "authentication.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.install.enabled", value = "true"}
                                   if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "azure":
                                       {name = "aksbyocni.enabled", value = "true"}
                                       {name = "nodeinit.enabled", value = "true"}
+                                      {name = "authentication.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.enabled", value = "true"}
                                       {name = "authentication.mutual.spire.install.enabled", value = "true"}
                               ]

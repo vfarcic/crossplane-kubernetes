@@ -197,11 +197,13 @@ _items = [
                                 if oxr.metadata.name + "-nodepool" in ocds:
                                     value = oxr.status.field1
                             },
+                            {name = "authentication.enabled", value = "true"}
                             {name = "authentication.mutual.spire.enabled", value = "true"}
                             {name = "authentication.mutual.spire.install.enabled", value = "true"}
                         if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "azure":
                             {name = "aksbyocni.enabled", value = "true"}
                             {name = "nodeinit.enabled", value = "true"}
+                            {name = "authentication.enabled", value = "true"}
                             {name = "authentication.mutual.spire.enabled", value = "true"}
                             {name = "authentication.mutual.spire.install.enabled", value = "true"}
                     ]

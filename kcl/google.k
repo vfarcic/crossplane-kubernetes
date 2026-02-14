@@ -90,7 +90,7 @@ if oxr.spec.parameters?.gpu?.enabled:
         }
         spec.forProvider = {
             clusterSelector.matchControllerRef = True
-            nodeLocations = ["us-east1-b", "us-east1-c", "us-east1-d"]
+            nodeLocations = ["us-east1-c", "us-east1-d"]
             initialNodeCount = 1
             nodeConfig = {
                 if _gpu_node_size == "small":
@@ -115,11 +115,6 @@ if oxr.spec.parameters?.gpu?.enabled:
                 labels = {
                     gpu = "true"
                 }
-                taint = [{
-                    key = "nvidia.com/gpu"
-                    value = "true"
-                    effect = "NO_SCHEDULE"
-                }]
             }
             autoscaling = {
                 minNodeCount = 1
