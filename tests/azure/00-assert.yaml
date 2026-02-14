@@ -39,6 +39,9 @@ spec:
     - apiVersion: kubernetes.m.crossplane.io/v1alpha1
       kind: ProviderConfig
       name: a-team-aks
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-aks-cilium-usage
   parameters:
     minNodeCount: 1
     nodeSize: medium

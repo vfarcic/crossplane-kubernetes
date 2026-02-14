@@ -55,6 +55,30 @@ spec:
     - apiVersion: kubernetes.m.crossplane.io/v1alpha1
       kind: ProviderConfig
       name: a-team-aks
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-aks-cilium-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-aks-creds-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-aks-crossplane-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-aks-dapr-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-aks-external-secrets-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-aks-openfunction-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-aks-secret-push-secret-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-aks-secret-store-usage
   parameters:
     minNodeCount: 1
     nodeSize: medium

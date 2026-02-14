@@ -36,6 +36,9 @@ spec:
     - apiVersion: kubernetes.m.crossplane.io/v1alpha1
       kind: ProviderConfig
       name: a-team-gke
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-cilium-usage
   parameters:
     minNodeCount: 1
     nodeSize: medium

@@ -54,6 +54,30 @@ spec:
     - apiVersion: kubernetes.m.crossplane.io/v1alpha1
       kind: ProviderConfig
       name: a-team-gke
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-cilium-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-creds-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-crossplane-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-dapr-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-external-secrets-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-openfunction-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-secret-push-secret-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-secret-store-usage
   parameters:
     minNodeCount: 1
     nodeSize: medium
