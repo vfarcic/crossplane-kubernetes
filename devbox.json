@@ -24,8 +24,7 @@
   ],
   "shell": {
     "init_hook": [
-      "if [ -n \"$ZSH_VERSION\" ]; then export SHELL_NAME=zsh; elif [ -n \"$BASH_VERSION\" ]; then export SHELL_NAME=bash;fi",
-      "source <(just --completions $SHELL_NAME)",
+      "export PATH=\"$HOME/.local/bin:$PATH\"",
       "[ -n \"$USE_VALS\" ] && eval \"$(vals env -export -f .env.vals.yaml)\" || true",
       "[ -f .env ] && source .env || true"
     ],

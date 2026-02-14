@@ -12,7 +12,7 @@ Enter dev environment first: `devbox shell`
 
 | Command | Description |
 |---|---|
-| `just package-generate` | Compile KCL files into YAML manifests in `package/` and `backstage/` |
+| `just package-generate` | Compile KCL files into YAML manifests in `package/` |
 | `just package-apply` | Apply definition and compositions to the current cluster |
 | `just package-generate-apply` | Generate + apply in one step |
 | `just cluster-create` | Create KinD cluster, install Crossplane, providers, and functions |
@@ -46,7 +46,6 @@ Source of truth is KCL code in `kcl/`. Running `just package-generate` produces:
 - `kcl/crossplane.k` → `package/crossplane.yaml` (Configuration metadata + provider/function dependencies)
 - `kcl/definition.k` → `package/definition.yaml` (CompositeResourceDefinition for `CompositeCluster`)
 - `kcl/compositions.k` → `package/compositions.yaml` (one Composition per cloud provider)
-- `kcl/backstage-template.k` → `backstage/crossplane-kubernetes.yaml`
 
 **Never edit files in `package/` directly** — they are generated from KCL.
 

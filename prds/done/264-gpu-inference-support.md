@@ -2,7 +2,7 @@
 
 **Issue**: #264
 **Priority**: High
-**Status**: In Progress
+**Status**: Complete (Milestone 10 deferred)
 
 ## Problem
 
@@ -48,7 +48,6 @@ No inference serving framework is included — that is a separate concern. This 
 - `kcl/aws.k` — conditional GPU NodeGroup
 - `kcl/google.k` — conditional GPU NodePool with guest accelerators
 - `kcl/azure.k` — conditional GPU KubernetesClusterNodePool
-- `kcl/backstage-template.k` — expose GPU + NVIDIA params in Backstage UI
 - `tests/` — new test steps and assertions per provider + common nvidia assertion
 - `examples/` — example Cluster with GPU enabled
 
@@ -90,20 +89,19 @@ No inference serving framework is included — that is a separate concern. This 
 - [x] GREEN: Implement conditional GPU NodePool in `google.k`
 - [x] Manual validation: create minimal GPU cluster in GCP (`gpu.enabled: true`, `gpu.nodeSize: small`), verify GPU NodePool reaches Ready, destroy
 
-### 8. Backstage & Examples
-- [ ] Update `backstage-template.k` with GPU and NVIDIA parameters
+### 8. Examples
 - [x] Add example Cluster with GPU configuration
 
 ### 9. API Domain Migration
 - [x] Change XRD API group from `devopstoolkitseries.com` to `devopstoolkit.ai` in `kcl/definition.k` and `kcl/compositions.k`
-- [x] Update all test files, examples, and Backstage templates to use `devopstoolkit.ai/v2`
+- [x] Update all test files and examples to use `devopstoolkit.ai/v2`
 - [x] Regenerate `package/` via `just package-generate`
 - [x] Verify all tests pass after migration
 
 ### 10. Renovate for Dependency Management
-- [ ] Add `renovate.json` with custom regex managers for `providers/*.yaml` and `kcl/crossplane.k`
-- [ ] Ensure Renovate can auto-detect and update Crossplane provider package versions
-- [ ] Validate Renovate PRs don't break KCL generation pipeline
+- [~] Add `renovate.json` with custom regex managers for `providers/*.yaml` and `kcl/crossplane.k`
+- [~] Ensure Renovate can auto-detect and update Crossplane provider package versions
+- [~] Validate Renovate PRs don't break KCL generation pipeline
 
 ## Decision Log
 
@@ -126,11 +124,13 @@ No inference serving framework is included — that is a separate concern. This 
 | 2026-02-11 | Remove `spec.id`, use `oxr.metadata.name` | In Crossplane v2 namespace-scoped resources, `metadata.name` already serves as identity; redundant `spec.id` caused AKS node pool naming failures (hyphens not allowed) | All KCL files updated (`oxr.spec.id` → `oxr.metadata.name`), `id` removed from XRD schema, all tests/examples updated |
 | 2026-02-11 | AKS node pool names must be alphanumeric only | Azure rejects hyphens in `agentPoolProfile.name`; default pool uses `nodepool1`, GPU pool external name uses `gpu` | `azure.k` default node pool name hardcoded to `nodepool1`, GPU pool `crossplane.io/external-name` set to `gpu` |
 | 2026-02-11 | Add Chainsaw test cleanup scripts to patch ProviderConfig finalizers | `in-use.crossplane.io` finalizer on ProviderConfigs blocks namespace deletion during test cleanup; Crossplane Usage controller doesn't remove finalizer fast enough during parallel garbage collection | All 3 provider chainsaw tests add cleanup step: delete Cluster, sleep, patch out finalizers |
-| 2026-02-13 | Change API group domain from `devopstoolkit.ai` to `devopstoolkit.ai` | Rebranding — new domain is shorter and more aligned with the project's AI/ML focus | All KCL source files (`definition.k`, `compositions.k`), all test files, examples, Backstage templates, and `CLAUDE.md` must replace `devopstoolkit.ai` with `devopstoolkit.ai`; API version stays `v2` |
+| 2026-02-13 | Change API group domain from `devopstoolkit.ai` to `devopstoolkit.ai` | Rebranding — new domain is shorter and more aligned with the project's AI/ML focus | All KCL source files (`definition.k`, `compositions.k`), all test files, examples, and `CLAUDE.md` must replace `devopstoolkit.ai` with `devopstoolkit.ai`; API version stays `v2` |
 | 2026-02-11 | GPU device plugin must be deployed on AWS and Azure; GKE auto-installs it | EKS `AL2023_x86_64_NVIDIA` AMI pre-installs NVIDIA drivers but NOT the device plugin (`nvidia.com/gpu` does not appear without GPU Operator). AKS also installs drivers only. GKE is the only provider that auto-installs both drivers and device plugin. | AWS GPU NodeGroup uses `amiType: AL2023_x86_64_NVIDIA` (faster GPU Operator startup — skips driver install); `apps.nvidia` (GPU Operator) is required for AWS and Azure, optional for GKE |
 | 2026-02-13 | GKE GPU NodePool must exclude `us-east1-b` from nodeLocations | T4 GPUs (`nvidia-tesla-t4`) are not available in `us-east1-b`; GKE API returns `accelerator type "nvidia-tesla-t4" does not exist in zone us-east1-b` | GPU nodeLocations reduced to `["us-east1-c", "us-east1-d"]`; regular NodePool keeps all three zones |
 | 2026-02-13 | GKE GPU nodes must not have explicit `nvidia.com/gpu` taint | GKE auto-adds `nvidia.com/gpu=present:NoSchedule` taint via `effectiveTaints`; specifying it explicitly causes `found more than one taint with key nvidia.com/gpu` error | Removed explicit taint from `google.k` GPU NodePool; GKE handles taint automatically unlike AWS/Azure |
 | 2026-02-13 | Cilium v1.19.0 requires `authentication.enabled=true` for SPIRE | Newer Cilium chart validates that `authentication.enabled=true` is set when `authentication.mutual.spire.enabled=true` | Added `authentication.enabled=true` to Cilium Helm set values for both Google and Azure compositions |
+| 2026-02-13 | Defer Milestone 10 (Renovate custom regex managers) | Existing `renovate.json` already handles `providers/*.yaml` via built-in `crossplane` manager; custom regex managers for `kcl/crossplane.k` (floor constraints) and `kcl/apps.k` (Helm chart versions) add complexity for marginal benefit | Milestone 10 marked deferred; basic Renovate config remains functional for provider package updates |
+| 2026-02-13 | Split CI: test on PR, release on main | Tests ran only on push to main, meaning broken code could be merged; splitting ensures PRs are validated before merge | `build12.yaml` replaced by `test.yaml` (PR trigger) and `release.yaml` (push to main, publish only) |
 
 ## Risks
 
