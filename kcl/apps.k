@@ -213,8 +213,7 @@ _items = [
                 providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "cilium", _kind = "Release" }
+        usage { _nameSuffix = "cilium", _kind = "Release" }
 
     {
         apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
@@ -256,8 +255,7 @@ _items = [
             _chartVersion = crossplane
             _namespace = "crossplane-system"
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "crossplane", _kind = "Release" }
+        usage { _nameSuffix = "crossplane", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.argocd?.enabled:
         chart {
@@ -319,9 +317,8 @@ _items = [
                 }
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "argo-cd", _kind = "Release" }
-            usage { _nameSuffix = "argo-cd-app" }
+        usage { _nameSuffix = "argo-cd", _kind = "Release" }
+        usage { _nameSuffix = "argo-cd-app" }
 
     if oxr.spec.parameters?.apps?.openfunction?.enabled:
         chart {
@@ -332,8 +329,7 @@ _items = [
                 revisionController.enable = True
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "openfunction", _kind = "Release" }
+        usage { _nameSuffix = "openfunction", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.dapr?.enabled:
         chart {
@@ -342,8 +338,7 @@ _items = [
             _chartVersion = dapr
             _namespace = "dapr-system"
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "dapr", _kind = "Release" }
+        usage { _nameSuffix = "dapr", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.traefik?.enabled:
         chart {
@@ -352,8 +347,7 @@ _items = [
             _chartVersion = traefik
             _namespace = "traefik"
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "traefik", _kind = "Release" }
+        usage { _nameSuffix = "traefik", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {
@@ -365,8 +359,7 @@ _items = [
                 installCRDs = True
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "external-secrets", _kind = "Release" }
+        usage { _nameSuffix = "external-secrets", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.nvidia?.enabled:
         chart {
@@ -378,8 +371,7 @@ _items = [
                 driver.enabled = False
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "gpu-operator", _kind = "Release" }
+        usage { _nameSuffix = "gpu-operator", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
         object {
@@ -429,8 +421,7 @@ _items = [
                     toFieldPath = "spec.provider.gcpsm.projectID"
                 }]
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "secret-store" }
+        usage { _nameSuffix = "secret-store" }
 
 ]
 
@@ -470,10 +461,9 @@ if oxr.spec.parameters?.apps?.externalSecrets?.secrets:
             providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
         }
     } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
-    if oxr.spec.parameters?.usage?.enabled:
-        _items += [ usage {
-            _nameSuffix = "secret-" + _secret.toSecret
-        } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
+    _items += [ usage {
+        _nameSuffix = "secret-" + _secret.toSecret
+    } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
 
 if oxr.spec.parameters?.namespaces:
     _items += [{
@@ -533,8 +523,7 @@ if oxr.spec.parameters?.creds:
                 providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "creds" }
+        usage { _nameSuffix = "creds" }
     ]
 
 items = _items

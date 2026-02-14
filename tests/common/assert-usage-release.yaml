@@ -5,9 +5,6 @@ metadata:
   name: (join('-', ['a-team', $cluster]))
   namespace: ($namespace)
 spec:
-  parameters:
-    usage:
-      enabled: true
   (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, $usageName, 'usage'])]):
   - apiVersion: protection.crossplane.io/v1beta1
     kind: Usage

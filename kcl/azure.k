@@ -49,13 +49,12 @@ _items = [{
             name = oxr.metadata.name + "-cluster"
         }
     }
-# TODO: Uncomment and fix
-# }, {
-#     **oxr
-#     status.clusterName = oxr.metadata.name
-#     if oxr.metadata.name + "-cluster" in ocds:
-#         status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
-#         status.nodePoolStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+}, {
+    **oxr
+    status.clusterName = oxr.metadata.name
+    if oxr.metadata.name + "-cluster" in ocds:
+        status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+        status.nodePoolStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
 }]
 
 _gpu_node_size = oxr.spec.parameters?.gpu?.nodeSize or "small"

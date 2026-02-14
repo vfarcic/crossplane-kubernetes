@@ -89,6 +89,8 @@ if oxr.spec.parameters?.gpu?.enabled:
             }
         }
         spec.forProvider = {
+            if oxr.spec.parameters.version:
+                version = oxr.spec.parameters.version
             clusterSelector.matchControllerRef = True
             nodeLocations = ["us-east1-c", "us-east1-d"]
             initialNodeCount = 1

@@ -25,9 +25,7 @@ spec:
           - fromSecret: registry-auth
             toSecret: push-secret
             toNamespace: production
-      dapr: # New
-        enabled: true # New
-    creds:
+      dapr:        enabled: true    creds:
       name: azure-creds
       namespace: crossplane-system
       keys:

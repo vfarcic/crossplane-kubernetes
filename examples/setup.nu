@@ -11,7 +11,6 @@ def main [--gitopsrepo: string] {
     (
         helm upgrade --install crossplane crossplane
             --repo https://charts.crossplane.io/stable
-            --set args='{"--enable-usages"}'
             --namespace crossplane-system --create-namespace --wait
     )
 

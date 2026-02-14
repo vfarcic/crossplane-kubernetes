@@ -28,9 +28,7 @@ spec:
             toSecret: push-secret
             toNamespace: production
             type: kubernetes.io/dockerconfigjson
-      dapr: # New
-        enabled: true # New
-    creds:
+      dapr:        enabled: true    creds:
       name: aws-creds
       namespace: crossplane-system
       keys:

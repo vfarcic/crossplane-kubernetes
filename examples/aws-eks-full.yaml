@@ -11,8 +11,6 @@ spec:
   parameters:
     nodeSize: medium
     minNodeCount: 1
-    usage:
-      enabled: true
     apps:
       traefik:
         enabled: true

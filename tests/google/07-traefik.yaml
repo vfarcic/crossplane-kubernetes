@@ -30,9 +30,7 @@ spec:
             toNamespace: production
       dapr:
         enabled: true
-      traefik: # New
-        enabled: true # New
-    creds:
+      traefik:        enabled: true    creds:
       name: gcp-creds
       namespace: crossplane-system
       keys:

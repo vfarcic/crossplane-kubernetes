@@ -33,6 +33,11 @@ spec:
       revisionController:
         enable: true
     namespace: openfunction
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  rollbackLimit: 3
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))

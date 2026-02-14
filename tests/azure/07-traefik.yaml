@@ -27,9 +27,7 @@ spec:
             toNamespace: production
       dapr:
         enabled: true
-      traefik: # New
-        enabled: true # New
-    creds:
+      traefik:        enabled: true    creds:
       name: azure-creds
       namespace: crossplane-system
       keys:

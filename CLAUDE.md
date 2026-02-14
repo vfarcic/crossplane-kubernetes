@@ -44,7 +44,7 @@ Requires `UP_ACCOUNT`, `UP_TOKEN`, and `VERSION` env vars. Run `just package-pub
 
 Source of truth is KCL code in `kcl/`. Running `just package-generate` produces:
 - `kcl/crossplane.k` → `package/crossplane.yaml` (Configuration metadata + provider/function dependencies)
-- `kcl/definition.k` → `package/definition.yaml` (CompositeResourceDefinition for `CompositeCluster`)
+- `kcl/definition.k` → `package/definition.yaml` (CompositeResourceDefinition for `Cluster`)
 - `kcl/compositions.k` → `package/compositions.yaml` (one Composition per cloud provider)
 
 **Never edit files in `package/` directly** — they are generated from KCL.
@@ -66,7 +66,7 @@ Each Composition uses Crossplane Pipeline mode with three steps:
 
 ### Crossplane Custom API
 
-- **API Group**: `devopstoolkit.ai/v1alpha1`
+- **API Group**: `devopstoolkit.ai/v2`
 - **Resource**: `Cluster` (namespace-scoped, Crossplane v2)
 - **Provider selection**: `spec.compositionSelector.matchLabels.provider` (aws/azure/google)
 

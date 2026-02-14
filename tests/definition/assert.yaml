@@ -198,19 +198,13 @@ spec:
                         default: false
                         type: boolean
                       nodeSize:
+                        default: small
                         description: "The size of the GPU nodes; small, medium, large."
                         type: string
                         enum:
                           - small
                           - medium
                           - large
-                  usage:
-                    description: Whether Crossplane `Usage` (currently alpha feature) is enabled.
-                    type: object
-                    properties:
-                      enabled:
-                        default: false
-                        type: boolean
                 required:
                 - nodeSize
                 type: object

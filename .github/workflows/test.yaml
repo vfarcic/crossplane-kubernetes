@@ -15,6 +15,5 @@ jobs:
         uses: jetpack-io/devbox-install-action@v0.14.0
         with:
           enable-cache: true
-          project-path: .github/workflows
       - name: Test
-        run: devbox --config .github/workflows run test
+        run: devbox run test

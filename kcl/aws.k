@@ -61,10 +61,8 @@ _items = [{
             }
             subnetIdSelector.matchControllerRef = True
             scalingConfig = {
-                minSize = 1
-                maxSize = 10
-                desiredSize = 1
                 minSize = oxr.spec.parameters.minNodeCount
+                maxSize = 10
                 desiredSize = oxr.spec.parameters.minNodeCount
             }
             if oxr.spec.parameters.nodeSize == "small":
@@ -157,10 +155,10 @@ _items = [{
 }, {
     **oxr
     status.clusterName = oxr.metadata.name
-    if oxr.metadata.name + "-cluster" in ocds:
-        status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
-    if oxr.metadata.name + "-node-group" in ocds:
-        status.nodePoolStatus = ocds[oxr.metadata.name + "-node-group"].Resource.status.conditions[0].reason
+    if "ekscluster" in ocds:
+        status.controlPlaneStatus = ocds["ekscluster"].Resource.status.conditions[0].reason
+    if "eksnodegroup" in ocds:
+        status.nodePoolStatus = ocds["eksnodegroup"].Resource.status.conditions[0].reason
 }]
 
 _zones = [

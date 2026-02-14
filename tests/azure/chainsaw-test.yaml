@@ -57,8 +57,6 @@ spec:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
-        - patch:
-            file: ../common/usage.yaml
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:

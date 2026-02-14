@@ -27,17 +27,6 @@ root = {
     required = ["nodeSize"]
 }
 
-usage = {
-    description = "Whether Crossplane `Usage` (currently alpha feature) is enabled."
-    type = "object"
-    properties = {
-        enabled = {
-            type = "boolean"
-            default = False
-        }
-    }
-    required = []
-}
 
 appCrossplane = {
     type = "object"
@@ -187,6 +176,7 @@ gpu = {
             description = "The size of the GPU nodes; small, medium, large."
             type = "string"
             enum = ["small", "medium", "large"]
+            default = "small"
         }
     }
     required = []

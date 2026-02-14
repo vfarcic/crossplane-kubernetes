@@ -13,7 +13,6 @@ kind create cluster
 
 helm upgrade --install crossplane crossplane \
     --repo https://charts.crossplane.io/stable \
-    --set args='{"--enable-usages"}' \
     --namespace crossplane-system --create-namespace --wait
 
 kubectl apply --filename config.yaml

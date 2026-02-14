@@ -50,7 +50,6 @@ spec = {
                         properties = {
                             parameters = _data(data.root)
                             parameters.properties.gpu = _data(data.gpu)
-                            parameters.properties.usage = _data(data.usage)
                             parameters.properties.apps = {
                                 type = "object"
                                 description = "List of apps that should be installed in the cluster"
