@@ -1,9 +1,10 @@
-crossplane = "1.14.5"
-argocd = "3.35.4"
-dapr = "1.12.4"
-traefik = "26.0.0"
-externalSecrets = "0.9.11"
-cilium = "1.14.2"
+crossplane = "2.1.4"
+argocd = "9.4.1"
+dapr = "1.16.8"
+traefik = "39.0.0"
+externalSecrets = "2.0.0"
+cilium = "1.19.0"
+nvidiaGpuOperator = "v25.10.1"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
 
 oxr = option("params").oxr
@@ -11,10 +12,10 @@ ocds = option("params").ocds
 
 _metadata = lambda suffix: str -> any {
     {
-        name = oxr.spec.id
+        name = oxr.metadata.name
         annotations = {
-            "crossplane.io/external-name" = oxr.spec.id
-            "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-" + suffix
+            "crossplane.io/external-name" = oxr.metadata.name
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-" + suffix
         }
     }
 }
@@ -22,29 +23,29 @@ _metadata = lambda suffix: str -> any {
 schema usage:
     _nameSuffix: str
     _kind: str = "Object"
-    apiVersion = "apiextensions.crossplane.io/v1alpha1"
+    apiVersion = "protection.crossplane.io/v1beta1"
     kind = "Usage"
     metadata = {
-        name = oxr.spec.id + "-" + _nameSuffix + "-usage"
+        name = oxr.metadata.name + "-" + _nameSuffix + "-usage"
         annotations = {
             "krm.kcl.dev/ready": "True"
-            "crossplane.io/external-name" = oxr.spec.id + "-" + _nameSuffix + "-usage"
-            "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-" + _nameSuffix + "-usage"
+            "crossplane.io/external-name" = oxr.metadata.name + "-" + _nameSuffix + "-usage"
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-" + _nameSuffix + "-usage"
         }
     }
     spec = {
         of = {
             apiVersion = "CLUSTER_API_VERSION"
             kind = "CLUSTER_KIND"
-            resourceRef.name = oxr.spec.id
+            resourceRef.name = oxr.metadata.name
         }
         by = {
             if _kind == "Object":
-                apiVersion = "kubernetes.crossplane.io/v1alpha2"
+                apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
             elif _kind == "Release":
-                apiVersion = "helm.crossplane.io/v1beta1"
+                apiVersion = "helm.m.crossplane.io/v1beta1"
             kind = _kind
-            resourceRef.name = oxr.spec.id + "-" + _nameSuffix
+            resourceRef.name = oxr.metadata.name + "-" + _nameSuffix
         }
     }
 
@@ -57,13 +58,13 @@ schema chart:
     _namespace: str
     _values?: any
     _providerConfigRefName?: str
-    apiVersion = "helm.crossplane.io/v1beta1"
+    apiVersion = "helm.m.crossplane.io/v1beta1"
     kind = "Release"
     metadata = {
-        name = oxr.spec.id + "-app-" + _name
+        name = oxr.metadata.name + "-app-" + _name
         annotations = {
             "crossplane.io/external-name" = _name
-            "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-app-" + _name
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-app-" + _name
         }
     }
     spec = {
@@ -84,11 +85,12 @@ schema chart:
                 values = _values
             namespace = _namespace
         }
+        managementPolicies = ["Create", "Update", "Observe"]
         rollbackLimit = 3
         if _providerConfigRefName:
-            providerConfigRef.name = _providerConfigRefName
+            providerConfigRef = {name = _providerConfigRefName, kind = "ProviderConfig"}
         else:
-            providerConfigRef.name = oxr.spec.id
+            providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
     }
 
 schema object:
@@ -96,48 +98,48 @@ schema object:
     _externalName?: str
     _manifest: any
     _references?: []
-    apiVersion = "kubernetes.crossplane.io/v1alpha2"
+    apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
     kind = "Object"
     metadata = {
-        name = oxr.spec.id + "-app-" + _name
+        name = oxr.metadata.name + "-app-" + _name
         annotations = {
             if _externalName:
                 "crossplane.io/external-name" = _externalName
             else:
                 "crossplane.io/external-name" = _name
-            "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-app-" + _name
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-app-" + _name
         }
     }
     spec = {
         if _references:
             references = _references
         forProvider.manifest = _manifest
-        providerConfigRef.name = oxr.spec.id
+        providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
     }
 
 _items = [
 
     {
-        apiVersion = "helm.crossplane.io/v1beta1"
+        apiVersion = "helm.m.crossplane.io/v1beta1"
         kind = "ProviderConfig"
         metadata = {
-            name = oxr.spec.id
+            name = oxr.metadata.name
             annotations = {
                 "krm.kcl.dev/ready": "True"
-                "crossplane.io/external-name" = oxr.spec.id
-                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm"
+                "crossplane.io/external-name" = oxr.metadata.name
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-config-helm"
             }
         }
         spec = {
             credentials = {
                 secretRef = {
-                    namespace = oxr.spec.claimRef.namespace
+                    namespace = oxr.metadata.namespace
                     key = "kubeconfig"
-                    name = oxr.spec.id + "-cluster"
+                    name = oxr.metadata.name + "-cluster"
                 }
                 source = "Secret"
             }
-            if oxr.spec.compositionSelector.matchLabels.provider == "google":
+            if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "google":
                 identity = {
                     type = "GoogleApplicationCredentials"
                     source = "Secret"
@@ -151,28 +153,28 @@ _items = [
     }
 
     {
-        apiVersion = "helm.crossplane.io/v1beta1"
+        apiVersion = "helm.m.crossplane.io/v1beta1"
         kind = "ProviderConfig"
         metadata = {
-            name = oxr.spec.id + "-local"
+            name = oxr.metadata.name + "-local"
             annotations = {
                 "krm.kcl.dev/ready": "True"
-                "crossplane.io/external-name" = oxr.spec.id
-                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-helm-local"
+                "crossplane.io/external-name" = oxr.metadata.name
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-config-helm-local"
             }
         }
         spec.credentials.source = "InjectedIdentity"
     }
 
-    if oxr.spec.compositionSelector.matchLabels.provider != "aws":
+    if oxr.spec.crossplane.compositionSelector.matchLabels.provider != "aws":
         {
-            apiVersion = "helm.crossplane.io/v1beta1"
+            apiVersion = "helm.m.crossplane.io/v1beta1"
             kind = "Release"
             metadata = {
-                name = oxr.spec.id + "-cilium"
+                name = oxr.metadata.name + "-cilium"
                 annotations = {
                     "crossplane.io/external-name" = "cilium"
-                    "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-app-cilium"
+                    "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-app-cilium"
                 }
             }
             spec = {
@@ -183,7 +185,7 @@ _items = [
                         version = cilium
                     }
                     set = [
-                        if oxr.spec.compositionSelector.matchLabels.provider == "google":
+                        if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "google":
                             {name = "nodeinit.enabled", value = "true"}
                             {name = "nodeinit.reconfigureKubelet", value = "true"}
                             {name = "nodeinit.removeCbrBridge", value = "true"}
@@ -192,47 +194,48 @@ _items = [
                             {name = "ipam.mode", value = "kubernetes"}
                             {
                                 name = "ipv4NativeRoutingCIDR"
-                                if oxr.spec.id + "-nodepool" in ocds:
+                                if oxr.metadata.name + "-nodepool" in ocds:
                                     value = oxr.status.field1
                             },
+                            {name = "authentication.enabled", value = "true"}
                             {name = "authentication.mutual.spire.enabled", value = "true"}
                             {name = "authentication.mutual.spire.install.enabled", value = "true"}
-                        if oxr.spec.compositionSelector.matchLabels.provider == "azure":
+                        if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "azure":
                             {name = "aksbyocni.enabled", value = "true"}
                             {name = "nodeinit.enabled", value = "true"}
+                            {name = "authentication.enabled", value = "true"}
                             {name = "authentication.mutual.spire.enabled", value = "true"}
                             {name = "authentication.mutual.spire.install.enabled", value = "true"}
                     ]
                     namespace = "kube-system"
                 }
                 rollbackLimit = 3
-                providerConfigRef.name = oxr.spec.id
+                providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "cilium", _kind = "Release" }
+        usage { _nameSuffix = "cilium", _kind = "Release" }
 
     {
-        apiVersion = "kubernetes.crossplane.io/v1alpha1"
+        apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
         kind = "ProviderConfig"
         metadata = {
-            name = oxr.spec.id
+            name = oxr.metadata.name
             annotations = {
                 "krm.kcl.dev/ready": "True"
-                "crossplane.io/external-name" = oxr.spec.id
-                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-config-kubernetes"
+                "crossplane.io/external-name" = oxr.metadata.name
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-config-kubernetes"
             }
         }
         spec = {
             credentials = {
                 secretRef = {
                     key = "kubeconfig"
-                    name = oxr.spec.id + "-cluster"
-                    namespace = oxr.spec.claimRef.namespace
+                    name = oxr.metadata.name + "-cluster"
+                    namespace = oxr.metadata.namespace
                 }
                 source: "Secret"
             }
-            if oxr.spec.compositionSelector.matchLabels.provider == "google":
+            if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "google":
                 identity = {
                     type = "GoogleApplicationCredentials"
                     source = "Secret"
@@ -252,8 +255,7 @@ _items = [
             _chartVersion = crossplane
             _namespace = "crossplane-system"
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "crossplane", _kind = "Release" }
+        usage { _nameSuffix = "crossplane", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.argocd?.enabled:
         chart {
@@ -315,9 +317,8 @@ _items = [
                 }
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "argo-cd", _kind = "Release" }
-            usage { _nameSuffix = "argo-cd-app" }
+        usage { _nameSuffix = "argo-cd", _kind = "Release" }
+        usage { _nameSuffix = "argo-cd-app" }
 
     if oxr.spec.parameters?.apps?.openfunction?.enabled:
         chart {
@@ -328,8 +329,7 @@ _items = [
                 revisionController.enable = True
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "openfunction", _kind = "Release" }
+        usage { _nameSuffix = "openfunction", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.dapr?.enabled:
         chart {
@@ -338,8 +338,7 @@ _items = [
             _chartVersion = dapr
             _namespace = "dapr-system"
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "dapr", _kind = "Release" }
+        usage { _nameSuffix = "dapr", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.traefik?.enabled:
         chart {
@@ -348,8 +347,7 @@ _items = [
             _chartVersion = traefik
             _namespace = "traefik"
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "traefik", _kind = "Release" }
+        usage { _nameSuffix = "traefik", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {
@@ -361,29 +359,40 @@ _items = [
                 installCRDs = True
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "external-secrets", _kind = "Release" }
+        usage { _nameSuffix = "external-secrets", _kind = "Release" }
+
+    if oxr.spec.parameters?.apps?.nvidia?.enabled:
+        chart {
+            _name = "gpu-operator"
+            _chartRepository = "https://helm.ngc.nvidia.com/nvidia"
+            _chartVersion = nvidiaGpuOperator
+            _namespace = "gpu-operator"
+            _values = {
+                driver.enabled = False
+            }
+        }
+        usage { _nameSuffix = "gpu-operator", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
         object {
             _name = "secret-store"
-            _externalName = oxr.spec.compositionSelector.matchLabels.provider
+            _externalName = oxr.spec.crossplane.compositionSelector.matchLabels.provider
             _manifest = {
                 apiVersion = "external-secrets.io/v1beta1"
                 kind = "ClusterSecretStore"
-                metadata.name = oxr.spec.compositionSelector.matchLabels.provider
-                if oxr.spec.compositionSelector.matchLabels.provider == "google":
+                metadata.name = oxr.spec.crossplane.compositionSelector.matchLabels.provider
+                if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "google":
                     spec.provider.gcpsm.auth.secretRef.secretAccessKeySecretRef = {
                         name: "gcp-creds"
                         key: oxr.spec.parameters.apps.externalSecrets.googleCredentialsKey
                         namespace: oxr.spec.parameters.creds.namespace
                     }
-                elif oxr.spec.compositionSelector.matchLabels.provider == "azure":
+                elif oxr.spec.crossplane.compositionSelector.matchLabels.provider == "azure":
                     spec.provider.azurekv = {
                         authType = "ManagedIdentity"
                         vaultUrl = oxr.spec.parameters.apps.externalSecrets.azureVaultUrl
                     }
-                elif oxr.spec.compositionSelector.matchLabels.provider == "aws":
+                elif oxr.spec.crossplane.compositionSelector.matchLabels.provider == "aws":
                     spec.provider.aws = {
                         service = "SecretsManager"
                         region = "us-east-1"
@@ -401,10 +410,10 @@ _items = [
                         }
                     }
             }
-            if oxr.spec.compositionSelector.matchLabels.provider == "google":
+            if oxr.spec.crossplane.compositionSelector.matchLabels.provider == "google":
                 _references = [{
                     patchesFrom = {
-                        apiVersion = "gcp.upbound.io/v1beta1"
+                        apiVersion = "gcp.m.upbound.io/v1beta1"
                         kind = "ProviderConfig"
                         name = "default"
                         fieldPath = "spec.projectID"
@@ -412,20 +421,19 @@ _items = [
                     toFieldPath = "spec.provider.gcpsm.projectID"
                 }]
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "secret-store" }
+        usage { _nameSuffix = "secret-store" }
 
 ]
 
 if oxr.spec.parameters?.apps?.externalSecrets?.secrets:
     _items += [{
-        apiVersion = "kubernetes.crossplane.io/v1alpha2"
+        apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
         kind = "Object"
         metadata = {
-            name = oxr.spec.id + "-secret-" + _secret.toSecret
+            name = oxr.metadata.name + "-secret-" + _secret.toSecret
             annotations = {
                 "crossplane.io/external-name" = _secret.toSecret
-                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-secret-" + _secret.toSecret
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-secret-" + _secret.toSecret
             }
         }
         spec = {
@@ -440,7 +448,7 @@ if oxr.spec.parameters?.apps?.externalSecrets?.secrets:
                     refreshInterval = "1h"
                     secretStoreRef = {
                         kind: "ClusterSecretStore"
-                        name: oxr.spec.compositionSelector.matchLabels.provider
+                        name: oxr.spec.crossplane.compositionSelector.matchLabels.provider
                     }
                     target = {
                         name = _secret.toSecret
@@ -450,23 +458,43 @@ if oxr.spec.parameters?.apps?.externalSecrets?.secrets:
                     dataFrom = [{ extract.key = _secret.fromSecret }]
                 }
             }
-            providerConfigRef.name = oxr.spec.id
+            providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
         }
     } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
-    if oxr.spec.parameters?.usage?.enabled:
-        _items += [ usage {
-            _nameSuffix = "secret-" + _secret.toSecret
-        } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
+    _items += [{
+        apiVersion = "protection.crossplane.io/v1beta1"
+        kind = "Usage"
+        metadata = {
+            name = oxr.metadata.name + "-secret-" + _secret.toSecret + "-usage"
+            annotations = {
+                "krm.kcl.dev/ready": "True"
+                "crossplane.io/external-name" = oxr.metadata.name + "-secret-" + _secret.toSecret + "-usage"
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-secret-" + _secret.toSecret + "-usage"
+            }
+        }
+        spec = {
+            of = {
+                apiVersion = "CLUSTER_API_VERSION"
+                kind = "CLUSTER_KIND"
+                resourceRef.name = oxr.metadata.name
+            }
+            by = {
+                apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
+                kind = "Object"
+                resourceRef.name = oxr.metadata.name + "-secret-" + _secret.toSecret
+            }
+        }
+    } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
 
 if oxr.spec.parameters?.namespaces:
     _items += [{
-        apiVersion = "kubernetes.crossplane.io/v1alpha2"
+        apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
         kind = "Object"
         metadata = {
-            name = oxr.spec.id + "-ns-" + _namespace
+            name = oxr.metadata.name + "-ns-" + _namespace
             annotations = {
                 "crossplane.io/external-name" = _namespace
-                "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-ns-" + _namespace
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-ns-" + _namespace
             }
         }
         spec = {
@@ -475,49 +503,69 @@ if oxr.spec.parameters?.namespaces:
                 kind = "Namespace"
                 metadata.name = _namespace
             }
-            deletionPolicy = "Orphan"
-            providerConfigRef.name = oxr.spec.id
+            managementPolicies = ["Create", "Update", "Observe"]
+            providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
         }
     } for _namespace in oxr.spec.parameters.namespaces ]
 
 if oxr.spec.parameters?.creds:
-    _items += [
-        {
-            apiVersion = "kubernetes.crossplane.io/v1alpha2"
-            kind = "Object"
-            metadata = {
-                name = oxr.spec.id + "-creds"
-                annotations = {
-                    "crossplane.io/external-name" = oxr.spec.parameters.creds.name
-                    "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-creds"
-                }
-            }
-            spec = {
-                references = [{
-                    patchesFrom = {
-                        apiVersion = "v1"
-                        kind = "Secret"
-                        name: oxr.spec.parameters.creds.name
-                        namespace: oxr.spec.parameters.creds.namespace
-                        fieldPath: "data." + _credReference
-                    }
-                    toFieldPath: "data." + _credReference
-                } for _credReference in oxr.spec.parameters.creds.keys]
-                forProvider = {
-                    manifest = {
-                        apiVersion = "v1"
-                        kind = "Secret"
-                        metadata = {
-                            name = oxr.spec.parameters.creds.name
-                            namespace = oxr.spec.parameters.creds.namespace
-                        }
-                    }
-                }
-                providerConfigRef.name = oxr.spec.id
+    _items += [{
+        apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
+        kind = "Object"
+        metadata = {
+            name = oxr.metadata.name + "-creds"
+            annotations = {
+                "crossplane.io/external-name" = oxr.spec.parameters.creds.name
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-creds"
             }
         }
-        if oxr.spec.parameters?.usage?.enabled:
-            usage { _nameSuffix = "creds" }
-    ]
+        spec = {
+            references = [{
+                patchesFrom = {
+                    apiVersion = "v1"
+                    kind = "Secret"
+                    name: oxr.spec.parameters.creds.name
+                    namespace: oxr.spec.parameters.creds.namespace
+                    fieldPath: "data." + _credReference
+                }
+                toFieldPath: "data." + _credReference
+            } for _credReference in oxr.spec.parameters.creds.keys]
+            forProvider = {
+                manifest = {
+                    apiVersion = "v1"
+                    kind = "Secret"
+                    metadata = {
+                        name = oxr.spec.parameters.creds.name
+                        namespace = oxr.spec.parameters.creds.namespace
+                    }
+                }
+            }
+            providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
+        }
+    }]
+    _items += [{
+        apiVersion = "protection.crossplane.io/v1beta1"
+        kind = "Usage"
+        metadata = {
+            name = oxr.metadata.name + "-creds-usage"
+            annotations = {
+                "krm.kcl.dev/ready": "True"
+                "crossplane.io/external-name" = oxr.metadata.name + "-creds-usage"
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-creds-usage"
+            }
+        }
+        spec = {
+            of = {
+                apiVersion = "CLUSTER_API_VERSION"
+                kind = "CLUSTER_KIND"
+                resourceRef.name = oxr.metadata.name
+            }
+            by = {
+                apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
+                kind = "Object"
+                resourceRef.name = oxr.metadata.name + "-creds"
+            }
+        }
+    }]
 
 items = _items

@@ -1,10 +1,10 @@
-name: build11
+name: release
 on:
   push:
     branches:
       - main
 jobs:
-  build-package:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -15,16 +15,13 @@ jobs:
         uses: jetpack-io/devbox-install-action@v0.14.0
         with:
           enable-cache: true
-          project-path: .github/workflows
-      - name: Test
-        run: devbox --config .github/workflows run test
       - name: Publish
         run: |
           GOBIN=$PWD go install github.com/maykonlsf/semver-cli/cmd/semver@latest
           export UP_TOKEN=${{ secrets.UP_TOKEN }}
           export UP_ACCOUNT=${{ secrets.UP_ACCOUNT }}
           export VERSION=$(./semver up release)
-          devbox --config .github/workflows run package-publish
+          devbox run package-publish
       - name: Commit changes
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -36,4 +33,3 @@ jobs:
         with:
           github_token: ${{ secrets.CROSSPLANE_TOKEN }}
           branch: ${{ github.ref }}
-

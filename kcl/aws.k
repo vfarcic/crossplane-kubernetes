@@ -1,24 +1,22 @@
-version = "1.30"
-
 oxr = option("params").oxr
 ocds = option("params").ocds
 
 _metadata = lambda name: str, suffix: str, role: str -> any {
     {
         if name != "":
-            name = oxr.spec.id + "-" + name
+            name = oxr.metadata.name + "-" + name
         else:
-            name = oxr.spec.id
+            name = oxr.metadata.name
         annotations = {
             "krm.kcl.dev/composition-resource-name" = suffix
         }
         if role != "":
-            labels.role = oxr.spec.id + "-" + role
+            labels.role = oxr.metadata.name + "-" + role
     }
 }
 
 _items = [{
-    apiVersion = "eks.aws.upbound.io/v1beta1"
+    apiVersion = "eks.aws.m.upbound.io/v1beta1"
     kind = "Cluster"
     metadata = _metadata("", "ekscluster", "")
     spec.forProvider: {
@@ -26,20 +24,18 @@ _items = [{
         bootstrapSelfManagedAddons = True
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version
-        else:
-            version = version
         roleArnSelector = {
             matchControllerRef = True
-            matchLabels.role = oxr.spec.id + "-controlplane"
+            matchLabels.role = oxr.metadata.name + "-controlplane"
         }
-        vpcConfig = [{
+        vpcConfig = {
             endpointPrivateAccess = True
             endpointPublicAccess = True
             subnetIdSelector.matchControllerRef = True
-        }]
+        }
     }
 }, {
-    apiVersion = "eks.aws.upbound.io/v1beta1"
+    apiVersion = "eks.aws.m.upbound.io/v1beta1"
     kind = "ClusterAuth"
     metadata = _metadata("", "clusterAuth", "")
     spec = {
@@ -48,12 +44,11 @@ _items = [{
             clusterNameSelector.matchControllerRef = True
         }
         writeConnectionSecretToRef = {
-            name = oxr.spec.id + "-cluster"
-            namespace = oxr.spec.claimRef.namespace
+            name = oxr.metadata.name + "-cluster"
         }
     }
 }, {
-    apiVersion = "eks.aws.upbound.io/v1beta1"
+    apiVersion = "eks.aws.m.upbound.io/v1beta1"
     kind = "NodeGroup"
     metadata = _metadata("", "eksnodegroup", "")
     spec = {
@@ -62,16 +57,14 @@ _items = [{
             clusterNameSelector.matchControllerRef = True
             nodeRoleArnSelector = {
                 matchControllerRef = True
-                matchLabels.role = oxr.spec.id + "-nodegroup"
+                matchLabels.role = oxr.metadata.name + "-nodegroup"
             }
             subnetIdSelector.matchControllerRef = True
-            scalingConfig = [{
-                minSize = 1
-                maxSize = 10
-                desiredSize = 1
+            scalingConfig = {
                 minSize = oxr.spec.parameters.minNodeCount
+                maxSize = 10
                 desiredSize = oxr.spec.parameters.minNodeCount
-            }]
+            }
             if oxr.spec.parameters.nodeSize == "small":
                 instanceTypes = ["t3.small"]
             elif oxr.spec.parameters.nodeSize == "medium":
@@ -81,7 +74,7 @@ _items = [{
         }
     }
 }, {
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "VPC"
     metadata = _metadata("", "vpc-nodepool", "")
     spec = {
@@ -92,17 +85,17 @@ _items = [{
         }
     }
 }, {
-    apiVersion: "ec2.aws.upbound.io/v1beta1"
+    apiVersion: "ec2.aws.m.upbound.io/v1beta1"
     kind: "SecurityGroup"
     metadata = _metadata("", "sg-nodepool", "")
     spec.forProvider: {
-        name = oxr.spec.id
+        name = oxr.metadata.name
         description = "Cluster communication with worker nodes"
         region = "us-east-1"
         vpcIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "SecurityGroupRule"
     metadata = _metadata("", "securityGroupRule", "")
     spec.forProvider: {
@@ -116,7 +109,7 @@ _items = [{
         securityGroupIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "InternetGateway"
     metadata = _metadata("", "gateway", "")
     spec.forProvider = {
@@ -124,7 +117,7 @@ _items = [{
         vpcIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "RouteTable"
     metadata = _metadata("", "routeTable", "")
     spec.forProvider: {
@@ -132,7 +125,7 @@ _items = [{
         vpcIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion: "ec2.aws.upbound.io/v1beta1"
+    apiVersion: "ec2.aws.m.upbound.io/v1beta1"
     kind: "Route"
     metadata = _metadata("", "route", "")
     spec.forProvider: {
@@ -142,7 +135,7 @@ _items = [{
         gatewayIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion: "ec2.aws.upbound.io/v1beta1"
+    apiVersion: "ec2.aws.m.upbound.io/v1beta1"
     kind: "MainRouteTableAssociation"
     metadata = _metadata("", "mainRouteTableAssociation", "")
     spec.forProvider: {
@@ -151,7 +144,7 @@ _items = [{
         vpcIdSelector.matchControllerRef = True
     }
 }, {
-    apiVersion = "eks.aws.upbound.io/v1beta1"
+    apiVersion = "eks.aws.m.upbound.io/v1beta1"
     kind = "Addon"
     metadata = _metadata("ebs", "addonEbs", "")
     spec.forProvider = {
@@ -161,11 +154,11 @@ _items = [{
     }
 }, {
     **oxr
-    status.clusterName = oxr.spec.id
-    if oxr.spec.id + "-cluster" in ocds:
-        status.controlPlaneStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
-    if oxr.spec.id + "-node-group" in ocds:
-        status.nodePoolStatus = ocds[oxr.spec.id + "-node-group"].Resource.status.conditions[0].reason
+    status.clusterName = oxr.metadata.name
+    if "ekscluster" in ocds:
+        status.controlPlaneStatus = ocds["ekscluster"].Resource.status.conditions[0].reason
+    if "eksnodegroup" in ocds:
+        status.nodePoolStatus = ocds["eksnodegroup"].Resource.status.conditions[0].reason
 }]
 
 _zones = [
@@ -175,7 +168,7 @@ _zones = [
 ]
 
 _items += [{
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "RouteTableAssociation"
     metadata = _metadata(_zone.suffix, "routeTableAssociation" + _zone.suffix, "")
     spec.forProvider: {
@@ -192,10 +185,10 @@ _items += [{
 } for _zone in _zones]
 
 _items += [{
-    apiVersion = "ec2.aws.upbound.io/v1beta1"
+    apiVersion = "ec2.aws.m.upbound.io/v1beta1"
     kind = "Subnet"
     metadata = {
-        name = oxr.spec.id + "-" + _zone.suffix
+        name = oxr.metadata.name + "-" + _zone.suffix
         annotations = {
             "krm.kcl.dev/composition-resource-name" = "subnet-nodepool-" + _zone.suffix
         }
@@ -227,7 +220,7 @@ _rpas = [
 ]
 
 _items += [{
-    apiVersion = "iam.aws.upbound.io/v1beta1"
+    apiVersion = "iam.aws.m.upbound.io/v1beta1"
     kind = "RolePolicyAttachment"
     metadata = _metadata(_rpa.name, "iamattachment-" + _rpa.name, "")
     spec = {
@@ -235,7 +228,7 @@ _items += [{
             policyArn = _rpa.policyArn
             roleSelector = {
                 matchControllerRef = True
-                matchLabels.role = oxr.spec.id + "-" + _rpa.role
+                matchLabels.role = oxr.metadata.name + "-" + _rpa.role
             }
         }
     }
@@ -247,14 +240,14 @@ _roles = [
 ]
 
 _items += [{
-    apiVersion = "iam.aws.upbound.io/v1beta1"
+    apiVersion = "iam.aws.m.upbound.io/v1beta1"
     kind = "Role"
     metadata = {
-        name = oxr.spec.id + "-" + _role.name
+        name = oxr.metadata.name + "-" + _role.name
         annotations = {
             "krm.kcl.dev/composition-resource-name" = "iamrole-" + _role.name
         }
-        labels.role = oxr.spec.id + "-" + _role.name
+        labels.role = oxr.metadata.name + "-" + _role.name
     }
     spec.forProvider.assumeRolePolicy = """\
 {
@@ -267,5 +260,45 @@ _items += [{
 }
 """
 } for _role in _roles]
+
+_gpu_node_size = oxr.spec.parameters?.gpu?.nodeSize or "small"
+
+if oxr.spec.parameters?.gpu?.enabled:
+    _items += [{
+        apiVersion = "eks.aws.m.upbound.io/v1beta1"
+        kind = "NodeGroup"
+        metadata = _metadata("gpu", "eksnodegroup-gpu", "")
+        spec = {
+            forProvider = {
+                region = "us-east-1"
+                clusterNameSelector.matchControllerRef = True
+                nodeRoleArnSelector = {
+                    matchControllerRef = True
+                    matchLabels.role = oxr.metadata.name + "-nodegroup"
+                }
+                subnetIdSelector.matchControllerRef = True
+                amiType = "AL2023_x86_64_NVIDIA"
+                scalingConfig = {
+                    minSize = 1
+                    maxSize = 10
+                    desiredSize = 1
+                }
+                if _gpu_node_size == "small":
+                    instanceTypes = ["g5.xlarge"]
+                elif _gpu_node_size == "medium":
+                    instanceTypes = ["g5.2xlarge"]
+                else:
+                    instanceTypes = ["g5.12xlarge"]
+                labels = {
+                    gpu = "true"
+                }
+                taint = [{
+                    effect = "NO_SCHEDULE"
+                    key = "nvidia.com/gpu"
+                    value = "true"
+                }]
+            }
+        }
+    }]
 
 items = _items

@@ -1,0 +1,14 @@
+apiVersion: apiextensions.crossplane.io/v1alpha1
+kind: ManagedResourceActivationPolicy
+metadata:
+  name: namespace-scoped-only
+spec:
+  activate:
+  - "*.eks.aws.m.upbound.io"
+  - "*.ec2.aws.m.upbound.io"
+  - "*.iam.aws.m.upbound.io"
+  - "*.containerservice.azure.m.upbound.io"
+  - "*.azure.m.upbound.io"
+  - "*.container.gcp.m.upbound.io"
+  - "*.helm.m.crossplane.io"
+  - "*.kubernetes.m.crossplane.io"

@@ -1,24 +1,19 @@
-apiVersion: apiextensions.crossplane.io/v1
+apiVersion: apiextensions.crossplane.io/v2
 kind: CompositeResourceDefinition
 metadata:
-  name: compositeclusters.devopstoolkitseries.com
+  name: clusters.devopstoolkit.ai
   labels:
     idp: 'true'
 spec:
-  connectionSecretKeys:
-  - kubeconfig
-  - value
   defaultCompositionRef:
     name: cluster-aws
-  group: devopstoolkitseries.com
+  group: devopstoolkit.ai
+  scope: Namespaced
   names:
-    kind: CompositeCluster
-    plural: compositeclusters
-  claimNames:
-    kind: ClusterClaim
-    plural: clusterclaims
+    kind: Cluster
+    plural: clusters
   versions:
-  - name: v1alpha1
+  - name: v2
     served: true
     referenceable: true
     schema:
@@ -28,9 +23,6 @@ spec:
           spec:
             type: object
             properties:
-              id:
-                type: string
-                description: ID of this Cluster that other objects can refer.
               parameters:
                 description: Parameters used to customize the cluster
                 type: object
@@ -42,6 +34,10 @@ spec:
                     description: The size of the nodes; small, medium, large.
                     type: string
                     default: small
+                    enum:
+                    - small
+                    - medium
+                    - large
                   minNodeCount:
                     description: The minimum number of nodes.
                     type: integer
@@ -54,13 +50,21 @@ spec:
                     - production
                     items:
                       type: string
-                  usage:
-                    description: Whether Crossplane `Usage` (currently alpha feature) is enabled.
+                  gpu:
+                    description: GPU node pool configuration for AI/ML workloads
                     type: object
                     properties:
                       enabled:
                         type: boolean
                         default: false
+                      nodeSize:
+                        description: The size of the GPU nodes; small, medium, large.
+                        type: string
+                        default: small
+                        enum:
+                        - small
+                        - medium
+                        - large
                     required: []
                   apps:
                     type: object
@@ -112,6 +116,14 @@ spec:
                         required: []
                       traefik:
                         description: Install Traefik.
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
+                      nvidia:
+                        description: Install NVIDIA GPU Operator for GPU driver and device plugin management. Required for AWS (EKS) and Azure (AKS). Optional for Google (GKE) where drivers and device plugin are pre-installed.
                         type: object
                         properties:
                           enabled:
@@ -188,7 +200,6 @@ spec:
                 required:
                 - nodeSize
             required:
-            - id
             - parameters
           status:
             type: object

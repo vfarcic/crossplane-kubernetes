@@ -1,0 +1,19 @@
+name: test
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Install Devbox
+        uses: jetpack-io/devbox-install-action@v0.14.0
+        with:
+          enable-cache: true
+      - name: Test
+        run: devbox run test

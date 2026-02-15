@@ -1,13 +1,13 @@
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
 metadata:
   name: a-team-aks
 spec:
-  id: a-team-aks
-  compositionSelector:
-    matchLabels:
-      provider: azure
-      cluster: aks
+  crossplane:
+    compositionSelector:
+      matchLabels:
+        provider: azure
+        cluster: aks
   parameters:
     nodeSize: medium
     minNodeCount: 1
@@ -27,8 +27,8 @@ spec:
             toNamespace: production
       dapr:
         enabled: true
-      traefik: # New
-        enabled: true # New
+      traefik:
+        enabled: true
     creds:
       name: azure-creds
       namespace: crossplane-system

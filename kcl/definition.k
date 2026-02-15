@@ -20,24 +20,25 @@ _properties = lambda properties: any -> any {
                 default = value["default"]
             if "itemsType" in value:
                 items.type = value["itemsType"]
+            if "enum" in value:
+                enum = value["enum"]
         } for key, value in properties
     }
 }
 
-apiVersion = "apiextensions.crossplane.io/v1"
+apiVersion = "apiextensions.crossplane.io/v2"
 kind = "CompositeResourceDefinition"
 metadata = {
-    name = "compositeclusters.devopstoolkitseries.com"
+    name = "clusters.devopstoolkit.ai"
     labels.idp = "true"
 }
 spec = {
-    connectionSecretKeys = ["kubeconfig", "value"]
     defaultCompositionRef = {name = "cluster-aws"}
-    group = "devopstoolkitseries.com"
-    names = {kind = "CompositeCluster", plural = "compositeclusters"}
-    claimNames = {kind = "ClusterClaim", plural = "clusterclaims"}
+    group = "devopstoolkit.ai"
+    scope = "Namespaced"
+    names = {kind = "Cluster", plural = "clusters"}
     versions = [{
-        name = "v1alpha1"
+        name = "v2"
         served = True
         referenceable = True
         $schema = {
@@ -47,12 +48,8 @@ spec = {
                     spec = {
                         type = "object"
                         properties = {
-                            id = {
-                                type = "string"
-                                description = "ID of this Cluster that other objects can refer."
-                            }
                             parameters = _data(data.root)
-                            parameters.properties.usage = _data(data.usage)
+                            parameters.properties.gpu = _data(data.gpu)
                             parameters.properties.apps = {
                                 type = "object"
                                 description = "List of apps that should be installed in the cluster"
@@ -62,6 +59,7 @@ spec = {
                                     openfunction = _data(data.appOpenfunction)
                                     dapr = _data(data.appDapr)
                                     traefik = _data(data.appTraefik)
+                                    nvidia = _data(data.appNvidia)
                                     externalSecrets = {
                                         description = data.appExternalSecrets.description
                                         type = data.appExternalSecrets.type
@@ -81,7 +79,7 @@ spec = {
                             }
                             parameters.properties.creds = _data(data.creds)
                         }
-                        required = ["id", "parameters"]
+                        required = ["parameters"]
                     }
                     status = {
                         type = "object"

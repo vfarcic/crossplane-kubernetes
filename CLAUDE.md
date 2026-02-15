@@ -12,7 +12,7 @@ Enter dev environment first: `devbox shell`
 
 | Command | Description |
 |---|---|
-| `just package-generate` | Compile KCL files into YAML manifests in `package/` and `backstage/` |
+| `just package-generate` | Compile KCL files into YAML manifests in `package/` |
 | `just package-apply` | Apply definition and compositions to the current cluster |
 | `just package-generate-apply` | Generate + apply in one step |
 | `just cluster-create` | Create KinD cluster, install Crossplane, providers, and functions |
@@ -25,6 +25,15 @@ Enter dev environment first: `devbox shell`
 
 Tests use **Kyverno Chainsaw** (`chainsaw test`). Test suites are per cloud provider in `tests/{aws,azure,google}/`. Configuration is in `.chainsaw.yaml` (5m global timeout, 2m assert timeout).
 
+**Always redirect test/long-running command output to `./tmp/`** to avoid wasting tokens. Use `>` redirection (not `tee`). After the command finishes, read just the tail of the output file to check results. Only read the full file if tests failed.
+- `just test > tmp/test-output.txt 2>&1`
+- `just test-once > tmp/test-output.txt 2>&1`
+- `chainsaw test > tmp/chainsaw-output.txt 2>&1`
+
+### TDD Workflow
+
+Always follow incremental TDD when implementing PRD milestones. Each feature slice gets its own RED/GREEN cycle: write one failing test, implement just enough to make it pass, then move to the next slice. Never batch all tests or all implementation together.
+
 ### Publishing
 
 Requires `UP_ACCOUNT`, `UP_TOKEN`, and `VERSION` env vars. Run `just package-publish`.
@@ -35,9 +44,8 @@ Requires `UP_ACCOUNT`, `UP_TOKEN`, and `VERSION` env vars. Run `just package-pub
 
 Source of truth is KCL code in `kcl/`. Running `just package-generate` produces:
 - `kcl/crossplane.k` → `package/crossplane.yaml` (Configuration metadata + provider/function dependencies)
-- `kcl/definition.k` → `package/definition.yaml` (CompositeResourceDefinition for `CompositeCluster`)
+- `kcl/definition.k` → `package/definition.yaml` (CompositeResourceDefinition for `Cluster`)
 - `kcl/compositions.k` → `package/compositions.yaml` (one Composition per cloud provider)
-- `kcl/backstage-template.k` → `backstage/crossplane-kubernetes.yaml`
 
 **Never edit files in `package/` directly** — they are generated from KCL.
 
@@ -51,16 +59,15 @@ Each Composition uses Crossplane Pipeline mode with three steps:
 ### Key KCL Files
 
 - `data.k` — Schema definitions for cluster parameters (nodeSize, version, minNodeCount, namespaces) and app configuration
-- `definition.k` — XRD defining the `CompositeCluster` / `ClusterClaim` API
+- `definition.k` — XRD defining the namespace-scoped `Cluster` API (Crossplane v2)
 - `compositions.k` — Composition template that reads provider-specific KCL files and injects them as inline KCLRun sources
 - `aws.k` / `azure.k` / `google.k` — Provider-specific infrastructure resources
 - `apps.k` — Application deployment logic (uses `CLUSTER_API_VERSION` and `CLUSTER_KIND` placeholders replaced at generation time)
 
 ### Crossplane Custom API
 
-- **API Group**: `devopstoolkitseries.com/v1alpha1`
-- **Composite Resource**: `CompositeCluster`
-- **Claim**: `ClusterClaim`
+- **API Group**: `devopstoolkit.ai/v2`
+- **Resource**: `Cluster` (namespace-scoped, Crossplane v2)
 - **Provider selection**: `spec.compositionSelector.matchLabels.provider` (aws/azure/google)
 
 ### Providers and Functions

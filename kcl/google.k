@@ -3,23 +3,24 @@ ocds = option("params").ocds
 
 _metadata = lambda suffix: str -> any {
     {
-        name = oxr.spec.id
+        name = oxr.metadata.name
         annotations = {
-            "crossplane.io/external-name" = oxr.spec.id
-            "krm.kcl.dev/composition-resource-name" = oxr.spec.id + "-" + suffix
+            "crossplane.io/external-name" = oxr.metadata.name
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-" + suffix
         }
     }
 }
 
-items = [{
-    apiVersion = "container.gcp.upbound.io/v1beta2"
+_items = [{
+    apiVersion = "container.gcp.m.upbound.io/v1beta1"
     kind = "Cluster"
     metadata = _metadata("cluster")
     spec = {
         forProvider = {
             deletionProtection = False
             location = "us-east1"
-            minMasterVersion = oxr.spec.parameters.version
+            if oxr.spec.parameters.version:
+                minMasterVersion = oxr.spec.parameters.version
             initialNodeCount = 1
             removeDefaultNodePool = True
             clusterAutoscaling.autoProvisioningDefaults.management = {
@@ -28,16 +29,16 @@ items = [{
             }
         }
         writeConnectionSecretToRef = {
-            name = oxr.spec.id + "-cluster"
-            namespace = oxr.spec.claimRef.namespace
+            name = oxr.metadata.name + "-cluster"
         }
     }
 }, {
-    apiVersion = "container.gcp.upbound.io/v1beta2"
+    apiVersion = "container.gcp.m.upbound.io/v1beta1"
     kind = "NodePool"
     metadata = _metadata("nodepool")
     spec.forProvider = {
-        version = oxr.spec.parameters.version
+        if oxr.spec.parameters.version:
+            version = oxr.spec.parameters.version
         initialNodeCount = oxr.spec.parameters.minNodeCount
         nodeLocations = ["us-east1-b", "us-east1-c", "us-east1-d"]
         clusterSelector.matchControllerRef = True
@@ -66,10 +67,66 @@ items = [{
     }
 }, {
     **oxr
-    status.clusterName = oxr.spec.id
-    if oxr.spec.id + "-cluster" in ocds:
-        status.controlPlaneStatus = ocds[oxr.spec.id + "-cluster"].Resource.status.conditions[0].reason
-        status.field1 = ocds[oxr.spec.id + "-cluster"].Resource.status.atProvider.clusterIpv4Cidr
-    if oxr.spec.id + "-nodepool" in ocds:
-        status.nodePoolStatus = ocds[oxr.spec.id + "-nodepool"].Resource.status.conditions[0].reason
+    status.clusterName = oxr.metadata.name
+    if oxr.metadata.name + "-cluster" in ocds:
+        status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+        status.field1 = ocds[oxr.metadata.name + "-cluster"].Resource.status.atProvider.clusterIpv4Cidr
+    if oxr.metadata.name + "-nodepool" in ocds:
+        status.nodePoolStatus = ocds[oxr.metadata.name + "-nodepool"].Resource.status.conditions[0].reason
 }]
+
+_gpu_node_size = oxr.spec.parameters?.gpu?.nodeSize or "small"
+
+if oxr.spec.parameters?.gpu?.enabled:
+    _items += [{
+        apiVersion = "container.gcp.m.upbound.io/v1beta1"
+        kind = "NodePool"
+        metadata = {
+            name = oxr.metadata.name + "-gpu"
+            annotations = {
+                "crossplane.io/external-name" = oxr.metadata.name + "-gpu"
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-gpu"
+            }
+        }
+        spec.forProvider = {
+            if oxr.spec.parameters.version:
+                version = oxr.spec.parameters.version
+            clusterSelector.matchControllerRef = True
+            nodeLocations = ["us-east1-c", "us-east1-d"]
+            initialNodeCount = 1
+            nodeConfig = {
+                if _gpu_node_size == "small":
+                    machineType = "n1-standard-4"
+                    guestAccelerator = [{
+                        type = "nvidia-tesla-t4"
+                        count = 1
+                    }]
+                elif _gpu_node_size == "medium":
+                    machineType = "n1-standard-8"
+                    guestAccelerator = [{
+                        type = "nvidia-tesla-t4"
+                        count = 1
+                    }]
+                else:
+                    machineType = "a2-highgpu-1g"
+                    guestAccelerator = [{
+                        type = "nvidia-tesla-a100"
+                        count = 1
+                    }]
+                oauthScopes = ["https://www.googleapis.com/auth/cloud-platform"]
+                labels = {
+                    gpu = "true"
+                }
+            }
+            autoscaling = {
+                minNodeCount = 1
+                maxNodeCount = 10
+            }
+            management = {
+                autoRepair = True
+                autoUpgrade = True
+            }
+        }
+    }]
+
+items = _items

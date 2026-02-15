@@ -13,7 +13,6 @@ kind create cluster
 
 helm upgrade --install crossplane crossplane \
     --repo https://charts.crossplane.io/stable \
-    --set args='{"--enable-usages"}' \
     --namespace crossplane-system --create-namespace --wait
 
 kubectl apply --filename config.yaml
@@ -63,6 +62,33 @@ kubectl --namespace a-team apply \
     --filename examples/azure-aks.yaml
 
 crossplane beta trace clusterclaim a-team --namespace a-team
+```
+
+## GPU Cluster
+
+Create a cluster with a GPU node pool for AI/ML workloads:
+
+```sh
+kubectl --namespace a-team apply --filename examples/azure-aks-gpu.yaml
+
+crossplane beta trace cluster.devopstoolkit.ai ateamgpu --namespace a-team
+```
+
+> Wait until all the resources are `Available`.
+
+Verify the GPU NodePool configuration:
+
+```sh
+kubectl --namespace a-team get kubernetesclusternodepool.containerservice.azure.m.upbound.io \
+    a-team-gpu-gpu -o jsonpath='{.spec.forProvider}' | jq .
+```
+
+> Confirm: `vmSize: "Standard_NC4as_T4_v3"`, `nodeLabels: {gpu: "true"}`, `nodeTaints: ["nvidia.com/gpu=true:NoSchedule"]`.
+
+### Destroy GPU Cluster
+
+```sh
+kubectl --namespace a-team delete --filename examples/azure-aks-gpu.yaml
 ```
 
 ## Destroy

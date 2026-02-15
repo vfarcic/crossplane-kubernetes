@@ -13,7 +13,6 @@ kind create cluster
 
 helm upgrade --install crossplane crossplane \
     --repo https://charts.crossplane.io/stable \
-    --set args='{"--enable-usages"}' \
     --namespace crossplane-system --create-namespace --wait
 
 kubectl apply --filename config.yaml
@@ -38,10 +37,9 @@ export PROJECT_ID=dot-$(date +%Y%m%d%H%M%S)
 
 gcloud projects create $PROJECT_ID
 
-echo "## Open https://console.cloud.google.com/marketplace/product/google/container.googleapis.com?project=$PROJECT_ID in a browser and *ENABLE* the API." \
-    | gum format
+open "https://console.cloud.google.com/marketplace/product/google/container.googleapis.com?project=$PROJECT_ID"
 
-gum input --placeholder "Press the enter key to continue."
+# Enable the API
 
 export SA_NAME=devops-toolkit
 
@@ -75,7 +73,34 @@ kubectl create namespace a-team
 kubectl --namespace a-team apply \
     --filename examples/google-gke.yaml
 
-crossplane beta trace clusterclaim a-team --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai a-team --namespace a-team
+```
+
+## GPU Cluster
+
+Create a cluster with a GPU node pool for AI/ML workloads:
+
+```sh
+kubectl --namespace a-team apply --filename examples/google-gke-gpu.yaml
+
+crossplane beta trace cluster.devopstoolkit.ai a-team-gpu --namespace a-team
+```
+
+> Wait until all the resources are `Available`.
+
+Verify the GPU NodePool configuration:
+
+```sh
+kubectl --namespace a-team get nodepool.container.gcp.m.upbound.io \
+    a-team-gpu-gpu -o jsonpath='{.spec.forProvider}' | jq .
+```
+
+> Confirm: `machineType: "n1-standard-4"`, `guestAccelerator: [{type: "nvidia-tesla-t4", count: 1}]`, `labels: {gpu: "true"}`, `taint: [{key: "nvidia.com/gpu", value: "true", effect: "NO_SCHEDULE"}]`.
+
+### Destroy GPU Cluster
+
+```sh
+kubectl --namespace a-team delete --filename examples/google-gke-gpu.yaml
 ```
 
 ## Destroy

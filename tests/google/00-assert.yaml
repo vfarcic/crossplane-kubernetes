@@ -1,93 +1,63 @@
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
 metadata:
-  name: a-team-gke
+  namespace: ($namespace)
 spec:
-  compositionRef:
-    name: cluster-google
-  compositionSelector:
-    matchLabels:
-      cluster: gke
-      provider: google
-  id: a-team-gke
+  crossplane:
+    compositionRef:
+      name: cluster-google
+    compositionSelector:
+      matchLabels:
+        cluster: gke
+        provider: google
+    compositionUpdatePolicy: Automatic
+    resourceRefs:
+    - apiVersion: container.gcp.m.upbound.io/v1beta1
+      kind: Cluster
+      name: a-team-gke
+    - apiVersion: container.gcp.m.upbound.io/v1beta1
+      kind: NodePool
+      name: a-team-gke
+    - apiVersion: helm.m.crossplane.io/v1beta1
+      kind: ProviderConfig
+      name: a-team-gke
+    - apiVersion: helm.m.crossplane.io/v1beta1
+      kind: ProviderConfig
+      name: a-team-gke-local
+    - apiVersion: helm.m.crossplane.io/v1beta1
+      kind: Release
+      name: a-team-gke-cilium
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: Object
+      name: a-team-gke-ns-dev
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: Object
+      name: a-team-gke-ns-production
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: ProviderConfig
+      name: a-team-gke
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-gke-cilium-usage
   parameters:
     minNodeCount: 1
     nodeSize: medium
     version: "1.20.1"
-    namespaces:
-      - dev
-      - production
-  resourceRef:
-    apiVersion: devopstoolkitseries.com/v1alpha1
-    kind: CompositeCluster
-status:
-  clusterName: a-team-gke
 ---
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: CompositeCluster
-metadata:
-  labels:
-    crossplane.io/claim-name: a-team-gke
-spec:
-  claimRef:
-    apiVersion: devopstoolkitseries.com/v1alpha1
-    kind: ClusterClaim
-    name: a-team-gke
-  compositionRef:
-    name: cluster-google
-  compositionSelector:
-    matchLabels:
-      cluster: gke
-      provider: google
-  compositionUpdatePolicy: Automatic
-  id: a-team-gke
-  parameters:
-    minNodeCount: 1
-    nodeSize: medium
-    version: "1.20.1"
-  resourceRefs:
-  - apiVersion: container.gcp.upbound.io/v1beta2
-    kind: Cluster
-    name: a-team-gke
-  - apiVersion: container.gcp.upbound.io/v1beta2
-    kind: NodePool
-    name: a-team-gke
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: ProviderConfig
-    name: a-team-gke
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: ProviderConfig
-    name: a-team-gke-local
-  - apiVersion: helm.crossplane.io/v1beta1
-    kind: Release
-    name: a-team-gke-cilium
-  - apiVersion: kubernetes.crossplane.io/v1alpha1
-    kind: ProviderConfig
-    name: a-team-gke
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name: a-team-gke-ns-dev
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
-    name: a-team-gke-ns-production
-  writeConnectionSecretToRef:
-    namespace: crossplane-system
----
-apiVersion: container.gcp.upbound.io/v1beta2
+apiVersion: container.gcp.m.upbound.io/v1beta1
 kind: Cluster
 metadata:
   annotations:
     crossplane.io/external-name: a-team-gke
   labels:
-    crossplane.io/claim-name: a-team-gke
+    crossplane.io/composite: a-team-gke
   name: a-team-gke
   ownerReferences:
-    - apiVersion: devopstoolkitseries.com/v1alpha1
+    - apiVersion: devopstoolkit.ai/v2
       blockOwnerDeletion: true
       controller: true
-      kind: CompositeCluster
+      kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     deletionProtection: false
     initialNodeCount: 1
@@ -100,26 +70,25 @@ spec:
           autoRepair: true
           autoUpgrade: true
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
   writeConnectionSecretToRef:
     name: a-team-gke-cluster
-    namespace: ($namespace)
 ---
-apiVersion: container.gcp.upbound.io/v1beta2
+apiVersion: container.gcp.m.upbound.io/v1beta1
 kind: NodePool
 metadata:
   annotations:
     crossplane.io/external-name: a-team-gke
   labels:
-    crossplane.io/claim-name: a-team-gke
+    crossplane.io/composite: a-team-gke
   name: a-team-gke
   ownerReferences:
-    - apiVersion: devopstoolkitseries.com/v1alpha1
+    - apiVersion: devopstoolkit.ai/v2
       blockOwnerDeletion: true
       controller: true
-      kind: CompositeCluster
+      kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     version: "1.20.1"
     autoscaling:
@@ -136,17 +105,18 @@ spec:
       oauthScopes:
         - https://www.googleapis.com/auth/cloud-platform
       taint:
-        - effect: NO_EXECUTE
-          key: node.cilium.io/agent-not-ready
-          value: "true"
+      - effect: NO_EXECUTE
+        key: node.cilium.io/agent-not-ready
+        value: "true"
   providerConfigRef:
+    kind: ClusterProviderConfig
     name: default
 ---
-apiVersion: helm.crossplane.io/v1beta1
+apiVersion: helm.m.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
   labels:
-    crossplane.io/claim-name: a-team-gke
+    crossplane.io/composite: a-team-gke
   name: a-team-gke
 spec:
   credentials:
@@ -162,11 +132,11 @@ spec:
       namespace: crossplane-system
       key: creds
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: ProviderConfig
 metadata:
   labels:
-    crossplane.io/claim-name: a-team-gke
+    crossplane.io/composite: a-team-gke
   name: a-team-gke
 spec:
   credentials:
@@ -182,18 +152,21 @@ spec:
       namespace: crossplane-system
       key: creds
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha2
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: Object
 metadata:
   labels:
-    crossplane.io/claim-name: a-team-gke
+    crossplane.io/composite: a-team-gke
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Orphan
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   forProvider:
     manifest:
       apiVersion: v1
@@ -201,20 +174,24 @@ spec:
       metadata:
         name: dev
   providerConfigRef:
+    kind: ProviderConfig
     name: a-team-gke
 ---
-apiVersion: kubernetes.crossplane.io/v1alpha2
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: Object
 metadata:
   labels:
-    crossplane.io/claim-name: a-team-gke
+    crossplane.io/composite: a-team-gke
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Orphan
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   forProvider:
     manifest:
       apiVersion: v1
@@ -222,28 +199,28 @@ spec:
       metadata:
         name: production
   providerConfigRef:
+    kind: ProviderConfig
     name: a-team-gke
 ---
-apiVersion: helm.crossplane.io/v1beta1
+apiVersion: helm.m.crossplane.io/v1beta1
 kind: Release
 metadata:
   annotations:
     crossplane.io/external-name: cilium
   labels:
-    crossplane.io/claim-name: a-team-gke
+    crossplane.io/composite: a-team-gke
   name: a-team-gke-cilium
   ownerReferences:
-  - apiVersion: devopstoolkitseries.com/v1alpha1
+  - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
     controller: true
-    kind: CompositeCluster
+    kind: Cluster
 spec:
-  deletionPolicy: Delete
   forProvider:
     chart:
       name: cilium
       repository: https://helm.cilium.io
-      version: 1.14.2
+      version: 1.19.0
     set:
       - name: nodeinit.enabled
         value: "true"
@@ -258,11 +235,14 @@ spec:
       - name: ipam.mode
         value: kubernetes
       - name: ipv4NativeRoutingCIDR
+      - name: authentication.enabled
+        value: "true"
       - name: authentication.mutual.spire.enabled
         value: "true"
       - name: authentication.mutual.spire.install.enabled
         value: "true"
     namespace: kube-system
   providerConfigRef:
+    kind: ProviderConfig
     name: a-team-gke
   rollbackLimit: 3

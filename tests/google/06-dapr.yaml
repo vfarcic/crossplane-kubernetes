@@ -1,13 +1,14 @@
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
 metadata:
   name: a-team-gke
+  namespace: ($namespace)
 spec:
-  id: a-team-gke
-  compositionSelector:
-    matchLabels:
-      provider: google
-      cluster: gke
+  crossplane:
+    compositionSelector:
+      matchLabels:
+        provider: google
+        cluster: gke
   parameters:
     nodeSize: medium
     minNodeCount: 1
@@ -27,8 +28,8 @@ spec:
           - fromSecret: registry-auth
             toSecret: push-secret
             toNamespace: production
-      dapr: # New
-        enabled: true # New
+      dapr:
+        enabled: true
     creds:
       name: gcp-creds
       namespace: crossplane-system

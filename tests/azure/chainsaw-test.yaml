@@ -10,7 +10,7 @@ spec:
     - name: cluster
       value: aks
     - name: clusterApi
-      value: containerservice.azure.upbound.io/v1beta1
+      value: containerservice.azure.m.upbound.io/v1beta1
     - name: clusterKind
       value: KubernetesCluster
   steps:
@@ -49,12 +49,14 @@ spec:
             file: 07-traefik.yaml
         - assert:
             file: ../common/assert-traefik.yaml
+        - apply:
+            file: 08-gpu.yaml
+        - assert:
+            file: 08-assert-gpu.yaml
         - patch:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
-        - patch:
-            file: ../common/usage.yaml
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
@@ -110,8 +112,12 @@ spec:
             bindings:
               - name: usageName
                 value: creds
-      catch:
-        - describe:
-            apiVersion: devopstoolkitseries.com/v1alpha1
-            kind: compositecluster
-            selector: crossplane.io/claim-namespace=$NAMESPACE
+      cleanup:
+        - script:
+            timeout: 2m
+            content: |
+              kubectl delete cluster.devopstoolkit.ai --all -n $NAMESPACE --timeout=60s || true
+              sleep 5
+              kubectl patch providerconfig.helm.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl patch providerconfig.kubernetes.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl patch usage.protection.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true

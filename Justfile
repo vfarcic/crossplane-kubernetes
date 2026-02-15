@@ -9,7 +9,6 @@ package-generate:
   kcl run kcl/crossplane.k > package/crossplane.yaml
   kcl run kcl/definition.k > package/definition.yaml
   kcl run kcl/compositions.k > package/compositions.yaml
-  kcl run kcl/backstage-template.k > backstage/crossplane-kubernetes.yaml
 
 # Applies Compositions and Composite Resource Definition.
 package-apply:
@@ -82,5 +81,5 @@ _cluster-create-kind:
   -kind create cluster
   -helm repo add crossplane-stable https://charts.crossplane.io/stable
   -helm repo update
-  helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --wait
+  helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --set 'provider.defaultActivations={}' --wait
   for provider in `ls -1 providers | grep -v config`; do kubectl apply --filename providers/$provider; done

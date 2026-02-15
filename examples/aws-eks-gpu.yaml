@@ -1,0 +1,19 @@
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: a-team-gpu
+spec:
+  crossplane:
+    compositionSelector:
+      matchLabels:
+        provider: aws
+        cluster: eks
+  parameters:
+    nodeSize: small
+    minNodeCount: 1
+    gpu:
+      enabled: true
+      nodeSize: small
+    apps:
+      nvidia:
+        enabled: true

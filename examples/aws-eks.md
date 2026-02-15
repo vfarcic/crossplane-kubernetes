@@ -19,7 +19,7 @@ chmod +x examples/setup.nu
 ```sh
 kubectl --namespace a-team apply --filename examples/aws-eks.yaml
 
-crossplane beta trace clusterclaim a-team --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai a-team --namespace a-team
 ```
 
 ## Package
@@ -35,7 +35,7 @@ start "https://marketplace.upbound.io/configurations/devops-toolkit/dot-kubernet
 > Open the URL from the output in a browser
 
 ```sh
-crossplane beta trace clusterclaim a-team --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai a-team --namespace a-team
 ```
 
 > Wait until all the resources are `Available`.
@@ -58,19 +58,43 @@ let ingress_ip = ./examples/get-traefik-eks.nu
 ```sh
 cat examples/aws-eks-full.yaml
 
-(
-    kubectl --namespace a-team apply
-        --filename examples/aws-eks-full.yaml
-)
+kubectl --namespace a-team apply --filename examples/aws-eks-full.yaml
 
-crossplane beta trace clusterclaim a-team --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai a-team --namespace a-team
 
 kubectl --kubeconfig kubeconfig.yaml get namespaces
 
-start $"http://argocd.($ingress_ip).nip.io"
+start "http://argocd.$INGRESS_IP.nip.io"
 ```
 
 > Use `admin` as the username and `admin123`
+
+## GPU Cluster
+
+Create a cluster with a GPU node pool for AI/ML workloads:
+
+```sh
+kubectl --namespace a-team apply --filename examples/aws-eks-gpu.yaml
+
+crossplane beta trace cluster.devopstoolkit.ai a-team-gpu --namespace a-team
+```
+
+> Wait until all the resources are `Available`.
+
+Verify the GPU NodeGroup configuration:
+
+```sh
+kubectl --namespace a-team get nodegroup.eks.aws.m.upbound.io \
+    a-team-gpu-gpu -o jsonpath='{.spec.forProvider}' | jq .
+```
+
+> Confirm: `instanceTypes: ["g5.xlarge"]`, `labels: {gpu: "true"}`, `taint: [{effect: "NO_SCHEDULE", key: "nvidia.com/gpu", value: "true"}]`.
+
+### Destroy GPU Cluster
+
+```sh
+kubectl --namespace a-team delete --filename examples/aws-eks-gpu.yaml
+```
 
 ## Destroy
 

@@ -1,10 +1,13 @@
 ---
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: ClusterClaim
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
 metadata:
-  name: (join('-', ['a-team', $cluster]))
   namespace: ($namespace)
 spec:
+  crossplane:
+    (resourceRefs[?name == join('-', ['a-team', $cluster, 'creds'])]):
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: Object
   parameters:
     creds:
       name: (join('-', [$hyperscaler, 'creds']))
@@ -13,24 +16,7 @@ spec:
         - creds
         - vaultUrl
 ---
-apiVersion: devopstoolkitseries.com/v1alpha1
-kind: CompositeCluster
-metadata:
-  labels:
-    crossplane.io/claim-name: (join('-', ['a-team', $cluster]))
-spec:
-  parameters:
-    creds:
-      name: (join('-', [$hyperscaler, 'creds']))
-      namespace: crossplane-system
-      keys:
-        - creds
-        - vaultUrl
-  (resourceRefs[?name == join('-', ['a-team', $cluster, 'creds'])]):
-  - apiVersion: kubernetes.crossplane.io/v1alpha2
-    kind: Object
----
-apiVersion: kubernetes.crossplane.io/v1alpha2
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: Object
 metadata:
   annotations:
@@ -61,4 +47,5 @@ spec:
         name: (join('-', [$hyperscaler, 'creds']))
         namespace: crossplane-system
   providerConfigRef:
+    kind: ProviderConfig
     name: a-team-aks

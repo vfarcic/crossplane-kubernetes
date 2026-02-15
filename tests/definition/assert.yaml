@@ -1,24 +1,17 @@
-apiVersion: apiextensions.crossplane.io/v1
+apiVersion: apiextensions.crossplane.io/v2
 kind: CompositeResourceDefinition
 metadata:
   labels:
     idp: "true"
-  name: compositeclusters.devopstoolkitseries.com
+  name: clusters.devopstoolkit.ai
 spec:
-  claimNames:
-    kind: ClusterClaim
-    plural: clusterclaims
-  connectionSecretKeys:
-  - kubeconfig
-  - value
-  defaultCompositeDeletePolicy: Background
+  scope: Namespaced
   defaultCompositionRef:
     name: cluster-aws
-  defaultCompositionUpdatePolicy: Automatic
-  group: devopstoolkitseries.com
+  group: devopstoolkit.ai
   names:
-    kind: CompositeCluster
-    plural: compositeclusters
+    kind: Cluster
+    plural: clusters
   versions:
   - additionalPrinterColumns:
     - jsonPath: .status.clusterName
@@ -30,16 +23,13 @@ spec:
     - jsonPath: .status.nodePoolStatus
       name: nodePool
       type: string
-    name: v1alpha1
+    name: v2
     referenceable: true
     schema:
       openAPIV3Schema:
         properties:
           spec:
             properties:
-              id:
-                description: ID of this Cluster that other objects can refer.
-                type: string
               parameters:
                 description: Parameters used to customize the cluster
                 properties:
@@ -149,6 +139,13 @@ spec:
                             default: false
                             type: boolean
                         type: object
+                      nvidia:
+                        description: Install NVIDIA GPU Operator for GPU driver and device plugin management. Required for AWS (EKS) and Azure (AKS). Optional for Google (GKE) where drivers and device plugin are pre-installed.
+                        properties:
+                          enabled:
+                            default: false
+                            type: boolean
+                        type: object
                     type: object
                   creds:
                     description: The secret with hyperscaler credentials.
@@ -186,21 +183,32 @@ spec:
                   nodeSize:
                     description: The size of the nodes; small, medium, large.
                     type: string
+                    enum:
+                      - small
+                      - medium
+                      - large
                   version:
                     description: The Kubernetes version for the cluster.
                     type: string
-                  usage:
-                    description: Whether Crossplane `Usage` (currently alpha feature) is enabled.
+                  gpu:
+                    description: GPU node pool configuration for AI/ML workloads
                     type: object
                     properties:
                       enabled:
                         default: false
                         type: boolean
+                      nodeSize:
+                        default: small
+                        description: "The size of the GPU nodes; small, medium, large."
+                        type: string
+                        enum:
+                          - small
+                          - medium
+                          - large
                 required:
                 - nodeSize
                 type: object
             required:
-            - id
             - parameters
             type: object
           status:

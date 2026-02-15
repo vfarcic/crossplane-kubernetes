@@ -1,0 +1,9 @@
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: a-team-eks
+spec:
+  parameters:
+    gpu:
+      enabled: true
+      nodeSize: small

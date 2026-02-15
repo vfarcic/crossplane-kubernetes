@@ -10,7 +10,7 @@ spec:
     - name: cluster
       value: gke
     - name: clusterApi
-      value: container.gcp.upbound.io/v1beta2
+      value: container.gcp.m.upbound.io/v1beta1
     - name: clusterKind
       value: Cluster
   steps:
@@ -49,12 +49,75 @@ spec:
             file: 07-traefik.yaml
         - assert:
             file: ../common/assert-traefik.yaml
+        - apply:
+            file: 08-gpu.yaml
+        - assert:
+            file: 08-assert-gpu.yaml
         - patch:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml
-    #   catch:
-    #     - describe:
-    #         apiVersion: devopstoolkitseries.com/v1alpha1
-    #         kind: compositecluster
-    #         selector: crossplane.io/claim-namespace=$NAMESPACE
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: cilium
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: crossplane
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: argo-cd
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: argo-cd-app
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: openfunction
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: dapr
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: traefik
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: external-secrets
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: secret-store
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: secret-push-secret
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: creds
+      cleanup:
+        - script:
+            timeout: 2m
+            content: |
+              kubectl delete cluster.devopstoolkit.ai --all -n $NAMESPACE --timeout=60s || true
+              sleep 5
+              kubectl patch providerconfig.helm.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl patch providerconfig.kubernetes.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl patch usage.protection.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true

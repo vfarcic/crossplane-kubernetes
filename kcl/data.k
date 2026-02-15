@@ -27,17 +27,6 @@ root = {
     required = ["nodeSize"]
 }
 
-usage = {
-    description = "Whether Crossplane `Usage` (currently alpha feature) is enabled."
-    type = "object"
-    properties = {
-        enabled = {
-            type = "boolean"
-            default = False
-        }
-    }
-    required = []
-}
 
 appCrossplane = {
     type = "object"
@@ -173,6 +162,36 @@ appExternalSecretsSecrets = {
         }
     }
     required = ["fromSecret", "toSecret", "toNamespace"]
+}
+
+gpu = {
+    type = "object"
+    description = "GPU node pool configuration for AI/ML workloads"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+        nodeSize = {
+            description = "The size of the GPU nodes; small, medium, large."
+            type = "string"
+            enum = ["small", "medium", "large"]
+            default = "small"
+        }
+    }
+    required = []
+}
+
+appNvidia = {
+    type = "object"
+    description = "Install NVIDIA GPU Operator for GPU driver and device plugin management. Required for AWS (EKS) and Azure (AKS). Optional for Google (GKE) where drivers and device plugin are pre-installed."
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
 }
 
 creds = {

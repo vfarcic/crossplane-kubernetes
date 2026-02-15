@@ -1,16 +1,14 @@
-apiVersion: chainsaw.kyverno.io/v1alpha1
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/configuration-chainsaw-v1alpha2.json
+apiVersion: chainsaw.kyverno.io/v1alpha2
 kind: Configuration
 metadata:
   name: chainsaw-config
 spec:
-  # Global timeout for all tests
-  timeout: 5m
-  # Timeout for individual operations (apply, assert, error, etc.)
+  report:
+    name: chainsaw-report
   timeouts:
     apply: 30s
-    assert: 2m
-    error: 2m
+    assert: 2m0s
+    cleanup: 10m0s
     delete: 30s
-    cleanup: 10m
-  # Force terminal output even when not in a TTY
-  forceTerminalOutput: true
+    error: 2m0s
