@@ -235,6 +235,8 @@ spec:
       - name: ipam.mode
         value: kubernetes
       - name: ipv4NativeRoutingCIDR
+      - name: authentication.enabled
+        value: "true"
       - name: authentication.mutual.spire.enabled
         value: "true"
       - name: authentication.mutual.spire.install.enabled

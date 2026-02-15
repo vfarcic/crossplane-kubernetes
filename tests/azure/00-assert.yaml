@@ -144,6 +144,8 @@ spec:
         value: "true"
       - name: nodeinit.enabled
         value: "true"
+      - name: authentication.enabled
+        value: "true"
       - name: authentication.mutual.spire.enabled
         value: "true"
       - name: authentication.mutual.spire.install.enabled
