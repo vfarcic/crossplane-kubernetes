@@ -461,8 +461,29 @@ if oxr.spec.parameters?.apps?.externalSecrets?.secrets:
             providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
         }
     } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
-    _items += [ usage {
-        _nameSuffix = "secret-" + _secret.toSecret
+    _items += [{
+        apiVersion = "protection.crossplane.io/v1beta1"
+        kind = "Usage"
+        metadata = {
+            name = oxr.metadata.name + "-secret-" + _secret.toSecret + "-usage"
+            annotations = {
+                "krm.kcl.dev/ready": "True"
+                "crossplane.io/external-name" = oxr.metadata.name + "-secret-" + _secret.toSecret + "-usage"
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-secret-" + _secret.toSecret + "-usage"
+            }
+        }
+        spec = {
+            of = {
+                apiVersion = "CLUSTER_API_VERSION"
+                kind = "CLUSTER_KIND"
+                resourceRef.name = oxr.metadata.name
+            }
+            by = {
+                apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
+                kind = "Object"
+                resourceRef.name = oxr.metadata.name + "-secret-" + _secret.toSecret
+            }
+        }
     } for _secret in oxr.spec.parameters.apps.externalSecrets.secrets ]
 
 if oxr.spec.parameters?.namespaces:
@@ -488,42 +509,63 @@ if oxr.spec.parameters?.namespaces:
     } for _namespace in oxr.spec.parameters.namespaces ]
 
 if oxr.spec.parameters?.creds:
-    _items += [
-        {
-            apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
-            kind = "Object"
-            metadata = {
-                name = oxr.metadata.name + "-creds"
-                annotations = {
-                    "crossplane.io/external-name" = oxr.spec.parameters.creds.name
-                    "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-creds"
-                }
-            }
-            spec = {
-                references = [{
-                    patchesFrom = {
-                        apiVersion = "v1"
-                        kind = "Secret"
-                        name: oxr.spec.parameters.creds.name
-                        namespace: oxr.spec.parameters.creds.namespace
-                        fieldPath: "data." + _credReference
-                    }
-                    toFieldPath: "data." + _credReference
-                } for _credReference in oxr.spec.parameters.creds.keys]
-                forProvider = {
-                    manifest = {
-                        apiVersion = "v1"
-                        kind = "Secret"
-                        metadata = {
-                            name = oxr.spec.parameters.creds.name
-                            namespace = oxr.spec.parameters.creds.namespace
-                        }
-                    }
-                }
-                providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
+    _items += [{
+        apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
+        kind = "Object"
+        metadata = {
+            name = oxr.metadata.name + "-creds"
+            annotations = {
+                "crossplane.io/external-name" = oxr.spec.parameters.creds.name
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-creds"
             }
         }
-        usage { _nameSuffix = "creds" }
-    ]
+        spec = {
+            references = [{
+                patchesFrom = {
+                    apiVersion = "v1"
+                    kind = "Secret"
+                    name: oxr.spec.parameters.creds.name
+                    namespace: oxr.spec.parameters.creds.namespace
+                    fieldPath: "data." + _credReference
+                }
+                toFieldPath: "data." + _credReference
+            } for _credReference in oxr.spec.parameters.creds.keys]
+            forProvider = {
+                manifest = {
+                    apiVersion = "v1"
+                    kind = "Secret"
+                    metadata = {
+                        name = oxr.spec.parameters.creds.name
+                        namespace = oxr.spec.parameters.creds.namespace
+                    }
+                }
+            }
+            providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
+        }
+    }]
+    _items += [{
+        apiVersion = "protection.crossplane.io/v1beta1"
+        kind = "Usage"
+        metadata = {
+            name = oxr.metadata.name + "-creds-usage"
+            annotations = {
+                "krm.kcl.dev/ready": "True"
+                "crossplane.io/external-name" = oxr.metadata.name + "-creds-usage"
+                "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-creds-usage"
+            }
+        }
+        spec = {
+            of = {
+                apiVersion = "CLUSTER_API_VERSION"
+                kind = "CLUSTER_KIND"
+                resourceRef.name = oxr.metadata.name
+            }
+            by = {
+                apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
+                kind = "Object"
+                resourceRef.name = oxr.metadata.name + "-creds"
+            }
+        }
+    }]
 
 items = _items

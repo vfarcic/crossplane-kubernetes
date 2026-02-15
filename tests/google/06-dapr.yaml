@@ -28,7 +28,9 @@ spec:
           - fromSecret: registry-auth
             toSecret: push-secret
             toNamespace: production
-      dapr:        enabled: true    creds:
+      dapr:
+        enabled: true
+    creds:
       name: gcp-creds
       namespace: crossplane-system
       keys:

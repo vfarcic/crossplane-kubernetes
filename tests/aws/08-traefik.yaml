@@ -30,7 +30,9 @@ spec:
             type: kubernetes.io/dockerconfigjson
       dapr:
         enabled: true
-      traefik:        enabled: true    creds:
+      traefik:
+        enabled: true
+    creds:
       name: aws-creds
       namespace: crossplane-system
       keys:
