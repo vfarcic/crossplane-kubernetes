@@ -396,10 +396,7 @@ _items = [
             _manifest = {
                 apiVersion = "apiextensions.k8s.io/v1"
                 kind = "CustomResourceDefinition"
-                metadata = {
-                    name = "cacheservers.production-stack.vllm.ai"
-                    annotations."controller-gen.kubebuilder.io/version" = "v0.17.2"
-                }
+                metadata.name = "cacheservers.production-stack.vllm.ai"
                 spec = {
                     group = "production-stack.vllm.ai"
                     names = { kind = "CacheServer", listKind = "CacheServerList", plural = "cacheservers", singular = "cacheserver" }
@@ -424,10 +421,7 @@ _items = [
             _manifest = {
                 apiVersion = "apiextensions.k8s.io/v1"
                 kind = "CustomResourceDefinition"
-                metadata = {
-                    name = "loraadapters.production-stack.vllm.ai"
-                    annotations."controller-gen.kubebuilder.io/version" = "v0.17.2"
-                }
+                metadata.name = "loraadapters.production-stack.vllm.ai"
                 spec = {
                     group = "production-stack.vllm.ai"
                     names = { kind = "LoraAdapter", listKind = "LoraAdapterList", plural = "loraadapters", singular = "loraadapter" }
@@ -452,10 +446,7 @@ _items = [
             _manifest = {
                 apiVersion = "apiextensions.k8s.io/v1"
                 kind = "CustomResourceDefinition"
-                metadata = {
-                    name = "vllmrouters.production-stack.vllm.ai"
-                    annotations."controller-gen.kubebuilder.io/version" = "v0.17.2"
-                }
+                metadata.name = "vllmrouters.production-stack.vllm.ai"
                 spec = {
                     group = "production-stack.vllm.ai"
                     names = { kind = "VLLMRouter", listKind = "VLLMRouterList", plural = "vllmrouters", singular = "vllmrouter" }
@@ -476,10 +467,7 @@ _items = [
             _manifest = {
                 apiVersion = "apiextensions.k8s.io/v1"
                 kind = "CustomResourceDefinition"
-                metadata = {
-                    name = "vllmruntimes.production-stack.vllm.ai"
-                    annotations."controller-gen.kubebuilder.io/version" = "v0.17.2"
-                }
+                metadata.name = "vllmruntimes.production-stack.vllm.ai"
                 spec = {
                     group = "production-stack.vllm.ai"
                     names = { kind = "VLLMRuntime", listKind = "VLLMRuntimeList", plural = "vllmruntimes", shortNames = ["vr"], singular = "vllmruntime" }
@@ -710,7 +698,7 @@ _items = [
                 }
             }
         }
-        usage { _nameSuffix = "vllm-op-deploy" }
+        usage { _nameSuffix = "app-vllm-op-deploy" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
         object {
