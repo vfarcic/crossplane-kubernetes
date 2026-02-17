@@ -173,7 +173,7 @@ gpu = {
             default = False
         }
         nodeSize = {
-            description = "The size of the GPU nodes; small, medium, large."
+            description = "The size of the GPU nodes; small (1 GPU, testing), medium (4 GPUs, small production), large (8 GPUs, big production)."
             type = "string"
             enum = ["small", "medium", "large"]
             default = "small"

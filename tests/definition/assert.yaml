@@ -206,7 +206,7 @@ spec:
                         type: boolean
                       nodeSize:
                         default: small
-                        description: "The size of the GPU nodes; small, medium, large."
+                        description: "The size of the GPU nodes; small (1 GPU, testing), medium (4 GPUs, small production), large (8 GPUs, big production)."
                         type: string
                         enum:
                           - small

@@ -76,9 +76,9 @@ if oxr.spec.parameters?.gpu?.enabled:
                 if _gpu_node_size == "small":
                     vmSize = "Standard_NC4as_T4_v3"
                 elif _gpu_node_size == "medium":
-                    vmSize = "Standard_NC8as_T4_v3"
+                    vmSize = "Standard_NC64as_T4_v3"
                 else:
-                    vmSize = "Standard_NC24ads_A100_v4"
+                    vmSize = "Standard_ND96asr_v4"
                 autoScalingEnabled = True
                 minCount = 1
                 maxCount = 10

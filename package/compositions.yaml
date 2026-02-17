@@ -123,16 +123,16 @@ spec:
                                   count = 1
                               }]
                           elif _gpu_node_size == "medium":
-                              machineType = "n1-standard-8"
-                              guestAccelerator = [{
-                                  type = "nvidia-tesla-t4"
-                                  count = 1
-                              }]
-                          else:
-                              machineType = "a2-highgpu-1g"
+                              machineType = "a2-highgpu-4g"
                               guestAccelerator = [{
                                   type = "nvidia-tesla-a100"
-                                  count = 1
+                                  count = 4
+                              }]
+                          else:
+                              machineType = "a2-highgpu-8g"
+                              guestAccelerator = [{
+                                  type = "nvidia-tesla-a100"
+                                  count = 8
                               }]
                           oauthScopes = ["https://www.googleapis.com/auth/cloud-platform"]
                           labels = {
@@ -846,9 +846,9 @@ spec:
                           if _gpu_node_size == "small":
                               vmSize = "Standard_NC4as_T4_v3"
                           elif _gpu_node_size == "medium":
-                              vmSize = "Standard_NC8as_T4_v3"
+                              vmSize = "Standard_NC64as_T4_v3"
                           else:
-                              vmSize = "Standard_NC24ads_A100_v4"
+                              vmSize = "Standard_ND96asr_v4"
                           autoScalingEnabled = True
                           minCount = 1
                           maxCount = 10
@@ -1768,9 +1768,9 @@ spec:
                           if _gpu_node_size == "small":
                               instanceTypes = ["g5.xlarge"]
                           elif _gpu_node_size == "medium":
-                              instanceTypes = ["g5.2xlarge"]
-                          else:
                               instanceTypes = ["g5.12xlarge"]
+                          else:
+                              instanceTypes = ["p4d.24xlarge"]
                           labels = {
                               gpu = "true"
                           }

@@ -286,9 +286,9 @@ if oxr.spec.parameters?.gpu?.enabled:
                 if _gpu_node_size == "small":
                     instanceTypes = ["g5.xlarge"]
                 elif _gpu_node_size == "medium":
-                    instanceTypes = ["g5.2xlarge"]
-                else:
                     instanceTypes = ["g5.12xlarge"]
+                else:
+                    instanceTypes = ["p4d.24xlarge"]
                 labels = {
                     gpu = "true"
                 }
