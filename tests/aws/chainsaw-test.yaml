@@ -115,6 +115,15 @@ spec:
             file: 10-nvidia.yaml
         - assert:
             file: ../common/assert-nvidia.yaml
+        - patch:
+            file: ../common/vllm.yaml
+        - assert:
+            file: ../common/assert-vllm.yaml
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: vllm-stack
       cleanup:
         - script:
             timeout: 2m

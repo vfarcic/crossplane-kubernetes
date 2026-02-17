@@ -54,6 +54,15 @@ spec:
         - assert:
             file: 08-assert-gpu.yaml
         - patch:
+            file: ../common/vllm.yaml
+        - assert:
+            file: ../common/assert-vllm.yaml
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: vllm-stack
+        - patch:
             file: ../common/argo-cd.yaml
         - assert:
             file: ../common/assert-argo-cd.yaml

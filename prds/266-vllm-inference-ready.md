@@ -48,12 +48,12 @@ Add an optional `spec.parameters.apps.vllm.enabled` toggle that deploys the [vLL
 - [x] GREEN: Add `appVllm` schema to `data.k`, wire into `definition.k`
 
 ### 2. vLLM Helm Release
-- [ ] RED: Chainsaw test asserts vLLM Helm release is created when enabled
-- [ ] GREEN: Implement conditional vLLM Production Stack Helm release in `apps.k`
+- [x] RED: Chainsaw test asserts vLLM Helm release is created when enabled
+- [x] GREEN: Implement conditional vLLM Production Stack Helm release in `apps.k`
 
 ### 3. Tests Across Providers
-- [ ] Add vLLM test steps to AWS, Azure, and Google test suites
-- [ ] Verify all existing tests still pass (no regressions)
+- [x] Add vLLM test steps to AWS, Azure, and Google test suites
+- [x] Verify all existing tests still pass (no regressions)
 
 ### 4. Examples & Documentation
 - [ ] Update GPU example files to include `vllm.enabled: true` option

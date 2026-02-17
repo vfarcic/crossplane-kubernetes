@@ -8,7 +8,9 @@ Crossplane Configuration package for provisioning Kubernetes clusters across AWS
 
 ## Common Commands
 
-Enter dev environment first: `devbox shell`
+The user is typically already in `devbox shell`. Run commands directly (e.g., `just test-once`) without `devbox run --` prefix. Only fall back to `devbox run --` if a command fails due to missing tools.
+
+**Kubeconfig**: The project uses `./kubeconfig.yaml` (not `~/.kube/config`). The Justfile sets `KUBECONFIG` automatically. When running `kubectl` or `helm` commands directly (outside `just`), set `export KUBECONFIG=./kubeconfig.yaml` or use `KUBECONFIG=./kubeconfig.yaml kubectl ...`.
 
 | Command | Description |
 |---|---|
