@@ -11,7 +11,7 @@ metadata = {
     }
 }
 spec = {
-    crossplane.version = ">=v2.3.0"
+    crossplane.version = ">=v2.0.0"
     dependsOn = [{
         provider = "xpkg.crossplane.io/crossplane-contrib/provider-aws-eks"
         version = ">=v2.3.0"

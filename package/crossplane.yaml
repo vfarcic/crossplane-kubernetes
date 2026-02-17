@@ -10,7 +10,7 @@ metadata:
     meta.crossplane.io/readme: A Configuration package that defines a Cluster type that can be used to create and provision fully operational Kubernetes clusters in AWS (EKS), Google Cloud Platform (GKE), and Azure (AKS).
 spec:
   crossplane:
-    version: '>=v2.3.0'
+    version: '>=v2.0.0'
   dependsOn:
   - provider: xpkg.crossplane.io/crossplane-contrib/provider-aws-eks
     version: '>=v2.3.0'
