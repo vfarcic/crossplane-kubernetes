@@ -660,6 +660,7 @@ _items = [
                             "app.kubernetes.io/component" = "manager"
                             "app.kubernetes.io/instance" = "production-stack"
                             "app.kubernetes.io/name" = "production-stack"
+                            "control-plane" = "controller-manager"
                         }
                         spec = {
                             serviceAccountName = "production-stack-controller-manager"
