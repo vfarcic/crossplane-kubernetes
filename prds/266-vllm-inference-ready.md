@@ -44,8 +44,8 @@ Add an optional `spec.parameters.apps.vllm.enabled` toggle that deploys the [vLL
 ## Milestones
 
 ### 1. vLLM Schema & XRD
-- [ ] RED: Chainsaw test asserts `vllm` fields exist in XRD apps section
-- [ ] GREEN: Add `appVllm` schema to `data.k`, wire into `definition.k`
+- [x] RED: Chainsaw test asserts `vllm` fields exist in XRD apps section
+- [x] GREEN: Add `appVllm` schema to `data.k`, wire into `definition.k`
 
 ### 2. vLLM Helm Release
 - [ ] RED: Chainsaw test asserts vLLM Helm release is created when enabled

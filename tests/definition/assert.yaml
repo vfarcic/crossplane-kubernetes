@@ -146,6 +146,13 @@ spec:
                             default: false
                             type: boolean
                         type: object
+                      vllm:
+                        description: Install vLLM Production Stack for LLM inference serving
+                        properties:
+                          enabled:
+                            default: false
+                            type: boolean
+                        type: object
                     type: object
                   creds:
                     description: The secret with hyperscaler credentials.

@@ -60,6 +60,7 @@ spec = {
                                     dapr = _data(data.appDapr)
                                     traefik = _data(data.appTraefik)
                                     nvidia = _data(data.appNvidia)
+                                    vllm = _data(data.appVllm)
                                     externalSecrets = {
                                         description = data.appExternalSecrets.description
                                         type = data.appExternalSecrets.type

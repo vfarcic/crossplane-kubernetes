@@ -130,6 +130,14 @@ spec:
                             type: boolean
                             default: false
                         required: []
+                      vllm:
+                        description: Install vLLM Production Stack for LLM inference serving
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
                       externalSecrets:
                         description: Install External Secrets Operator (ESO)
                         type: object

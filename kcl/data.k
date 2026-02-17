@@ -194,6 +194,18 @@ appNvidia = {
     required = []
 }
 
+appVllm = {
+    type = "object"
+    description = "Install vLLM Production Stack for LLM inference serving"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
+}
+
 creds = {
     type = "object"
     description = "The secret with hyperscaler credentials."
