@@ -670,8 +670,8 @@ _items = [
                             }
                             containers = [{
                                 name = "manager"
-                                image = "lmcache/production-stack-operator:latest"
-                                imagePullPolicy = "Always"
+                                image = "lmcache/production-stack-operator:2025-12-12"
+                                imagePullPolicy = "IfNotPresent"
                                 command = ["/manager"]
                                 args = ["--metrics-bind-address=:8443", "--leader-elect", "--health-probe-bind-address=:8081"]
                                 livenessProbe = {

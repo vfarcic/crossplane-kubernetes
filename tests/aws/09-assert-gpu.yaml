@@ -10,6 +10,10 @@ spec:
     - g5.xlarge
     labels:
       gpu: "true"
+    scalingConfig:
+      minSize: 1
+      maxSize: 10
+      desiredSize: 1
     taint:
     - effect: NO_SCHEDULE
       key: nvidia.com/gpu

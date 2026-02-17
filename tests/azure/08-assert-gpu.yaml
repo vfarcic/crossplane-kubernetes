@@ -6,6 +6,9 @@ metadata:
 spec:
   forProvider:
     vmSize: Standard_NC4as_T4_v3
+    autoScalingEnabled: true
+    minCount: 1
+    maxCount: 10
     nodeLabels:
       gpu: "true"
     nodeTaints:

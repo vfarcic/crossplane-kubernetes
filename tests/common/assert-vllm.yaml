@@ -67,7 +67,7 @@ spec:
           spec:
             containers:
             - name: manager
-              image: lmcache/production-stack-operator:latest
+              image: lmcache/production-stack-operator:2025-12-12
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
