@@ -212,6 +212,14 @@ spec:
                           - small
                           - medium
                           - large
+                      minNodeCount:
+                        default: 1
+                        description: The minimum number of GPU nodes.
+                        type: integer
+                      maxNodeCount:
+                        default: 10
+                        description: The maximum number of GPU nodes.
+                        type: integer
                 required:
                 - nodeSize
                 type: object

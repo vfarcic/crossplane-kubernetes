@@ -80,8 +80,8 @@ if oxr.spec.parameters?.gpu?.enabled:
                 else:
                     vmSize = "Standard_ND96asr_v4"
                 autoScalingEnabled = True
-                minCount = 1
-                maxCount = 10
+                minCount = oxr.spec.parameters?.gpu?.minNodeCount or 1
+                maxCount = oxr.spec.parameters?.gpu?.maxNodeCount or 10
                 nodeLabels = {
                     gpu = "true"
                 }

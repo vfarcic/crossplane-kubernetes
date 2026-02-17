@@ -279,9 +279,9 @@ if oxr.spec.parameters?.gpu?.enabled:
                 subnetIdSelector.matchControllerRef = True
                 amiType = "AL2023_x86_64_NVIDIA"
                 scalingConfig = {
-                    minSize = 1
-                    maxSize = 10
-                    desiredSize = 1
+                    minSize = oxr.spec.parameters?.gpu?.minNodeCount or 1
+                    maxSize = oxr.spec.parameters?.gpu?.maxNodeCount or 10
+                    desiredSize = oxr.spec.parameters?.gpu?.minNodeCount or 1
                 }
                 if _gpu_node_size == "small":
                     instanceTypes = ["g5.xlarge"]

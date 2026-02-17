@@ -27,6 +27,8 @@ The user is typically already in `devbox shell`. Run commands directly (e.g., `j
 
 Tests use **Kyverno Chainsaw** (`chainsaw test`). Test suites are per cloud provider in `tests/{aws,azure,google}/`. Configuration is in `.chainsaw.yaml` (5m global timeout, 2m assert timeout).
 
+**All tests must pass before merging to main.** Do not merge PRs with failing tests.
+
 **Always redirect test/long-running command output to `./tmp/`** to avoid wasting tokens. Use `>` redirection (not `tee`). After the command finishes, read just the tail of the output file to check results. Only read the full file if tests failed.
 - `just test > tmp/test-output.txt 2>&1`
 - `just test-once > tmp/test-output.txt 2>&1`

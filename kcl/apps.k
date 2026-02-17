@@ -1,4 +1,3 @@
-vllmStack = "0.1.9"
 crossplane = "2.1.4"
 argocd = "9.4.1"
 dapr = "1.16.8"
@@ -375,16 +374,332 @@ _items = [
         usage { _nameSuffix = "gpu-operator", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.vllm?.enabled:
-        chart {
-            _name = "vllm-stack"
-            _chartRepository = "https://vllm-project.github.io/production-stack"
-            _chartVersion = vllmStack
-            _namespace = "vllm"
-            _values = {
-                servingEngineSpec.enableEngine = False
+        object {
+            _name = "vllm-op-ns"
+            _externalName = "production-stack-system"
+            _manifest = {
+                apiVersion = "v1"
+                kind = "Namespace"
+                metadata = {
+                    name = "production-stack-system"
+                    labels = {
+                        "app.kubernetes.io/managed-by" = "kustomize"
+                        "app.kubernetes.io/name" = "production-stack"
+                        "control-plane" = "controller-manager"
+                    }
+                }
             }
         }
-        usage { _nameSuffix = "vllm-stack", _kind = "Release" }
+        object {
+            _name = "vllm-op-crd-cacheservers"
+            _externalName = "cacheservers.production-stack.vllm.ai"
+            _manifest = {
+                apiVersion = "apiextensions.k8s.io/v1"
+                kind = "CustomResourceDefinition"
+                metadata.name = "cacheservers.production-stack.vllm.ai"
+                spec = {
+                    group = "production-stack.vllm.ai"
+                    names = { kind = "CacheServer", listKind = "CacheServerList", plural = "cacheservers", singular = "cacheserver" }
+                    scope = "Namespaced"
+                    versions = [{
+                        name = "v1alpha1"
+                        served = True
+                        storage = True
+                        subresources.status = {}
+                        additionalPrinterColumns = [
+                            { name = "Status", type = "string", jsonPath = ".status.status" }
+                            { name = "Age", type = "date", jsonPath = ".metadata.creationTimestamp" }
+                        ]
+                        schema.openAPIV3Schema = { type = "object", "x-kubernetes-preserve-unknown-fields" = True }
+                    }]
+                }
+            }
+        }
+        object {
+            _name = "vllm-op-crd-loraadapters"
+            _externalName = "loraadapters.production-stack.vllm.ai"
+            _manifest = {
+                apiVersion = "apiextensions.k8s.io/v1"
+                kind = "CustomResourceDefinition"
+                metadata.name = "loraadapters.production-stack.vllm.ai"
+                spec = {
+                    group = "production-stack.vllm.ai"
+                    names = { kind = "LoraAdapter", listKind = "LoraAdapterList", plural = "loraadapters", singular = "loraadapter" }
+                    scope = "Namespaced"
+                    versions = [{
+                        name = "v1alpha1"
+                        served = True
+                        storage = True
+                        subresources.status = {}
+                        additionalPrinterColumns = [
+                            { name = "Phase", type = "string", jsonPath = ".status.phase" }
+                            { name = "Age", type = "date", jsonPath = ".metadata.creationTimestamp" }
+                        ]
+                        schema.openAPIV3Schema = { type = "object", "x-kubernetes-preserve-unknown-fields" = True }
+                    }]
+                }
+            }
+        }
+        object {
+            _name = "vllm-op-crd-vllmrouters"
+            _externalName = "vllmrouters.production-stack.vllm.ai"
+            _manifest = {
+                apiVersion = "apiextensions.k8s.io/v1"
+                kind = "CustomResourceDefinition"
+                metadata.name = "vllmrouters.production-stack.vllm.ai"
+                spec = {
+                    group = "production-stack.vllm.ai"
+                    names = { kind = "VLLMRouter", listKind = "VLLMRouterList", plural = "vllmrouters", singular = "vllmrouter" }
+                    scope = "Namespaced"
+                    versions = [{
+                        name = "v1alpha1"
+                        served = True
+                        storage = True
+                        subresources.status = {}
+                        schema.openAPIV3Schema = { type = "object", "x-kubernetes-preserve-unknown-fields" = True }
+                    }]
+                }
+            }
+        }
+        object {
+            _name = "vllm-op-crd-vllmruntimes"
+            _externalName = "vllmruntimes.production-stack.vllm.ai"
+            _manifest = {
+                apiVersion = "apiextensions.k8s.io/v1"
+                kind = "CustomResourceDefinition"
+                metadata.name = "vllmruntimes.production-stack.vllm.ai"
+                spec = {
+                    group = "production-stack.vllm.ai"
+                    names = { kind = "VLLMRuntime", listKind = "VLLMRuntimeList", plural = "vllmruntimes", shortNames = ["vr"], singular = "vllmruntime" }
+                    scope = "Namespaced"
+                    versions = [{
+                        name = "v1alpha1"
+                        served = True
+                        storage = True
+                        subresources.status = {}
+                        schema.openAPIV3Schema = { type = "object", "x-kubernetes-preserve-unknown-fields" = True }
+                    }]
+                }
+            }
+        }
+        object {
+            _name = "vllm-op-sa"
+            _externalName = "production-stack-controller-manager"
+            _manifest = {
+                apiVersion = "v1"
+                kind = "ServiceAccount"
+                metadata = {
+                    name = "production-stack-controller-manager"
+                    namespace = "production-stack-system"
+                    labels = {
+                        "app.kubernetes.io/managed-by" = "kustomize"
+                        "app.kubernetes.io/name" = "production-stack"
+                    }
+                }
+            }
+        }
+        object {
+            _name = "vllm-op-role"
+            _externalName = "production-stack-leader-election-role"
+            _manifest = {
+                apiVersion = "rbac.authorization.k8s.io/v1"
+                kind = "Role"
+                metadata = {
+                    name = "production-stack-leader-election-role"
+                    namespace = "production-stack-system"
+                    labels = {
+                        "app.kubernetes.io/managed-by" = "kustomize"
+                        "app.kubernetes.io/name" = "production-stack"
+                    }
+                }
+                rules = [
+                    { apiGroups = [""], resources = ["configmaps"], verbs = ["get", "list", "watch", "create", "update", "patch", "delete"] }
+                    { apiGroups = ["coordination.k8s.io"], resources = ["leases"], verbs = ["get", "list", "watch", "create", "update", "patch", "delete"] }
+                    { apiGroups = [""], resources = ["events"], verbs = ["create", "patch"] }
+                ]
+            }
+        }
+        object {
+            _name = "vllm-op-cr-manager"
+            _externalName = "production-stack-manager-role"
+            _manifest = {
+                apiVersion = "rbac.authorization.k8s.io/v1"
+                kind = "ClusterRole"
+                metadata.name = "production-stack-manager-role"
+                rules = [
+                    { apiGroups = [""], resources = ["configmaps", "persistentvolumeclaims", "secrets", "serviceaccounts", "services"], verbs = ["create", "delete", "get", "list", "patch", "update", "watch"] }
+                    { apiGroups = [""], resources = ["pods"], verbs = ["get", "list", "watch"] }
+                    { apiGroups = ["apps"], resources = ["deployments"], verbs = ["create", "delete", "get", "list", "patch", "update", "watch"] }
+                    { apiGroups = ["networking.k8s.io"], resources = ["ingresses"], verbs = ["create", "delete", "get", "list", "patch", "update", "watch"] }
+                    { apiGroups = ["production-stack.vllm.ai"], resources = ["cacheservers", "loraadapters", "vllmrouters", "vllmruntimes"], verbs = ["create", "delete", "get", "list", "patch", "update", "watch"] }
+                    { apiGroups = ["production-stack.vllm.ai"], resources = ["cacheservers/finalizers", "loraadapters/finalizers", "vllmrouters/finalizers", "vllmruntimes/finalizers"], verbs = ["update"] }
+                    { apiGroups = ["production-stack.vllm.ai"], resources = ["cacheservers/status", "loraadapters/status", "vllmrouters/status", "vllmruntimes/status"], verbs = ["get", "patch", "update"] }
+                    { apiGroups = ["rbac.authorization.k8s.io"], resources = ["rolebindings", "roles"], verbs = ["create", "delete", "get", "list", "patch", "update", "watch"] }
+                ]
+            }
+        }
+        object {
+            _name = "vllm-op-cr-metrics-auth"
+            _externalName = "production-stack-metrics-auth-role"
+            _manifest = {
+                apiVersion = "rbac.authorization.k8s.io/v1"
+                kind = "ClusterRole"
+                metadata.name = "production-stack-metrics-auth-role"
+                rules = [
+                    { apiGroups = ["authentication.k8s.io"], resources = ["tokenreviews"], verbs = ["create"] }
+                    { apiGroups = ["authorization.k8s.io"], resources = ["subjectaccessreviews"], verbs = ["create"] }
+                ]
+            }
+        }
+        object {
+            _name = "vllm-op-cr-metrics-reader"
+            _externalName = "production-stack-metrics-reader"
+            _manifest = {
+                apiVersion = "rbac.authorization.k8s.io/v1"
+                kind = "ClusterRole"
+                metadata.name = "production-stack-metrics-reader"
+                rules = [{ nonResourceURLs = ["/metrics"], verbs = ["get"] }]
+            }
+        }
+        object {
+            _name = "vllm-op-rb"
+            _externalName = "production-stack-leader-election-rolebinding"
+            _manifest = {
+                apiVersion = "rbac.authorization.k8s.io/v1"
+                kind = "RoleBinding"
+                metadata = {
+                    name = "production-stack-leader-election-rolebinding"
+                    namespace = "production-stack-system"
+                    labels = {
+                        "app.kubernetes.io/managed-by" = "kustomize"
+                        "app.kubernetes.io/name" = "production-stack"
+                    }
+                }
+                roleRef = { apiGroup = "rbac.authorization.k8s.io", kind = "Role", name = "production-stack-leader-election-role" }
+                subjects = [{ kind = "ServiceAccount", name = "production-stack-controller-manager", namespace = "production-stack-system" }]
+            }
+        }
+        object {
+            _name = "vllm-op-crb-manager"
+            _externalName = "production-stack-manager-rolebinding"
+            _manifest = {
+                apiVersion = "rbac.authorization.k8s.io/v1"
+                kind = "ClusterRoleBinding"
+                metadata = {
+                    name = "production-stack-manager-rolebinding"
+                    labels = {
+                        "app.kubernetes.io/managed-by" = "kustomize"
+                        "app.kubernetes.io/name" = "production-stack"
+                    }
+                }
+                roleRef = { apiGroup = "rbac.authorization.k8s.io", kind = "ClusterRole", name = "production-stack-manager-role" }
+                subjects = [{ kind = "ServiceAccount", name = "production-stack-controller-manager", namespace = "production-stack-system" }]
+            }
+        }
+        object {
+            _name = "vllm-op-crb-metrics"
+            _externalName = "production-stack-metrics-auth-rolebinding"
+            _manifest = {
+                apiVersion = "rbac.authorization.k8s.io/v1"
+                kind = "ClusterRoleBinding"
+                metadata.name = "production-stack-metrics-auth-rolebinding"
+                roleRef = { apiGroup = "rbac.authorization.k8s.io", kind = "ClusterRole", name = "production-stack-metrics-auth-role" }
+                subjects = [{ kind = "ServiceAccount", name = "production-stack-controller-manager", namespace = "production-stack-system" }]
+            }
+        }
+        object {
+            _name = "vllm-op-svc"
+            _externalName = "production-stack-controller-manager-metrics-service"
+            _manifest = {
+                apiVersion = "v1"
+                kind = "Service"
+                metadata = {
+                    name = "production-stack-controller-manager-metrics-service"
+                    namespace = "production-stack-system"
+                    labels = {
+                        "app.kubernetes.io/managed-by" = "kustomize"
+                        "app.kubernetes.io/name" = "production-stack"
+                        "control-plane" = "controller-manager"
+                    }
+                }
+                spec = {
+                    ports = [{ name = "https", port = 8443, protocol = "TCP", targetPort = 8443 }]
+                    selector = {
+                        "app.kubernetes.io/name" = "production-stack"
+                        "control-plane" = "controller-manager"
+                    }
+                }
+            }
+        }
+        object {
+            _name = "vllm-op-deploy"
+            _externalName = "production-stack-production-stack-controller-manager"
+            _manifest = {
+                apiVersion = "apps/v1"
+                kind = "Deployment"
+                metadata = {
+                    name = "production-stack-production-stack-controller-manager"
+                    namespace = "production-stack-system"
+                    labels = {
+                        "app.kubernetes.io/component" = "manager"
+                        "app.kubernetes.io/created-by" = "production-stack"
+                        "app.kubernetes.io/instance" = "production-stack"
+                        "app.kubernetes.io/managed-by" = "kustomize"
+                        "app.kubernetes.io/name" = "production-stack"
+                        "app.kubernetes.io/part-of" = "production-stack"
+                    }
+                }
+                spec = {
+                    selector.matchLabels = {
+                        "app.kubernetes.io/component" = "manager"
+                        "app.kubernetes.io/instance" = "production-stack"
+                        "app.kubernetes.io/name" = "production-stack"
+                    }
+                    template = {
+                        metadata.labels = {
+                            "app.kubernetes.io/component" = "manager"
+                            "app.kubernetes.io/instance" = "production-stack"
+                            "app.kubernetes.io/name" = "production-stack"
+                            "control-plane" = "controller-manager"
+                        }
+                        spec = {
+                            serviceAccountName = "production-stack-controller-manager"
+                            terminationGracePeriodSeconds = 10
+                            securityContext = {
+                                runAsNonRoot = True
+                                seccompProfile.type = "RuntimeDefault"
+                            }
+                            containers = [{
+                                name = "manager"
+                                image = "lmcache/production-stack-operator:2025-12-12"
+                                imagePullPolicy = "IfNotPresent"
+                                command = ["/manager"]
+                                args = ["--metrics-bind-address=:8443", "--leader-elect", "--health-probe-bind-address=:8081"]
+                                livenessProbe = {
+                                    httpGet = { path = "/healthz", port = 8081 }
+                                    initialDelaySeconds = 15
+                                    periodSeconds = 20
+                                }
+                                readinessProbe = {
+                                    httpGet = { path = "/readyz", port = 8081 }
+                                    initialDelaySeconds = 5
+                                    periodSeconds = 10
+                                }
+                                resources = {
+                                    limits = { cpu = "500m", memory = "128Mi" }
+                                    requests = { cpu = "10m", memory = "64Mi" }
+                                }
+                                securityContext = {
+                                    allowPrivilegeEscalation = False
+                                    capabilities.drop = ["ALL"]
+                                }
+                            }]
+                        }
+                    }
+                }
+            }
+        }
+        usage { _nameSuffix = "app-vllm-op-deploy" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
         object {

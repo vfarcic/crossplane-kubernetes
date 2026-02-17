@@ -93,7 +93,7 @@ if oxr.spec.parameters?.gpu?.enabled:
                 version = oxr.spec.parameters.version
             clusterSelector.matchControllerRef = True
             nodeLocations = ["us-east1-c", "us-east1-d"]
-            initialNodeCount = 1
+            initialNodeCount = oxr.spec.parameters?.gpu?.minNodeCount or 1
             nodeConfig = {
                 if _gpu_node_size == "small":
                     machineType = "n1-standard-4"
@@ -119,8 +119,8 @@ if oxr.spec.parameters?.gpu?.enabled:
                 }
             }
             autoscaling = {
-                minNodeCount = 1
-                maxNodeCount = 10
+                minNodeCount = oxr.spec.parameters?.gpu?.minNodeCount or 1
+                maxNodeCount = oxr.spec.parameters?.gpu?.maxNodeCount or 10
             }
             management = {
                 autoRepair = True

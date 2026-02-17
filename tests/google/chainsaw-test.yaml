@@ -58,10 +58,10 @@ spec:
         - assert:
             file: ../common/assert-vllm.yaml
         - assert:
-            file: ../common/assert-usage-release.yaml
+            file: ../common/assert-usage-object.yaml
             bindings:
               - name: usageName
-                value: vllm-stack
+                value: app-vllm-op-deploy
         - patch:
             file: ../common/argo-cd.yaml
         - assert:
