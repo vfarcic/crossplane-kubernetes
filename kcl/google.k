@@ -102,16 +102,16 @@ if oxr.spec.parameters?.gpu?.enabled:
                         count = 1
                     }]
                 elif _gpu_node_size == "medium":
-                    machineType = "n1-standard-8"
-                    guestAccelerator = [{
-                        type = "nvidia-tesla-t4"
-                        count = 1
-                    }]
-                else:
-                    machineType = "a2-highgpu-1g"
+                    machineType = "a2-highgpu-4g"
                     guestAccelerator = [{
                         type = "nvidia-tesla-a100"
-                        count = 1
+                        count = 4
+                    }]
+                else:
+                    machineType = "a2-highgpu-8g"
+                    guestAccelerator = [{
+                        type = "nvidia-tesla-a100"
+                        count = 8
                     }]
                 oauthScopes = ["https://www.googleapis.com/auth/cloud-platform"]
                 labels = {

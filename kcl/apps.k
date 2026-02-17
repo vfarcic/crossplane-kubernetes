@@ -1,3 +1,4 @@
+vllmStack = "0.1.9"
 crossplane = "2.1.4"
 argocd = "9.4.1"
 dapr = "1.16.8"
@@ -372,6 +373,18 @@ _items = [
             }
         }
         usage { _nameSuffix = "gpu-operator", _kind = "Release" }
+
+    if oxr.spec.parameters?.apps?.vllm?.enabled:
+        chart {
+            _name = "vllm-stack"
+            _chartRepository = "https://vllm-project.github.io/production-stack"
+            _chartVersion = vllmStack
+            _namespace = "vllm"
+            _values = {
+                servingEngineSpec.enableEngine = False
+            }
+        }
+        usage { _nameSuffix = "vllm-stack", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
         object {

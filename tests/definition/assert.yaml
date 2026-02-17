@@ -146,6 +146,13 @@ spec:
                             default: false
                             type: boolean
                         type: object
+                      vllm:
+                        description: Install vLLM Production Stack for LLM inference serving
+                        properties:
+                          enabled:
+                            default: false
+                            type: boolean
+                        type: object
                     type: object
                   creds:
                     description: The secret with hyperscaler credentials.
@@ -199,7 +206,7 @@ spec:
                         type: boolean
                       nodeSize:
                         default: small
-                        description: "The size of the GPU nodes; small, medium, large."
+                        description: "The size of the GPU nodes; small (1 GPU, testing), medium (4 GPUs, small production), large (8 GPUs, big production)."
                         type: string
                         enum:
                           - small

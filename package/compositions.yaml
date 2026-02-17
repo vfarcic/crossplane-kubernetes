@@ -123,16 +123,16 @@ spec:
                                   count = 1
                               }]
                           elif _gpu_node_size == "medium":
-                              machineType = "n1-standard-8"
-                              guestAccelerator = [{
-                                  type = "nvidia-tesla-t4"
-                                  count = 1
-                              }]
-                          else:
-                              machineType = "a2-highgpu-1g"
+                              machineType = "a2-highgpu-4g"
                               guestAccelerator = [{
                                   type = "nvidia-tesla-a100"
-                                  count = 1
+                                  count = 4
+                              }]
+                          else:
+                              machineType = "a2-highgpu-8g"
+                              guestAccelerator = [{
+                                  type = "nvidia-tesla-a100"
+                                  count = 8
                               }]
                           oauthScopes = ["https://www.googleapis.com/auth/cloud-platform"]
                           labels = {
@@ -159,6 +159,7 @@ spec:
       kind: KCLRun
       spec:
         source: |
+          vllmStack = "0.1.9"
           crossplane = "2.1.4"
           argocd = "9.4.1"
           dapr = "1.16.8"
@@ -534,6 +535,18 @@ spec:
                   }
                   usage { _nameSuffix = "gpu-operator", _kind = "Release" }
 
+              if oxr.spec.parameters?.apps?.vllm?.enabled:
+                  chart {
+                      _name = "vllm-stack"
+                      _chartRepository = "https://vllm-project.github.io/production-stack"
+                      _chartVersion = vllmStack
+                      _namespace = "vllm"
+                      _values = {
+                          servingEngineSpec.enableEngine = False
+                      }
+                  }
+                  usage { _nameSuffix = "vllm-stack", _kind = "Release" }
+
               if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
                   object {
                       _name = "secret-store"
@@ -833,9 +846,9 @@ spec:
                           if _gpu_node_size == "small":
                               vmSize = "Standard_NC4as_T4_v3"
                           elif _gpu_node_size == "medium":
-                              vmSize = "Standard_NC8as_T4_v3"
+                              vmSize = "Standard_NC64as_T4_v3"
                           else:
-                              vmSize = "Standard_NC24ads_A100_v4"
+                              vmSize = "Standard_ND96asr_v4"
                           autoScalingEnabled = True
                           minCount = 1
                           maxCount = 10
@@ -858,6 +871,7 @@ spec:
       kind: KCLRun
       spec:
         source: |
+          vllmStack = "0.1.9"
           crossplane = "2.1.4"
           argocd = "9.4.1"
           dapr = "1.16.8"
@@ -1232,6 +1246,18 @@ spec:
                       }
                   }
                   usage { _nameSuffix = "gpu-operator", _kind = "Release" }
+
+              if oxr.spec.parameters?.apps?.vllm?.enabled:
+                  chart {
+                      _name = "vllm-stack"
+                      _chartRepository = "https://vllm-project.github.io/production-stack"
+                      _chartVersion = vllmStack
+                      _namespace = "vllm"
+                      _values = {
+                          servingEngineSpec.enableEngine = False
+                      }
+                  }
+                  usage { _nameSuffix = "vllm-stack", _kind = "Release" }
 
               if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
                   object {
@@ -1742,9 +1768,9 @@ spec:
                           if _gpu_node_size == "small":
                               instanceTypes = ["g5.xlarge"]
                           elif _gpu_node_size == "medium":
-                              instanceTypes = ["g5.2xlarge"]
-                          else:
                               instanceTypes = ["g5.12xlarge"]
+                          else:
+                              instanceTypes = ["p4d.24xlarge"]
                           labels = {
                               gpu = "true"
                           }
@@ -1766,6 +1792,7 @@ spec:
       kind: KCLRun
       spec:
         source: |
+          vllmStack = "0.1.9"
           crossplane = "2.1.4"
           argocd = "9.4.1"
           dapr = "1.16.8"
@@ -2140,6 +2167,18 @@ spec:
                       }
                   }
                   usage { _nameSuffix = "gpu-operator", _kind = "Release" }
+
+              if oxr.spec.parameters?.apps?.vllm?.enabled:
+                  chart {
+                      _name = "vllm-stack"
+                      _chartRepository = "https://vllm-project.github.io/production-stack"
+                      _chartVersion = vllmStack
+                      _namespace = "vllm"
+                      _values = {
+                          servingEngineSpec.enableEngine = False
+                      }
+                  }
+                  usage { _nameSuffix = "vllm-stack", _kind = "Release" }
 
               if oxr.spec.parameters?.apps?.externalSecrets?.enabled and oxr.spec.parameters.apps?.externalSecrets?.store:
                   object {

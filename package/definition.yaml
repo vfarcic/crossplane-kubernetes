@@ -58,7 +58,7 @@ spec:
                         type: boolean
                         default: false
                       nodeSize:
-                        description: The size of the GPU nodes; small, medium, large.
+                        description: The size of the GPU nodes; small (1 GPU, testing), medium (4 GPUs, small production), large (8 GPUs, big production).
                         type: string
                         default: small
                         enum:
@@ -124,6 +124,14 @@ spec:
                         required: []
                       nvidia:
                         description: Install NVIDIA GPU Operator for GPU driver and device plugin management. Required for AWS (EKS) and Azure (AKS). Optional for Google (GKE) where drivers and device plugin are pre-installed.
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
+                      vllm:
+                        description: Install vLLM Production Stack for LLM inference serving
                         type: object
                         properties:
                           enabled:

@@ -173,7 +173,7 @@ gpu = {
             default = False
         }
         nodeSize = {
-            description = "The size of the GPU nodes; small, medium, large."
+            description = "The size of the GPU nodes; small (1 GPU, testing), medium (4 GPUs, small production), large (8 GPUs, big production)."
             type = "string"
             enum = ["small", "medium", "large"]
             default = "small"
@@ -185,6 +185,18 @@ gpu = {
 appNvidia = {
     type = "object"
     description = "Install NVIDIA GPU Operator for GPU driver and device plugin management. Required for AWS (EKS) and Azure (AKS). Optional for Google (GKE) where drivers and device plugin are pre-installed."
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
+}
+
+appVllm = {
+    type = "object"
+    description = "Install vLLM Production Stack for LLM inference serving"
     properties = {
         enabled = {
             type = "boolean"

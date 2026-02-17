@@ -1,5 +1,7 @@
 timeout := "300s"
 
+export KUBECONFIG := justfile_directory() / "kubeconfig.yaml"
+
 # List tasks.
 default:
   just --list
@@ -35,6 +37,10 @@ test: cluster-create package-generate-apply
 test-once: package-generate-apply
   chainsaw test
 
+# Runs a specific test directory (e.g., just test-dir tests/definition).
+test-dir dir: package-generate-apply
+  chainsaw test {{dir}}
+
 # Runs tests in the watch mode assuming that the cluster is already created and everything is installed.
 test-watch:
   watchexec -w kcl -w tests "just test-once"
@@ -69,7 +75,7 @@ cluster-create-google: cluster-create
 
 # Destroys the cluster
 cluster-destroy:
-  kind delete cluster
+  kind delete cluster --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
 
 # Removes Google Cloud project and executes `cluster-destroy`.
 cluster-destroy-google:
@@ -78,7 +84,7 @@ cluster-destroy-google:
 
 # Creates a kind cluster
 _cluster-create-kind:
-  -kind create cluster
+  -kind create cluster --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
   -helm repo add crossplane-stable https://charts.crossplane.io/stable
   -helm repo update
   helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --set 'provider.defaultActivations={}' --wait
