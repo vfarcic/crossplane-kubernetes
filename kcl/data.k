@@ -178,6 +178,16 @@ gpu = {
             enum = ["small", "medium", "large"]
             default = "small"
         }
+        minNodeCount = {
+            description = "The minimum number of GPU nodes."
+            type = "integer"
+            default = 1
+        }
+        maxNodeCount = {
+            description = "The maximum number of GPU nodes."
+            type = "integer"
+            default = 10
+        }
     }
     required = []
 }

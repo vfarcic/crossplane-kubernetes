@@ -9,17 +9,17 @@ spec:
     apps:
       vllm:
         enabled: true
-  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-vllm-stack'])]):
-  - apiVersion: helm.m.crossplane.io/v1beta1
-    kind: Release
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-vllm-op-crd-vllmruntimes'])]):
+  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+    kind: Object
 ---
-apiVersion: helm.m.crossplane.io/v1beta1
-kind: Release
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: Object
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-vllm-stack']))
-    crossplane.io/external-name: vllm-stack
-  name: (join('-', ['a-team', $cluster, 'app-vllm-stack']))
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-vllm-op-crd-vllmruntimes']))
+    crossplane.io/external-name: vllmruntimes.production-stack.vllm.ai
+  name: (join('-', ['a-team', $cluster, 'app-vllm-op-crd-vllmruntimes']))
   ownerReferences:
   - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
@@ -27,19 +27,47 @@ metadata:
     kind: Cluster
 spec:
   forProvider:
-    chart:
-      name: vllm-stack
-      repository: https://vllm-project.github.io/production-stack
-      version: "0.1.9"
-    namespace: vllm
-    values:
-      servingEngineSpec:
-        enableEngine: false
+    manifest:
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      metadata:
+        name: vllmruntimes.production-stack.vllm.ai
+      spec:
+        group: production-stack.vllm.ai
+        names:
+          kind: VLLMRuntime
+          plural: vllmruntimes
+        scope: Namespaced
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
-  managementPolicies:
-  - Create
-  - Update
-  - Observe
-  rollbackLimit: 3
+---
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-vllm-op-deploy']))
+    crossplane.io/external-name: production-stack-production-stack-controller-manager
+  name: (join('-', ['a-team', $cluster, 'app-vllm-op-deploy']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    manifest:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: production-stack-production-stack-controller-manager
+        namespace: production-stack-system
+      spec:
+        template:
+          spec:
+            containers:
+            - name: manager
+              image: lmcache/production-stack-operator:latest
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
