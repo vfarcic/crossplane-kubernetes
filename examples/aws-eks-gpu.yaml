@@ -17,3 +17,5 @@ spec:
     apps:
       nvidia:
         enabled: true
+      vllm:
+        enabled: true

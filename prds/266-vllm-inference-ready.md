@@ -2,7 +2,7 @@
 
 **Issue**: #266
 **Priority**: Medium
-**Status**: In Progress
+**Status**: Complete
 
 ## Problem
 
@@ -56,8 +56,8 @@ Add an optional `spec.parameters.apps.vllm.enabled` toggle that deploys the [vLL
 - [x] Verify all existing tests still pass (no regressions)
 
 ### 4. Examples & Documentation
-- [ ] Update GPU example files to include `vllm.enabled: true` option
-- [ ] Verify examples are valid against the updated XRD
+- [x] Update GPU example files to include `vllm.enabled: true` option
+- [x] Verify examples are valid against the updated XRD
 
 ## Risks
 
