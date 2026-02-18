@@ -25,4 +25,3 @@ spec:
       - https://www.googleapis.com/auth/cloud-platform
     nodeLocations:
     - us-east1-c
-    - us-east1-d

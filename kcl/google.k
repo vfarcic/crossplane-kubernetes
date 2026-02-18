@@ -92,7 +92,7 @@ if oxr.spec.parameters?.gpu?.enabled:
             if oxr.spec.parameters.version:
                 version = oxr.spec.parameters.version
             clusterSelector.matchControllerRef = True
-            nodeLocations = ["us-east1-c", "us-east1-d"]
+            nodeLocations = ["us-east1-c"]
             initialNodeCount = oxr.spec.parameters?.gpu?.minNodeCount or 1
             nodeConfig = {
                 if _gpu_node_size == "small":
