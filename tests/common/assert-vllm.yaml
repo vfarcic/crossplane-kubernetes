@@ -38,6 +38,19 @@ spec:
           kind: VLLMRuntime
           plural: vllmruntimes
         scope: Namespaced
+        versions:
+        - name: v1alpha1
+          schema:
+            openAPIV3Schema:
+              properties:
+                spec:
+                  properties:
+                    vllmConfig:
+                      properties:
+                        port:
+                          default: 8000
+                          format: int32
+                          type: integer
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))

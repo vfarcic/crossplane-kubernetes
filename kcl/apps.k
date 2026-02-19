@@ -477,7 +477,23 @@ _items = [
                         served = True
                         storage = True
                         subresources.status = {}
-                        schema.openAPIV3Schema = { type = "object", "x-kubernetes-preserve-unknown-fields" = True }
+                        schema.openAPIV3Schema = {
+                            type = "object"
+                            "x-kubernetes-preserve-unknown-fields" = True
+                            properties.spec = {
+                                type = "object"
+                                "x-kubernetes-preserve-unknown-fields" = True
+                                properties.vllmConfig = {
+                                    type = "object"
+                                    "x-kubernetes-preserve-unknown-fields" = True
+                                    properties.port = {
+                                        type = "integer"
+                                        format = "int32"
+                                        default = 8000
+                                    }
+                                }
+                            }
+                        }
                     }]
                 }
             }
