@@ -285,10 +285,13 @@ if oxr.spec.parameters?.gpu?.enabled:
                 }
                 if _gpu_node_size == "small":
                     instanceTypes = ["g5.xlarge"]
+                    diskSize = 100
                 elif _gpu_node_size == "medium":
                     instanceTypes = ["g5.12xlarge"]
+                    diskSize = 200
                 else:
                     instanceTypes = ["p4d.24xlarge"]
+                    diskSize = 500
                 labels = {
                     gpu = "true"
                 }
