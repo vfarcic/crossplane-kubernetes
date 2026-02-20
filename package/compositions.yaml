@@ -259,6 +259,7 @@ spec:
               _externalName?: str
               _manifest: any
               _references?: []
+              _managementPolicies?: [str]
               apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
               kind = "Object"
               metadata = {
@@ -274,6 +275,8 @@ spec:
               spec = {
                   if _references:
                       references = _references
+                  if _managementPolicies:
+                      managementPolicies = _managementPolicies
                   forProvider.manifest = _manifest
                   providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
               }
@@ -538,6 +541,7 @@ spec:
                   object {
                       _name = "vllm-op-ns"
                       _externalName = "production-stack-system"
+                      _managementPolicies = ["Create", "Update", "Observe"]
                       _manifest = {
                           apiVersion = "v1"
                           kind = "Namespace"
@@ -551,7 +555,6 @@ spec:
                           }
                       }
                   }
-                  usage { _nameSuffix = "app-vllm-op-ns" }
                   object {
                       _name = "vllm-op-crd-cacheservers"
                       _externalName = "cacheservers.production-stack.vllm.ai"
@@ -1316,6 +1319,7 @@ spec:
               _externalName?: str
               _manifest: any
               _references?: []
+              _managementPolicies?: [str]
               apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
               kind = "Object"
               metadata = {
@@ -1331,6 +1335,8 @@ spec:
               spec = {
                   if _references:
                       references = _references
+                  if _managementPolicies:
+                      managementPolicies = _managementPolicies
                   forProvider.manifest = _manifest
                   providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
               }
@@ -1595,6 +1601,7 @@ spec:
                   object {
                       _name = "vllm-op-ns"
                       _externalName = "production-stack-system"
+                      _managementPolicies = ["Create", "Update", "Observe"]
                       _manifest = {
                           apiVersion = "v1"
                           kind = "Namespace"
@@ -1608,7 +1615,6 @@ spec:
                           }
                       }
                   }
-                  usage { _nameSuffix = "app-vllm-op-ns" }
                   object {
                       _name = "vllm-op-crd-cacheservers"
                       _externalName = "cacheservers.production-stack.vllm.ai"
@@ -2585,6 +2591,7 @@ spec:
               _externalName?: str
               _manifest: any
               _references?: []
+              _managementPolicies?: [str]
               apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
               kind = "Object"
               metadata = {
@@ -2600,6 +2607,8 @@ spec:
               spec = {
                   if _references:
                       references = _references
+                  if _managementPolicies:
+                      managementPolicies = _managementPolicies
                   forProvider.manifest = _manifest
                   providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
               }
@@ -2864,6 +2873,7 @@ spec:
                   object {
                       _name = "vllm-op-ns"
                       _externalName = "production-stack-system"
+                      _managementPolicies = ["Create", "Update", "Observe"]
                       _manifest = {
                           apiVersion = "v1"
                           kind = "Namespace"
@@ -2877,7 +2887,6 @@ spec:
                           }
                       }
                   }
-                  usage { _nameSuffix = "app-vllm-op-ns" }
                   object {
                       _name = "vllm-op-crd-cacheservers"
                       _externalName = "cacheservers.production-stack.vllm.ai"

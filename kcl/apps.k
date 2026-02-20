@@ -98,6 +98,7 @@ schema object:
     _externalName?: str
     _manifest: any
     _references?: []
+    _managementPolicies?: [str]
     apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
     kind = "Object"
     metadata = {
@@ -113,6 +114,8 @@ schema object:
     spec = {
         if _references:
             references = _references
+        if _managementPolicies:
+            managementPolicies = _managementPolicies
         forProvider.manifest = _manifest
         providerConfigRef = {name = oxr.metadata.name, kind = "ProviderConfig"}
     }
@@ -377,6 +380,7 @@ _items = [
         object {
             _name = "vllm-op-ns"
             _externalName = "production-stack-system"
+            _managementPolicies = ["Create", "Update", "Observe"]
             _manifest = {
                 apiVersion = "v1"
                 kind = "Namespace"
@@ -390,7 +394,6 @@ _items = [
                 }
             }
         }
-        usage { _nameSuffix = "app-vllm-op-ns" }
         object {
             _name = "vllm-op-crd-cacheservers"
             _externalName = "cacheservers.production-stack.vllm.ai"
