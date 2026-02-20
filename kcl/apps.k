@@ -390,6 +390,7 @@ _items = [
                 }
             }
         }
+        usage { _nameSuffix = "app-vllm-op-ns" }
         object {
             _name = "vllm-op-crd-cacheservers"
             _externalName = "cacheservers.production-stack.vllm.ai"
@@ -415,6 +416,7 @@ _items = [
                 }
             }
         }
+        usage { _nameSuffix = "app-vllm-op-crd-cacheservers" }
         object {
             _name = "vllm-op-crd-loraadapters"
             _externalName = "loraadapters.production-stack.vllm.ai"
@@ -440,6 +442,7 @@ _items = [
                 }
             }
         }
+        usage { _nameSuffix = "app-vllm-op-crd-loraadapters" }
         object {
             _name = "vllm-op-crd-vllmrouters"
             _externalName = "vllmrouters.production-stack.vllm.ai"
@@ -461,6 +464,7 @@ _items = [
                 }
             }
         }
+        usage { _nameSuffix = "app-vllm-op-crd-vllmrouters" }
         object {
             _name = "vllm-op-crd-vllmruntimes"
             _externalName = "vllmruntimes.production-stack.vllm.ai"
@@ -498,6 +502,7 @@ _items = [
                 }
             }
         }
+        usage { _nameSuffix = "app-vllm-op-crd-vllmruntimes" }
         object {
             _name = "vllm-op-sa"
             _externalName = "production-stack-controller-manager"
@@ -514,6 +519,7 @@ _items = [
                 }
             }
         }
+        usage { _nameSuffix = "app-vllm-op-sa" }
         object {
             _name = "vllm-op-role"
             _externalName = "production-stack-leader-election-role"
@@ -535,6 +541,7 @@ _items = [
                 ]
             }
         }
+        usage { _nameSuffix = "app-vllm-op-role" }
         object {
             _name = "vllm-op-cr-manager"
             _externalName = "production-stack-manager-role"
@@ -554,6 +561,7 @@ _items = [
                 ]
             }
         }
+        usage { _nameSuffix = "app-vllm-op-cr-manager" }
         object {
             _name = "vllm-op-cr-metrics-auth"
             _externalName = "production-stack-metrics-auth-role"
@@ -567,6 +575,7 @@ _items = [
                 ]
             }
         }
+        usage { _nameSuffix = "app-vllm-op-cr-metrics-auth" }
         object {
             _name = "vllm-op-cr-metrics-reader"
             _externalName = "production-stack-metrics-reader"
@@ -577,6 +586,7 @@ _items = [
                 rules = [{ nonResourceURLs = ["/metrics"], verbs = ["get"] }]
             }
         }
+        usage { _nameSuffix = "app-vllm-op-cr-metrics-reader" }
         object {
             _name = "vllm-op-rb"
             _externalName = "production-stack-leader-election-rolebinding"
@@ -595,6 +605,7 @@ _items = [
                 subjects = [{ kind = "ServiceAccount", name = "production-stack-controller-manager", namespace = "production-stack-system" }]
             }
         }
+        usage { _nameSuffix = "app-vllm-op-rb" }
         object {
             _name = "vllm-op-crb-manager"
             _externalName = "production-stack-manager-rolebinding"
@@ -612,6 +623,7 @@ _items = [
                 subjects = [{ kind = "ServiceAccount", name = "production-stack-controller-manager", namespace = "production-stack-system" }]
             }
         }
+        usage { _nameSuffix = "app-vllm-op-crb-manager" }
         object {
             _name = "vllm-op-crb-metrics"
             _externalName = "production-stack-metrics-auth-rolebinding"
@@ -623,6 +635,7 @@ _items = [
                 subjects = [{ kind = "ServiceAccount", name = "production-stack-controller-manager", namespace = "production-stack-system" }]
             }
         }
+        usage { _nameSuffix = "app-vllm-op-crb-metrics" }
         object {
             _name = "vllm-op-svc"
             _externalName = "production-stack-controller-manager-metrics-service"
@@ -647,6 +660,7 @@ _items = [
                 }
             }
         }
+        usage { _nameSuffix = "app-vllm-op-svc" }
         object {
             _name = "vllm-op-deploy"
             _externalName = "production-stack-production-stack-controller-manager"
