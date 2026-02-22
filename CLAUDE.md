@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Crossplane Configuration package for provisioning Kubernetes clusters across AWS (EKS), Azure (AKS), and Google Cloud (GKE) using declarative Composite Resources. Published to Upbound registry as `xpkg.upbound.io/devops-toolkit/dot-kubernetes`.
+Crossplane Configuration package for provisioning Kubernetes clusters across AWS (EKS), Azure (AKS), Google Cloud (GKE), and UpCloud (UKS) using declarative Composite Resources. Published to Upbound registry as `xpkg.upbound.io/devops-toolkit/dot-kubernetes`.
 
 ## Common Commands
 
@@ -25,9 +25,9 @@ The user is typically already in `devbox shell`. Run commands directly (e.g., `j
 
 ### Testing
 
-Tests use **Kyverno Chainsaw** (`chainsaw test`). Test suites are per cloud provider in `tests/{aws,azure,google}/`. Configuration is in `.chainsaw.yaml` (5m global timeout, 2m assert timeout).
+Tests use **Kyverno Chainsaw** (`chainsaw test`). Test suites are per cloud provider in `tests/{aws,azure,google,upcloud}/`. Configuration is in `.chainsaw.yaml` (5m global timeout, 30s assert timeout).
 
-**All tests must pass before merging to main.** Do not merge PRs with failing tests.
+**All tests must pass before merging to main.** Do not merge PRs with failing tests. If tests reveal pre-existing failures unrelated to your changes, fix them as part of your work — do not ignore failures just because they existed before.
 
 **Always redirect test/long-running command output to `./tmp/`** to avoid wasting tokens. Use `>` redirection (not `tee`). After the command finishes, read just the tail of the output file to check results. Only read the full file if tests failed.
 - `just test > tmp/test-output.txt 2>&1`
@@ -56,7 +56,7 @@ Source of truth is KCL code in `kcl/`. Running `just package-generate` produces:
 ### Composition Pipeline (per provider)
 
 Each Composition uses Crossplane Pipeline mode with three steps:
-1. **Provider-specific KCL function** (`aws.k`, `azure.k`, or `google.k`) — creates cloud resources (VPCs, subnets, node groups, etc.)
+1. **Provider-specific KCL function** (`aws.k`, `azure.k`, `google.k`, or `upcloud.k`) — creates cloud resources (VPCs, subnets, node groups, etc.)
 2. **Apps KCL function** (`apps.k`) — optionally deploys applications (Crossplane, Argo CD, Dapr, Traefik, External Secrets, OpenFunction) via Helm releases
 3. **Auto-ready function** — automatically detects resource readiness
 
@@ -65,18 +65,20 @@ Each Composition uses Crossplane Pipeline mode with three steps:
 - `data.k` — Schema definitions for cluster parameters (nodeSize, version, minNodeCount, namespaces) and app configuration
 - `definition.k` — XRD defining the namespace-scoped `Cluster` API (Crossplane v2)
 - `compositions.k` — Composition template that reads provider-specific KCL files and injects them as inline KCLRun sources
-- `aws.k` / `azure.k` / `google.k` — Provider-specific infrastructure resources
+- `aws.k` / `azure.k` / `google.k` / `upcloud.k` — Provider-specific infrastructure resources
 - `apps.k` — Application deployment logic (uses `CLUSTER_API_VERSION` and `CLUSTER_KIND` placeholders replaced at generation time)
 
 ### Crossplane Custom API
 
 - **API Group**: `devopstoolkit.ai/v2`
 - **Resource**: `Cluster` (namespace-scoped, Crossplane v2)
-- **Provider selection**: `spec.compositionSelector.matchLabels.provider` (aws/azure/google)
+- **Provider selection**: `spec.compositionSelector.matchLabels.provider` (aws/azure/google/upcloud)
 
 ### Providers and Functions
 
 Provider manifests live in `providers/`. These are applied during `cluster-create` and include:
-- Cloud providers: AWS (EKS, EC2, IAM), Azure, Google (Container)
+- Cloud providers: AWS (EKS, EC2, IAM), Azure, Google (Container), UpCloud (UKS, Network)
 - In-cluster providers: Helm, Kubernetes
 - Functions: `function-kcl`, `function-auto-ready`
+
+**Note**: The UpCloud provider (`xpkg.upbound.io/upcloud/provider-upcloud`) uses `upcloud.com` API groups (e.g., `uks.m.upcloud.com`, `network.m.upcloud.com`), not `upbound.io`. Its controller image currently lacks ARM64 support, so provider pods won't run on Apple Silicon — but CRDs install fine for testing.

@@ -12,3 +12,5 @@ spec:
   - "*.container.gcp.m.upbound.io"
   - "*.helm.m.crossplane.io"
   - "*.kubernetes.m.crossplane.io"
+  - "*.uks.m.upcloud.com"
+  - "*.network.m.upcloud.com"

@@ -1,0 +1,13 @@
+---
+
+apiVersion: provider.m.upcloud.com/v1beta1
+kind: ClusterProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: upcloud-creds
+      key: creds

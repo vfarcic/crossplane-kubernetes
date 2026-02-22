@@ -1,0 +1,32 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: upcloud
+spec:
+  template: true
+  bindings:
+    - name: hyperscaler
+      value: upcloud
+    - name: cluster
+      value: uks
+    - name: clusterApi
+      value: uks.m.upcloud.com/v1alpha1
+    - name: clusterKind
+      value: KubernetesCluster
+  steps:
+    - try:
+        - apply:
+            file: 00-install.yaml
+        - assert:
+            file: 00-assert.yaml
+        - assert:
+            file: ../common/assert-install.yaml
+      cleanup:
+        - script:
+            timeout: 2m
+            content: |
+              kubectl delete cluster.devopstoolkit.ai --all -n $NAMESPACE --timeout=60s || true
+              sleep 5
+              kubectl patch providerconfig.helm.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl patch providerconfig.kubernetes.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl patch usage.protection.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true

@@ -1,0 +1,197 @@
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  namespace: ($namespace)
+spec:
+  crossplane:
+    compositionRef:
+      name: cluster-upcloud
+    compositionSelector:
+      matchLabels:
+        cluster: uks
+        provider: upcloud
+    compositionUpdatePolicy: Automatic
+    resourceRefs:
+    - apiVersion: helm.m.crossplane.io/v1beta1
+      kind: ProviderConfig
+      name: a-team-uks
+    - apiVersion: helm.m.crossplane.io/v1beta1
+      kind: ProviderConfig
+      name: a-team-uks-local
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: Object
+      name: a-team-uks-ns-dev
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: Object
+      name: a-team-uks-ns-production
+    - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+      kind: ProviderConfig
+      name: a-team-uks
+    - apiVersion: network.m.upcloud.com/v1alpha1
+      kind: Network
+      name: a-team-uks
+    - apiVersion: uks.m.upcloud.com/v1alpha1
+      kind: KubernetesCluster
+      name: a-team-uks
+    - apiVersion: uks.m.upcloud.com/v1alpha1
+      kind: KubernetesNodeGroup
+      name: a-team-uks
+  parameters:
+    minNodeCount: 1
+    nodeSize: medium
+    version: "1.30"
+---
+apiVersion: network.m.upcloud.com/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    crossplane.io/external-name: a-team-uks
+  labels:
+    crossplane.io/composite: a-team-uks
+  name: a-team-uks
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    name: a-team-uks
+    zone: de-fra1
+    ipNetwork:
+    - address: "172.16.1.0/24"
+      dhcp: true
+      family: IPv4
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+---
+apiVersion: uks.m.upcloud.com/v1alpha1
+kind: KubernetesCluster
+metadata:
+  annotations:
+    crossplane.io/external-name: a-team-uks
+  labels:
+    crossplane.io/composite: a-team-uks
+  name: a-team-uks
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    controlPlaneIpFilter:
+    - "0.0.0.0/0"
+    name: a-team-uks
+    networkSelector:
+      matchControllerRef: true
+    plan: prod-md
+    privateNodeGroups: true
+    version: "1.30"
+    zone: de-fra1
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+  writeConnectionSecretToRef:
+    name: a-team-uks-cluster
+---
+apiVersion: uks.m.upcloud.com/v1alpha1
+kind: KubernetesNodeGroup
+metadata:
+  annotations:
+    crossplane.io/external-name: a-team-uks
+  labels:
+    crossplane.io/composite: a-team-uks
+  name: a-team-uks
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    clusterSelector:
+      matchControllerRef: true
+    nodeCount: 1
+    plan: 4xCPU-8GB
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  labels:
+    crossplane.io/composite: a-team-uks
+  name: a-team-uks
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      key: kubeconfig
+      name: a-team-uks-cluster
+---
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  labels:
+    crossplane.io/composite: a-team-uks
+  name: a-team-uks
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      key: kubeconfig
+      name: a-team-uks-cluster
+---
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  labels:
+    crossplane.io/composite: a-team-uks
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: dev
+  providerConfigRef:
+    kind: ProviderConfig
+    name: a-team-uks
+---
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  labels:
+    crossplane.io/composite: a-team-uks
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: production
+  providerConfigRef:
+    kind: ProviderConfig
+    name: a-team-uks

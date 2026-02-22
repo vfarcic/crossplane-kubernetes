@@ -75,7 +75,7 @@ cluster-create-google: cluster-create
 
 # Destroys the cluster
 cluster-destroy:
-  kind delete cluster --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
+  kind delete cluster --name crossplane-kubernetes --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
 
 # Removes Google Cloud project and executes `cluster-destroy`.
 cluster-destroy-google:
@@ -84,7 +84,7 @@ cluster-destroy-google:
 
 # Creates a kind cluster
 _cluster-create-kind:
-  -kind create cluster --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
+  -kind create cluster --name crossplane-kubernetes --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
   -helm repo add crossplane-stable https://charts.crossplane.io/stable
   -helm repo update
   helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --set 'provider.defaultActivations={}' --wait

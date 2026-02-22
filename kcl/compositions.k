@@ -70,4 +70,12 @@ schema composition:
         _source = file.read("kcl/aws.k")
     }
 
+    composition {
+        _cluster = "uks"
+        _provider = "upcloud"
+        _clusterApiVersion = "uks.m.upcloud.com/v1alpha1"
+        _clusterKind = "KubernetesCluster"
+        _source = file.read("kcl/upcloud.k")
+    }
+
 ]

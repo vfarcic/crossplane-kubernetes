@@ -169,7 +169,7 @@ _items = [
         spec.credentials.source = "InjectedIdentity"
     }
 
-    if oxr.spec.crossplane.compositionSelector.matchLabels.provider != "aws":
+    if oxr.spec.crossplane.compositionSelector.matchLabels.provider not in ["aws", "upcloud"]:
         {
             apiVersion = "helm.m.crossplane.io/v1beta1"
             kind = "Release"

@@ -28,6 +28,9 @@ spec = {
         provider = "xpkg.crossplane.io/crossplane-contrib/provider-gcp-container"
         version = ">=v2.3.0"
     }, {
+        provider = "xpkg.upbound.io/upcloud/provider-upcloud"
+        version = ">=v0.1.1"
+    }, {
         function = "xpkg.crossplane.io/crossplane-contrib/function-auto-ready"
         version = ">=v0.2.1"
     }, {
