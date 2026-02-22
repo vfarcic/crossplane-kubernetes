@@ -5,6 +5,7 @@ traefik = "39.0.0"
 externalSecrets = "2.0.0"
 cilium = "1.19.0"
 nvidiaGpuOperator = "v25.10.1"
+keda = "2.19.0"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
 
 oxr = option("params").oxr
@@ -351,6 +352,15 @@ _items = [
             _namespace = "traefik"
         }
         usage { _nameSuffix = "traefik", _kind = "Release" }
+
+    if oxr.spec.parameters?.apps?.keda?.enabled:
+        chart {
+            _name = "keda"
+            _chartRepository = "https://kedacore.github.io/charts"
+            _chartVersion = keda
+            _namespace = "keda"
+        }
+        usage { _nameSuffix = "app-keda", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {

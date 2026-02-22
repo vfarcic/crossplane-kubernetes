@@ -51,6 +51,10 @@ spec:
                           default: 8000
                           format: int32
                           type: integer
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
@@ -81,6 +85,10 @@ spec:
             containers:
             - name: manager
               image: lmcache/production-stack-operator:2025-12-12
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))

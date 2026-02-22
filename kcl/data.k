@@ -216,6 +216,18 @@ appVllm = {
     required = []
 }
 
+appKeda = {
+    type = "object"
+    description = "Install KEDA event-driven autoscaler"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
+}
+
 creds = {
     type = "object"
     description = "The secret with hyperscaler credentials."

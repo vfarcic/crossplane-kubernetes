@@ -1,6 +1,6 @@
 # PRD: Gateway API and KEDA Installation
 
-**Status**: Discussion
+**Status**: In Progress
 **Priority**: High
 **Created**: 2026-02-22
 
@@ -108,7 +108,34 @@ Follow the existing pattern in `kcl/apps.k`:
 - **Upstream**: None — this is foundational infrastructure
 - **Downstream**: [crossplane-app Gateway + KEDA PRD], [crossplane-inference combined Gateway + KEDA PRD]
 
+## Implementation Progress
+
+### KEDA
+- [x] Schema definition in `kcl/data.k`
+- [x] XRD property in `kcl/definition.k`
+- [x] Helm release in `kcl/apps.k` (kedacore/keda v2.19.0, namespace: keda)
+- [x] Chainsaw tests (common patch + assertion, all 3 providers)
+- [x] All tests passing
+
+### Envoy Gateway
+- [ ] Schema definition in `kcl/data.k`
+- [ ] XRD property in `kcl/definition.k`
+- [ ] Helm release in `kcl/apps.k`
+- [ ] Default Gateway resource (HTTP/HTTPS listeners)
+- [ ] Chainsaw tests
+- [ ] All tests passing
+
+### Gateway API Inference Extension
+- [ ] Schema definition in `kcl/data.k`
+- [ ] XRD property in `kcl/definition.k`
+- [ ] Helm release in `kcl/apps.k`
+- [ ] Dependency validation (requires Envoy Gateway)
+- [ ] Chainsaw tests
+- [ ] All tests passing
+
 ## Decision Log
 
 | Date | Decision | Rationale | Impact |
 |------|----------|-----------|--------|
+| 2026-02-22 | Implement KEDA first | Simplest component, no dependencies on other new components, validates approach | Unblocks Envoy Gateway and Inference Extension work |
+| 2026-02-22 | Use KEDA Helm chart v2.19.0 from kedacore repo | Latest stable version, standard Helm repository pattern | Version pinned in apps.k, Renovate will manage updates |

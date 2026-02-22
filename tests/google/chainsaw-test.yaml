@@ -57,11 +57,15 @@ spec:
             file: ../common/vllm.yaml
         - assert:
             file: ../common/assert-vllm.yaml
+        - patch:
+            file: ../common/keda.yaml
         - assert:
-            file: ../common/assert-usage-object.yaml
+            file: ../common/assert-keda.yaml
+        - assert:
+            file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: app-vllm-op-deploy
+                value: app-keda
         - patch:
             file: ../common/argo-cd.yaml
         - assert:
@@ -127,6 +131,6 @@ spec:
             content: |
               kubectl delete cluster.devopstoolkit.ai --all -n $NAMESPACE --timeout=60s || true
               sleep 5
-              kubectl patch providerconfig.helm.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
-              kubectl patch providerconfig.kubernetes.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
-              kubectl patch usage.protection.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl get providerconfig.helm.m.crossplane.io -n $NAMESPACE -o name 2>/dev/null | xargs -I{} kubectl patch {} -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl get providerconfig.kubernetes.m.crossplane.io -n $NAMESPACE -o name 2>/dev/null | xargs -I{} kubectl patch {} -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl get usage.protection.crossplane.io -n $NAMESPACE -o name 2>/dev/null | xargs -I{} kubectl patch {} -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true

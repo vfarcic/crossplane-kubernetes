@@ -1,0 +1,42 @@
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  parameters:
+    apps:
+      keda:
+        enabled: true
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-keda'])]):
+  - apiVersion: helm.m.crossplane.io/v1beta1
+    kind: Release
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-keda']))
+    crossplane.io/external-name: keda
+  name: (join('-', ['a-team', $cluster, 'app-keda']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    chart:
+      name: keda
+      repository: https://kedacore.github.io/charts
+      version: "2.19.0"
+    namespace: keda
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  rollbackLimit: 3

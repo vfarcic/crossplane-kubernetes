@@ -146,6 +146,14 @@ spec:
                             type: boolean
                             default: false
                         required: []
+                      keda:
+                        description: Install KEDA event-driven autoscaler
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
                       externalSecrets:
                         description: Install External Secrets Operator (ESO)
                         type: object
