@@ -118,12 +118,12 @@ Follow the existing pattern in `kcl/apps.k`:
 - [x] All tests passing
 
 ### Envoy Gateway
-- [ ] Schema definition in `kcl/data.k`
-- [ ] XRD property in `kcl/definition.k`
-- [ ] Helm release in `kcl/apps.k`
-- [ ] Default Gateway resource (HTTP/HTTPS listeners)
-- [ ] Chainsaw tests
-- [ ] All tests passing
+- [x] Schema definition in `kcl/data.k`
+- [x] XRD property in `kcl/definition.k`
+- [x] Helm release in `kcl/apps.k` (OCI: docker.io/envoyproxy/gateway-helm v1.7.0, namespace: envoy-gateway-system)
+- [x] Default Gateway resource (HTTP listener on port 80, gatewayClassName: eg)
+- [x] Chainsaw tests (common patch + assertion, all 3 providers)
+- [x] All tests passing
 
 ### Gateway API Inference Extension
 - [ ] Schema definition in `kcl/data.k`
@@ -139,3 +139,5 @@ Follow the existing pattern in `kcl/apps.k`:
 |------|----------|-----------|--------|
 | 2026-02-22 | Implement KEDA first | Simplest component, no dependencies on other new components, validates approach | Unblocks Envoy Gateway and Inference Extension work |
 | 2026-02-22 | Use KEDA Helm chart v2.19.0 from kedacore repo | Latest stable version, standard Helm repository pattern | Version pinned in apps.k, Renovate will manage updates |
+| 2026-02-22 | Use Envoy Gateway v1.7.0 via OCI registry | Latest stable release (Feb 2026), OCI distribution pattern | Version pinned in apps.k, uses _chartUrl for OCI |
+| 2026-02-22 | HTTP-only default Gateway (no HTTPS) | HTTPS requires TLS certificate config best handled by consuming configurations | Users can add HTTPS listeners via dot-application or dot-inference |

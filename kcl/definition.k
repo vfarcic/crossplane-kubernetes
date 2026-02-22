@@ -62,6 +62,7 @@ spec = {
                                     nvidia = _data(data.appNvidia)
                                     vllm = _data(data.appVllm)
                                     keda = _data(data.appKeda)
+                                    envoyGateway = _data(data.appEnvoyGateway)
                                     externalSecrets = {
                                         description = data.appExternalSecrets.description
                                         type = data.appExternalSecrets.type

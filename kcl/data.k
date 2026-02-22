@@ -228,6 +228,18 @@ appKeda = {
     required = []
 }
 
+appEnvoyGateway = {
+    type = "object"
+    description = "Install Envoy Gateway (Gateway API implementation)"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
+}
+
 creds = {
     type = "object"
     description = "The secret with hyperscaler credentials."

@@ -6,6 +6,7 @@ externalSecrets = "2.0.0"
 cilium = "1.19.0"
 nvidiaGpuOperator = "v25.10.1"
 keda = "2.19.0"
+envoyGateway = "v1.7.0"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
 
 oxr = option("params").oxr
@@ -361,6 +362,35 @@ _items = [
             _namespace = "keda"
         }
         usage { _nameSuffix = "app-keda", _kind = "Release" }
+
+    if oxr.spec.parameters?.apps?.envoyGateway?.enabled:
+        chart {
+            _name = "gateway-helm"
+            _chartUrl = "oci://docker.io/envoyproxy/gateway-helm"
+            _chartVersion = envoyGateway
+            _namespace = "envoy-gateway-system"
+        }
+        usage { _nameSuffix = "app-gateway-helm", _kind = "Release" }
+        object {
+            _name = "envoy-gateway"
+            _manifest = {
+                apiVersion = "gateway.networking.k8s.io/v1"
+                kind = "Gateway"
+                metadata = {
+                    name = "eg"
+                    namespace = "envoy-gateway-system"
+                }
+                spec = {
+                    gatewayClassName = "eg"
+                    listeners = [{
+                        name = "http"
+                        protocol = "HTTP"
+                        port = 80
+                    }]
+                }
+            }
+        }
+        usage { _nameSuffix = "envoy-gateway" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {

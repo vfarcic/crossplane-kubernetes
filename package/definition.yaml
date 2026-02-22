@@ -154,6 +154,14 @@ spec:
                             type: boolean
                             default: false
                         required: []
+                      envoyGateway:
+                        description: Install Envoy Gateway (Gateway API implementation)
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
                       externalSecrets:
                         description: Install External Secrets Operator (ESO)
                         type: object

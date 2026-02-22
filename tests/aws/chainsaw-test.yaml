@@ -128,6 +128,20 @@ spec:
             bindings:
               - name: usageName
                 value: app-keda
+        - patch:
+            file: ../common/envoy-gateway.yaml
+        - assert:
+            file: ../common/assert-envoy-gateway.yaml
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-gateway-helm
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: envoy-gateway
       cleanup:
         - script:
             timeout: 2m

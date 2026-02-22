@@ -1,0 +1,10 @@
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+spec:
+  parameters:
+    apps:
+      envoyGateway:
+        enabled: true
