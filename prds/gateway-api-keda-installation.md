@@ -1,6 +1,6 @@
 # PRD: Gateway API and KEDA Installation
 
-**Status**: In Progress
+**Status**: In Progress (scope expanded)
 **Priority**: High
 **Created**: 2026-02-22
 
@@ -10,11 +10,12 @@ Clusters provisioned by dot-kubernetes currently lack Gateway API and KEDA infra
 
 ## Context
 
-dot-kubernetes already installs system-level applications (Traefik, Crossplane, Argo CD, NVIDIA GPU Operator, External Secrets, Cilium) as optional Helm-based components. This PRD extends that pattern with three new components:
+dot-kubernetes already installs system-level applications (Traefik, Crossplane, Argo CD, NVIDIA GPU Operator, External Secrets, Cilium) as optional Helm-based components. This PRD extends that pattern with new components:
 
-1. **Envoy Gateway** — A Gateway API implementation that serves as the general-purpose gateway for all cluster traffic (replaces or supplements Traefik)
-2. **KEDA** — Event-driven autoscaler that scales workloads based on external metrics (Prometheus, queue depth, custom triggers)
-3. **Gateway API Inference Extension** — An add-on to Envoy Gateway that enables inference-aware routing (InferencePool, InferenceModel) for LLM workloads
+1. **Envoy Gateway** — A Gateway API implementation that serves as the general-purpose gateway for all cluster traffic (replaces or supplements Traefik) *(done)*
+2. **KEDA** — Event-driven autoscaler that scales workloads based on external metrics (Prometheus, queue depth, custom triggers) *(done)*
+3. **kube-prometheus-stack** — Prometheus + Grafana observability stack, required for KEDA Prometheus-trigger scaling (e.g., scale-to-zero based on Envoy Gateway traffic metrics)
+4. **Gateway API Inference Extension** — Moved to separate PRD (see `prds/gateway-api-inference-extension.md`)
 
 These components follow the same pattern as existing apps: installed via Helm, optional, enabled through the Cluster XR spec.
 
@@ -30,7 +31,7 @@ spec:
         enabled: true
       keda:
         enabled: true
-      gatewayInferenceExtension:
+      prometheus:
         enabled: true
 ```
 
@@ -50,18 +51,22 @@ spec:
 - **Consumers**: dot-application (CPU/memory/Prometheus-based scaling), dot-inference (vLLM metrics-based scaling)
 - **Prerequisite**: Prometheus must be available for Prometheus-trigger-based scaling. Document this dependency but don't enforce it — KEDA works with other trigger types too
 
-#### Gateway API Inference Extension
-- **Helm chart**: `oci://ghcr.io/kubernetes-sigs/gateway-api-inference-extension/charts/gateway-api-inference-extension`
-- **Namespace**: `gateway-api-inference-extension`
-- **Purpose**: Inference-aware routing (model selection, KV-cache-aware load balancing, criticality-based shedding, scale-to-zero request holding)
-- **Consumers**: dot-inference only
-- **Prerequisite**: Envoy Gateway must be enabled. If `gatewayInferenceExtension.enabled: true` and `envoyGateway.enabled: false`, the composition should either error or auto-enable Envoy Gateway
+#### kube-prometheus-stack
+- **Helm chart**: `prometheus-community/kube-prometheus-stack`
+- **Namespace**: `prometheus-system`
+- **Purpose**: Observability stack providing Prometheus metrics collection and Grafana dashboards. Required for KEDA Prometheus-trigger-based scaling (e.g., scale-to-zero based on Envoy Gateway traffic metrics)
+- **Consumers**: dot-application (KEDA Prometheus triggers for scale-to-zero), dot-inference (vLLM metrics-based scaling)
+- **Prometheus service URL**: `http://kube-prometheus-stack-prometheus.prometheus-system:9090` — this is what crossplane-app users reference in their `spec.scaling.prometheusAddress`
 
-### Node Profile Considerations
+#### Envoy Gateway PodMonitor
+- **Bundled with**: Envoy Gateway installation (only created when both `envoyGateway` and `prometheus` are enabled)
+- **Purpose**: Configures Prometheus to scrape Envoy Gateway proxy pod metrics, making `envoy_http_downstream_rq_total` and other Envoy metrics available for KEDA Prometheus triggers
+- **Selector**: `app.kubernetes.io/component: proxy` in `envoy-gateway-system` namespace
+- **Endpoint**: port `metrics`, path `/stats/prometheus`
 
-- **CPU-only clusters**: Envoy Gateway + KEDA are relevant. Gateway API Inference Extension is not needed (no inference workloads without GPUs)
-- **GPU clusters**: All three components are relevant
-- **Validation**: The composition should not block `gatewayInferenceExtension` on GPU being enabled — users may have external GPU nodes or use CPU-based inference for small models
+#### Gateway Cross-Namespace Routes
+- The default `Gateway` resource (name: `eg`, namespace: `envoy-gateway-system`) needs `allowedRoutes.namespaces.from: All` so that HTTPRoutes from application namespaces can attach to it
+- crossplane-app references this Gateway as parentRef with name `eg`
 
 ## Implementation Approach
 
@@ -85,11 +90,11 @@ Follow the existing pattern in `kcl/apps.k`:
 - Should dot-kubernetes create a default `Gateway`, or leave that to consuming configurations?
 - Recommendation: Create a default `Gateway` with HTTP and HTTPS listeners. Consuming configurations (dot-application, dot-inference) create `HTTPRoute`/`InferencePool` that attach to it
 
-### KEDA + Prometheus Dependency
-- KEDA's Prometheus trigger requires a Prometheus endpoint
-- The vLLM Production Stack exposes metrics natively, but Prometheus itself must be scraping them
-- Should dot-kubernetes also install Prometheus/Victoria Metrics? Or is that a separate concern?
-- Recommendation: Document Prometheus as a prerequisite for metric-based scaling. Don't install it as part of this PRD — it's a larger observability concern
+### KEDA + Prometheus Dependency (RESOLVED)
+- **Decision**: Install kube-prometheus-stack as an optional app component
+- crossplane-app requires Prometheus for KEDA Prometheus-trigger scale-to-zero (queries `envoy_http_downstream_rq_total` to detect traffic)
+- A PodMonitor for Envoy Gateway proxy pods is needed so Prometheus scrapes their metrics
+- The PodMonitor is created as a Kubernetes Object when both `envoyGateway` and `prometheus` are enabled
 
 ### Version Pinning
 - Follow the existing pattern: pin Helm chart versions in `kcl/data.k` and let Renovate manage updates
@@ -126,12 +131,28 @@ Follow the existing pattern in `kcl/apps.k`:
 - [x] All tests passing
 
 ### Gateway API Inference Extension
+- [~] Moved to separate PRD — see `prds/gateway-api-inference-extension.md`
+
+### Gateway Cross-Namespace Fix
+- [x] Update Gateway resource in `kcl/apps.k` to add `allowedRoutes.namespaces.from: All`
+- [x] Update Chainsaw assertions for the Gateway resource
+- [x] All tests passing
+
+### kube-prometheus-stack
 - [ ] Schema definition in `kcl/data.k`
 - [ ] XRD property in `kcl/definition.k`
-- [ ] Helm release in `kcl/apps.k`
-- [ ] Dependency validation (requires Envoy Gateway)
+- [ ] Helm release in `kcl/apps.k` (prometheus-community/kube-prometheus-stack, namespace: prometheus-system)
+- [ ] Chainsaw tests (common patch + assertion, all 3 providers)
+- [ ] All tests passing
+
+### Envoy Gateway PodMonitor
+- [ ] PodMonitor Kubernetes Object in `kcl/apps.k` (conditional on both `envoyGateway` and `prometheus` enabled)
 - [ ] Chainsaw tests
 - [ ] All tests passing
+
+### Respond to crossplane-app
+- [ ] After all milestones above are complete, write a feature response to `../crossplane-app/tmp/feature-response.md` with: Gateway name (`eg`), Prometheus service URL and namespace, PodMonitor details, KEDA namespace — see `tmp/feature-request.md` for full request and response format
+- [ ] Delete `tmp/feature-request.md` after response is written
 
 ## Decision Log
 
@@ -141,3 +162,8 @@ Follow the existing pattern in `kcl/apps.k`:
 | 2026-02-22 | Use KEDA Helm chart v2.19.0 from kedacore repo | Latest stable version, standard Helm repository pattern | Version pinned in apps.k, Renovate will manage updates |
 | 2026-02-22 | Use Envoy Gateway v1.7.0 via OCI registry | Latest stable release (Feb 2026), OCI distribution pattern | Version pinned in apps.k, uses _chartUrl for OCI |
 | 2026-02-22 | HTTP-only default Gateway (no HTTPS) | HTTPS requires TLS certificate config best handled by consuming configurations | Users can add HTTPS listeners via dot-application or dot-inference |
+| 2026-02-22 | Split inference extension into separate PRD | Component is more complex than originally scoped (CRDs, per-pool EPP, BBR) | PRD #269 scope reduced to KEDA + Envoy Gateway (both complete) |
+| 2026-02-22 | Add kube-prometheus-stack as optional app | crossplane-app needs Prometheus for KEDA scale-to-zero via Envoy Gateway traffic metrics | New milestone; Prometheus service URL: `http://kube-prometheus-stack-prometheus.prometheus-system:9090` |
+| 2026-02-22 | Fix Gateway to allow cross-namespace routes | crossplane-app HTTPRoutes in app namespaces need to attach to the Gateway in envoy-gateway-system | Update Gateway object to add `allowedRoutes.namespaces.from: All` |
+| 2026-02-22 | Add PodMonitor for Envoy Gateway metrics | Without it, Prometheus cannot scrape Envoy proxy metrics and KEDA Prometheus triggers fail | PodMonitor created when both envoyGateway and prometheus are enabled |
+| 2026-02-22 | Gateway name is `eg` (not `contour`) | Matches Envoy Gateway's default GatewayClass name | crossplane-app will update parentRef from `contour` to `eg` |
