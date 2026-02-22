@@ -53,60 +53,6 @@ spec:
             file: 08-traefik.yaml
         - assert:
             file: ../common/assert-traefik.yaml
-        - patch:
-            file: ../common/argo-cd.yaml
-        - assert:
-            file: ../common/assert-argo-cd.yaml
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: crossplane
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: argo-cd
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: argo-cd-app
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: openfunction
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: dapr
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: traefik
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: external-secrets
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: secret-store
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: secret-push-secret
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: creds
         - apply:
             file: 09-gpu.yaml
         - assert:
@@ -128,20 +74,16 @@ spec:
             bindings:
               - name: usageName
                 value: app-keda
-        - patch:
-            file: ../common/envoy-gateway.yaml
-        - assert:
-            file: ../common/assert-envoy-gateway.yaml
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: app-gateway-helm
+                value: crossplane
         - assert:
-            file: ../common/assert-usage-object.yaml
+            file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: envoy-gateway
+                value: openfunction
       cleanup:
         - script:
             timeout: 2m

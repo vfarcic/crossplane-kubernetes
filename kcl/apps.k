@@ -7,6 +7,7 @@ cilium = "1.19.0"
 nvidiaGpuOperator = "v25.10.1"
 keda = "2.19.0"
 envoyGateway = "v1.7.0"
+kubePrometheusStack = "82.2.1"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
 
 oxr = option("params").oxr
@@ -396,6 +397,15 @@ _items = [
             }
         }
         usage { _nameSuffix = "envoy-gateway" }
+
+    if oxr.spec.parameters?.apps?.prometheus?.enabled:
+        chart {
+            _name = "kube-prometheus-stack"
+            _chartRepository = "https://prometheus-community.github.io/helm-charts"
+            _chartVersion = kubePrometheusStack
+            _namespace = "prometheus-system"
+        }
+        usage { _nameSuffix = "app-kube-prometheus-stack", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {

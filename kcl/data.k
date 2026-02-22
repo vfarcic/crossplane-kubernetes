@@ -240,6 +240,18 @@ appEnvoyGateway = {
     required = []
 }
 
+appPrometheus = {
+    type = "object"
+    description = "Install kube-prometheus-stack (Prometheus, Grafana, AlertManager)"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
+}
+
 creds = {
     type = "object"
     description = "The secret with hyperscaler credentials."

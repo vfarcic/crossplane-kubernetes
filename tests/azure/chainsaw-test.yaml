@@ -54,19 +54,6 @@ spec:
         - assert:
             file: 08-assert-gpu.yaml
         - patch:
-            file: ../common/vllm.yaml
-        - assert:
-            file: ../common/assert-vllm.yaml
-        - patch:
-            file: ../common/keda.yaml
-        - assert:
-            file: ../common/assert-keda.yaml
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: app-keda
-        - patch:
             file: ../common/envoy-gateway.yaml
         - assert:
             file: ../common/assert-envoy-gateway.yaml
@@ -88,16 +75,6 @@ spec:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: cilium
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: crossplane
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
                 value: argo-cd
         - assert:
             file: ../common/assert-usage-object.yaml
@@ -108,37 +85,7 @@ spec:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: openfunction
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: dapr
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: traefik
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: external-secrets
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: secret-store
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: secret-push-secret
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: creds
+                value: cilium
       cleanup:
         - script:
             timeout: 2m

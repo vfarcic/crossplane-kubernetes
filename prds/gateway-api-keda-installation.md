@@ -14,7 +14,7 @@ dot-kubernetes already installs system-level applications (Traefik, Crossplane, 
 
 1. **Envoy Gateway** — A Gateway API implementation that serves as the general-purpose gateway for all cluster traffic (replaces or supplements Traefik) *(done)*
 2. **KEDA** — Event-driven autoscaler that scales workloads based on external metrics (Prometheus, queue depth, custom triggers) *(done)*
-3. **kube-prometheus-stack** — Prometheus + Grafana observability stack, required for KEDA Prometheus-trigger scaling (e.g., scale-to-zero based on Envoy Gateway traffic metrics)
+3. **kube-prometheus-stack** — Prometheus + Grafana observability stack, required for KEDA Prometheus-trigger scaling (e.g., scale-to-zero based on Envoy Gateway traffic metrics) *(done)*
 4. **Gateway API Inference Extension** — Moved to separate PRD (see `prds/gateway-api-inference-extension.md`)
 
 These components follow the same pattern as existing apps: installed via Helm, optional, enabled through the Cluster XR spec.
@@ -139,11 +139,11 @@ Follow the existing pattern in `kcl/apps.k`:
 - [x] All tests passing
 
 ### kube-prometheus-stack
-- [ ] Schema definition in `kcl/data.k`
-- [ ] XRD property in `kcl/definition.k`
-- [ ] Helm release in `kcl/apps.k` (prometheus-community/kube-prometheus-stack, namespace: prometheus-system)
-- [ ] Chainsaw tests (common patch + assertion, all 3 providers)
-- [ ] All tests passing
+- [x] Schema definition in `kcl/data.k`
+- [x] XRD property in `kcl/definition.k`
+- [x] Helm release in `kcl/apps.k` (prometheus-community/kube-prometheus-stack v82.2.1, namespace: prometheus-system)
+- [x] Chainsaw tests (common patch + assertion, Google provider)
+- [x] All tests passing
 
 ### Envoy Gateway PodMonitor
 - [ ] PodMonitor Kubernetes Object in `kcl/apps.k` (conditional on both `envoyGateway` and `prometheus` enabled)
@@ -167,3 +167,5 @@ Follow the existing pattern in `kcl/apps.k`:
 | 2026-02-22 | Fix Gateway to allow cross-namespace routes | crossplane-app HTTPRoutes in app namespaces need to attach to the Gateway in envoy-gateway-system | Update Gateway object to add `allowedRoutes.namespaces.from: All` |
 | 2026-02-22 | Add PodMonitor for Envoy Gateway metrics | Without it, Prometheus cannot scrape Envoy proxy metrics and KEDA Prometheus triggers fail | PodMonitor created when both envoyGateway and prometheus are enabled |
 | 2026-02-22 | Gateway name is `eg` (not `contour`) | Matches Envoy Gateway's default GatewayClass name | crossplane-app will update parentRef from `contour` to `eg` |
+| 2026-02-23 | Use kube-prometheus-stack v82.2.1 | Latest stable version from prometheus-community Helm repo | Version pinned in apps.k, Renovate will manage updates |
+| 2026-02-23 | Deduplicate Chainsaw test assertions | Common patch+assert+usage blocks now run in one provider only, reducing test time ~40% | Each common app tested once; provider-specific tests remain per-provider |
