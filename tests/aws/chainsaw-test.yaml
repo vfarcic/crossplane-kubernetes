@@ -66,6 +66,36 @@ spec:
         - assert:
             file: ../common/assert-vllm.yaml
         - patch:
+            file: ../common/envoy-gateway.yaml
+        - assert:
+            file: ../common/assert-envoy-gateway.yaml
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-gateway-helm
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: envoy-gateway
+        - patch:
+            file: ../common/kube-prometheus-stack.yaml
+        - assert:
+            file: ../common/assert-kube-prometheus-stack.yaml
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-kube-prometheus-stack
+        - assert:
+            file: ../common/assert-envoy-gateway-pod-monitor.yaml
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: envoy-gateway-pod-monitor
+        - patch:
             file: ../common/keda.yaml
         - assert:
             file: ../common/assert-keda.yaml
@@ -74,6 +104,16 @@ spec:
             bindings:
               - name: usageName
                 value: app-keda
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-keda-add-ons-http
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: keda-interceptor-ref-grant
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:

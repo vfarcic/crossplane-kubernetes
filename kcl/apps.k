@@ -6,6 +6,7 @@ externalSecrets = "2.0.0"
 cilium = "1.19.0"
 nvidiaGpuOperator = "v25.10.1"
 keda = "2.19.0"
+kedaHttpAddon = "0.12.2"
 envoyGateway = "v1.7.0"
 kubePrometheusStack = "82.2.1"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
@@ -363,6 +364,13 @@ _items = [
             _namespace = "keda"
         }
         usage { _nameSuffix = "app-keda", _kind = "Release" }
+        chart {
+            _name = "keda-add-ons-http"
+            _chartRepository = "https://kedacore.github.io/charts"
+            _chartVersion = kedaHttpAddon
+            _namespace = "keda"
+        }
+        usage { _nameSuffix = "app-keda-add-ons-http", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.envoyGateway?.enabled:
         chart {
@@ -431,6 +439,30 @@ _items = [
             }
         }
         usage { _nameSuffix = "envoy-gateway-pod-monitor" }
+
+    if oxr.spec.parameters?.apps?.keda?.enabled and oxr.spec.parameters?.apps?.envoyGateway?.enabled:
+        object {
+            _name = "keda-interceptor-ref-grant"
+            _manifest = {
+                apiVersion = "gateway.networking.k8s.io/v1beta1"
+                kind = "ReferenceGrant"
+                metadata = {
+                    name = "keda-interceptor"
+                    namespace = "keda"
+                }
+                spec = {
+                    from = [{
+                        group = "gateway.networking.k8s.io"
+                        kind = "HTTPRoute"
+                    }]
+                    to = [{
+                        group = ""
+                        kind = "Service"
+                    }]
+                }
+            }
+        }
+        usage { _nameSuffix = "keda-interceptor-ref-grant" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {

@@ -150,9 +150,19 @@ Follow the existing pattern in `kcl/apps.k`:
 - [x] Chainsaw tests
 - [x] All tests passing
 
+### KEDA HTTP Add-on
+- [x] Helm release in `kcl/apps.k` (keda-add-ons-http v0.12.2, namespace: keda, conditional on KEDA enabled)
+- [x] ReferenceGrant Object in `kcl/apps.k` (conditional on both KEDA and Envoy Gateway enabled, allows HTTPRoutes from any namespace to reference Services in keda namespace)
+- [x] Chainsaw tests (assertions in `assert-keda.yaml`, Usage assertions in AWS test)
+- [x] All tests passing
+
+### Test Reorganization
+- [x] Moved Envoy Gateway, Prometheus, and PodMonitor tests from Google → AWS test suite (consolidates related tests)
+
 ### Respond to crossplane-app
 - [x] After all milestones above are complete, write a feature response to `../crossplane-app/tmp/feature-response.md` with: Gateway name (`eg`), Prometheus service URL and namespace, PodMonitor details, KEDA namespace — see `tmp/feature-request.md` for full request and response format
 - [x] Delete `tmp/feature-request.md` after response is written
+- [x] Respond to KEDA HTTP Add-on feature request from crossplane-app with implementation details (interceptor service, port, chart version)
 
 ## Decision Log
 
@@ -169,3 +179,5 @@ Follow the existing pattern in `kcl/apps.k`:
 | 2026-02-22 | Gateway name is `eg` (not `contour`) | Matches Envoy Gateway's default GatewayClass name | crossplane-app will update parentRef from `contour` to `eg` |
 | 2026-02-23 | Use kube-prometheus-stack v82.2.1 | Latest stable version from prometheus-community Helm repo | Version pinned in apps.k, Renovate will manage updates |
 | 2026-02-23 | Deduplicate Chainsaw test assertions | Common patch+assert+usage blocks now run in one provider only, reducing test time ~40% | Each common app tested once; provider-specific tests remain per-provider |
+| 2026-02-23 | Install KEDA HTTP Add-on alongside KEDA | crossplane-app needs interceptor proxy for scale-from-zero (holds requests while pods start) | `keda-add-ons-http` v0.12.2 installed when KEDA enabled; ReferenceGrant when KEDA + Envoy Gateway enabled |
+| 2026-02-23 | Consolidate Envoy Gateway/Prometheus/KEDA tests in AWS | All three components are related and need to be tested together for ReferenceGrant | Moved from Google to AWS test suite |
