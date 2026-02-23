@@ -1,6 +1,6 @@
 # PRD: Gateway API and KEDA Installation
 
-**Status**: In Progress (scope expanded)
+**Status**: In Progress (e2e validation remaining)
 **Priority**: High
 **Created**: 2026-02-22
 
@@ -158,6 +158,15 @@ Follow the existing pattern in `kcl/apps.k`:
 
 ### Test Reorganization
 - [x] Moved Envoy Gateway, Prometheus, and PodMonitor tests from Google → AWS test suite (consolidates related tests)
+
+### End-to-End Validation on Azure
+- [ ] Update `examples/azure-aks.yaml` to enable KEDA, Envoy Gateway, and Prometheus
+- [ ] Update `examples/azure-aks.md` with Gateway API + KEDA validation steps (also fix stale `gcloud` command in Destroy section)
+- [ ] Add Azure ProviderConfig to existing KinD test cluster
+- [ ] Create Azure Cluster XR with KEDA, Envoy Gateway, and Prometheus enabled
+- [ ] Verify all components are running on the AKS cluster (KEDA, keda-add-ons-http, Envoy Gateway, Prometheus, PodMonitor, ReferenceGrant)
+- [ ] Deploy crossplane-app workload with scale-to-zero and HTTPRoute to validate the full stack
+- [ ] Clean up Azure resources
 
 ### Respond to crossplane-app
 - [x] After all milestones above are complete, write a feature response to `../crossplane-app/tmp/feature-response.md` with: Gateway name (`eg`), Prometheus service URL and namespace, PodMonitor details, KEDA namespace — see `tmp/feature-request.md` for full request and response format
