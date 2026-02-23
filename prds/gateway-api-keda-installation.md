@@ -151,8 +151,8 @@ Follow the existing pattern in `kcl/apps.k`:
 - [x] All tests passing
 
 ### Respond to crossplane-app
-- [ ] After all milestones above are complete, write a feature response to `../crossplane-app/tmp/feature-response.md` with: Gateway name (`eg`), Prometheus service URL and namespace, PodMonitor details, KEDA namespace — see `tmp/feature-request.md` for full request and response format
-- [ ] Delete `tmp/feature-request.md` after response is written
+- [x] After all milestones above are complete, write a feature response to `../crossplane-app/tmp/feature-response.md` with: Gateway name (`eg`), Prometheus service URL and namespace, PodMonitor details, KEDA namespace — see `tmp/feature-request.md` for full request and response format
+- [x] Delete `tmp/feature-request.md` after response is written
 
 ## Decision Log
 
