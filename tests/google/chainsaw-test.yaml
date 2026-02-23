@@ -54,6 +54,20 @@ spec:
         - assert:
             file: 08-assert-gpu.yaml
         - patch:
+            file: ../common/envoy-gateway.yaml
+        - assert:
+            file: ../common/assert-envoy-gateway.yaml
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-gateway-helm
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: envoy-gateway
+        - patch:
             file: ../common/kube-prometheus-stack.yaml
         - assert:
             file: ../common/assert-kube-prometheus-stack.yaml
@@ -62,6 +76,13 @@ spec:
             bindings:
               - name: usageName
                 value: app-kube-prometheus-stack
+        - assert:
+            file: ../common/assert-envoy-gateway-pod-monitor.yaml
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: envoy-gateway-pod-monitor
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:

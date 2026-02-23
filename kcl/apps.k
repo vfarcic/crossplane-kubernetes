@@ -407,6 +407,31 @@ _items = [
         }
         usage { _nameSuffix = "app-kube-prometheus-stack", _kind = "Release" }
 
+    if oxr.spec.parameters?.apps?.envoyGateway?.enabled and oxr.spec.parameters?.apps?.prometheus?.enabled:
+        object {
+            _name = "envoy-gateway-pod-monitor"
+            _manifest = {
+                apiVersion = "monitoring.coreos.com/v1"
+                kind = "PodMonitor"
+                metadata = {
+                    name = "envoy-gateway-proxy"
+                    namespace = "envoy-gateway-system"
+                }
+                spec = {
+                    selector = {
+                        matchLabels = {
+                            "app.kubernetes.io/component" = "proxy"
+                        }
+                    }
+                    podMetricsEndpoints = [{
+                        port = "metrics"
+                        path = "/stats/prometheus"
+                    }]
+                }
+            }
+        }
+        usage { _nameSuffix = "envoy-gateway-pod-monitor" }
+
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {
             _name = "external-secrets"

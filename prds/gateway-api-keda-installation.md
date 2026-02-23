@@ -146,9 +146,9 @@ Follow the existing pattern in `kcl/apps.k`:
 - [x] All tests passing
 
 ### Envoy Gateway PodMonitor
-- [ ] PodMonitor Kubernetes Object in `kcl/apps.k` (conditional on both `envoyGateway` and `prometheus` enabled)
-- [ ] Chainsaw tests
-- [ ] All tests passing
+- [x] PodMonitor Kubernetes Object in `kcl/apps.k` (conditional on both `envoyGateway` and `prometheus` enabled)
+- [x] Chainsaw tests
+- [x] All tests passing
 
 ### Respond to crossplane-app
 - [ ] After all milestones above are complete, write a feature response to `../crossplane-app/tmp/feature-response.md` with: Gateway name (`eg`), Prometheus service URL and namespace, PodMonitor details, KEDA namespace — see `tmp/feature-request.md` for full request and response format
