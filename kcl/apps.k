@@ -438,6 +438,9 @@ _items = [
                 metadata = {
                     name = "envoy-gateway-proxy"
                     namespace = "envoy-gateway-system"
+                    labels = {
+                        release = "kube-prometheus-stack"
+                    }
                 }
                 spec = {
                     selector = {
