@@ -7,7 +7,7 @@ cilium = "1.19.0"
 nvidiaGpuOperator = "v25.10.1"
 keda = "2.19.0"
 kedaHttpAddon = "0.12.2"
-envoyGateway = "v1.7.0"
+envoyGateway = "1.7.0"
 kubePrometheusStack = "82.2.1"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
 
@@ -381,6 +381,20 @@ _items = [
         }
         usage { _nameSuffix = "app-gateway-helm", _kind = "Release" }
         object {
+            _name = "envoy-gateway-class"
+            _manifest = {
+                apiVersion = "gateway.networking.k8s.io/v1"
+                kind = "GatewayClass"
+                metadata = {
+                    name = "eg"
+                }
+                spec = {
+                    controllerName = "gateway.envoyproxy.io/gatewayclass-controller"
+                }
+            }
+        }
+        usage { _nameSuffix = "envoy-gateway-class" }
+        object {
             _name = "envoy-gateway"
             _manifest = {
                 apiVersion = "gateway.networking.k8s.io/v1"
@@ -439,30 +453,6 @@ _items = [
             }
         }
         usage { _nameSuffix = "envoy-gateway-pod-monitor" }
-
-    if oxr.spec.parameters?.apps?.keda?.enabled and oxr.spec.parameters?.apps?.envoyGateway?.enabled:
-        object {
-            _name = "keda-interceptor-ref-grant"
-            _manifest = {
-                apiVersion = "gateway.networking.k8s.io/v1beta1"
-                kind = "ReferenceGrant"
-                metadata = {
-                    name = "keda-interceptor"
-                    namespace = "keda"
-                }
-                spec = {
-                    from = [{
-                        group = "gateway.networking.k8s.io"
-                        kind = "HTTPRoute"
-                    }]
-                    to = [{
-                        group = ""
-                        kind = "Service"
-                    }]
-                }
-            }
-        }
-        usage { _nameSuffix = "keda-interceptor-ref-grant" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {

@@ -22,37 +22,29 @@ spec:
         - assert:
             file: ../common/assert-install.yaml
         - apply:
-            file: 01-apps-crossplane.yaml
+            file: 01-apps.yaml
         - assert:
             file: ../common/assert-crossplane.yaml
-        - apply:
-            file: 02-apps-openfunction.yaml
         - assert:
             file: ../common/assert-openfunction.yaml
-        - apply:
-            file: 03-apps-external-secrets.yaml
         - assert:
             file: ../common/assert-external-secrets.yaml
-        - apply:
-            file: 04-creds.yaml
-        - assert:
-            file: assert-creds.yaml
-        - apply:
-            file: 05-secrets.yaml
-        - assert:
-            file: assert-secrets.yaml
-        - apply:
-            file: 06-dapr.yaml
         - assert:
             file: ../common/assert-dapr.yaml
-        - apply:
-            file: 07-traefik.yaml
         - assert:
             file: ../common/assert-traefik.yaml
         - apply:
-            file: 08-gpu.yaml
+            file: 02-creds.yaml
         - assert:
-            file: 08-assert-gpu.yaml
+            file: assert-creds.yaml
+        - apply:
+            file: 03-secrets.yaml
+        - assert:
+            file: assert-secrets.yaml
+        - apply:
+            file: 04-gpu.yaml
+        - assert:
+            file: 04-assert-gpu.yaml
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:

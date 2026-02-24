@@ -20,3 +20,14 @@ spec:
         enabled: true
       openfunction:
         enabled: true
+      externalSecrets:
+        enabled: true
+      dapr:
+        enabled: true
+      traefik:
+        enabled: true
+    creds:
+      name: gcp-creds
+      namespace: crossplane-system
+      keys:
+        - google-creds

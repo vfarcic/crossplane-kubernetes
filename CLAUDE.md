@@ -38,6 +38,10 @@ Tests use **Kyverno Chainsaw** (`chainsaw test`). Test suites are per cloud prov
 
 Always follow incremental TDD when implementing PRD milestones. Each feature slice gets its own RED/GREEN cycle: write one failing test, implement just enough to make it pass, then move to the next slice. Never batch all tests or all implementation together.
 
+### GitHub CLI
+
+Use `gh api -X GET` for read-only GitHub API operations (e.g., fetching issues, PRs, labels). This pattern is auto-approved and avoids interactive prompts.
+
 ### Publishing
 
 Requires `UP_ACCOUNT`, `UP_TOKEN`, and `VERSION` env vars. Run `just package-publish`.

@@ -8,3 +8,9 @@ spec:
     apps:
       vllm:
         enabled: true
+      envoyGateway:
+        enabled: true
+      prometheus:
+        enabled: true
+      keda:
+        enabled: true

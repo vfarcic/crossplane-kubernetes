@@ -11,6 +11,13 @@ spec:
   parameters:
     nodeSize: medium
     minNodeCount: 1
+    apps:
+      envoyGateway:
+        enabled: true
+      keda:
+        enabled: true
+      prometheus:
+        enabled: true
     namespaces:
       - dev
       - production
