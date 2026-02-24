@@ -1,17 +1,17 @@
----
 apiVersion: devopstoolkit.ai/v2
 kind: Cluster
 metadata:
-  name: a-team-eks
+  name: a-team-aks
 spec:
   crossplane:
     compositionSelector:
       matchLabels:
-        provider: aws
-        cluster: eks
+        provider: azure
+        cluster: aks
   parameters:
     nodeSize: medium
-    minNodeCount: 3
+    minNodeCount: 1
+    version: 1.26.6
     apps:
       crossplane:
         enabled: true
@@ -19,9 +19,13 @@ spec:
         enabled: true
       externalSecrets:
         enabled: true
+      dapr:
+        enabled: true
+      traefik:
+        enabled: true
     creds:
-      name: aws-creds
+      name: azure-creds
       namespace: crossplane-system
       keys:
-        - access-key-id
-        - secret-access-key
+        - creds
+        - vaultUrl

@@ -1,21 +1,28 @@
----
 apiVersion: devopstoolkit.ai/v2
 kind: Cluster
 metadata:
-  name: a-team-eks
+  name: a-team-gke
+  namespace: ($namespace)
 spec:
   crossplane:
     compositionSelector:
       matchLabels:
-        provider: aws
-        cluster: eks
+        provider: google
+        cluster: gke
   parameters:
     nodeSize: medium
-    minNodeCount: 3
+    minNodeCount: 1
+    namespaces:
+      - dev
+      - production
     apps:
       crossplane:
         enabled: true
       openfunction:
         enabled: true
       externalSecrets:
+        enabled: true
+      dapr:
+        enabled: true
+      traefik:
         enabled: true

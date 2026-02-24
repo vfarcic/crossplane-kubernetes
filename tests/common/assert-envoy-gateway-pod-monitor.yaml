@@ -1,0 +1,41 @@
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-envoy-gateway-pod-monitor'])]):
+  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+    kind: Object
+---
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-envoy-gateway-pod-monitor']))
+    crossplane.io/external-name: envoy-gateway-pod-monitor
+  name: (join('-', ['a-team', $cluster, 'app-envoy-gateway-pod-monitor']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    manifest:
+      apiVersion: monitoring.coreos.com/v1
+      kind: PodMonitor
+      metadata:
+        name: envoy-gateway-proxy
+        namespace: envoy-gateway-system
+      spec:
+        selector:
+          matchLabels:
+            app.kubernetes.io/component: proxy
+        podMetricsEndpoints:
+        - port: metrics
+          path: /stats/prometheus
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))

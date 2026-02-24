@@ -1,0 +1,120 @@
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  parameters:
+    apps:
+      envoyGateway:
+        enabled: true
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-gateway-helm'])]):
+  - apiVersion: helm.m.crossplane.io/v1beta1
+    kind: Release
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-gateway-helm']))
+    crossplane.io/external-name: gateway-helm
+  name: (join('-', ['a-team', $cluster, 'app-gateway-helm']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    chart:
+      name: gateway-helm
+      url: oci://docker.io/envoyproxy/gateway-helm
+      version: "1.7.0"
+    namespace: envoy-gateway-system
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  rollbackLimit: 3
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-envoy-gateway-class'])]):
+  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+    kind: Object
+---
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-envoy-gateway-class']))
+    crossplane.io/external-name: envoy-gateway-class
+  name: (join('-', ['a-team', $cluster, 'app-envoy-gateway-class']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    manifest:
+      apiVersion: gateway.networking.k8s.io/v1
+      kind: GatewayClass
+      metadata:
+        name: eg
+      spec:
+        controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-envoy-gateway'])]):
+  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+    kind: Object
+---
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-envoy-gateway']))
+    crossplane.io/external-name: envoy-gateway
+  name: (join('-', ['a-team', $cluster, 'app-envoy-gateway']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    manifest:
+      apiVersion: gateway.networking.k8s.io/v1
+      kind: Gateway
+      metadata:
+        name: eg
+        namespace: envoy-gateway-system
+      spec:
+        gatewayClassName: eg
+        listeners:
+        - name: http
+          protocol: HTTP
+          port: 80
+          allowedRoutes:
+            namespaces:
+              from: All
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))

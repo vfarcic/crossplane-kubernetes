@@ -26,37 +26,78 @@ spec:
         - assert:
             file: 01-assert.yaml
         - apply:
-            file: 02-apps-crossplane.yaml
+            file: 02-apps.yaml
         - assert:
             file: ../common/assert-crossplane.yaml
-        - apply:
-            file: 03-apps-openfunction.yaml
         - assert:
             file: ../common/assert-openfunction.yaml
-        - apply:
-            file: 04-apps-external-secrets.yaml
         - assert:
             file: ../common/assert-external-secrets.yaml
+        - assert:
+            file: ../common/assert-dapr.yaml
+        - assert:
+            file: ../common/assert-traefik.yaml
         - apply:
-            file: 05-creds.yaml
+            file: 03-creds.yaml
         - assert:
             file: assert-creds.yaml
         - apply:
-            file: 06-secrets.yaml
+            file: 04-secrets.yaml
         - assert:
             file: assert-secrets.yaml
         - apply:
-            file: 07-dapr.yaml
+            file: 05-gpu.yaml
         - assert:
-            file: ../common/assert-dapr.yaml
-        - apply:
-            file: 08-traefik.yaml
+            file: 05-assert-gpu.yaml
         - assert:
-            file: ../common/assert-traefik.yaml
+            file: ../common/assert-nvidia.yaml
         - patch:
-            file: ../common/argo-cd.yaml
+            file: ../common/advanced-apps.yaml
         - assert:
-            file: ../common/assert-argo-cd.yaml
+            file: ../common/assert-vllm.yaml
+        - assert:
+            file: ../common/assert-envoy-gateway.yaml
+        - assert:
+            file: ../common/assert-kube-prometheus-stack.yaml
+        - assert:
+            file: ../common/assert-envoy-gateway-pod-monitor.yaml
+        - assert:
+            file: ../common/assert-keda.yaml
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-gateway-helm
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: envoy-gateway
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: envoy-gateway-class
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-kube-prometheus-stack
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: envoy-gateway-pod-monitor
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-keda
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-keda-add-ons-http
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
@@ -66,70 +107,13 @@ spec:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: argo-cd
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: argo-cd-app
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
                 value: openfunction
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: dapr
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: traefik
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: external-secrets
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: secret-store
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: secret-push-secret
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: creds
-        - apply:
-            file: 09-gpu.yaml
-        - assert:
-            file: 09-assert-gpu.yaml
-        - apply:
-            file: 10-nvidia.yaml
-        - assert:
-            file: ../common/assert-nvidia.yaml
-        - patch:
-            file: ../common/vllm.yaml
-        - assert:
-            file: ../common/assert-vllm.yaml
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: app-vllm-op-deploy
       cleanup:
         - script:
             timeout: 2m
             content: |
               kubectl delete cluster.devopstoolkit.ai --all -n $NAMESPACE --timeout=60s || true
               sleep 5
-              kubectl patch providerconfig.helm.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
-              kubectl patch providerconfig.kubernetes.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
-              kubectl patch usage.protection.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl get providerconfig.helm.m.crossplane.io -n $NAMESPACE -o name 2>/dev/null | xargs -I{} kubectl patch {} -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl get providerconfig.kubernetes.m.crossplane.io -n $NAMESPACE -o name 2>/dev/null | xargs -I{} kubectl patch {} -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl get usage.protection.crossplane.io -n $NAMESPACE -o name 2>/dev/null | xargs -I{} kubectl patch {} -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true

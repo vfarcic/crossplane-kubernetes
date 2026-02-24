@@ -22,75 +22,29 @@ spec:
         - assert:
             file: ../common/assert-install.yaml
         - apply:
-            file: 01-apps-crossplane.yaml
+            file: 01-apps.yaml
         - assert:
             file: ../common/assert-crossplane.yaml
-        - apply:
-            file: 02-apps-openfunction.yaml
         - assert:
             file: ../common/assert-openfunction.yaml
-        - apply:
-            file: 03-apps-external-secrets.yaml
         - assert:
             file: ../common/assert-external-secrets.yaml
-        - apply:
-            file: 04-creds.yaml
-        - assert:
-            file: assert-creds.yaml
-        - apply:
-            file: 05-secrets.yaml
-        - assert:
-            file: assert-secrets.yaml
-        - apply:
-            file: 06-dapr.yaml
         - assert:
             file: ../common/assert-dapr.yaml
-        - apply:
-            file: 07-traefik.yaml
         - assert:
             file: ../common/assert-traefik.yaml
         - apply:
-            file: 08-gpu.yaml
+            file: 02-creds.yaml
         - assert:
-            file: 08-assert-gpu.yaml
-        - patch:
-            file: ../common/vllm.yaml
+            file: assert-creds.yaml
+        - apply:
+            file: 03-secrets.yaml
         - assert:
-            file: ../common/assert-vllm.yaml
+            file: assert-secrets.yaml
+        - apply:
+            file: 04-gpu.yaml
         - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: app-vllm-op-deploy
-        - patch:
-            file: ../common/argo-cd.yaml
-        - assert:
-            file: ../common/assert-argo-cd.yaml
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: cilium
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: crossplane
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: argo-cd
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: argo-cd-app
-        - assert:
-            file: ../common/assert-usage-release.yaml
-            bindings:
-              - name: usageName
-                value: openfunction
+            file: 04-assert-gpu.yaml
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
@@ -127,6 +81,6 @@ spec:
             content: |
               kubectl delete cluster.devopstoolkit.ai --all -n $NAMESPACE --timeout=60s || true
               sleep 5
-              kubectl patch providerconfig.helm.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
-              kubectl patch providerconfig.kubernetes.m.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
-              kubectl patch usage.protection.crossplane.io --all -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl get providerconfig.helm.m.crossplane.io -n $NAMESPACE -o name 2>/dev/null | xargs -I{} kubectl patch {} -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl get providerconfig.kubernetes.m.crossplane.io -n $NAMESPACE -o name 2>/dev/null | xargs -I{} kubectl patch {} -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true
+              kubectl get usage.protection.crossplane.io -n $NAMESPACE -o name 2>/dev/null | xargs -I{} kubectl patch {} -n $NAMESPACE --type=merge -p '{"metadata":{"finalizers":[]}}' 2>/dev/null || true

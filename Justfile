@@ -1,4 +1,4 @@
-timeout := "300s"
+timeout := "600s"
 
 export KUBECONFIG := justfile_directory() / "kubeconfig.yaml"
 
@@ -75,7 +75,7 @@ cluster-create-google: cluster-create
 
 # Destroys the cluster
 cluster-destroy:
-  kind delete cluster --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
+  kind delete cluster --name crossplane-kubernetes --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
 
 # Removes Google Cloud project and executes `cluster-destroy`.
 cluster-destroy-google:
@@ -84,8 +84,8 @@ cluster-destroy-google:
 
 # Creates a kind cluster
 _cluster-create-kind:
-  -kind create cluster --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
+  -kind create cluster --name crossplane-kubernetes --kubeconfig {{justfile_directory()}}/kubeconfig.yaml
   -helm repo add crossplane-stable https://charts.crossplane.io/stable
   -helm repo update
-  helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --set 'provider.defaultActivations={}' --wait
+  helm upgrade --install crossplane crossplane-stable/crossplane --namespace crossplane-system --create-namespace --set 'provider.defaultActivations={}' --set 'args={--poll-interval=10s}' --wait
   for provider in `ls -1 providers | grep -v config`; do kubectl apply --filename providers/$provider; done

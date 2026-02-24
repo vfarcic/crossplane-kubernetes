@@ -61,7 +61,56 @@ kubectl create namespace a-team
 kubectl --namespace a-team apply \
     --filename examples/azure-aks.yaml
 
-crossplane beta trace clusterclaim a-team --namespace a-team
+crossplane beta trace cluster.devopstoolkit.ai a-team \
+    --namespace a-team
+```
+
+> Wait until all the resources are `Available`.
+
+Get the AKS credentials:
+
+```sh
+az aks get-credentials --resource-group a-team \
+    --name a-team --file kubeconfig.yaml
+```
+
+### Validate Gateway API and KEDA
+
+Verify Envoy Gateway is running:
+
+```sh
+kubectl --kubeconfig kubeconfig.yaml \
+    get pods --namespace envoy-gateway-system
+```
+
+Verify the default Gateway resource:
+
+```sh
+kubectl --kubeconfig kubeconfig.yaml \
+    get gateway eg --namespace envoy-gateway-system
+```
+
+> Confirm the Gateway has an HTTP listener on port 80 and `allowedRoutes.namespaces.from: All`.
+
+Verify KEDA and KEDA HTTP Add-on:
+
+```sh
+kubectl --kubeconfig kubeconfig.yaml \
+    get pods --namespace keda
+```
+
+Verify kube-prometheus-stack:
+
+```sh
+kubectl --kubeconfig kubeconfig.yaml \
+    get pods --namespace prometheus-system
+```
+
+Verify the PodMonitor for Envoy Gateway metrics:
+
+```sh
+kubectl --kubeconfig kubeconfig.yaml \
+    get podmonitor --namespace envoy-gateway-system
 ```
 
 ## GPU Cluster
@@ -103,5 +152,5 @@ kubectl get managed | grep a-team
 > Wait until all managed resources are removed
 
 ```sh
-gcloud projects delete $PROJECT_ID --quiet
+az group delete --name $RESOURCE_GROUP --yes --no-wait
 ```

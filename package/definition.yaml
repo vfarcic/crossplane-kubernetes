@@ -146,6 +146,30 @@ spec:
                             type: boolean
                             default: false
                         required: []
+                      keda:
+                        description: Install KEDA event-driven autoscaler
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
+                      envoyGateway:
+                        description: Install Envoy Gateway (Gateway API implementation)
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
+                      prometheus:
+                        description: Install kube-prometheus-stack (Prometheus, Grafana, AlertManager)
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
                       externalSecrets:
                         description: Install External Secrets Operator (ESO)
                         type: object
