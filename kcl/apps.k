@@ -262,7 +262,7 @@ _items = [
             _chartVersion = crossplane
             _namespace = "crossplane-system"
         }
-        usage { _nameSuffix = "crossplane", _kind = "Release" }
+        usage { _nameSuffix = "app-crossplane", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.argocd?.enabled:
         chart {
@@ -324,8 +324,8 @@ _items = [
                 }
             }
         }
-        usage { _nameSuffix = "argo-cd", _kind = "Release" }
-        usage { _nameSuffix = "argo-cd-app" }
+        usage { _nameSuffix = "app-argo-cd", _kind = "Release" }
+        usage { _nameSuffix = "app-argo-cd-app" }
 
     if oxr.spec.parameters?.apps?.openfunction?.enabled:
         chart {
@@ -336,7 +336,7 @@ _items = [
                 revisionController.enable = True
             }
         }
-        usage { _nameSuffix = "openfunction", _kind = "Release" }
+        usage { _nameSuffix = "app-openfunction", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.dapr?.enabled:
         chart {
@@ -345,7 +345,7 @@ _items = [
             _chartVersion = dapr
             _namespace = "dapr-system"
         }
-        usage { _nameSuffix = "dapr", _kind = "Release" }
+        usage { _nameSuffix = "app-dapr", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.traefik?.enabled:
         chart {
@@ -354,7 +354,7 @@ _items = [
             _chartVersion = traefik
             _namespace = "traefik"
         }
-        usage { _nameSuffix = "traefik", _kind = "Release" }
+        usage { _nameSuffix = "app-traefik", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.keda?.enabled:
         chart {
@@ -393,7 +393,7 @@ _items = [
                 }
             }
         }
-        usage { _nameSuffix = "envoy-gateway-class" }
+        usage { _nameSuffix = "app-envoy-gateway-class" }
         object {
             _name = "envoy-gateway"
             _manifest = {
@@ -418,7 +418,7 @@ _items = [
                 }
             }
         }
-        usage { _nameSuffix = "envoy-gateway" }
+        usage { _nameSuffix = "app-envoy-gateway" }
 
     if oxr.spec.parameters?.apps?.prometheus?.enabled:
         chart {
@@ -455,7 +455,7 @@ _items = [
                 }
             }
         }
-        usage { _nameSuffix = "envoy-gateway-pod-monitor" }
+        usage { _nameSuffix = "app-envoy-gateway-pod-monitor" }
 
     if oxr.spec.parameters?.apps?.externalSecrets?.enabled:
         chart {
@@ -467,7 +467,7 @@ _items = [
                 installCRDs = True
             }
         }
-        usage { _nameSuffix = "external-secrets", _kind = "Release" }
+        usage { _nameSuffix = "app-external-secrets", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.nvidia?.enabled:
         chart {
@@ -479,7 +479,7 @@ _items = [
                 driver.enabled = False
             }
         }
-        usage { _nameSuffix = "gpu-operator", _kind = "Release" }
+        usage { _nameSuffix = "app-gpu-operator", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.vllm?.enabled:
         object {
@@ -886,7 +886,7 @@ _items = [
                     toFieldPath = "spec.provider.gcpsm.projectID"
                 }]
         }
-        usage { _nameSuffix = "secret-store" }
+        usage { _nameSuffix = "app-secret-store" }
 
 ]
 
