@@ -53,12 +53,12 @@ spec:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: argo-cd
+                value: app-argo-cd
         - assert:
             file: ../common/assert-usage-object.yaml
             bindings:
               - name: usageName
-                value: argo-cd-app
+                value: app-argo-cd-app
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:

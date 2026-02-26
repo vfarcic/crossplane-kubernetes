@@ -72,12 +72,12 @@ spec:
             file: ../common/assert-usage-object.yaml
             bindings:
               - name: usageName
-                value: envoy-gateway
+                value: app-envoy-gateway
         - assert:
             file: ../common/assert-usage-object.yaml
             bindings:
               - name: usageName
-                value: envoy-gateway-class
+                value: app-envoy-gateway-class
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
@@ -87,7 +87,7 @@ spec:
             file: ../common/assert-usage-object.yaml
             bindings:
               - name: usageName
-                value: envoy-gateway-pod-monitor
+                value: app-envoy-gateway-pod-monitor
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
@@ -102,12 +102,12 @@ spec:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: crossplane
+                value: app-crossplane
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: openfunction
+                value: app-openfunction
       cleanup:
         - script:
             timeout: 2m

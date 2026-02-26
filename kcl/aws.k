@@ -48,6 +48,52 @@ _items = [{
         }
     }
 }, {
+    apiVersion = "protection.crossplane.io/v1beta1"
+    kind = "Usage"
+    metadata = {
+        name = oxr.metadata.name + "-cluster-auth-helm-usage"
+        annotations = {
+            "krm.kcl.dev/ready": "True"
+            "crossplane.io/external-name" = oxr.metadata.name + "-cluster-auth-helm-usage"
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-cluster-auth-helm-usage"
+        }
+    }
+    spec = {
+        of = {
+            apiVersion = "eks.aws.m.upbound.io/v1beta1"
+            kind = "ClusterAuth"
+            resourceRef.name = oxr.metadata.name
+        }
+        by = {
+            apiVersion = "helm.m.crossplane.io/v1beta1"
+            kind = "ProviderConfig"
+            resourceRef.name = oxr.metadata.name
+        }
+    }
+}, {
+    apiVersion = "protection.crossplane.io/v1beta1"
+    kind = "Usage"
+    metadata = {
+        name = oxr.metadata.name + "-cluster-auth-kubernetes-usage"
+        annotations = {
+            "krm.kcl.dev/ready": "True"
+            "crossplane.io/external-name" = oxr.metadata.name + "-cluster-auth-kubernetes-usage"
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-cluster-auth-kubernetes-usage"
+        }
+    }
+    spec = {
+        of = {
+            apiVersion = "eks.aws.m.upbound.io/v1beta1"
+            kind = "ClusterAuth"
+            resourceRef.name = oxr.metadata.name
+        }
+        by = {
+            apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
+            kind = "ProviderConfig"
+            resourceRef.name = oxr.metadata.name
+        }
+    }
+}, {
     apiVersion = "eks.aws.m.upbound.io/v1beta1"
     kind = "NodeGroup"
     metadata = _metadata("", "eksnodegroup", "")

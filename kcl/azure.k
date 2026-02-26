@@ -50,6 +50,52 @@ _items = [{
         }
     }
 }, {
+    apiVersion = "protection.crossplane.io/v1beta1"
+    kind = "Usage"
+    metadata = {
+        name = oxr.metadata.name + "-cluster-helm-usage"
+        annotations = {
+            "krm.kcl.dev/ready": "True"
+            "crossplane.io/external-name" = oxr.metadata.name + "-cluster-helm-usage"
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-cluster-helm-usage"
+        }
+    }
+    spec = {
+        of = {
+            apiVersion = "containerservice.azure.m.upbound.io/v1beta1"
+            kind = "KubernetesCluster"
+            resourceRef.name = oxr.metadata.name
+        }
+        by = {
+            apiVersion = "helm.m.crossplane.io/v1beta1"
+            kind = "ProviderConfig"
+            resourceRef.name = oxr.metadata.name
+        }
+    }
+}, {
+    apiVersion = "protection.crossplane.io/v1beta1"
+    kind = "Usage"
+    metadata = {
+        name = oxr.metadata.name + "-cluster-kubernetes-usage"
+        annotations = {
+            "krm.kcl.dev/ready": "True"
+            "crossplane.io/external-name" = oxr.metadata.name + "-cluster-kubernetes-usage"
+            "krm.kcl.dev/composition-resource-name" = oxr.metadata.name + "-cluster-kubernetes-usage"
+        }
+    }
+    spec = {
+        of = {
+            apiVersion = "containerservice.azure.m.upbound.io/v1beta1"
+            kind = "KubernetesCluster"
+            resourceRef.name = oxr.metadata.name
+        }
+        by = {
+            apiVersion = "kubernetes.m.crossplane.io/v1alpha1"
+            kind = "ProviderConfig"
+            resourceRef.name = oxr.metadata.name
+        }
+    }
+}, {
     **oxr
     status.clusterName = oxr.metadata.name
     if oxr.metadata.name + "-cluster" in ocds:

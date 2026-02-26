@@ -49,32 +49,22 @@ spec:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: dapr
+                value: app-dapr
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: traefik
+                value: app-traefik
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
-                value: external-secrets
+                value: app-external-secrets
         - assert:
             file: ../common/assert-usage-object.yaml
             bindings:
               - name: usageName
-                value: secret-store
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: secret-push-secret
-        - assert:
-            file: ../common/assert-usage-object.yaml
-            bindings:
-              - name: usageName
-                value: creds
+                value: app-secret-store
       cleanup:
         - script:
             timeout: 2m

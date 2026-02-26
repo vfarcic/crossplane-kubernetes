@@ -99,6 +99,12 @@ spec:
     - apiVersion: kubernetes.m.crossplane.io/v1alpha1
       kind: ProviderConfig
       name: a-team-eks
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-eks-cluster-auth-helm-usage
+    - apiVersion: protection.crossplane.io/v1beta1
+      kind: Usage
+      name: a-team-eks-cluster-auth-kubernetes-usage
   parameters:
     minNodeCount: 3
     nodeSize: medium
@@ -866,4 +872,42 @@ spec:
     secretRef:
       key: kubeconfig
       name: a-team-eks-cluster
+---
+apiVersion: protection.crossplane.io/v1beta1
+kind: Usage
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: a-team-eks-cluster-auth-helm-usage
+    crossplane.io/external-name: a-team-eks-cluster-auth-helm-usage
+  name: a-team-eks-cluster-auth-helm-usage
+spec:
+  of:
+    apiVersion: eks.aws.m.upbound.io/v1beta1
+    kind: ClusterAuth
+    resourceRef:
+      name: a-team-eks
+  by:
+    apiVersion: helm.m.crossplane.io/v1beta1
+    kind: ProviderConfig
+    resourceRef:
+      name: a-team-eks
+---
+apiVersion: protection.crossplane.io/v1beta1
+kind: Usage
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: a-team-eks-cluster-auth-kubernetes-usage
+    crossplane.io/external-name: a-team-eks-cluster-auth-kubernetes-usage
+  name: a-team-eks-cluster-auth-kubernetes-usage
+spec:
+  of:
+    apiVersion: eks.aws.m.upbound.io/v1beta1
+    kind: ClusterAuth
+    resourceRef:
+      name: a-team-eks
+  by:
+    apiVersion: kubernetes.m.crossplane.io/v1alpha1
+    kind: ProviderConfig
+    resourceRef:
+      name: a-team-eks
 
