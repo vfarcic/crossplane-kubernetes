@@ -142,8 +142,14 @@ spec:
         group: inference.networking.k8s.io
         names:
           kind: InferencePool
+          listKind: InferencePoolList
           plural: inferencepools
+          singular: inferencepool
         scope: Namespaced
+        versions:
+        - name: v1
+          served: true
+          storage: true
   managementPolicies:
   - Create
   - Update
@@ -175,8 +181,14 @@ spec:
         group: inference.networking.x-k8s.io
         names:
           kind: InferenceObjective
+          listKind: InferenceObjectiveList
           plural: inferenceobjectives
+          singular: inferenceobjective
         scope: Namespaced
+        versions:
+        - name: v1alpha2
+          served: true
+          storage: true
   managementPolicies:
   - Create
   - Update
