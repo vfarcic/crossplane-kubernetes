@@ -12,6 +12,18 @@ spec:
   (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-gateway-helm'])]):
   - apiVersion: helm.m.crossplane.io/v1beta1
     kind: Release
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-envoy-gateway-class'])]):
+  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+    kind: Object
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-envoy-gateway'])]):
+  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+    kind: Object
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-inference-crd-inferencepools'])]):
+  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+    kind: Object
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-inference-crd-inferenceobjectives'])]):
+  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
+    kind: Object
 ---
 apiVersion: helm.m.crossplane.io/v1beta1
 kind: Release
@@ -32,6 +44,14 @@ spec:
       url: oci://docker.io/envoyproxy/gateway-helm
       version: "1.7.0"
     namespace: envoy-gateway-system
+    values:
+      config:
+        envoyGateway:
+          extensionManager:
+            backendResources:
+            - group: inference.networking.k8s.io
+              kind: InferencePool
+              version: v1
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
@@ -40,16 +60,6 @@ spec:
   - Update
   - Observe
   rollbackLimit: 3
----
-apiVersion: devopstoolkit.ai/v2
-kind: Cluster
-metadata:
-  name: (join('-', ['a-team', $cluster]))
-  namespace: ($namespace)
-spec:
-  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-envoy-gateway-class'])]):
-  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
-    kind: Object
 ---
 apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: Object
@@ -75,16 +85,6 @@ spec:
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
----
-apiVersion: devopstoolkit.ai/v2
-kind: Cluster
-metadata:
-  name: (join('-', ['a-team', $cluster]))
-  namespace: ($namespace)
-spec:
-  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-envoy-gateway'])]):
-  - apiVersion: kubernetes.m.crossplane.io/v1alpha1
-    kind: Object
 ---
 apiVersion: kubernetes.m.crossplane.io/v1alpha1
 kind: Object
@@ -115,6 +115,84 @@ spec:
           allowedRoutes:
             namespaces:
               from: All
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
+---
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-inference-crd-inferencepools']))
+    crossplane.io/external-name: inferencepools.inference.networking.k8s.io
+  name: (join('-', ['a-team', $cluster, 'app-inference-crd-inferencepools']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    manifest:
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      metadata:
+        name: inferencepools.inference.networking.k8s.io
+      spec:
+        group: inference.networking.k8s.io
+        names:
+          kind: InferencePool
+          listKind: InferencePoolList
+          plural: inferencepools
+          singular: inferencepool
+        scope: Namespaced
+        versions:
+        - name: v1
+          served: true
+          storage: true
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
+---
+apiVersion: kubernetes.m.crossplane.io/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-inference-crd-inferenceobjectives']))
+    crossplane.io/external-name: inferenceobjectives.inference.networking.x-k8s.io
+  name: (join('-', ['a-team', $cluster, 'app-inference-crd-inferenceobjectives']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    manifest:
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      metadata:
+        name: inferenceobjectives.inference.networking.x-k8s.io
+      spec:
+        group: inference.networking.x-k8s.io
+        names:
+          kind: InferenceObjective
+          listKind: InferenceObjectiveList
+          plural: inferenceobjectives
+          singular: inferenceobjective
+        scope: Namespaced
+        versions:
+        - name: v1alpha2
+          served: true
+          storage: true
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))

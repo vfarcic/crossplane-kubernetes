@@ -79,6 +79,16 @@ spec:
               - name: usageName
                 value: app-envoy-gateway-class
         - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: app-inference-crd-inferencepools
+        - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: app-inference-crd-inferenceobjectives
+        - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
