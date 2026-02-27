@@ -378,6 +378,13 @@ _items = [
             _chartUrl = "oci://docker.io/envoyproxy/gateway-helm"
             _chartVersion = envoyGateway
             _namespace = "envoy-gateway-system"
+            _values = {
+                config.envoyGateway.extensionManager.backendResources = [{
+                    group = "inference.networking.k8s.io"
+                    kind = "InferencePool"
+                    version = "v1"
+                }]
+            }
         }
         usage { _nameSuffix = "app-gateway-helm", _kind = "Release" }
         object {
@@ -419,6 +426,64 @@ _items = [
             }
         }
         usage { _nameSuffix = "app-envoy-gateway" }
+        object {
+            _name = "inference-crd-inferencepools"
+            _externalName = "inferencepools.inference.networking.k8s.io"
+            _managementPolicies = ["Create", "Update", "Observe"]
+            _manifest = {
+                apiVersion = "apiextensions.k8s.io/v1"
+                kind = "CustomResourceDefinition"
+                metadata = {
+                    name = "inferencepools.inference.networking.k8s.io"
+                    annotations = {
+                        "api-approved.kubernetes.io" = "https://github.com/kubernetes-sigs/gateway-api-inference-extension/pull/1173"
+                        "inference.networking.k8s.io/bundle-version" = "v1.3.1"
+                    }
+                }
+                spec = {
+                    group = "inference.networking.k8s.io"
+                    names = { kind = "InferencePool", listKind = "InferencePoolList", plural = "inferencepools", singular = "inferencepool", shortNames = ["infpool"] }
+                    scope = "Namespaced"
+                    versions = [{
+                        name = "v1"
+                        served = True
+                        storage = True
+                        subresources.status = {}
+                        schema.openAPIV3Schema = { type = "object", "x-kubernetes-preserve-unknown-fields" = True }
+                    }]
+                }
+            }
+        }
+        usage { _nameSuffix = "app-inference-crd-inferencepools" }
+        object {
+            _name = "inference-crd-inferenceobjectives"
+            _externalName = "inferenceobjectives.inference.networking.x-k8s.io"
+            _managementPolicies = ["Create", "Update", "Observe"]
+            _manifest = {
+                apiVersion = "apiextensions.k8s.io/v1"
+                kind = "CustomResourceDefinition"
+                metadata = {
+                    name = "inferenceobjectives.inference.networking.x-k8s.io"
+                    annotations = {
+                        "api-approved.kubernetes.io" = "https://github.com/kubernetes-sigs/gateway-api-inference-extension/pull/1173"
+                        "inference.networking.k8s.io/bundle-version" = "v1.3.1"
+                    }
+                }
+                spec = {
+                    group = "inference.networking.x-k8s.io"
+                    names = { kind = "InferenceObjective", listKind = "InferenceObjectiveList", plural = "inferenceobjectives", singular = "inferenceobjective" }
+                    scope = "Namespaced"
+                    versions = [{
+                        name = "v1alpha2"
+                        served = True
+                        storage = True
+                        subresources.status = {}
+                        schema.openAPIV3Schema = { type = "object", "x-kubernetes-preserve-unknown-fields" = True }
+                    }]
+                }
+            }
+        }
+        usage { _nameSuffix = "app-inference-crd-inferenceobjectives" }
 
     if oxr.spec.parameters?.apps?.prometheus?.enabled:
         chart {
