@@ -9,6 +9,9 @@ spec:
     apps:
       envoyGateway:
         enabled: true
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-ai-gateway-crds-helm'])]):
+  - apiVersion: helm.m.crossplane.io/v1beta1
+    kind: Release
   (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-ai-gateway-helm'])]):
   - apiVersion: helm.m.crossplane.io/v1beta1
     kind: Release
@@ -220,6 +223,34 @@ spec:
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-ai-gateway-crds-helm']))
+    crossplane.io/external-name: ai-gateway-crds-helm
+  name: (join('-', ['a-team', $cluster, 'app-ai-gateway-crds-helm']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    chart:
+      name: ai-gateway-crds-helm
+      url: oci://docker.io/envoyproxy/ai-gateway-crds-helm
+      version: "0.5.0"
+    namespace: envoy-ai-gateway-system
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  rollbackLimit: 3
 ---
 apiVersion: helm.m.crossplane.io/v1beta1
 kind: Release

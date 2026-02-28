@@ -407,6 +407,13 @@ _items = [
         }
         usage { _nameSuffix = "app-gateway-helm", _kind = "Release" }
         chart {
+            _name = "ai-gateway-crds-helm"
+            _chartUrl = "oci://docker.io/envoyproxy/ai-gateway-crds-helm"
+            _chartVersion = aiGateway
+            _namespace = "envoy-ai-gateway-system"
+        }
+        usage { _nameSuffix = "app-ai-gateway-crds-helm", _kind = "Release" }
+        chart {
             _name = "ai-gateway-helm"
             _chartUrl = "oci://docker.io/envoyproxy/ai-gateway-helm"
             _chartVersion = aiGateway
@@ -680,7 +687,16 @@ _items = [
                         name = "v1alpha1"
                         served = True
                         storage = True
-                        subresources.status = {}
+                        subresources = {
+                            status = {}
+                            # TODO: Remove scale subresource and status.replicas once upstream vLLM Production Stack
+                            # operator adds native HPA support (tracked in https://github.com/vllm-project/production-stack/issues/300).
+                            # Revert to just `subresources.status = {}` at that point.
+                            scale = {
+                                specReplicasPath = ".spec.deploymentConfig.replicas"
+                                statusReplicasPath = ".status.replicas"
+                            }
+                        }
                         schema.openAPIV3Schema = {
                             type = "object"
                             "x-kubernetes-preserve-unknown-fields" = True
@@ -695,6 +711,14 @@ _items = [
                                         format = "int32"
                                         default = 8000
                                     }
+                                }
+                            }
+                            # TODO: Remove status.replicas once upstream adds native HPA support (see above).
+                            properties.status = {
+                                type = "object"
+                                properties.replicas = {
+                                    type = "integer"
+                                    format = "int32"
                                 }
                             }
                         }

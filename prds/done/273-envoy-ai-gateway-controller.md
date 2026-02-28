@@ -30,9 +30,10 @@ Related: `prds/gateway-api-inference-extension.md` (predecessor PRD, partially s
 
 When `envoyGateway.enabled: true`, deploy the full Envoy AI Gateway stack:
 
-1. **AI Gateway controller** via Helm chart `oci://docker.io/envoyproxy/ai-gateway-helm`
-2. **Full extensionManager** with hooks + service + backendResources
-3. No XRD changes — everything bundled with `envoyGateway.enabled`
+1. **AI Gateway CRDs** via Helm chart `oci://docker.io/envoyproxy/ai-gateway-crds-helm` (separate chart — the controller chart does not include CRDs)
+2. **AI Gateway controller** via Helm chart `oci://docker.io/envoyproxy/ai-gateway-helm`
+3. **Full extensionManager** with hooks + service + backendResources
+4. No XRD changes — everything bundled with `envoyGateway.enabled`
 
 ## Technical Details
 
@@ -98,6 +99,14 @@ config:
 - [x] Write `../crossplane-inference/tmp/feature-response.md` with implementation details
 - [x] Delete `tmp/feature-request.md`
 
+### Milestone 5: Deploy AI Gateway CRDs Helm chart (post-completion fix)
+- [x] Add `ai-gateway-crds-helm` chart release (`oci://docker.io/envoyproxy/ai-gateway-crds-helm`) gated on `envoyGateway.enabled`
+- [x] Add `usage` resource for the CRDs Release
+- [x] Update `assert-envoy-gateway.yaml` with CRDs Release resourceRef and full manifest assertion
+- [x] Add usage assertion for CRDs Release in AWS chainsaw test
+- [x] All 4 Chainsaw tests pass
+- [x] Live validation on GKE GPU cluster: CRDs installed, controller Running, proxy Running, Gateway PROGRAMMED=True
+
 ## Dependencies
 
 - **Upstream**: Envoy Gateway (PRD #269, complete)
@@ -118,3 +127,4 @@ config:
 | 2026-02-28 | Bundle AI Gateway controller with `envoyGateway.enabled` | Avoid extending XRD; AI Gateway is needed for InferencePool routing which is core to Envoy Gateway's inference story | No XRD changes; clusters come ready for inference |
 | 2026-02-28 | Keep inline CRDs (InferencePool, InferenceObjective) | No Helm chart exists for just the inference extension CRDs; inline approach matches vLLM pattern; file-based injection adds fragile string escaping complexity | 15 lines of KCL per CRD; update manually when upstream changes |
 | 2026-02-28 | Remove `extensionManager.backendResources`-only config | Causes Envoy Gateway crash — `hooks` and `service` are required fields | Must deploy AI Gateway controller before extensionManager works |
+| 2026-02-28 | Add separate CRDs Helm chart (`ai-gateway-crds-helm`) | `ai-gateway-helm` does not include CRDs; controller crashes on startup without `aigateway.envoyproxy.io` CRDs, which cascades into broken webhooks and no Envoy proxy pods | Two Helm releases needed for AI Gateway stack |
