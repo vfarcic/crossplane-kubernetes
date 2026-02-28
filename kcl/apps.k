@@ -8,6 +8,7 @@ nvidiaGpuOperator = "v25.10.1"
 keda = "2.19.0"
 kedaHttpAddon = "0.12.2"
 envoyGateway = "1.7.0"
+aiGateway = "0.5.0"
 kubePrometheusStack = "82.2.1"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
 
@@ -387,6 +388,13 @@ _items = [
             }
         }
         usage { _nameSuffix = "app-gateway-helm", _kind = "Release" }
+        chart {
+            _name = "ai-gateway-helm"
+            _chartUrl = "oci://docker.io/envoyproxy/ai-gateway-helm"
+            _chartVersion = aiGateway
+            _namespace = "envoy-ai-gateway-system"
+        }
+        usage { _nameSuffix = "app-ai-gateway-helm", _kind = "Release" }
         object {
             _name = "envoy-gateway-class"
             _manifest = {
