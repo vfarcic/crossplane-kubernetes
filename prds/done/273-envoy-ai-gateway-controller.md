@@ -1,6 +1,6 @@
 # PRD: Envoy AI Gateway Controller Integration
 
-**Status**: In Progress
+**Status**: Complete
 **Priority**: High
 **Created**: 2026-02-28
 **GitHub Issue**: #273
@@ -79,24 +79,24 @@ config:
 ## Implementation Progress
 
 ### Milestone 1: Deploy AI Gateway controller Helm release
-- [ ] Add version variable for AI Gateway chart in `kcl/apps.k`
-- [ ] Add `chart` block for `ai-gateway-helm` gated on `envoyGateway.enabled`
-- [ ] Add `usage` resource for the new Release
-- [ ] Verify package generates correctly
+- [x] Add version variable for AI Gateway chart in `kcl/apps.k`
+- [x] Add `chart` block for `ai-gateway-helm` gated on `envoyGateway.enabled`
+- [x] Add `usage` resource for the new Release
+- [x] Verify package generates correctly
 
 ### Milestone 2: Update Envoy Gateway extensionManager Helm values
-- [ ] Replace `backendResources`-only config with full extensionManager (hooks + service + backendResources)
-- [ ] Add `extensionApis.enableBackend: true`
-- [ ] Verify package generates correctly
+- [x] Replace `backendResources`-only config with full extensionManager (hooks + service + backendResources)
+- [x] Add `extensionApis.enableBackend: true`
+- [x] Verify package generates correctly
 
 ### Milestone 3: Update tests and verify
-- [ ] Update `assert-envoy-gateway.yaml` with full extensionManager values and AI Gateway controller Release
-- [ ] Add usage assertion for AI Gateway controller Release in AWS chainsaw test
-- [ ] All 4 Chainsaw tests pass
+- [x] Update `assert-envoy-gateway.yaml` with full extensionManager values and AI Gateway controller Release
+- [x] Add usage assertion for AI Gateway controller Release in AWS chainsaw test
+- [x] All 4 Chainsaw tests pass
 
 ### Milestone 4: Respond to crossplane-inference
-- [ ] Write `../crossplane-inference/tmp/feature-response.md` with implementation details
-- [ ] Delete `tmp/feature-request.md`
+- [x] Write `../crossplane-inference/tmp/feature-response.md` with implementation details
+- [x] Delete `tmp/feature-request.md`
 
 ## Dependencies
 

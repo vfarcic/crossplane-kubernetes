@@ -8,6 +8,7 @@ nvidiaGpuOperator = "v25.10.1"
 keda = "2.19.0"
 kedaHttpAddon = "0.12.2"
 envoyGateway = "1.7.0"
+aiGateway = "0.5.0"
 kubePrometheusStack = "82.2.1"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
 
@@ -379,14 +380,39 @@ _items = [
             _chartVersion = envoyGateway
             _namespace = "envoy-gateway-system"
             _values = {
-                config.envoyGateway.extensionManager.backendResources = [{
-                    group = "inference.networking.k8s.io"
-                    kind = "InferencePool"
-                    version = "v1"
-                }]
+                config.envoyGateway = {
+                    extensionApis.enableBackend = True
+                    extensionManager = {
+                        hooks.xdsTranslator = {
+                            translation = {
+                                listener.includeAll = True
+                                route.includeAll = True
+                                cluster.includeAll = True
+                                secret.includeAll = True
+                            }
+                            post = ["Translation", "Cluster", "Route"]
+                        }
+                        service.fqdn = {
+                            hostname = "ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local"
+                            port = 1063
+                        }
+                        backendResources = [{
+                            group = "inference.networking.k8s.io"
+                            kind = "InferencePool"
+                            version = "v1"
+                        }]
+                    }
+                }
             }
         }
         usage { _nameSuffix = "app-gateway-helm", _kind = "Release" }
+        chart {
+            _name = "ai-gateway-helm"
+            _chartUrl = "oci://docker.io/envoyproxy/ai-gateway-helm"
+            _chartVersion = aiGateway
+            _namespace = "envoy-ai-gateway-system"
+        }
+        usage { _nameSuffix = "app-ai-gateway-helm", _kind = "Release" }
         object {
             _name = "envoy-gateway-class"
             _manifest = {
