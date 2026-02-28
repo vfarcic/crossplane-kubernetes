@@ -380,11 +380,29 @@ _items = [
             _chartVersion = envoyGateway
             _namespace = "envoy-gateway-system"
             _values = {
-                config.envoyGateway.extensionManager.backendResources = [{
-                    group = "inference.networking.k8s.io"
-                    kind = "InferencePool"
-                    version = "v1"
-                }]
+                config.envoyGateway = {
+                    extensionApis.enableBackend = True
+                    extensionManager = {
+                        hooks.xdsTranslator = {
+                            translation = {
+                                listener.includeAll = True
+                                route.includeAll = True
+                                cluster.includeAll = True
+                                secret.includeAll = True
+                            }
+                            post = ["Translation", "Cluster", "Route"]
+                        }
+                        service.fqdn = {
+                            hostname = "ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local"
+                            port = 1063
+                        }
+                        backendResources = [{
+                            group = "inference.networking.k8s.io"
+                            kind = "InferencePool"
+                            version = "v1"
+                        }]
+                    }
+                }
             }
         }
         usage { _nameSuffix = "app-gateway-helm", _kind = "Release" }

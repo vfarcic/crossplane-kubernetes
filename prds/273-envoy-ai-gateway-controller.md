@@ -85,14 +85,14 @@ config:
 - [x] Verify package generates correctly
 
 ### Milestone 2: Update Envoy Gateway extensionManager Helm values
-- [ ] Replace `backendResources`-only config with full extensionManager (hooks + service + backendResources)
-- [ ] Add `extensionApis.enableBackend: true`
-- [ ] Verify package generates correctly
+- [x] Replace `backendResources`-only config with full extensionManager (hooks + service + backendResources)
+- [x] Add `extensionApis.enableBackend: true`
+- [x] Verify package generates correctly
 
 ### Milestone 3: Update tests and verify
-- [ ] Update `assert-envoy-gateway.yaml` with full extensionManager values and AI Gateway controller Release
+- [x] Update `assert-envoy-gateway.yaml` with full extensionManager values and AI Gateway controller Release
 - [x] Add usage assertion for AI Gateway controller Release in AWS chainsaw test
-- [ ] All 4 Chainsaw tests pass
+- [x] All 4 Chainsaw tests pass
 
 ### Milestone 4: Respond to crossplane-inference
 - [ ] Write `../crossplane-inference/tmp/feature-response.md` with implementation details

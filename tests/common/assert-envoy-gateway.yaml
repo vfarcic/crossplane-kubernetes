@@ -50,11 +50,32 @@ spec:
     values:
       config:
         envoyGateway:
+          extensionApis:
+            enableBackend: true
           extensionManager:
             backendResources:
             - group: inference.networking.k8s.io
               kind: InferencePool
               version: v1
+            hooks:
+              xdsTranslator:
+                post:
+                - Translation
+                - Cluster
+                - Route
+                translation:
+                  cluster:
+                    includeAll: true
+                  listener:
+                    includeAll: true
+                  route:
+                    includeAll: true
+                  secret:
+                    includeAll: true
+            service:
+              fqdn:
+                hostname: ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local
+                port: 1063
   providerConfigRef:
     kind: ProviderConfig
     name: (join('-', ['a-team', $cluster]))
