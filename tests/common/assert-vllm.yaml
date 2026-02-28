@@ -41,9 +41,6 @@ spec:
         versions:
         - name: v1alpha1
           subresources:
-            scale:
-              specReplicasPath: .spec.deploymentConfig.replicas
-              statusReplicasPath: .status.replicas
             status: {}
           schema:
             openAPIV3Schema:
@@ -56,12 +53,6 @@ spec:
                           default: 8000
                           format: int32
                           type: integer
-                status:
-                  properties:
-                    replicas:
-                      format: int32
-                      type: integer
-                  type: object
   managementPolicies:
   - Create
   - Update
