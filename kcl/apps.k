@@ -377,7 +377,7 @@ _items = [
         }
         usage { _nameSuffix = "app-keda-add-ons-http", _kind = "Release" }
 
-    if oxr.spec.parameters?.apps?.envoyGateway?.enabled:
+    if oxr.spec.parameters?.apps?.envoyGateway?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled:
         chart {
             _name = "gateway-helm"
             _chartUrl = "oci://docker.io/envoyproxy/gateway-helm"
@@ -522,7 +522,7 @@ _items = [
         }
         usage { _nameSuffix = "app-inference-crd-inferenceobjectives" }
 
-    if oxr.spec.parameters?.apps?.prometheus?.enabled:
+    if oxr.spec.parameters?.apps?.prometheus?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled:
         chart {
             _name = "kube-prometheus-stack"
             _chartRepository = "https://prometheus-community.github.io/helm-charts"
@@ -568,7 +568,7 @@ _items = [
         }
         usage { _nameSuffix = "app-opentelemetry-collector", _kind = "Release" }
 
-    if oxr.spec.parameters?.apps?.envoyGateway?.enabled and oxr.spec.parameters?.apps?.prometheus?.enabled:
+    if (oxr.spec.parameters?.apps?.envoyGateway?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled) and (oxr.spec.parameters?.apps?.prometheus?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled):
         object {
             _name = "envoy-gateway-pod-monitor"
             _manifest = {

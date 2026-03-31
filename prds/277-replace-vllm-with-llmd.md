@@ -67,10 +67,10 @@ spec:
 When enabled, deploy:
 1. **WVA Helm release** — cluster-level autoscaler controller
 
-Additionally, auto-install these generic dependencies (each also available as standalone `apps.*`):
-2. **Redis/Valkey** — shared cluster-level backend (used by KV Cache Indexer instances deployed per-model by crossplane-inference)
-3. **LeaderWorkerSet (LWS)** — multi-pod workload controller for distributed inference
-4. **OpenTelemetry Collector** — distributed tracing
+Additionally, auto-install these infrastructure dependencies:
+2. **Valkey** — shared cluster-level backend (also available as standalone `apps.valkey`)
+3. **LeaderWorkerSet (LWS)** — multi-pod workload controller for distributed inference (no standalone toggle)
+4. **OpenTelemetry Collector** — distributed tracing (also auto-installed by `prometheus.enabled`, no standalone toggle)
 
 ### Add: `apps.valkey`
 

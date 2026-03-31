@@ -1,0 +1,24 @@
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: a-team-gke
+  namespace: a-team
+spec:
+  crossplane:
+    compositionSelector:
+      matchLabels:
+        provider: google
+        cluster: gke
+  parameters:
+    nodeSize: medium
+    minNodeCount: 3
+    namespaces:
+      - dev
+      - production
+    gpu:
+      enabled: true
+      nodeSize: large
+      minNodeCount: 1
+    apps:
+      llmd:
+        enabled: true
