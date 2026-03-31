@@ -1,0 +1,42 @@
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  parameters:
+    apps:
+      llmd:
+        enabled: true
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-wva'])]):
+  - apiVersion: helm.m.crossplane.io/v1beta1
+    kind: Release
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-wva']))
+    crossplane.io/external-name: wva
+  name: (join('-', ['a-team', $cluster, 'app-wva']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    chart:
+      name: workload-variant-autoscaler
+      url: oci://ghcr.io/llm-d/workload-variant-autoscaler
+      version: "0.5.1"
+    namespace: workload-variant-autoscaler-system
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  rollbackLimit: 3

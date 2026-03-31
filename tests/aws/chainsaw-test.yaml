@@ -62,6 +62,8 @@ spec:
         - assert:
             file: ../common/assert-keda.yaml
         - assert:
+            file: ../common/assert-llmd.yaml
+        - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
@@ -116,6 +118,11 @@ spec:
             bindings:
               - name: usageName
                 value: app-keda-add-ons-http
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-wva
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:

@@ -216,6 +216,18 @@ appKeda = {
     required = []
 }
 
+appLlmd = {
+    type = "object"
+    description = "Install llm-d cluster infrastructure (Workload Variant Autoscaler + KV Cache Indexer)"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
+}
+
 appEnvoyGateway = {
     type = "object"
     description = "Install Envoy Gateway (Gateway API implementation)"

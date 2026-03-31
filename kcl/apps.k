@@ -7,6 +7,7 @@ cilium = "1.19.0"
 nvidiaGpuOperator = "v25.10.1"
 keda = "2.19.0"
 kedaHttpAddon = "0.12.2"
+wva = "0.5.1"
 envoyGateway = "1.7.0"
 aiGateway = "0.5.0"
 kubePrometheusStack = "82.2.1"
@@ -526,6 +527,16 @@ _items = [
             _namespace = "prometheus-system"
         }
         usage { _nameSuffix = "app-kube-prometheus-stack", _kind = "Release" }
+
+    if oxr.spec.parameters?.apps?.llmd?.enabled:
+        chart {
+            _name = "wva"
+            _chartName = "workload-variant-autoscaler"
+            _chartUrl = "oci://ghcr.io/llm-d/workload-variant-autoscaler"
+            _chartVersion = wva
+            _namespace = "workload-variant-autoscaler-system"
+        }
+        usage { _nameSuffix = "app-wva", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.envoyGateway?.enabled and oxr.spec.parameters?.apps?.prometheus?.enabled:
         object {

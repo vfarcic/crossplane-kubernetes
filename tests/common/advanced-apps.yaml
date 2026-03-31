@@ -12,3 +12,5 @@ spec:
         enabled: true
       keda:
         enabled: true
+      llmd:
+        enabled: true
