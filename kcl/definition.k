@@ -61,6 +61,7 @@ spec = {
                                     traefik = _data(data.appTraefik)
                                     nvidia = _data(data.appNvidia)
                                     llmd = _data(data.appLlmd)
+                                    valkey = _data(data.appValkey)
                                     keda = _data(data.appKeda)
                                     envoyGateway = _data(data.appEnvoyGateway)
                                     prometheus = _data(data.appPrometheus)

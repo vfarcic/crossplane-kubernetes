@@ -1,0 +1,42 @@
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  parameters:
+    apps:
+      llmd:
+        enabled: true
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-lws'])]):
+  - apiVersion: helm.m.crossplane.io/v1beta1
+    kind: Release
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-lws']))
+    crossplane.io/external-name: lws
+  name: (join('-', ['a-team', $cluster, 'app-lws']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    chart:
+      name: lws
+      url: oci://registry.k8s.io/lws/charts/lws
+      version: "0.8.0"
+    namespace: lws-system
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  rollbackLimit: 3

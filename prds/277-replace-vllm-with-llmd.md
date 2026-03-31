@@ -1,6 +1,6 @@
 # PRD: Replace vLLM Production Stack with llm-d
 
-**Status**: In Progress
+**Status**: Complete
 **Priority**: High
 **Created**: 2026-03-31
 **GitHub Issue**: #277
@@ -34,7 +34,7 @@ llm-d uses a modular multi-chart architecture. For dot-kubernetes (cluster-level
 - **LeaderWorkerSet (LWS) Controller**: Kubernetes SIG-apps multi-pod workload controller. Required for distributed tensor/expert parallelism (e.g., DeepSeek-R1, Llama 405B across multiple nodes).
 - **OpenTelemetry Collector**: Distributed tracing across vLLM, EPP, and gateway.
 
-These three generic components also get their own `apps.*` toggles (usable independently of llm-d), but enabling `apps.llmd` auto-installs them regardless of their individual toggle state.
+Valkey gets its own `apps.valkey` toggle (usable independently of llm-d). LWS and OTel Collector are auto-installed when `llmd.enabled` (LWS) or `llmd.enabled or prometheus.enabled` (OTel) — no standalone toggles needed.
 
 Per-model components (`llm-d-modelservice`, Endpoint Picker/EPP, routing sidecar, InferencePool CRs) are handled by crossplane-inference.
 
@@ -72,26 +72,28 @@ Additionally, auto-install these generic dependencies (each also available as st
 3. **LeaderWorkerSet (LWS)** — multi-pod workload controller for distributed inference
 4. **OpenTelemetry Collector** — distributed tracing
 
-### Add: `apps.redis`, `apps.lws`, `apps.otel`
+### Add: `apps.valkey`
 
-New independent API fields:
+New independent API field:
 
 ```yaml
 spec:
   parameters:
     apps:
-      redis:
-        enabled: true    # standalone, or auto-enabled by llmd
-      lws:
-        enabled: true    # standalone, or auto-enabled by llmd
-      otel:
+      valkey:
         enabled: true    # standalone, or auto-enabled by llmd
 ```
 
-These are general-purpose components usable beyond llm-d. The conditional pattern in `apps.k`:
+Valkey is a general-purpose Redis-compatible store usable beyond llm-d. The conditional pattern in `apps.k`:
 ```
-if oxr.spec.parameters?.apps?.redis?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled:
+if oxr.spec.parameters?.apps?.valkey?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled:
 ```
+
+### Auto-installed infrastructure (no standalone toggles)
+
+**LeaderWorkerSet (LWS)**: Auto-installed when `llmd.enabled` — only useful for multi-node distributed inference.
+
+**OpenTelemetry Collector**: Auto-installed when `llmd.enabled or prometheus.enabled` — distributed tracing for inference and observability stacks.
 
 ## Relationship to crossplane-inference
 
@@ -114,21 +116,21 @@ if oxr.spec.parameters?.apps?.redis?.enabled or oxr.spec.parameters?.apps?.llmd?
 - [x] Add version variable for WVA chart (`wva = "0.5.1"`)
 - [x] Run `just package-generate` and verify WVA Release appears in output
 
-### Milestone 3: Add generic infrastructure apps (Redis, LWS, OTel)
-- [ ] Add `appRedis`, `appLws`, `appOtel` schemas to `kcl/data.k`
-- [ ] Wire all three into `definition.k` XRD
-- [ ] Add Redis/Valkey Helm release to `kcl/apps.k` (gated on `redis.enabled` OR `llmd.enabled`)
-- [ ] Add LeaderWorkerSet Helm release to `kcl/apps.k` (gated on `lws.enabled` OR `llmd.enabled`)
-- [ ] Add OpenTelemetry Collector Helm release to `kcl/apps.k` (gated on `otel.enabled` OR `llmd.enabled`)
-- [ ] Add version variables for all three charts
-- [ ] Run `just package-generate` and verify Releases appear in output
+### Milestone 3: Add generic infrastructure apps (Valkey, LWS, OTel)
+- [x] Add `appValkey` schema to `kcl/data.k` (LWS and OTel have no standalone toggles — see decision log)
+- [x] Wire `valkey` into `definition.k` XRD
+- [x] Add Valkey Helm release to `kcl/apps.k` (gated on `valkey.enabled` OR `llmd.enabled`)
+- [x] Add LeaderWorkerSet Helm release to `kcl/apps.k` (gated on `llmd.enabled`)
+- [x] Add OpenTelemetry Collector Helm release to `kcl/apps.k` (gated on `llmd.enabled` OR `prometheus.enabled`)
+- [x] Add version variables for all three charts (`valkey = "0.9.3"`, `lws = "0.8.0"`, `opentelemetryCollector = "0.147.1"`)
+- [x] Run `just package-generate` and verify Releases appear in output
 
 ### Milestone 4: Update tests and verify
 - [x] Add llm-d assertion file in `tests/common/` (WVA)
-- [ ] Add Redis, LWS, OTel assertion files in `tests/common/`
+- [x] Add Valkey, LWS, OTel assertion files in `tests/common/`
 - [x] Update provider test claims to include `llmd.enabled: true`
 - [x] Remove vLLM assertions from provider tests
-- [ ] `just test-once` passes for all providers
+- [x] `just test-once` passes for all providers
 
 ## Dependencies
 
@@ -155,3 +157,6 @@ if oxr.spec.parameters?.apps?.redis?.enabled or oxr.spec.parameters?.apps?.llmd?
 | 2026-03-31 | Per-model components (EPP, ModelService, routing sidecar) stay in crossplane-inference | EPP runs per-InferencePool, ModelService is per-model Helm release, sidecar is per-decode-pod | No per-model resources in dot-kubernetes |
 | 2026-03-31 | All llm-d components are Helm-installable — no raw manifests needed | Unlike vLLM operator which required ~350 lines of hand-coded CRDs, RBAC, Deployments, etc., WVA is published as a Helm chart | Implementation is simple `chart {}` + `usage {}` blocks in apps.k, following the same pattern as KEDA/Prometheus/Envoy Gateway |
 | 2026-03-31 | Drop KV Cache Indexer from dot-kubernetes — it's per-model, belongs in crossplane-inference | KV Cache Indexer is a library (v0.6.0) that runs per-InferencePool alongside EPP, not a cluster-level service. No standalone Helm chart exists. | Milestone 2 reduced to WVA only. Redis stays as cluster-level shared backend that per-model indexer instances connect to. |
+| 2026-03-31 | Use `apps.valkey` instead of `apps.redis` | Valkey is the actual BSD-licensed implementation being deployed; using the real name avoids confusion | API field is `valkey`, not `redis` |
+| 2026-03-31 | LWS has no standalone toggle — auto-installed by `llmd.enabled` only | LWS is only useful for multi-node distributed inference; nobody would enable it without llm-d | 1 fewer API field; simpler surface |
+| 2026-03-31 | OTel Collector has no standalone toggle — auto-installed by `llmd.enabled` or `prometheus.enabled` | Tracing is an observability concern that pairs naturally with both inference and monitoring | 1 fewer API field; OTel appears whenever observability or inference is enabled |

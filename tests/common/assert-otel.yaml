@@ -1,0 +1,42 @@
+---
+apiVersion: devopstoolkit.ai/v2
+kind: Cluster
+metadata:
+  name: (join('-', ['a-team', $cluster]))
+  namespace: ($namespace)
+spec:
+  parameters:
+    apps:
+      llmd:
+        enabled: true
+  (crossplane.resourceRefs[?name == join('-', ['a-team', $cluster, 'app-opentelemetry-collector'])]):
+  - apiVersion: helm.m.crossplane.io/v1beta1
+    kind: Release
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  annotations:
+    crossplane.io/composition-resource-name: (join('-', ['a-team', $cluster, 'app-opentelemetry-collector']))
+    crossplane.io/external-name: opentelemetry-collector
+  name: (join('-', ['a-team', $cluster, 'app-opentelemetry-collector']))
+  ownerReferences:
+  - apiVersion: devopstoolkit.ai/v2
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+spec:
+  forProvider:
+    chart:
+      name: opentelemetry-collector
+      repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+      version: "0.147.1"
+    namespace: opentelemetry-collector-system
+  providerConfigRef:
+    kind: ProviderConfig
+    name: (join('-', ['a-team', $cluster]))
+  managementPolicies:
+  - Create
+  - Update
+  - Observe
+  rollbackLimit: 3

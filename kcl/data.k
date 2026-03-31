@@ -228,6 +228,18 @@ appLlmd = {
     required = []
 }
 
+appValkey = {
+    type = "object"
+    description = "Install Valkey (Redis-compatible key-value store)"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
+}
+
 appEnvoyGateway = {
     type = "object"
     description = "Install Envoy Gateway (Gateway API implementation)"

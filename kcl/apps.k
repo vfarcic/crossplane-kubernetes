@@ -8,6 +8,9 @@ nvidiaGpuOperator = "v25.10.1"
 keda = "2.19.0"
 kedaHttpAddon = "0.12.2"
 wva = "0.5.1"
+valkey = "0.9.3"
+lws = "0.8.0"
+opentelemetryCollector = "0.147.1"
 envoyGateway = "1.7.0"
 aiGateway = "0.5.0"
 kubePrometheusStack = "82.2.1"
@@ -537,6 +540,33 @@ _items = [
             _namespace = "workload-variant-autoscaler-system"
         }
         usage { _nameSuffix = "app-wva", _kind = "Release" }
+
+    if oxr.spec.parameters?.apps?.valkey?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled:
+        chart {
+            _name = "valkey"
+            _chartRepository = "https://valkey.io/valkey-helm/"
+            _chartVersion = valkey
+            _namespace = "valkey-system"
+        }
+        usage { _nameSuffix = "app-valkey", _kind = "Release" }
+
+    if oxr.spec.parameters?.apps?.llmd?.enabled:
+        chart {
+            _name = "lws"
+            _chartUrl = "oci://registry.k8s.io/lws/charts/lws"
+            _chartVersion = lws
+            _namespace = "lws-system"
+        }
+        usage { _nameSuffix = "app-lws", _kind = "Release" }
+
+    if oxr.spec.parameters?.apps?.llmd?.enabled or oxr.spec.parameters?.apps?.prometheus?.enabled:
+        chart {
+            _name = "opentelemetry-collector"
+            _chartRepository = "https://open-telemetry.github.io/opentelemetry-helm-charts"
+            _chartVersion = opentelemetryCollector
+            _namespace = "opentelemetry-collector-system"
+        }
+        usage { _nameSuffix = "app-opentelemetry-collector", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.envoyGateway?.enabled and oxr.spec.parameters?.apps?.prometheus?.enabled:
         object {

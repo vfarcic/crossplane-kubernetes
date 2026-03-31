@@ -64,6 +64,12 @@ spec:
         - assert:
             file: ../common/assert-llmd.yaml
         - assert:
+            file: ../common/assert-valkey.yaml
+        - assert:
+            file: ../common/assert-lws.yaml
+        - assert:
+            file: ../common/assert-otel.yaml
+        - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
@@ -123,6 +129,21 @@ spec:
             bindings:
               - name: usageName
                 value: app-wva
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-valkey
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-lws
+        - assert:
+            file: ../common/assert-usage-release.yaml
+            bindings:
+              - name: usageName
+                value: app-opentelemetry-collector
         - assert:
             file: ../common/assert-usage-release.yaml
             bindings:

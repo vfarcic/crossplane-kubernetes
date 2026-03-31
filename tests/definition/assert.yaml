@@ -146,6 +146,13 @@ spec:
                             default: false
                             type: boolean
                         type: object
+                      valkey:
+                        description: Install Valkey (Redis-compatible key-value store)
+                        properties:
+                          enabled:
+                            default: false
+                            type: boolean
+                        type: object
                       nvidia:
                         description: Install NVIDIA GPU Operator for GPU driver and device plugin management. Required for AWS (EKS) and Azure (AKS). Optional for Google (GKE) where drivers and device plugin are pre-installed.
                         properties:
