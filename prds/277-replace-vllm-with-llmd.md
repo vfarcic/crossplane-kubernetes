@@ -1,6 +1,6 @@
 # PRD: Replace vLLM Production Stack with llm-d
 
-**Status**: Not Started
+**Status**: In Progress
 **Priority**: High
 **Created**: 2026-03-31
 **GitHub Issue**: #277
@@ -69,11 +69,11 @@ When enabled, deploy a single Helm release for the WVA controller. No dependency
 ## Implementation Progress
 
 ### Milestone 1: Remove vLLM Production Stack
-- [ ] Remove `appVllm` schema from `kcl/data.k`
-- [ ] Remove all vLLM resources from `kcl/apps.k` (CRDs, RBAC, Deployment, Namespace, Service)
-- [ ] Remove vLLM test assertions from `tests/common/`
-- [ ] Run `just package-generate` and verify clean output
-- [ ] All existing tests pass with vLLM removed
+- [x] Remove `appVllm` schema from `kcl/data.k`
+- [x] Remove all vLLM resources from `kcl/apps.k` (CRDs, RBAC, Deployment, Namespace, Service)
+- [x] Remove vLLM test assertions from `tests/common/`
+- [x] Run `just package-generate` and verify clean output
+- [x] All existing tests pass with vLLM removed
 
 ### Milestone 2: Add llm-d Variant Autoscaler
 - [ ] Add `appLlmd` schema to `kcl/data.k`
@@ -85,7 +85,7 @@ When enabled, deploy a single Helm release for the WVA controller. No dependency
 ### Milestone 3: Update tests and verify
 - [ ] Add llm-d assertion file in `tests/common/`
 - [ ] Update provider test claims to include `llmd.enabled: true`
-- [ ] Remove vLLM assertions from provider tests
+- [x] Remove vLLM assertions from provider tests
 - [ ] `just test-once` passes for all providers
 
 ## Dependencies

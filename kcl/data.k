@@ -204,18 +204,6 @@ appNvidia = {
     required = []
 }
 
-appVllm = {
-    type = "object"
-    description = "Install vLLM Production Stack for LLM inference serving"
-    properties = {
-        enabled = {
-            type = "boolean"
-            default = False
-        }
-    }
-    required = []
-}
-
 appKeda = {
     type = "object"
     description = "Install KEDA event-driven autoscaler"

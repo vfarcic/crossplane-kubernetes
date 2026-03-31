@@ -54,8 +54,6 @@ spec:
         - patch:
             file: ../common/advanced-apps.yaml
         - assert:
-            file: ../common/assert-vllm.yaml
-        - assert:
             file: ../common/assert-envoy-gateway.yaml
         - assert:
             file: ../common/assert-kube-prometheus-stack.yaml
