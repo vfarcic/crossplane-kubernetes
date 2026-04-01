@@ -67,10 +67,14 @@ spec:
 When enabled, deploy:
 1. **WVA Helm release** — cluster-level autoscaler controller
 
-Additionally, auto-install these infrastructure dependencies:
-2. **Valkey** — shared cluster-level backend (also available as standalone `apps.valkey`)
-3. **LeaderWorkerSet (LWS)** — multi-pod workload controller for distributed inference (no standalone toggle)
-4. **OpenTelemetry Collector** — distributed tracing (also auto-installed by `prometheus.enabled`, no standalone toggle)
+Additionally, auto-install all infrastructure needed for inference:
+2. **Envoy Gateway + AI Gateway** — Gateway API implementation with GAIE support
+3. **Prometheus (kube-prometheus-stack)** — monitoring and metrics (with TLS for WVA)
+4. **NVIDIA GPU Operator** — GPU drivers and device plugin
+5. **Valkey** — shared cluster-level backend (also available as standalone `apps.valkey`)
+6. **LeaderWorkerSet (LWS)** — multi-pod workload controller for distributed inference
+7. **OpenTelemetry Collector** — distributed tracing (also auto-installed by `prometheus.enabled`)
+8. **Prometheus TLS Secret** — static self-signed cert for WVA-to-Prometheus HTTPS connection
 
 ### Add: `apps.valkey`
 
@@ -89,11 +93,36 @@ Valkey is a general-purpose Redis-compatible store usable beyond llm-d. The cond
 if oxr.spec.parameters?.apps?.valkey?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled:
 ```
 
-### Auto-installed infrastructure (no standalone toggles)
+### Auto-installed by `llmd.enabled` (no standalone toggles needed)
 
-**LeaderWorkerSet (LWS)**: Auto-installed when `llmd.enabled` — only useful for multi-node distributed inference.
+- **Envoy Gateway + AI Gateway** — Gateway API with GAIE support (InferencePool, InferenceObjective CRDs)
+- **Prometheus (kube-prometheus-stack)** — monitoring/metrics, configured with TLS when llmd is enabled
+- **NVIDIA GPU Operator** — GPU drivers and device plugin
+- **LeaderWorkerSet (LWS)** — multi-pod workload controller for distributed inference
+- **OpenTelemetry Collector** — distributed tracing (also auto-installed by `prometheus.enabled`)
+- **Prometheus TLS Secret** — static self-signed certificate for WVA-to-Prometheus HTTPS
 
-**OpenTelemetry Collector**: Auto-installed when `llmd.enabled or prometheus.enabled` — distributed tracing for inference and observability stacks.
+### Add: `apps.certManager`
+
+Standalone toggle for cert-manager (not auto-installed by llmd):
+
+```yaml
+spec:
+  parameters:
+    apps:
+      certManager:
+        enabled: true
+```
+
+### Add: `region` parameter
+
+Configurable cloud region with provider-specific defaults:
+
+```yaml
+spec:
+  parameters:
+    region: us-central1  # Defaults: us-east-1 (AWS), eastus (Azure), us-east1 (Google)
+```
 
 ## Relationship to crossplane-inference
 
@@ -132,6 +161,19 @@ if oxr.spec.parameters?.apps?.valkey?.enabled or oxr.spec.parameters?.apps?.llmd
 - [x] Remove vLLM assertions from provider tests
 - [x] `just test-once` passes for all providers
 
+### Milestone 5: Additional improvements and validation
+- [x] Auto-install Envoy Gateway, Prometheus, NVIDIA GPU Operator when `llmd.enabled`
+- [x] Add `region` parameter to Cluster XRD (all providers)
+- [x] Fix KCL EvaluationError on `status.conditions` access (all providers)
+- [x] Add Prometheus TLS (static self-signed certs) for WVA HTTPS requirement
+- [x] Add `apps.certManager` as standalone toggle
+- [x] Add OTel Collector required values (`mode`, `image.repository`)
+- [x] Remove hardcoded `nodeLocations` from GKE node pools
+- [x] Fix hardcoded zone references in AWS subnets
+- [x] Create GKE example (`examples/google-gke-llmd.yaml` and `.md`)
+- [ ] Run `just test-once` — all integration tests pass with latest changes
+- [ ] Manual GKE validation: deploy example without `config.yaml` (use local `package/` manifests only), verify all components running including WVA with TLS
+
 ## Dependencies
 
 - **Upstream**: llm-d WVA Helm chart (`oci://ghcr.io/llm-d/workload-variant-autoscaler`), llm-d KV Cache Indexer, Valkey Helm chart, LeaderWorkerSet Helm chart, OpenTelemetry Collector Helm chart
@@ -150,7 +192,7 @@ if oxr.spec.parameters?.apps?.valkey?.enabled or oxr.spec.parameters?.apps?.llmd
 | Date | Decision | Rationale | Impact |
 |------|----------|-----------|--------|
 | 2026-03-31 | Replace vLLM with llm-d | vLLM operator fights autoscalers; llm-d is CNCF Sandbox with broad industry backing | Remove ~350 lines of vLLM KCL; add ~20 lines for WVA Helm release |
-| 2026-03-31 | Keep KEDA and Envoy Gateway | Both serve purposes beyond inference (generic autoscaling, general gateway) | No changes to existing apps |
+| 2026-03-31 | Keep KEDA as independent toggle | KEDA serves purposes beyond inference; WVA handles llm-d autoscaling natively | KEDA not auto-installed by llmd |
 | 2026-03-31 | Only install WVA at cluster level | Per-model components (modelservice, EPP) belong in crossplane-inference | Clean separation of cluster-level vs workload-level concerns |
 | 2026-03-31 | Include KV Cache Indexer as llm-d-specific cluster component | Cache-aware routing requires a global index of KV-cache block locations; this is llm-d's own component, not generic infra | Adds KV Cache Indexer + Redis/Valkey backend to cluster setup |
 | 2026-03-31 | Redis, LWS, OTel as separate `apps.*` with auto-install from llmd | These are generic infra (not llm-d-specific) useful independently, but llm-d needs them as dependencies | 3 new `apps.*` entries; `llmd.enabled` auto-installs all three |
@@ -160,3 +202,9 @@ if oxr.spec.parameters?.apps?.valkey?.enabled or oxr.spec.parameters?.apps?.llmd
 | 2026-03-31 | Use `apps.valkey` instead of `apps.redis` | Valkey is the actual BSD-licensed implementation being deployed; using the real name avoids confusion | API field is `valkey`, not `redis` |
 | 2026-03-31 | LWS has no standalone toggle — auto-installed by `llmd.enabled` only | LWS is only useful for multi-node distributed inference; nobody would enable it without llm-d | 1 fewer API field; simpler surface |
 | 2026-03-31 | OTel Collector has no standalone toggle — auto-installed by `llmd.enabled` or `prometheus.enabled` | Tracing is an observability concern that pairs naturally with both inference and monitoring | 1 fewer API field; OTel appears whenever observability or inference is enabled |
+| 2026-04-01 | Auto-install Envoy Gateway, Prometheus, NVIDIA when `llmd.enabled` | llm-d needs Gateway API, monitoring, and GPU drivers; users shouldn't manually enable each dependency | `llmd.enabled: true` is the only toggle needed for full inference stack |
+| 2026-04-01 | Static self-signed TLS certs for Prometheus-to-WVA connection | WVA requires HTTPS for Prometheus; cert-manager adds complexity; static certs are sufficient for internal cluster traffic | Embedded CA + server cert in apps.k; valid for 10 years |
+| 2026-04-01 | cert-manager as standalone `apps.certManager` (not auto-installed by llmd) | Useful general-purpose tool but not needed for llm-d TLS (uses static certs instead) | Available for users who want it; doesn't add overhead to llm-d stack |
+| 2026-04-01 | Add `region` parameter to Cluster XRD | Regions were hardcoded (us-east1/us-east-1/eastus); GPU availability varies by region | All providers now use `oxr.spec.parameters?.region or default`; GKE node pools no longer hardcode zone letters |
+| 2026-04-01 | Fix KCL EvaluationError on status.conditions access | All provider KCL files crashed when `status.conditions` was empty during initial cluster creation, blocking the apps pipeline step | Added safe `?.` access guards in google.k, aws.k, azure.k |
+| 2026-04-01 | OTel Collector chart requires `mode` and `image.repository` values | Chart v0.147.1 breaking changes: moved images from DockerHub to GHCR, `mode` became required | Set `mode = "deployment"` and `image.repository` to GHCR path |

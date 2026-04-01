@@ -6,6 +6,10 @@ root = {
             description = "The Kubernetes version for the cluster."
             type = "string"
         }
+        region = {
+            description = "The cloud region for the cluster. Defaults: us-east-1 (AWS), eastus (Azure), us-east1 (Google)."
+            type = "string"
+        }
         nodeSize = {
             description = "The size of the nodes; small, medium, large."
             type = "string"
@@ -219,6 +223,18 @@ appKeda = {
 appLlmd = {
     type = "object"
     description = "Install llm-d cluster infrastructure (Workload Variant Autoscaler + KV Cache Indexer)"
+    properties = {
+        enabled = {
+            type = "boolean"
+            default = False
+        }
+    }
+    required = []
+}
+
+appCertManager = {
+    type = "object"
+    description = "Install cert-manager for TLS certificate management"
     properties = {
         enabled = {
             type = "boolean"

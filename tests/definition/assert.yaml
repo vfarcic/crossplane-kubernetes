@@ -153,6 +153,13 @@ spec:
                             default: false
                             type: boolean
                         type: object
+                      certManager:
+                        description: Install cert-manager for TLS certificate management
+                        properties:
+                          enabled:
+                            default: false
+                            type: boolean
+                        type: object
                       nvidia:
                         description: Install NVIDIA GPU Operator for GPU driver and device plugin management. Required for AWS (EKS) and Azure (AKS). Optional for Google (GKE) where drivers and device plugin are pre-installed.
                         properties:
@@ -201,6 +208,9 @@ spec:
                       - small
                       - medium
                       - large
+                  region:
+                    description: 'The cloud region for the cluster. Defaults: us-east-1 (AWS), eastus (Azure), us-east1 (Google).'
+                    type: string
                   version:
                     description: The Kubernetes version for the cluster.
                     type: string

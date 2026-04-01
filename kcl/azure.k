@@ -16,7 +16,7 @@ _items = [{
     kind = "ResourceGroup"
     metadata = _metadata("resource-group")
     spec = {
-        forProvider.location = "eastus"
+        forProvider.location = oxr.spec.parameters?.region or "eastus"
         initProvider = {}
     }
 }, {
@@ -28,7 +28,7 @@ _items = [{
             resourceGroupName = oxr.metadata.name
             if oxr.spec.parameters.version:
                 kubernetesVersion = oxr.spec.parameters.version
-            location = "eastus"
+            location = oxr.spec.parameters?.region or "eastus"
             dnsPrefix = "dot"
             defaultNodePool = {
                 name = "nodepool1"
@@ -99,8 +99,9 @@ _items = [{
     **oxr
     status.clusterName = oxr.metadata.name
     if oxr.metadata.name + "-cluster" in ocds:
-        status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
-        status.nodePoolStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+        if ocds[oxr.metadata.name + "-cluster"].Resource?.status?.conditions:
+            status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+            status.nodePoolStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
 }]
 
 _gpu_node_size = oxr.spec.parameters?.gpu?.nodeSize or "small"

@@ -20,7 +20,7 @@ _items = [{
     kind = "Cluster"
     metadata = _metadata("", "ekscluster", "")
     spec.forProvider: {
-        region = "us-east-1"
+        region = oxr.spec.parameters?.region or "us-east-1"
         bootstrapSelfManagedAddons = True
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version
@@ -40,7 +40,7 @@ _items = [{
     metadata = _metadata("", "clusterAuth", "")
     spec = {
         forProvider: {
-            region = "us-east-1"
+            region = oxr.spec.parameters?.region or "us-east-1"
             clusterNameSelector.matchControllerRef = True
         }
         writeConnectionSecretToRef = {
@@ -145,7 +145,7 @@ _items = [{
     metadata = _metadata("", "eksnodegroup", "")
     spec = {
         forProvider = {
-            region = "us-east-1"
+            region = oxr.spec.parameters?.region or "us-east-1"
             clusterNameSelector.matchControllerRef = True
             nodeRoleArnSelector = {
                 matchControllerRef = True
@@ -171,7 +171,7 @@ _items = [{
     metadata = _metadata("", "vpc-nodepool", "")
     spec = {
         forProvider = {
-            region = "us-east-1"
+            region = oxr.spec.parameters?.region or "us-east-1"
             cidrBlock = "10.0.0.0/16"
             enableDnsSupport = True
         }
@@ -183,7 +183,7 @@ _items = [{
     spec.forProvider: {
         name = oxr.metadata.name
         description = "Cluster communication with worker nodes"
-        region = "us-east-1"
+        region = oxr.spec.parameters?.region or "us-east-1"
         vpcIdSelector.matchControllerRef = True
     }
 }, {
@@ -192,7 +192,7 @@ _items = [{
     metadata = _metadata("", "securityGroupRule", "")
     spec.forProvider: {
         description = "I am too lazy to write descriptions"
-        region = "us-east-1"
+        region = oxr.spec.parameters?.region or "us-east-1"
         type = "egress"
         fromPort = 0
         toPort = 0
@@ -205,7 +205,7 @@ _items = [{
     kind = "InternetGateway"
     metadata = _metadata("", "gateway", "")
     spec.forProvider = {
-        region = "us-east-1"
+        region = oxr.spec.parameters?.region or "us-east-1"
         vpcIdSelector.matchControllerRef = True
     }
 }, {
@@ -213,7 +213,7 @@ _items = [{
     kind = "RouteTable"
     metadata = _metadata("", "routeTable", "")
     spec.forProvider: {
-        region = "us-east-1"
+        region = oxr.spec.parameters?.region or "us-east-1"
         vpcIdSelector.matchControllerRef = True
     }
 }, {
@@ -221,7 +221,7 @@ _items = [{
     kind: "Route"
     metadata = _metadata("", "route", "")
     spec.forProvider: {
-        region = "us-east-1"
+        region = oxr.spec.parameters?.region or "us-east-1"
         routeTableIdSelector.matchControllerRef = True
         destinationCidrBlock = "0.0.0.0/0"
         gatewayIdSelector.matchControllerRef = True
@@ -231,7 +231,7 @@ _items = [{
     kind: "MainRouteTableAssociation"
     metadata = _metadata("", "mainRouteTableAssociation", "")
     spec.forProvider: {
-        region = "us-east-1"
+        region = oxr.spec.parameters?.region or "us-east-1"
         routeTableIdSelector.matchControllerRef = True
         vpcIdSelector.matchControllerRef = True
     }
@@ -241,22 +241,25 @@ _items = [{
     metadata = _metadata("ebs", "addonEbs", "")
     spec.forProvider = {
         addonName = "aws-ebs-csi-driver"
-        region = "us-east-1"
+        region = oxr.spec.parameters?.region or "us-east-1"
         clusterNameSelector.matchControllerRef = True
     }
 }, {
     **oxr
     status.clusterName = oxr.metadata.name
     if "ekscluster" in ocds:
-        status.controlPlaneStatus = ocds["ekscluster"].Resource.status.conditions[0].reason
+        if ocds["ekscluster"].Resource?.status?.conditions:
+            status.controlPlaneStatus = ocds["ekscluster"].Resource.status.conditions[0].reason
     if "eksnodegroup" in ocds:
-        status.nodePoolStatus = ocds["eksnodegroup"].Resource.status.conditions[0].reason
+        if ocds["eksnodegroup"].Resource?.status?.conditions:
+            status.nodePoolStatus = ocds["eksnodegroup"].Resource.status.conditions[0].reason
 }]
 
+_aws_region = oxr.spec.parameters?.region or "us-east-1"
 _zones = [
-    {suffix = "1a", ip = "10.0.0.0/24"}
-    {suffix = "1b", ip = "10.0.1.0/24"},
-    {suffix = "1c", ip = "10.0.2.0/24"}
+    {suffix = "a", ip = "10.0.0.0/24"}
+    {suffix = "b", ip = "10.0.1.0/24"},
+    {suffix = "c", ip = "10.0.2.0/24"}
 ]
 
 _items += [{
@@ -264,12 +267,12 @@ _items += [{
     kind = "RouteTableAssociation"
     metadata = _metadata(_zone.suffix, "routeTableAssociation" + _zone.suffix, "")
     spec.forProvider: {
-        region = "us-east-1"
+        region = oxr.spec.parameters?.region or "us-east-1"
         routeTableIdSelector.matchControllerRef = True
         subnetIdSelector = {
             matchControllerRef = True
             matchLabels = {
-                zone = "us-east-" + _zone.suffix
+                zone = _aws_region + _zone.suffix
                 access = "public"
             }
         }
@@ -285,14 +288,14 @@ _items += [{
             "krm.kcl.dev/composition-resource-name" = "subnet-nodepool-" + _zone.suffix
         }
         labels = {
-            zone = "us-east-" + _zone.suffix
+            zone = _aws_region + _zone.suffix
             access: "public"
         }
     }
     spec: {
         forProvider = {
-            region = "us-east-1"
-            availabilityZone = "us-east-" + _zone.suffix
+            region = oxr.spec.parameters?.region or "us-east-1"
+            availabilityZone = _aws_region + _zone.suffix
             cidrBlock = _zone.ip
             vpcIdSelector.matchControllerRef = True
             mapPublicIpOnLaunch = True
@@ -362,7 +365,7 @@ if oxr.spec.parameters?.gpu?.enabled:
         metadata = _metadata("gpu", "eksnodegroup-gpu", "")
         spec = {
             forProvider = {
-                region = "us-east-1"
+                region = oxr.spec.parameters?.region or "us-east-1"
                 clusterNameSelector.matchControllerRef = True
                 nodeRoleArnSelector = {
                     matchControllerRef = True

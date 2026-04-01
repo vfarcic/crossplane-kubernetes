@@ -11,6 +11,82 @@ wva = "0.5.1"
 valkey = "0.9.3"
 lws = "0.8.0"
 opentelemetryCollector = "0.147.1"
+certManager = "1.20.1"
+
+caCert = """\
+-----BEGIN CERTIFICATE-----
+MIICtDCCAZwCCQCwutQ4rXrN1zANBgkqhkiG9w0BAQsFADAcMRowGAYDVQQDDBFs
+bG0tZC1pbnRlcm5hbC1jYTAeFw0yNjA0MDEyMTE2NTFaFw0zNjAzMjkyMTE2NTFa
+MBwxGjAYBgNVBAMMEWxsbS1kLWludGVybmFsLWNhMIIBIjANBgkqhkiG9w0BAQEF
+AAOCAQ8AMIIBCgKCAQEAwVIzxDwt2A3lKbXi38vae+1EmSZY7Mr/Vo/XfPbvtcq5
+n2zHk4Fv/1sI8HeynOftj84sRn7JpuhrznlEtsIj3qqAHsfksOnF5J1cp9V0ZgA7
+regImD5vE6LXgI87UEtzR0hczGyBtoEknER5pfSxr4MNRpHK+61DjriLxaKzzEk8
+RSlyei17WtAzvRFnWdC7G6eSjqs22NFTH10TBXGYcieOZEGScABv5fO+0TFbr1JD
+GTBUQPvKHsZp3gMCWixHh0vKGZZINepxWaVeCFGTvXnmfHoESwHSTOgc7KgKXQIU
++ajf1yD7fHvAaYkIqqdQqErhdVlraHeeqwuIfmdR0QIDAQABMA0GCSqGSIb3DQEB
+CwUAA4IBAQAJTLEPkhtTssTTDXAi+8UOgrYWHeA+gq8+EiiCcn2Qxxga+mBCmd4U
+Q8cjJhoqxbLAVWTdvAokYtxIPwGmdNrF+mgrlQhohieusZPVFGzvPOJMhVJmJkxr
+NFngWvriDH1j9LIL/cLAsep1cahW8H2pCLT4baubkcEZ8W4SPzAnAYM5Igo86VUr
+MDsD0CwG7uk9MFxJjkj2yW0S91YOGYgYCU0aBazjqlyoDPvhUnPPUXXar8/Qw87U
+GxiMVeFMA63tKS5jIk4F3SD2AUZUE8aWEvsqyIlrXbLQsWxjs9lG9r8ngyaX+jsr
+9TXEi9MyhtApHPfL9Z0b/SeAZDvOrVGj
+-----END CERTIFICATE-----\
+"""
+
+promTlsCert = """\
+-----BEGIN CERTIFICATE-----
+MIIDQzCCAiugAwIBAgIJAMZ5uzevd6k6MA0GCSqGSIb3DQEBCwUAMBwxGjAYBgNV
+BAMMEWxsbS1kLWludGVybmFsLWNhMB4XDTI2MDQwMTIxMTcwN1oXDTM2MDMyOTIx
+MTcwN1owFTETMBEGA1UEAwwKcHJvbWV0aGV1czCCASIwDQYJKoZIhvcNAQEBBQAD
+ggEPADCCAQoCggEBAMR7rvljWNlc6XXYfVtUtHbf/R6Es97wsYePUqp248UTlRCH
+FOfdUKwUqeoyIKn3fRv53hEMff7sh6rYKwd1CzXIR7+EZq0uAijUxINBgu7+S3EZ
+35a+s4SLhzyqb1sZk+5Yw/ufV4bXgT6xcwwm/MGvlpcOhNkhHqRGSKFDaTMTseaa
+KDH2VOqwqNniFg+z3KGszGaAYzxyIHGswCqGpDGXjgGtxy4Y8x9lQuLEneUeIQeT
+vrlX5kyjW49Rqf0RWa5nrVnQlUpasuV6TAuTJW6s/nPvd6qn+1RnZbiiTsTaG0UL
++oqAGpfnSlnEP14Q1xCraAIUJozvdvr8EQNoJx0CAwEAAaOBjjCBizCBiAYDVR0R
+BIGAMH6CRGt1YmUtcHJvbWV0aGV1cy1zdGFjay1wcm9tZXRoZXVzLnByb21ldGhl
+dXMtc3lzdGVtLnN2Yy5jbHVzdGVyLmxvY2FsgjZrdWJlLXByb21ldGhldXMtc3Rh
+Y2stcHJvbWV0aGV1cy5wcm9tZXRoZXVzLXN5c3RlbS5zdmMwDQYJKoZIhvcNAQEL
+BQADggEBAEdSwDv/YHxGKUi9LsBg3cF6+4qmDU7gjapgEsNtUK6RPver8ST1TcNr
+68BBt41fzkakYoReXtRfMYYh9ZZ1o3iPyHSxmwL/7WtnAWlQKoKP4Wd3OpNnzROu
+qgYvvVrS68P1CTpFAOG/fATvH3pk8ZPTIW5c4ZivTEn0LLzxoBDymRyiUPLOpcA9
+Q0NEWQ7roM46GD+V4OUtWE2EPlVJfCjnk/nh23WEoaMWvvsx62rgxThy+fTlYZSD
+JpX16L92D77FZKDJxJgSOuYadLKHE7VK5yA8/IKt5pueiigalCkTkGfSBCY3DGwa
+0mSM05qAjrjhgYe8qVtEzdKHUFb3YzQ=
+-----END CERTIFICATE-----\
+"""
+
+promTlsKey = """\
+-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDEe675Y1jZXOl1
+2H1bVLR23/0ehLPe8LGHj1KqduPFE5UQhxTn3VCsFKnqMiCp930b+d4RDH3+7Ieq
+2CsHdQs1yEe/hGatLgIo1MSDQYLu/ktxGd+WvrOEi4c8qm9bGZPuWMP7n1eG14E+
+sXMMJvzBr5aXDoTZIR6kRkihQ2kzE7Hmmigx9lTqsKjZ4hYPs9yhrMxmgGM8ciBx
+rMAqhqQxl44BrccuGPMfZULixJ3lHiEHk765V+ZMo1uPUan9EVmuZ61Z0JVKWrLl
+ekwLkyVurP5z73eqp/tUZ2W4ok7E2htFC/qKgBqX50pZxD9eENcQq2gCFCaM73b6
+/BEDaCcdAgMBAAECggEAMeum0jAeo+NKYammd+z2iPlx6y4WMT+AK4wLmcnpJupJ
+xlA7zIlbdM0vOpSP3f9GZzQ96qD85iccdRjFHfjr5zdCm3M9TyTQYaVlZF/hr20m
+p87GExvSqot0ycIX1tKR1k3xRV3/s//PE6msLFs/fspo/Wov8KbMjTpaO7bP5Kzb
+UFjVmFiI+yh5NcYDwQ6qyh6EA1hxkZYwooVvNyx6dn4mf2OnPAYUWBgXtPye+4Kv
+HhY9nBLTV84xT8zVPPk3EkFDssI0jpSxWarjL16M00JSxeKAeeA3SVIVaS1Wg1ZS
+KgYmcgRLe4P1IrY0/sJ7MJdkl6IYfdIv8snawLsXYQKBgQDnyp4EV44lcoFyWTUP
+xb2IFDEjSExLtZSrJQUAFpWRP3oSVAtpoWJzXSi6+QDlUyIAOZMMtLvDmSPiyHZK
+et/ZXJqBE3mRlXCGp+y91eg/e5c4lJmi473kfC1D/ifOHQJUtyyfV0S3AVWbXpf0
+mNlxXWLmcyX+nW7T5P37BtP06QKBgQDZAQf+oPs8rkumZOQKp3aSKVBVWEAZxWGd
+E9xpbvqBDtsgi6t1H6g15a7njm9sX1i4BBWj2nJLlma3lN9S362uFQF2UVl4M8P3
+5nfpGXWjXaCyLK4PQXAq1qsnSjvHkU51avunRTVucghZUd1Bq1GI3E8Fo8xYfUZ2
+s0LFRvKQFQKBgDlINWzVRmeyuJLNwPM45vHuK4aQo2pCYY86AtZWvne6vCwzYO6l
+13KzHxG136bMuKZdlB2bvJtGCTxOVg1p+E/7NqOXcH+t8rUUYsk3R8IIhQKSlrVO
+musQVQ9si+HAAYd2DS0DoBOp3MIcymjELVh6v6o74rPdrDnpaWrT8SWhAoGBAMTV
+8KCA+SMDnk8iOM+JMz5FBz9Cu3Ik3fQTLdzc85DZHt6Ykj+9JWEuI8aaJmuQ2PKh
+kdd8sCvsEuP2v9N2XR4Io7jk9VjY66sTfDUOCOzUYoz7hi8EVnAlJD6RUUQmg5py
+Hi6N0neKLBSI8z873MtdurgM6bBigeXtmGVFg4Q5AoGBALY6kkWWL8kgQgLTZipg
+UQCoXRw2nsTulqlkGu5pw0WNALD/HYQ55C5UFOL1ahLwwM5756OJn/4x0KAcV/0k
+zDOpJVe6ywAnrefQBbfBBqloyh+ESYfrlkq+/blRLkbkPIcX01AR1i9PhTnEhao5
+3/SP2c4xXBwvOzIlAuxwIVXa
+-----END PRIVATE KEY-----\
+"""
+
 envoyGateway = "1.7.0"
 aiGateway = "0.5.0"
 kubePrometheusStack = "82.2.1"
@@ -522,22 +598,73 @@ _items = [
         }
         usage { _nameSuffix = "app-inference-crd-inferenceobjectives" }
 
+    if oxr.spec.parameters?.apps?.certManager?.enabled:
+        chart {
+            _name = "cert-manager"
+            _chartUrl = "oci://quay.io/jetstack/charts/cert-manager"
+            _chartVersion = certManager
+            _namespace = "cert-manager"
+            _values = {
+                crds.enabled = True
+            }
+        }
+        usage { _nameSuffix = "app-cert-manager", _kind = "Release" }
+
     if oxr.spec.parameters?.apps?.prometheus?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled:
         chart {
             _name = "kube-prometheus-stack"
             _chartRepository = "https://prometheus-community.github.io/helm-charts"
             _chartVersion = kubePrometheusStack
             _namespace = "prometheus-system"
+            if oxr.spec.parameters?.apps?.llmd?.enabled:
+                _values = {
+                    prometheus.prometheusSpec.web.tlsConfig = {
+                        cert.secret = {
+                            name = "prometheus-tls"
+                            key = "tls.crt"
+                        }
+                        keySecret = {
+                            name = "prometheus-tls"
+                            key = "tls.key"
+                        }
+                    }
+                }
         }
         usage { _nameSuffix = "app-kube-prometheus-stack", _kind = "Release" }
 
     if oxr.spec.parameters?.apps?.llmd?.enabled:
+        object {
+            _name = "prometheus-tls"
+            _manifest = {
+                apiVersion = "v1"
+                kind = "Secret"
+                metadata = {
+                    name = "prometheus-tls"
+                    namespace = "prometheus-system"
+                }
+                type = "kubernetes.io/tls"
+                stringData = {
+                    "tls.crt" = promTlsCert
+                    "tls.key" = promTlsKey
+                    "ca.crt" = caCert
+                }
+            }
+        }
+        usage { _nameSuffix = "app-prometheus-tls" }
         chart {
             _name = "wva"
             _chartName = "workload-variant-autoscaler"
             _chartUrl = "oci://ghcr.io/llm-d/workload-variant-autoscaler"
             _chartVersion = wva
             _namespace = "workload-variant-autoscaler-system"
+            _values = {
+                llmd.namespace = "workload-variant-autoscaler-system"
+                wva.prometheus = {
+                    monitoringNamespace = "prometheus-system"
+                    baseURL = "https://kube-prometheus-stack-prometheus.prometheus-system.svc.cluster.local:9090"
+                    caCert = caCert
+                }
+            }
         }
         usage { _nameSuffix = "app-wva", _kind = "Release" }
 
@@ -565,6 +692,10 @@ _items = [
             _chartRepository = "https://open-telemetry.github.io/opentelemetry-helm-charts"
             _chartVersion = opentelemetryCollector
             _namespace = "opentelemetry-collector-system"
+            _values = {
+                mode = "deployment"
+                image.repository = "ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-k8s"
+            }
         }
         usage { _nameSuffix = "app-opentelemetry-collector", _kind = "Release" }
 
@@ -608,7 +739,7 @@ _items = [
         }
         usage { _nameSuffix = "app-external-secrets", _kind = "Release" }
 
-    if oxr.spec.parameters?.apps?.nvidia?.enabled:
+    if oxr.spec.parameters?.apps?.nvidia?.enabled or oxr.spec.parameters?.apps?.llmd?.enabled:
         chart {
             _name = "gpu-operator"
             _chartRepository = "https://helm.ngc.nvidia.com/nvidia"

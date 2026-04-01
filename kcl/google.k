@@ -18,7 +18,7 @@ _items = [{
     spec = {
         forProvider = {
             deletionProtection = False
-            location = "us-east1"
+            location = oxr.spec.parameters?.region or "us-east1"
             if oxr.spec.parameters.version:
                 minMasterVersion = oxr.spec.parameters.version
             initialNodeCount = 1
@@ -42,7 +42,6 @@ _items = [{
         if oxr.spec.parameters.version:
             version = oxr.spec.parameters.version
         initialNodeCount = oxr.spec.parameters.minNodeCount
-        nodeLocations = ["us-east1-b", "us-east1-c", "us-east1-d"]
         clusterSelector.matchControllerRef = True
         nodeConfig = {
             if oxr.spec.parameters.nodeSize == "small":
@@ -117,10 +116,12 @@ _items = [{
     **oxr
     status.clusterName = oxr.metadata.name
     if oxr.metadata.name + "-cluster" in ocds:
-        status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
-        status.field1 = ocds[oxr.metadata.name + "-cluster"].Resource.status.atProvider.clusterIpv4Cidr
+        if ocds[oxr.metadata.name + "-cluster"].Resource?.status?.conditions:
+            status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+        status.field1 = ocds[oxr.metadata.name + "-cluster"].Resource?.status?.atProvider?.clusterIpv4Cidr or ""
     if oxr.metadata.name + "-nodepool" in ocds:
-        status.nodePoolStatus = ocds[oxr.metadata.name + "-nodepool"].Resource.status.conditions[0].reason
+        if ocds[oxr.metadata.name + "-nodepool"].Resource?.status?.conditions:
+            status.nodePoolStatus = ocds[oxr.metadata.name + "-nodepool"].Resource.status.conditions[0].reason
 }]
 
 _gpu_node_size = oxr.spec.parameters?.gpu?.nodeSize or "small"
@@ -140,7 +141,6 @@ if oxr.spec.parameters?.gpu?.enabled:
             if oxr.spec.parameters.version:
                 version = oxr.spec.parameters.version
             clusterSelector.matchControllerRef = True
-            nodeLocations = ["us-east1-c"]
             initialNodeCount = oxr.spec.parameters?.gpu?.minNodeCount or 1
             nodeConfig = {
                 if _gpu_node_size == "small":

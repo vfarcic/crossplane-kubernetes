@@ -30,6 +30,9 @@ spec:
                   version:
                     description: The Kubernetes version for the cluster.
                     type: string
+                  region:
+                    description: 'The cloud region for the cluster. Defaults: us-east-1 (AWS), eastus (Azure), us-east1 (Google).'
+                    type: string
                   nodeSize:
                     description: The size of the nodes; small, medium, large.
                     type: string
@@ -148,6 +151,14 @@ spec:
                         required: []
                       valkey:
                         description: Install Valkey (Redis-compatible key-value store)
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            default: false
+                        required: []
+                      certManager:
+                        description: Install cert-manager for TLS certificate management
                         type: object
                         properties:
                           enabled:

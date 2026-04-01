@@ -37,15 +37,50 @@ sleep 60
 kubectl wait --for=condition=healthy provider.pkg.crossplane.io --all --timeout 5m
 ```
 
-### Configure GCP credentials
+### Configure GCP project and credentials
 
-Create a GCP service account with permissions to manage GKE clusters (at minimum `roles/container.admin`) and export its key as JSON. See [Creating and managing service account keys](https://cloud.google.com/iam/docs/keys-create-delete) for instructions.
+Create a GCP project, link a billing account, and enable the Kubernetes Engine API. Then create a service account with permissions to manage GKE clusters and export its key as JSON. See [Creating and managing service account keys](https://cloud.google.com/iam/docs/keys-create-delete) for instructions.
 
 ```sh
+export PROJECT_ID=dot-$(date +%Y%m%d%H%M%S)
+
+gcloud projects create $PROJECT_ID
+
+gcloud billing accounts list
+
+export BILLING_ACCOUNT_ID=# Copy the account ID from the list above
+
+gcloud billing projects link $PROJECT_ID \
+    --billing-account $BILLING_ACCOUNT_ID
+
+gcloud services enable container.googleapis.com \
+    --project $PROJECT_ID
+
+gcloud iam service-accounts create crossplane \
+    --project $PROJECT_ID
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member serviceAccount:crossplane@${PROJECT_ID}.iam.gserviceaccount.com \
+    --role roles/container.admin
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member serviceAccount:crossplane@${PROJECT_ID}.iam.gserviceaccount.com \
+    --role roles/compute.admin
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member serviceAccount:crossplane@${PROJECT_ID}.iam.gserviceaccount.com \
+    --role roles/iam.serviceAccountUser
+
+gcloud iam service-accounts keys create gcp-creds.json \
+    --iam-account crossplane@${PROJECT_ID}.iam.gserviceaccount.com \
+    --project $PROJECT_ID
+
 kubectl --namespace crossplane-system create secret generic gcp-creds \
     --from-file creds=gcp-creds.json
 
-kubectl apply --filename providers/provider-config-google.yaml
+cat providers/provider-config-google.yaml \
+    | sed "s/projectID: .*/projectID: $PROJECT_ID/" \
+    | kubectl apply --filename -
 ```
 
 ### Create a namespace and deploy the cluster
@@ -63,3 +98,16 @@ crossplane beta trace --namespace a-team clusters.devopstoolkit.ai a-team-gke
 ### Per-model resources
 
 This cluster provides the infrastructure layer. Per-model components (llm-d ModelService, Endpoint Picker/EPP, InferencePool, HTTPRoute) are deployed separately via [crossplane-inference](https://github.com/vfarcic/crossplane-inference).
+
+### Cleanup
+
+```sh
+kubectl --namespace a-team delete cluster.devopstoolkit.ai a-team-gke
+
+# Wait for all managed resources to be deleted
+kubectl --namespace a-team get managed
+
+kind delete cluster
+
+gcloud projects delete $PROJECT_ID
+```

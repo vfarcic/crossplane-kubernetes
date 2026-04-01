@@ -10,14 +10,15 @@ spec:
         provider: google
         cluster: gke
   parameters:
+    region: us-central1
     nodeSize: medium
-    minNodeCount: 3
+    minNodeCount: 1
     namespaces:
       - dev
       - production
     gpu:
       enabled: true
-      nodeSize: large
+      nodeSize: small
       minNodeCount: 1
     apps:
       llmd:

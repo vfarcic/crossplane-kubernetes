@@ -62,6 +62,7 @@ spec = {
                                     nvidia = _data(data.appNvidia)
                                     llmd = _data(data.appLlmd)
                                     valkey = _data(data.appValkey)
+                                    certManager = _data(data.appCertManager)
                                     keda = _data(data.appKeda)
                                     envoyGateway = _data(data.appEnvoyGateway)
                                     prometheus = _data(data.appPrometheus)

@@ -145,6 +145,11 @@ spec:
               - name: usageName
                 value: app-opentelemetry-collector
         - assert:
+            file: ../common/assert-usage-object.yaml
+            bindings:
+              - name: usageName
+                value: app-prometheus-tls
+        - assert:
             file: ../common/assert-usage-release.yaml
             bindings:
               - name: usageName
