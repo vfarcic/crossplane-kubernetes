@@ -27,5 +27,3 @@ spec:
       - effect: NO_SCHEDULE
         key: nvidia.com/gpu
         value: "true"
-    nodeLocations:
-    - us-east1-c

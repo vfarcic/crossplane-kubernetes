@@ -20,13 +20,13 @@ spec:
       name: a-team-eks
     - apiVersion: ec2.aws.m.upbound.io/v1beta1
       kind: RouteTableAssociation
-      name: a-team-eks-1a
+      name: a-team-eks-a
     - apiVersion: ec2.aws.m.upbound.io/v1beta1
       kind: RouteTableAssociation
-      name: a-team-eks-1b
+      name: a-team-eks-b
     - apiVersion: ec2.aws.m.upbound.io/v1beta1
       kind: RouteTableAssociation
-      name: a-team-eks-1c
+      name: a-team-eks-c
     - apiVersion: ec2.aws.m.upbound.io/v1beta1
       kind: RouteTable
       name: a-team-eks
@@ -41,13 +41,13 @@ spec:
       name: a-team-eks
     - apiVersion: ec2.aws.m.upbound.io/v1beta1
       kind: Subnet
-      name: a-team-eks-1a
+      name: a-team-eks-a
     - apiVersion: ec2.aws.m.upbound.io/v1beta1
       kind: Subnet
-      name: a-team-eks-1b
+      name: a-team-eks-b
     - apiVersion: ec2.aws.m.upbound.io/v1beta1
       kind: Subnet
-      name: a-team-eks-1c
+      name: a-team-eks-c
     - apiVersion: ec2.aws.m.upbound.io/v1beta1
       kind: VPC
       name: a-team-eks
@@ -190,10 +190,10 @@ apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: RouteTableAssociation
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: routeTableAssociation1a
+    crossplane.io/composition-resource-name: routeTableAssociationa
   labels:
     crossplane.io/composite: a-team-eks
-  name: a-team-eks-1a
+  name: a-team-eks-a
   ownerReferences:
   - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
@@ -217,10 +217,10 @@ apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: RouteTableAssociation
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: routeTableAssociation1b
+    crossplane.io/composition-resource-name: routeTableAssociationb
   labels:
     crossplane.io/composite: a-team-eks
-  name: a-team-eks-1b
+  name: a-team-eks-b
   ownerReferences:
   - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
@@ -244,10 +244,10 @@ apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: RouteTableAssociation
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: routeTableAssociation1c
+    crossplane.io/composition-resource-name: routeTableAssociationc
   labels:
     crossplane.io/composite: a-team-eks
-  name: a-team-eks-1c
+  name: a-team-eks-c
   ownerReferences:
   - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
@@ -346,12 +346,12 @@ apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: Subnet
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: subnet-nodepool-1a
+    crossplane.io/composition-resource-name: subnet-nodepool-a
   labels:
     access: public
     crossplane.io/composite: a-team-eks
     zone: us-east-1a
-  name: a-team-eks-1a
+  name: a-team-eks-a
   ownerReferences:
   - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
@@ -375,12 +375,12 @@ apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: Subnet
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: subnet-nodepool-1b
+    crossplane.io/composition-resource-name: subnet-nodepool-b
   labels:
     access: public
     crossplane.io/composite: a-team-eks
     zone: us-east-1b
-  name: a-team-eks-1b
+  name: a-team-eks-b
   ownerReferences:
   - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true
@@ -404,12 +404,12 @@ apiVersion: ec2.aws.m.upbound.io/v1beta1
 kind: Subnet
 metadata:
   annotations:
-    crossplane.io/composition-resource-name: subnet-nodepool-1c
+    crossplane.io/composition-resource-name: subnet-nodepool-c
   labels:
     access: public
     crossplane.io/composite: a-team-eks
     zone: us-east-1c
-  name: a-team-eks-1c
+  name: a-team-eks-c
   ownerReferences:
   - apiVersion: devopstoolkit.ai/v2
     blockOwnerDeletion: true

@@ -171,7 +171,7 @@ spec:
 - [x] Remove hardcoded `nodeLocations` from GKE node pools
 - [x] Fix hardcoded zone references in AWS subnets
 - [x] Create GKE example (`examples/google-gke-llmd.yaml` and `.md`)
-- [ ] Run `just test-once` — all integration tests pass with latest changes
+- [x] Run `just test-once` — all integration tests pass with latest changes
 - [ ] Manual GKE validation: deploy example without `config.yaml` (use local `package/` manifests only), verify all components running including WVA with TLS
 
 ## Dependencies
