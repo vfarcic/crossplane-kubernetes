@@ -30,7 +30,7 @@ spec:
     chart:
       name: lws
       url: oci://registry.k8s.io/lws/charts/lws
-      version: "0.8.0"
+      version: "v0.8.0"
     namespace: lws-system
   providerConfigRef:
     kind: ProviderConfig

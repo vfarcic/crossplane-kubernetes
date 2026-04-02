@@ -9,7 +9,7 @@ keda = "2.19.0"
 kedaHttpAddon = "0.12.2"
 wva = "0.5.1"
 valkey = "0.9.3"
-lws = "0.8.0"
+lws = "v0.8.0"
 opentelemetryCollector = "0.147.1"
 certManager = "1.20.1"
 
@@ -87,7 +87,7 @@ zDOpJVe6ywAnrefQBbfBBqloyh+ESYfrlkq+/blRLkbkPIcX01AR1i9PhTnEhao5
 -----END PRIVATE KEY-----\
 """
 
-envoyGateway = "1.7.0"
+envoyGateway = "1.7.1"
 aiGateway = "0.5.0"
 kubePrometheusStack = "82.2.1"
 openFunctionUrl = "https://openfunction.github.io/charts/openfunction-v1.2.0-v0.7.0.tgz"
@@ -569,6 +569,35 @@ _items = [
         }
         usage { _nameSuffix = "app-inference-crd-inferencepools" }
         object {
+            _name = "inference-crd-xinferencepools"
+            _externalName = "inferencepools.inference.networking.x-k8s.io"
+            _managementPolicies = ["Create", "Update", "Observe"]
+            _manifest = {
+                apiVersion = "apiextensions.k8s.io/v1"
+                kind = "CustomResourceDefinition"
+                metadata = {
+                    name = "inferencepools.inference.networking.x-k8s.io"
+                    annotations = {
+                        "api-approved.kubernetes.io" = "unapproved, experimental-only"
+                        "inference.networking.k8s.io/bundle-version" = "main-dev"
+                    }
+                }
+                spec = {
+                    group = "inference.networking.x-k8s.io"
+                    names = { kind = "InferencePool", listKind = "InferencePoolList", plural = "inferencepools", singular = "inferencepool", shortNames = ["xinfpool"] }
+                    scope = "Namespaced"
+                    versions = [{
+                        name = "v1alpha2"
+                        served = True
+                        storage = True
+                        subresources.status = {}
+                        schema.openAPIV3Schema = { type = "object", "x-kubernetes-preserve-unknown-fields" = True }
+                    }]
+                }
+            }
+        }
+        usage { _nameSuffix = "app-inference-crd-xinferencepools" }
+        object {
             _name = "inference-crd-inferenceobjectives"
             _externalName = "inferenceobjectives.inference.networking.x-k8s.io"
             _managementPolicies = ["Create", "Update", "Observe"]
@@ -747,6 +776,9 @@ _items = [
             _namespace = "gpu-operator"
             _values = {
                 driver.enabled = False
+                operator.priorityClassName = ""
+                daemonsets.priorityClassName = ""
+                **{"node-feature-discovery": {priorityClassName = ""}}
             }
         }
         usage { _nameSuffix = "app-gpu-operator", _kind = "Release" }

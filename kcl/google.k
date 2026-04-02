@@ -165,11 +165,6 @@ if oxr.spec.parameters?.gpu?.enabled:
                 labels = {
                     gpu = "true"
                 }
-                taint = [{
-                    key = "nvidia.com/gpu"
-                    value = "true"
-                    effect = "NO_SCHEDULE"
-                }]
             }
             autoscaling = {
                 minNodeCount = oxr.spec.parameters?.gpu?.minNodeCount or 1
