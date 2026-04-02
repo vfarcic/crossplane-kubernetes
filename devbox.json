@@ -34,7 +34,7 @@
       "package-publish": ["just package-publish"],
       "test":            ["just test"],
       "test-watch":      ["just test-watch"],
-      "agent":           ["git pull", "claude"]
+      "agent":           ["claude"]
     }
   }
 }
