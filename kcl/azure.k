@@ -98,7 +98,7 @@ _items = [{
 }, {
     **oxr
     status.clusterName = oxr.metadata.name
-    if oxr.metadata.name + "-cluster" in ocds:
+    if ocds[oxr.metadata.name + "-cluster"]?.Resource?.status?.conditions:
         status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
         status.nodePoolStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
 }]
