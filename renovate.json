@@ -4,7 +4,7 @@
         "config:recommended"
     ],
     "crossplane": {
-        "fileMatch": ["providers/.+\\.yaml$"]
+        "managerFilePatterns": ["/providers/.+\\.yaml$/"]
     },
     "packageRules": [
         {
@@ -13,20 +13,16 @@
             "groupName": "providers"
         },
         {
-            "matchFileNames": [
-                "devbox.json",
-                "devbox-google.json",
-                "devbox.lock",
-                ".github/workflows/devbox.json"
-            ],
+            "matchManagers": ["devbox"],
+            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
             "automerge": true,
-            "commitMessageSuffix": " [skip ci]"
+            "platformAutomerge": false
         },
         {
             "matchManagers": ["github-actions"],
+            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
             "automerge": true,
-            "commitMessageSuffix": " [skip ci]"
+            "platformAutomerge": false
         }
     ]
 }
- 

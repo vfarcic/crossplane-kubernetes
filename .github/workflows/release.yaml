@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - devbox.json
+      - devbox.lock
+      - .github/**
 jobs:
   release:
     runs-on: ubuntu-latest
