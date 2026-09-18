@@ -980,51 +980,51 @@
         }
       }
     },
-    "viddy@1.3.0": {
-      "last_modified": "2025-01-19T08:16:51Z",
-      "resolved": "github:NixOS/nixpkgs/50165c4f7eb48ce82bd063e1fb8047a0f515f8ce#viddy",
+    "viddy@1.3.1": {
+      "last_modified": "2026-08-27T07:16:00Z",
+      "resolved": "github:NixOS/nixpkgs/c27cdad491a991b11ed731760aa2ef8db0cb0410#viddy",
       "source": "devbox-search",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/msw6ny1iz88bf3apcnwpfkbsrkyyblha-viddy-1.3.0",
+              "path": "/nix/store/ch0bv6lwz9qpx6gkjs6fnkak15s3sxpy-viddy-1.3.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/msw6ny1iz88bf3apcnwpfkbsrkyyblha-viddy-1.3.0"
+          "store_path": "/nix/store/ch0bv6lwz9qpx6gkjs6fnkak15s3sxpy-viddy-1.3.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/iggzx515hpnr2ph5s9i23gvf4h7ryl41-viddy-1.3.0",
+              "path": "/nix/store/2nbzm02z525v5p5jy5hq281x6g5i63vd-viddy-1.3.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/iggzx515hpnr2ph5s9i23gvf4h7ryl41-viddy-1.3.0"
+          "store_path": "/nix/store/2nbzm02z525v5p5jy5hq281x6g5i63vd-viddy-1.3.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/w8bmbxadi4kqk1wwy7h8cmsnldf3qidw-viddy-1.3.0",
+              "path": "/nix/store/swqk0ksaahrc554m2p3bd76p2j5gkdwv-viddy-1.3.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/w8bmbxadi4kqk1wwy7h8cmsnldf3qidw-viddy-1.3.0"
+          "store_path": "/nix/store/swqk0ksaahrc554m2p3bd76p2j5gkdwv-viddy-1.3.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/k4md2n7d220kb4ghajhhk0gbib4rz2a0-viddy-1.3.0",
+              "path": "/nix/store/i7z5x9a4g813li0zf4mw0ijsy9q6nbwx-viddy-1.3.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/k4md2n7d220kb4ghajhhk0gbib4rz2a0-viddy-1.3.0"
+          "store_path": "/nix/store/i7z5x9a4g813li0zf4mw0ijsy9q6nbwx-viddy-1.3.1"
         }
       }
     },
