@@ -51,6 +51,10 @@ cluster-create: package-generate _cluster-create-kind
   sleep 60
   kubectl wait --for=condition=healthy provider.pkg.crossplane.io --all --timeout={{timeout}}
   kubectl wait --for=condition=healthy function.pkg.crossplane.io --all --timeout={{timeout}}
+  # Newer providers do not reconcile managed resources at all (no status, no
+  # conditions) when the referenced ProviderConfig is missing. The credentials
+  # they point to do not need to exist for tests.
+  for config in `ls -1 providers | grep provider-config`; do kubectl apply --filename providers/$config; done
 
 # Executes `cluster-create` and sets it up to use Google Cloud.
 cluster-create-google: cluster-create
