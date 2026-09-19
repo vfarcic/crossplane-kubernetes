@@ -556,51 +556,41 @@
         }
       }
     },
-    "kind@0.30.0": {
-      "last_modified": "2025-09-18T16:33:27Z",
-      "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#kind",
+    "kind@0.32.0": {
+      "last_modified": "2026-08-27T07:16:00Z",
+      "resolved": "github:NixOS/nixpkgs/c27cdad491a991b11ed731760aa2ef8db0cb0410#kind",
       "source": "devbox-search",
-      "version": "0.30.0",
+      "version": "0.32.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/f1zv1knf82xycmg383rgmyp83h61hnin-kind-0.30.0",
+              "path": "/nix/store/jzvzpvkccqz0lsqlnvm74cf8kyl66m6k-kind-0.32.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/f1zv1knf82xycmg383rgmyp83h61hnin-kind-0.30.0"
+          "store_path": "/nix/store/jzvzpvkccqz0lsqlnvm74cf8kyl66m6k-kind-0.32.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/y6nb7p504s22yc5crh6mxqnxcvl2wbah-kind-0.30.0",
+              "path": "/nix/store/l4k5xwn2j8r5pazgky3k1467iwygphrf-kind-0.32.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/y6nb7p504s22yc5crh6mxqnxcvl2wbah-kind-0.30.0"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/1hi5hxjdklrmjrvi9j142h1aakr458ia-kind-0.30.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/1hi5hxjdklrmjrvi9j142h1aakr458ia-kind-0.30.0"
+          "store_path": "/nix/store/l4k5xwn2j8r5pazgky3k1467iwygphrf-kind-0.32.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/myld9sswhrl252bjrr60nl2ls9338vf3-kind-0.30.0",
+              "path": "/nix/store/8h2y0wx7cv9iax5rzkyjl07a494qxygl-kind-0.32.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/myld9sswhrl252bjrr60nl2ls9338vf3-kind-0.30.0"
+          "store_path": "/nix/store/8h2y0wx7cv9iax5rzkyjl07a494qxygl-kind-0.32.0"
         }
       }
     },
