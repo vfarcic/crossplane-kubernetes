@@ -16,14 +16,12 @@
         {
             "matchManagers": ["devbox"],
             "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-            "automerge": true,
-            "platformAutomerge": false
+            "automerge": true
         },
         {
             "matchManagers": ["github-actions"],
             "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-            "automerge": true,
-            "platformAutomerge": false
+            "automerge": true
         }
     ]
 }
