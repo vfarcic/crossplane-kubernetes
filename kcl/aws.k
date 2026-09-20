@@ -247,9 +247,9 @@ _items = [{
 }, {
     **oxr
     status.clusterName = oxr.metadata.name
-    if "ekscluster" in ocds:
+    if ocds["ekscluster"]?.Resource?.status?.conditions:
         status.controlPlaneStatus = ocds["ekscluster"].Resource.status.conditions[0].reason
-    if "eksnodegroup" in ocds:
+    if ocds["eksnodegroup"]?.Resource?.status?.conditions:
         status.nodePoolStatus = ocds["eksnodegroup"].Resource.status.conditions[0].reason
 }]
 

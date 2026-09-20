@@ -754,7 +754,7 @@ metadata:
     kind: Cluster
 spec:
   forProvider:
-    assumeRolePolicy: |
+    assumeRolePolicy: |-
       {
         "Version": "2012-10-17",
         "Statement": [{

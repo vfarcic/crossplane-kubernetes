@@ -116,10 +116,11 @@ _items = [{
 }, {
     **oxr
     status.clusterName = oxr.metadata.name
-    if oxr.metadata.name + "-cluster" in ocds:
+    if ocds[oxr.metadata.name + "-cluster"]?.Resource?.status?.conditions:
         status.controlPlaneStatus = ocds[oxr.metadata.name + "-cluster"].Resource.status.conditions[0].reason
+    if ocds[oxr.metadata.name + "-cluster"]?.Resource?.status?.atProvider?.clusterIpv4Cidr:
         status.field1 = ocds[oxr.metadata.name + "-cluster"].Resource.status.atProvider.clusterIpv4Cidr
-    if oxr.metadata.name + "-nodepool" in ocds:
+    if ocds[oxr.metadata.name + "-nodepool"]?.Resource?.status?.conditions:
         status.nodePoolStatus = ocds[oxr.metadata.name + "-nodepool"].Resource.status.conditions[0].reason
 }]
 
