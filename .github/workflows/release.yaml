@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - devbox.json
       - devbox.lock
+      - renovate.json
       - .github/**
 jobs:
   release:
