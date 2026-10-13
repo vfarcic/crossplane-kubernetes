@@ -51,53 +51,53 @@
         }
       }
     },
-    "azure-cli@2.89.1": {
-      "last_modified": "2026-08-27T07:16:00Z",
-      "resolved": "github:NixOS/nixpkgs/c27cdad491a991b11ed731760aa2ef8db0cb0410#azure-cli",
+    "azure-cli@2.91.0": {
+      "last_modified": "2026-10-08T19:21:32Z",
+      "resolved": "github:NixOS/nixpkgs/8edc0c72e3a38faf5434e40d1f19431125fe4b30#azure-cli",
       "source": "devbox-search",
-      "version": "2.89.1",
+      "version": "2.91.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ndgfrf4zpd8p12ccf3a4jz68d96hk4i9-python3.14-azure-cli-2.89.1",
+              "path": "/nix/store/gpqdyxa24pg2qnfysl4hhy6mfm8qylwz-python3.14-azure-cli-2.91.0",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/grvr49mbvivkx2h7wpj70c1fwwwk1j8f-python3.14-azure-cli-2.89.1-dist"
+              "path": "/nix/store/6vi40iw7fxx4bfpgccy0f8hqchdvc36i-python3.14-azure-cli-2.91.0-dist"
             }
           ],
-          "store_path": "/nix/store/ndgfrf4zpd8p12ccf3a4jz68d96hk4i9-python3.14-azure-cli-2.89.1"
+          "store_path": "/nix/store/gpqdyxa24pg2qnfysl4hhy6mfm8qylwz-python3.14-azure-cli-2.91.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/9kn1zc5g9absv2cryry8dwdjl84xf7zi-python3.14-azure-cli-2.89.1",
+              "path": "/nix/store/w8r0bi8q86a5flqg10gw45m6gi2cgz6y-python3.14-azure-cli-2.91.0",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/rc602q6kqknyj3nysykcivrxx1kksawc-python3.14-azure-cli-2.89.1-dist"
+              "path": "/nix/store/jqbqzsvfrc0fm3m6yyspg73zm85srhjb-python3.14-azure-cli-2.91.0-dist"
             }
           ],
-          "store_path": "/nix/store/9kn1zc5g9absv2cryry8dwdjl84xf7zi-python3.14-azure-cli-2.89.1"
+          "store_path": "/nix/store/w8r0bi8q86a5flqg10gw45m6gi2cgz6y-python3.14-azure-cli-2.91.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qapwfi2q8xc8c51njig2xf699hkjpnb6-python3.14-azure-cli-2.89.1",
+              "path": "/nix/store/nb2nksci714nxkhq4w6c9rmw1pa6hk2r-python3.14-azure-cli-2.91.0",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/k1n8fnyzqs61449vzlxdxrs0654ymv6y-python3.14-azure-cli-2.89.1-dist"
+              "path": "/nix/store/34ram0ckyag7m6hxf0ikn16nsc2rvbby-python3.14-azure-cli-2.91.0-dist"
             }
           ],
-          "store_path": "/nix/store/qapwfi2q8xc8c51njig2xf699hkjpnb6-python3.14-azure-cli-2.89.1"
+          "store_path": "/nix/store/nb2nksci714nxkhq4w6c9rmw1pa6hk2r-python3.14-azure-cli-2.91.0"
         }
       }
     },
