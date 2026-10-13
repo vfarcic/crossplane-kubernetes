@@ -149,41 +149,41 @@
         }
       }
     },
-    "crossplane-cli@2.4.1": {
-      "last_modified": "2026-08-27T07:16:00Z",
-      "resolved": "github:NixOS/nixpkgs/c27cdad491a991b11ed731760aa2ef8db0cb0410#crossplane-cli",
+    "crossplane-cli@2.5.0": {
+      "last_modified": "2026-10-08T19:21:32Z",
+      "resolved": "github:NixOS/nixpkgs/8edc0c72e3a38faf5434e40d1f19431125fe4b30#crossplane-cli",
       "source": "devbox-search",
-      "version": "2.4.1",
+      "version": "2.5.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qrdc7s1hyip693i0kp8nqgb8zjv1nka5-crossplane-cli-2.4.1",
+              "path": "/nix/store/n92chmz986pwy12j5ph01w4cmayn947w-crossplane-cli-2.5.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/qrdc7s1hyip693i0kp8nqgb8zjv1nka5-crossplane-cli-2.4.1"
+          "store_path": "/nix/store/n92chmz986pwy12j5ph01w4cmayn947w-crossplane-cli-2.5.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/yw82hvv71na54hilzwf9na9hdmkq9s8q-crossplane-cli-2.4.1",
+              "path": "/nix/store/8n73z96krnr2hqp8bp10v72p6llj05by-crossplane-cli-2.5.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/yw82hvv71na54hilzwf9na9hdmkq9s8q-crossplane-cli-2.4.1"
+          "store_path": "/nix/store/8n73z96krnr2hqp8bp10v72p6llj05by-crossplane-cli-2.5.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/3kman94k9wmgky8nfnwksjzqb77hwkn9-crossplane-cli-2.4.1",
+              "path": "/nix/store/1kgwhvy1z9qd2mcf7pc18ms0q2y03s5f-crossplane-cli-2.5.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/3kman94k9wmgky8nfnwksjzqb77hwkn9-crossplane-cli-2.4.1"
+          "store_path": "/nix/store/1kgwhvy1z9qd2mcf7pc18ms0q2y03s5f-crossplane-cli-2.5.0"
         }
       }
     },
